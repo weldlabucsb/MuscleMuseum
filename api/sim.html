@@ -1,0 +1,1663 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Sim &#8212; MuscleMuseum 0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=e1a75a79"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/sim';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Hardware" href="hardware.html" />
+    <link rel="prev" title="BecExp" href="becexp.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MuscleMuseum 0.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../intro/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/install.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/quick.html">Quick Start</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="atom.html">Atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="field.html">Field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial.html">Trial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="becexp.html">BecExp</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html">Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math.html">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Misc</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../sup/support.html">Support</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/api/sim.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Sim</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-src.trial.sim.Sim">Sim</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simrun">SimRun</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesim">MeSim</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sesim">SeSim</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="sim">
+<h1>Sim<a class="headerlink" href="#sim" title="Link to this heading">#</a></h1>
+<section id="module-src.trial.sim.Sim">
+<span id="id1"></span><h2>Sim<a class="headerlink" href="#module-src.trial.sim.Sim" title="Link to this heading">#</a></h2>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="SpaceTimeSim">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SpaceTimeSim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SpaceTimeSim" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Sim" title="Sim"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Sim</span></code></a></p>
+<p>TIMESIM Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="SpaceTimeSim.SpaceTimeSim">
+<span class="sig-name descname"><span class="pre">SpaceTimeSim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SpaceTimeSim.SpaceTimeSim" title="Link to this definition">#</a></dt>
+<dd><p>TIMESIM Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceTimeSim.AveragePeriod">
+<span class="sig-name descname"><span class="pre">AveragePeriod</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#SpaceTimeSim.AveragePeriod" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceTimeSim.BoundaryCondition">
+<span class="sig-name descname"><span class="pre">BoundaryCondition</span></span><em class="property"> <span class="pre">string</span> <span class="pre">{mustBeMember(BoundaryCondition,{'Periodic','Dirichlet','Neumann'})}</span> <span class="pre">=</span> <span class="pre">&quot;Periodic&quot;</span></em><a class="headerlink" href="#SpaceTimeSim.BoundaryCondition" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceTimeSim.Dimension">
+<span class="sig-name descname"><span class="pre">Dimension</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span> <span class="pre">{mustBeInteger,mustBeInRange(Dimension,1,3)}</span> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#SpaceTimeSim.Dimension" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceTimeSim.InitialTime">
+<span class="sig-name descname"><span class="pre">InitialTime</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#SpaceTimeSim.InitialTime" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceTimeSim.SavePeriod">
+<span class="sig-name descname"><span class="pre">SavePeriod</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#SpaceTimeSim.SavePeriod" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceTimeSim.SpaceOrigin">
+<span class="sig-name descname"><span class="pre">SpaceOrigin</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[0;0;0]</span></em><a class="headerlink" href="#SpaceTimeSim.SpaceOrigin" title="Link to this definition">#</a></dt>
+<dd><p>in meters</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceTimeSim.SpaceRange">
+<span class="sig-name descname"><span class="pre">SpaceRange</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBePositive}</span></em><a class="headerlink" href="#SpaceTimeSim.SpaceRange" title="Link to this definition">#</a></dt>
+<dd><p>in meters</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceTimeSim.SpaceStep">
+<span class="sig-name descname"><span class="pre">SpaceStep</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBePositive}</span></em><a class="headerlink" href="#SpaceTimeSim.SpaceStep" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceTimeSim.TimeStep">
+<span class="sig-name descname"><span class="pre">TimeStep</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span></em><a class="headerlink" href="#SpaceTimeSim.TimeStep" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceTimeSim.TotalTime">
+<span class="sig-name descname"><span class="pre">TotalTime</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span></em><a class="headerlink" href="#SpaceTimeSim.TotalTime" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="SpaceSim">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SpaceSim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SpaceSim" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Sim" title="Sim"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Sim</span></code></a></p>
+<p>TIMESIM Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="SpaceSim.SpaceSim">
+<span class="sig-name descname"><span class="pre">SpaceSim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SpaceSim.SpaceSim" title="Link to this definition">#</a></dt>
+<dd><p>TIMESIM Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceSim.BoundaryCondition">
+<span class="sig-name descname"><span class="pre">BoundaryCondition</span></span><em class="property"> <span class="pre">string</span> <span class="pre">{mustBeMember(BoundaryCondition,{'Periodic','Dirichlet','Neumann'})}</span> <span class="pre">=</span> <span class="pre">&quot;Periodic&quot;</span></em><a class="headerlink" href="#SpaceSim.BoundaryCondition" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceSim.Dimension">
+<span class="sig-name descname"><span class="pre">Dimension</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span> <span class="pre">{mustBeInteger,mustBeInRange(Dimension,1,3)}</span> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#SpaceSim.Dimension" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceSim.SpaceOrigin">
+<span class="sig-name descname"><span class="pre">SpaceOrigin</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[0;0;0]</span></em><a class="headerlink" href="#SpaceSim.SpaceOrigin" title="Link to this definition">#</a></dt>
+<dd><p>in meters</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceSim.SpaceRange">
+<span class="sig-name descname"><span class="pre">SpaceRange</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBePositive}</span></em><a class="headerlink" href="#SpaceSim.SpaceRange" title="Link to this definition">#</a></dt>
+<dd><p>in meters</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceSim.SpaceStep">
+<span class="sig-name descname"><span class="pre">SpaceStep</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBePositive}</span></em><a class="headerlink" href="#SpaceSim.SpaceStep" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="TimeSim">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TimeSim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TimeSim" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Sim" title="Sim"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Sim</span></code></a></p>
+<p>TIMESIM Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="TimeSim.TimeSim">
+<span class="sig-name descname"><span class="pre">TimeSim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TimeSim.TimeSim" title="Link to this definition">#</a></dt>
+<dd><p>TIMESIM Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="TimeSim.AveragePeriod">
+<span class="sig-name descname"><span class="pre">AveragePeriod</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#TimeSim.AveragePeriod" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TimeSim.InitialTime">
+<span class="sig-name descname"><span class="pre">InitialTime</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#TimeSim.InitialTime" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TimeSim.SavePeriod">
+<span class="sig-name descname"><span class="pre">SavePeriod</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#TimeSim.SavePeriod" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TimeSim.TimeStep">
+<span class="sig-name descname"><span class="pre">TimeStep</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span></em><a class="headerlink" href="#TimeSim.TimeStep" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TimeSim.TotalTime">
+<span class="sig-name descname"><span class="pre">TotalTime</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span></em><a class="headerlink" href="#TimeSim.TotalTime" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="Sim">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Sim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Sim" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="trial.html#Trial" title="Trial"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Trial</span></code></a></p>
+<p>SIMULATION Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Sim.Sim">
+<span class="sig-name descname"><span class="pre">Sim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Sim.Sim" title="Link to this definition">#</a></dt>
+<dd><p>SIMULATION Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="Sim.Output">
+<span class="sig-name descname"><span class="pre">Output</span></span><a class="headerlink" href="#Sim.Output" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Sim.SimRun">
+<span class="sig-name descname"><span class="pre">SimRun</span></span><a class="headerlink" href="#Sim.SimRun" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Sim.WallTime">
+<span class="sig-name descname"><span class="pre">WallTime</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">11.5*3600</span></em><a class="headerlink" href="#Sim.WallTime" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Sim.check">
+<span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">isWarning</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Sim.check" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Sim.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Sim.start" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+<section id="simrun">
+<h2>SimRun<a class="headerlink" href="#simrun" title="Link to this heading">#</a></h2>
+<dl class="mat class" id="module-src.trial.sim.SimRun">
+<dt class="sig sig-object mat" id="TimeSimRun">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TimeSimRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">timeSim</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TimeSimRun" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SimRun" title="SimRun"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SimRun</span></code></a></p>
+<p>UNTITLED Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="TimeSimRun.TimeSimRun">
+<span class="sig-name descname"><span class="pre">TimeSimRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">timeSim</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TimeSimRun.TimeSimRun" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="TimeSimRun.AveragePeriod">
+<span class="sig-name descname"><span class="pre">AveragePeriod</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#TimeSimRun.AveragePeriod" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TimeSimRun.InitialCondition">
+<span class="sig-name descname"><span class="pre">InitialCondition</span></span><em class="property"> <span class="pre">InitialCondition</span></em><a class="headerlink" href="#TimeSimRun.InitialCondition" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TimeSimRun.InitialTime">
+<span class="sig-name descname"><span class="pre">InitialTime</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#TimeSimRun.InitialTime" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TimeSimRun.NDataRow">
+<span class="sig-name descname"><span class="pre">NDataRow</span></span><a class="headerlink" href="#TimeSimRun.NDataRow" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TimeSimRun.NDataRowMemory">
+<span class="sig-name descname"><span class="pre">NDataRowMemory</span></span><a class="headerlink" href="#TimeSimRun.NDataRowMemory" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TimeSimRun.NTimeStep">
+<span class="sig-name descname"><span class="pre">NTimeStep</span></span><a class="headerlink" href="#TimeSimRun.NTimeStep" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TimeSimRun.SavePeriod">
+<span class="sig-name descname"><span class="pre">SavePeriod</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#TimeSimRun.SavePeriod" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TimeSimRun.TimeList">
+<span class="sig-name descname"><span class="pre">TimeList</span></span><a class="headerlink" href="#TimeSimRun.TimeList" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TimeSimRun.TimeListAvg">
+<span class="sig-name descname"><span class="pre">TimeListAvg</span></span><a class="headerlink" href="#TimeSimRun.TimeListAvg" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TimeSimRun.TimeStep">
+<span class="sig-name descname"><span class="pre">TimeStep</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span></em><a class="headerlink" href="#TimeSimRun.TimeStep" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TimeSimRun.TotalTime">
+<span class="sig-name descname"><span class="pre">TotalTime</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span></em><a class="headerlink" href="#TimeSimRun.TotalTime" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="TimeSimRun.check">
+<span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">isWarning</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TimeSimRun.check" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="InitialCondition">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">InitialCondition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">simName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#InitialCondition" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">dynamicprops</span></code></p>
+<p>INITIALCONDITION Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="InitialCondition.InitialCondition">
+<span class="sig-name descname"><span class="pre">InitialCondition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">simName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#InitialCondition.InitialCondition" title="Link to this definition">#</a></dt>
+<dd><p>INITIALCONDITION Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="InitialCondition.SimulationName">
+<span class="sig-name descname"><span class="pre">SimulationName</span></span><a class="headerlink" href="#InitialCondition.SimulationName" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="InitialCondition.setProperties">
+<span class="sig-name descname"><span class="pre">setProperties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#InitialCondition.setProperties" title="Link to this definition">#</a></dt>
+<dd><p>METHOD1 Summary of this method goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="SpaceSimRun">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SpaceSimRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">spaceSim</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SpaceSimRun" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SimRun" title="SimRun"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SimRun</span></code></a></p>
+<p>SPACESIMRUN Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="SpaceSimRun.SpaceSimRun">
+<span class="sig-name descname"><span class="pre">SpaceSimRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">spaceSim</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SpaceSimRun.SpaceSimRun" title="Link to this definition">#</a></dt>
+<dd><p>SPACESIMRUN Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceSimRun.BoundaryCondition">
+<span class="sig-name descname"><span class="pre">BoundaryCondition</span></span><em class="property"> <span class="pre">string</span> <span class="pre">{mustBeMember(BoundaryCondition,{'Periodic','Dirichlet','Neumann'})}</span> <span class="pre">=</span> <span class="pre">&quot;Periodic&quot;</span></em><a class="headerlink" href="#SpaceSimRun.BoundaryCondition" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceSimRun.Dimension">
+<span class="sig-name descname"><span class="pre">Dimension</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span> <span class="pre">{mustBeInteger,mustBeInRange(Dimension,1,3)}</span> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#SpaceSimRun.Dimension" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceSimRun.NSpaceStep">
+<span class="sig-name descname"><span class="pre">NSpaceStep</span></span><a class="headerlink" href="#SpaceSimRun.NSpaceStep" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceSimRun.SpaceAngularFrequencyList">
+<span class="sig-name descname"><span class="pre">SpaceAngularFrequencyList</span></span><a class="headerlink" href="#SpaceSimRun.SpaceAngularFrequencyList" title="Link to this definition">#</a></dt>
+<dd><p>for fft</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceSimRun.SpaceAngularFrequencyStep">
+<span class="sig-name descname"><span class="pre">SpaceAngularFrequencyStep</span></span><a class="headerlink" href="#SpaceSimRun.SpaceAngularFrequencyStep" title="Link to this definition">#</a></dt>
+<dd><p>for fft</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceSimRun.SpaceList">
+<span class="sig-name descname"><span class="pre">SpaceList</span></span><a class="headerlink" href="#SpaceSimRun.SpaceList" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceSimRun.SpaceOrigin">
+<span class="sig-name descname"><span class="pre">SpaceOrigin</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[0;0;0]</span></em><a class="headerlink" href="#SpaceSimRun.SpaceOrigin" title="Link to this definition">#</a></dt>
+<dd><p>in meters</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceSimRun.SpaceRange">
+<span class="sig-name descname"><span class="pre">SpaceRange</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBePositive}</span></em><a class="headerlink" href="#SpaceSimRun.SpaceRange" title="Link to this definition">#</a></dt>
+<dd><p>in meters</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SpaceSimRun.SpaceStep">
+<span class="sig-name descname"><span class="pre">SpaceStep</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBePositive}</span></em><a class="headerlink" href="#SpaceSimRun.SpaceStep" title="Link to this definition">#</a></dt>
+<dd><p>in meters</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="SimRun">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SimRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">sim</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SimRun" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
+<p>UNTITLED Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="SimRun.SimRun">
+<span class="sig-name descname"><span class="pre">SimRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">sim</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SimRun.SimRun" title="Link to this definition">#</a></dt>
+<dd><p>UNTITLED Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="SimRun.DataAnalysisPath">
+<span class="sig-name descname"><span class="pre">DataAnalysisPath</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#SimRun.DataAnalysisPath" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SimRun.DataFormat">
+<span class="sig-name descname"><span class="pre">DataFormat</span></span><em class="property"> <span class="pre">string</span> <span class="pre">=</span> <span class="pre">&quot;.mat&quot;</span></em><a class="headerlink" href="#SimRun.DataFormat" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SimRun.DataPath">
+<span class="sig-name descname"><span class="pre">DataPath</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#SimRun.DataPath" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SimRun.DataPrefix">
+<span class="sig-name descname"><span class="pre">DataPrefix</span></span><em class="property"> <span class="pre">string</span> <span class="pre">=</span> <span class="pre">&quot;run&quot;</span></em><a class="headerlink" href="#SimRun.DataPrefix" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SimRun.IsCompleted">
+<span class="sig-name descname"><span class="pre">IsCompleted</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">false</span></em><a class="headerlink" href="#SimRun.IsCompleted" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SimRun.Output">
+<span class="sig-name descname"><span class="pre">Output</span></span><em class="property"> <span class="pre">table</span></em><a class="headerlink" href="#SimRun.Output" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SimRun.RunIndex">
+<span class="sig-name descname"><span class="pre">RunIndex</span></span><em class="property"> <span class="pre">uint32</span> <span class="pre">=</span> <span class="pre">int32(1)</span></em><a class="headerlink" href="#SimRun.RunIndex" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SimRun.RunPath">
+<span class="sig-name descname"><span class="pre">RunPath</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#SimRun.RunPath" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SimRun.WallTime">
+<span class="sig-name descname"><span class="pre">WallTime</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">11.5*3600</span></em><a class="headerlink" href="#SimRun.WallTime" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="SimRun.readRun">
+<span class="sig-name descname"><span class="pre">readRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SimRun.readRun" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+<section id="mesim">
+<h2>MeSim<a class="headerlink" href="#mesim" title="Link to this heading">#</a></h2>
+<dl class="mat class" id="module-src.trial.sim.MeSim">
+<dt class="sig sig-object mat" id="MeSim">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">MeSim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">options1</span></em>, <em class="sig-param"><span class="pre">options2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MeSim" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#TimeSim" title="TimeSim"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">TimeSim</span></code></a></p>
+<p>SIMULATION Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="MeSim.MeSim">
+<span class="sig-name descname"><span class="pre">MeSim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">options1</span></em>, <em class="sig-param"><span class="pre">options2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MeSim.MeSim" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="MeSim.Atom">
+<span class="sig-name descname"><span class="pre">Atom</span></span><em class="property"> <span class="pre">Atom</span></em><a class="headerlink" href="#MeSim.Atom" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MeSim.Manifold">
+<span class="sig-name descname"><span class="pre">Manifold</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">string</span></em><a class="headerlink" href="#MeSim.Manifold" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MeSim.RotatingFrequency">
+<span class="sig-name descname"><span class="pre">RotatingFrequency</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span></em><a class="headerlink" href="#MeSim.RotatingFrequency" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="MeSim.showCrossSection">
+<span class="sig-name descname"><span class="pre">showCrossSection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MeSim.showCrossSection" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MeSim.updateDatabase">
+<span class="sig-name descname"><span class="pre">updateDatabase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MeSim.updateDatabase" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MeSim.writeDatabase">
+<span class="sig-name descname"><span class="pre">writeDatabase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MeSim.writeDatabase" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="MeSimRun">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">MeSimRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">meSim</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MeSimRun" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#TimeSimRun" title="TimeSimRun"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">TimeSimRun</span></code></a></p>
+<p>MESIMRUN Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="MeSimRun.MeSimRun">
+<span class="sig-name descname"><span class="pre">MeSimRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">meSim</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MeSimRun.MeSimRun" title="Link to this definition">#</a></dt>
+<dd><p>MESIMRUN Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="MeSimRun.Atom">
+<span class="sig-name descname"><span class="pre">Atom</span></span><em class="property"> <span class="pre">Atom</span></em><a class="headerlink" href="#MeSimRun.Atom" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MeSimRun.Hamiltonian">
+<span class="sig-name descname"><span class="pre">Hamiltonian</span></span><a class="headerlink" href="#MeSimRun.Hamiltonian" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MeSimRun.Laser">
+<span class="sig-name descname"><span class="pre">Laser</span></span><em class="property"> <span class="pre">Laser</span></em><a class="headerlink" href="#MeSimRun.Laser" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MeSimRun.Lindbladian">
+<span class="sig-name descname"><span class="pre">Lindbladian</span></span><a class="headerlink" href="#MeSimRun.Lindbladian" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MeSimRun.MagneticField">
+<span class="sig-name descname"><span class="pre">MagneticField</span></span><em class="property"> <span class="pre">MagneticField</span></em><a class="headerlink" href="#MeSimRun.MagneticField" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MeSimRun.Manifold">
+<span class="sig-name descname"><span class="pre">Manifold</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#MeSimRun.Manifold" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MeSimRun.RotatingFrequency">
+<span class="sig-name descname"><span class="pre">RotatingFrequency</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#MeSimRun.RotatingFrequency" title="Link to this definition">#</a></dt>
+<dd><p>LargeGHFS logical = false
+IsMoving logical = false
+IsDragged logical = false</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MeSimRun.StateList">
+<span class="sig-name descname"><span class="pre">StateList</span></span><em class="property"> <span class="pre">table</span></em><a class="headerlink" href="#MeSimRun.StateList" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MeSimRun.Transformation">
+<span class="sig-name descname"><span class="pre">Transformation</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#MeSimRun.Transformation" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="MeSimRun.finalize">
+<span class="sig-name descname"><span class="pre">finalize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MeSimRun.finalize" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MeSimRun.showPopulation">
+<span class="sig-name descname"><span class="pre">showPopulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">stateIndex</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MeSimRun.showPopulation" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MeSimRun.showPopulationExcited">
+<span class="sig-name descname"><span class="pre">showPopulationExcited</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MeSimRun.showPopulationExcited" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MeSimRun.showPopulationGround">
+<span class="sig-name descname"><span class="pre">showPopulationGround</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MeSimRun.showPopulationGround" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MeSimRun.showScatteringRate">
+<span class="sig-name descname"><span class="pre">showScatteringRate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MeSimRun.showScatteringRate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MeSimRun.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MeSimRun.start" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+<section id="sesim">
+<h2>SeSim<a class="headerlink" href="#sesim" title="Link to this heading">#</a></h2>
+<dl class="mat class" id="module-src.trial.sim.SeSim">
+<dt class="sig sig-object mat" id="SeSim1D">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SeSim1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SeSim1D" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#TimeSim" title="TimeSim"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">TimeSim</span></code></a>, <a class="reference internal" href="#SpaceSim" title="SpaceSim"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SpaceSim</span></code></a></p>
+<p>SESIM Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="SeSim1D.SeSim1D">
+<span class="sig-name descname"><span class="pre">SeSim1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SeSim1D.SeSim1D" title="Link to this definition">#</a></dt>
+<dd><p>SeSim1D Construct an instance of this class</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="SeSim1D.setConfigProperty">
+<span class="sig-name descname"><span class="pre">setConfigProperty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">s</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SeSim1D.setConfigProperty" title="Link to this definition">#</a></dt>
+<dd><p>This method compares the properties of the handle object ‘obj’ with
+the fields of a structure ‘struct’. Then it sets the properties to the
+values of the fields. The obj must inherit the set method from
+matlab.mixin.SetGetExactNames</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="SeSim1D.updateDatabase">
+<span class="sig-name descname"><span class="pre">updateDatabase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SeSim1D.updateDatabase" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="SeSim1D.writeDatabase">
+<span class="sig-name descname"><span class="pre">writeDatabase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SeSim1D.writeDatabase" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="LatticeSeSim1D">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LatticeSeSim1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">options1</span></em>, <em class="sig-param"><span class="pre">options2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LatticeSeSim1D" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SpaceTimeSim" title="SpaceTimeSim"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SpaceTimeSim</span></code></a></p>
+<p>SESIM Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="LatticeSeSim1D.LatticeSeSim1D">
+<span class="sig-name descname"><span class="pre">LatticeSeSim1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">options1</span></em>, <em class="sig-param"><span class="pre">options2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LatticeSeSim1D.LatticeSeSim1D" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeSeSim1D.Atom">
+<span class="sig-name descname"><span class="pre">Atom</span></span><em class="property"> <span class="pre">Atom</span></em><a class="headerlink" href="#LatticeSeSim1D.Atom" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeSeSim1D.FieldModulation">
+<span class="sig-name descname"><span class="pre">FieldModulation</span></span><em class="property"> <span class="pre">cell</span></em><a class="headerlink" href="#LatticeSeSim1D.FieldModulation" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeSeSim1D.InitialCondition">
+<span class="sig-name descname"><span class="pre">InitialCondition</span></span><em class="property"> <span class="pre">InitialCondition</span></em><a class="headerlink" href="#LatticeSeSim1D.InitialCondition" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeSeSim1D.Laser">
+<span class="sig-name descname"><span class="pre">Laser</span></span><em class="property"> <span class="pre">cell</span></em><a class="headerlink" href="#LatticeSeSim1D.Laser" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeSeSim1D.LatticeModulation">
+<span class="sig-name descname"><span class="pre">LatticeModulation</span></span><em class="property"> <span class="pre">cell</span></em><a class="headerlink" href="#LatticeSeSim1D.LatticeModulation" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeSeSim1D.MagneticField">
+<span class="sig-name descname"><span class="pre">MagneticField</span></span><em class="property"> <span class="pre">cell</span></em><a class="headerlink" href="#LatticeSeSim1D.MagneticField" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeSeSim1D.MagneticPotential">
+<span class="sig-name descname"><span class="pre">MagneticPotential</span></span><em class="property"> <span class="pre">MagneticPotential</span></em><a class="headerlink" href="#LatticeSeSim1D.MagneticPotential" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeSeSim1D.Manifold">
+<span class="sig-name descname"><span class="pre">Manifold</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">string</span></em><a class="headerlink" href="#LatticeSeSim1D.Manifold" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeSeSim1D.OpticalLattice">
+<span class="sig-name descname"><span class="pre">OpticalLattice</span></span><em class="property"> <span class="pre">OpticalLattice</span></em><a class="headerlink" href="#LatticeSeSim1D.OpticalLattice" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeSeSim1D.ScannedParameterList">
+<span class="sig-name descname"><span class="pre">ScannedParameterList</span></span><a class="headerlink" href="#LatticeSeSim1D.ScannedParameterList" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeSeSim1D.StateIndex">
+<span class="sig-name descname"><span class="pre">StateIndex</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#LatticeSeSim1D.StateIndex" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="LatticeSeSim1D.plotBand">
+<span class="sig-name descname"><span class="pre">plotBand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em>, <em class="sig-param"><span class="pre">bandNumber</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LatticeSeSim1D.plotBand" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="LatticeSeSim1D.setConfigProperty">
+<span class="sig-name descname"><span class="pre">setConfigProperty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">s</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LatticeSeSim1D.setConfigProperty" title="Link to this definition">#</a></dt>
+<dd><p>This method compares the properties of the handle object ‘obj’ with
+the fields of a structure ‘struct’. Then it sets the properties to the
+values of the fields. The obj must inherit the set method from
+matlab.mixin.SetGetExactNames</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="LatticeSeSim1D.updateDatabase">
+<span class="sig-name descname"><span class="pre">updateDatabase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LatticeSeSim1D.updateDatabase" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="LatticeSeSim1D.writeDatabase">
+<span class="sig-name descname"><span class="pre">writeDatabase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LatticeSeSim1D.writeDatabase" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1D">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LatticeFourierSeSim1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">options1</span></em>, <em class="sig-param"><span class="pre">options2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LatticeFourierSeSim1D" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#TimeSim" title="TimeSim"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">TimeSim</span></code></a></p>
+<p>SESIM Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1D.LatticeFourierSeSim1D">
+<span class="sig-name descname"><span class="pre">LatticeFourierSeSim1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">options1</span></em>, <em class="sig-param"><span class="pre">options2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LatticeFourierSeSim1D.LatticeFourierSeSim1D" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1D.Atom">
+<span class="sig-name descname"><span class="pre">Atom</span></span><em class="property"> <span class="pre">Atom</span></em><a class="headerlink" href="#LatticeFourierSeSim1D.Atom" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1D.FieldModulation">
+<span class="sig-name descname"><span class="pre">FieldModulation</span></span><em class="property"> <span class="pre">cell</span></em><a class="headerlink" href="#LatticeFourierSeSim1D.FieldModulation" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1D.InitialCondition">
+<span class="sig-name descname"><span class="pre">InitialCondition</span></span><em class="property"> <span class="pre">InitialCondition</span></em><a class="headerlink" href="#LatticeFourierSeSim1D.InitialCondition" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1D.Laser">
+<span class="sig-name descname"><span class="pre">Laser</span></span><em class="property"> <span class="pre">cell</span></em><a class="headerlink" href="#LatticeFourierSeSim1D.Laser" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1D.LatticeModulation">
+<span class="sig-name descname"><span class="pre">LatticeModulation</span></span><em class="property"> <span class="pre">cell</span></em><a class="headerlink" href="#LatticeFourierSeSim1D.LatticeModulation" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1D.MagneticField">
+<span class="sig-name descname"><span class="pre">MagneticField</span></span><em class="property"> <span class="pre">cell</span></em><a class="headerlink" href="#LatticeFourierSeSim1D.MagneticField" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1D.MagneticPotential">
+<span class="sig-name descname"><span class="pre">MagneticPotential</span></span><em class="property"> <span class="pre">MagneticPotential</span></em><a class="headerlink" href="#LatticeFourierSeSim1D.MagneticPotential" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1D.Manifold">
+<span class="sig-name descname"><span class="pre">Manifold</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">string</span></em><a class="headerlink" href="#LatticeFourierSeSim1D.Manifold" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1D.OpticalLattice">
+<span class="sig-name descname"><span class="pre">OpticalLattice</span></span><em class="property"> <span class="pre">OpticalLattice</span></em><a class="headerlink" href="#LatticeFourierSeSim1D.OpticalLattice" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1D.ScannedParameterList">
+<span class="sig-name descname"><span class="pre">ScannedParameterList</span></span><a class="headerlink" href="#LatticeFourierSeSim1D.ScannedParameterList" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1D.StateIndex">
+<span class="sig-name descname"><span class="pre">StateIndex</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#LatticeFourierSeSim1D.StateIndex" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1D.plotBand">
+<span class="sig-name descname"><span class="pre">plotBand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em>, <em class="sig-param"><span class="pre">bandNumber</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LatticeFourierSeSim1D.plotBand" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1D.setConfigProperty">
+<span class="sig-name descname"><span class="pre">setConfigProperty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">s</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LatticeFourierSeSim1D.setConfigProperty" title="Link to this definition">#</a></dt>
+<dd><p>This method compares the properties of the handle object ‘obj’ with
+the fields of a structure ‘struct’. Then it sets the properties to the
+values of the fields. The obj must inherit the set method from
+matlab.mixin.SetGetExactNames</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1D.updateDatabase">
+<span class="sig-name descname"><span class="pre">updateDatabase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LatticeFourierSeSim1D.updateDatabase" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1D.writeDatabase">
+<span class="sig-name descname"><span class="pre">writeDatabase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LatticeFourierSeSim1D.writeDatabase" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="SeSim1DRun">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SeSim1DRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">seSim1D</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SeSim1DRun" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#TimeSimRun" title="TimeSimRun"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">TimeSimRun</span></code></a>, <a class="reference internal" href="#SpaceSimRun" title="SpaceSimRun"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SpaceSimRun</span></code></a></p>
+<p>SESIM1DRUN Summary of this class goes here
+Single-particle time-dependent Schrodinger equation simulation in 
+1D.</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="SeSim1DRun.SeSim1DRun">
+<span class="sig-name descname"><span class="pre">SeSim1DRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">seSim1D</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SeSim1DRun.SeSim1DRun" title="Link to this definition">#</a></dt>
+<dd><p>SESIM1DRUN Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="SeSim1DRun.KineticPropagator">
+<span class="sig-name descname"><span class="pre">KineticPropagator</span></span><a class="headerlink" href="#SeSim1DRun.KineticPropagator" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SeSim1DRun.Mass">
+<span class="sig-name descname"><span class="pre">Mass</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span></em><a class="headerlink" href="#SeSim1DRun.Mass" title="Link to this definition">#</a></dt>
+<dd><p>mass of the particle</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="SeSim1DRun.Potential">
+<span class="sig-name descname"><span class="pre">Potential</span></span><em class="property"> <span class="pre">function_handle</span></em><a class="headerlink" href="#SeSim1DRun.Potential" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="SeSim1DRun.showPeak">
+<span class="sig-name descname"><span class="pre">showPeak</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SeSim1DRun.showPeak" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="SeSim1DRun.showSpaceTime">
+<span class="sig-name descname"><span class="pre">showSpaceTime</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SeSim1DRun.showSpaceTime" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="SeSim1DRun.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SeSim1DRun.start" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1DRun">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LatticeFourierSeSim1DRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">sim1D</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LatticeFourierSeSim1DRun" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#TimeSimRun" title="TimeSimRun"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">TimeSimRun</span></code></a></p>
+<p>SESIM1DRUN Summary of this class goes here
+Single-particle time-dependent Schrodinger equation simulation in 
+1D.</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1DRun.LatticeFourierSeSim1DRun">
+<span class="sig-name descname"><span class="pre">LatticeFourierSeSim1DRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">sim1D</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LatticeFourierSeSim1DRun.LatticeFourierSeSim1DRun" title="Link to this definition">#</a></dt>
+<dd><p>SESIM1DRUN Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1DRun.Atom">
+<span class="sig-name descname"><span class="pre">Atom</span></span><em class="property"> <span class="pre">Atom</span></em><a class="headerlink" href="#LatticeFourierSeSim1DRun.Atom" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1DRun.FOverHbar">
+<span class="sig-name descname"><span class="pre">FOverHbar</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#LatticeFourierSeSim1DRun.FOverHbar" title="Link to this definition">#</a></dt>
+<dd><p>Hz/m</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1DRun.FieldModulation">
+<span class="sig-name descname"><span class="pre">FieldModulation</span></span><em class="property"> <span class="pre">WaveformList</span></em><a class="headerlink" href="#LatticeFourierSeSim1DRun.FieldModulation" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1DRun.Laser">
+<span class="sig-name descname"><span class="pre">Laser</span></span><em class="property"> <span class="pre">Laser</span></em><a class="headerlink" href="#LatticeFourierSeSim1DRun.Laser" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1DRun.LatticeModulation">
+<span class="sig-name descname"><span class="pre">LatticeModulation</span></span><em class="property"> <span class="pre">WaveformList</span></em><a class="headerlink" href="#LatticeFourierSeSim1DRun.LatticeModulation" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1DRun.MagneticField">
+<span class="sig-name descname"><span class="pre">MagneticField</span></span><em class="property"> <span class="pre">MagneticField</span></em><a class="headerlink" href="#LatticeFourierSeSim1DRun.MagneticField" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1DRun.MagneticPotential">
+<span class="sig-name descname"><span class="pre">MagneticPotential</span></span><em class="property"> <span class="pre">MagneticPotential</span></em><a class="headerlink" href="#LatticeFourierSeSim1DRun.MagneticPotential" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1DRun.Manifold">
+<span class="sig-name descname"><span class="pre">Manifold</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">string</span></em><a class="headerlink" href="#LatticeFourierSeSim1DRun.Manifold" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1DRun.OpticalLattice">
+<span class="sig-name descname"><span class="pre">OpticalLattice</span></span><em class="property"> <span class="pre">OpticalLattice</span></em><a class="headerlink" href="#LatticeFourierSeSim1DRun.OpticalLattice" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1DRun.StateIndex">
+<span class="sig-name descname"><span class="pre">StateIndex</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#LatticeFourierSeSim1DRun.StateIndex" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1DRun.plotBand">
+<span class="sig-name descname"><span class="pre">plotBand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">bandNumber</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LatticeFourierSeSim1DRun.plotBand" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="LatticeFourierSeSim1DRun.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LatticeFourierSeSim1DRun.start" title="Link to this definition">#</a></dt>
+<dd><p>Time parameters</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
+<dl class="mat function" id="module-src.trial.sim.func">
+<dt class="sig sig-object mat" id="randpdf">
+<span class="sig-name descname"><span class="pre">randpdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">p</span></em>, <em class="sig-param"><span class="pre">px</span></em>, <em class="sig-param"><span class="pre">dim</span></em><span class="sig-paren">)</span><a class="headerlink" href="#randpdf" title="Link to this definition">#</a></dt>
+<dd><dl>
+<dt>RANDPDF</dt><dd><p>Random numbers from a user defined distribution</p>
+</dd>
+<dt>SYNTAX:</dt><dd><dl class="simple">
+<dt>x = randpdf(p, px, dim)</dt><dd><p>randpdf(p, px, dim)</p>
+</dd>
+</dl>
+</dd>
+<dt>INPUT:</dt><dd><p>p   - probability density,
+px  - values for probability density,
+dim - dimension for the output matrix.</p>
+</dd>
+<dt>OUTPUT:</dt><dd><p>x   - random numbers. Run function without output for some plots.</p>
+</dd>
+<dt>DESCRIPTION:</dt><dd><p>x = randpdf(p, px, dim) returns the matrix of random numbers from
+probability density distribution defined in p and px. p are the density
+(the y axis) and px are the value (the x axis) of the pdf. p and px
+must be of the same length.
+dim define the output matrix dimensions, for example dim=[100 3] define
+the 100x3 two dimensional matrix with 300 random numbers.</p>
+<p>REMEMBER: This is not a realy random number generator but only
+some kind of transformation of uniformly distributed pseudorandom 
+numbers to desired pdf!</p>
+</dd>
+<dt>EXAMPLE 1:</dt><dd><p>Generation of normal distributed random numbers. This is not typical
+normal distribution because is limited from the left and right side,
+i.e. 0 &lt; px &lt; 80 .</p>
+<p>px=0:80;
+p=1./(10*sqrt(2*pi))*exp((-(px-40).^2)./(2*10^2));
+randpdf(p,px,[10000,1])</p>
+</dd>
+<dt>EXAMPLE 2:</dt><dd><p>Generation using user defined pdf.</p>
+<p>px=[1 2 3 4 5 6 7 8 9];
+p= [0 1 3 0 0 4 5 4 0];
+randpdf(p,px,[50000,1])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="gfactor">
+<span class="sig-name descname"><span class="pre">gfactor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">gS</span></em>, <em class="sig-param"><span class="pre">gL</span></em>, <em class="sig-param"><span class="pre">S</span></em>, <em class="sig-param"><span class="pre">L</span></em>, <em class="sig-param"><span class="pre">J</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gfactor" title="Link to this definition">#</a></dt>
+<dd><p>GFACTOR Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="computeFloquetHamiltonian">
+<span class="sig-name descname"><span class="pre">computeFloquetHamiltonian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">H</span></em>, <em class="sig-param"><span class="pre">T</span></em>, <em class="sig-param"><span class="pre">nt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#computeFloquetHamiltonian" title="Link to this definition">#</a></dt>
+<dd><p>UNTITLED Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="histoplot">
+<span class="sig-name descname"><span class="pre">histoplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">bins</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#histoplot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="rhodot_a">
+<span class="sig-name descname"><span class="pre">rhodot_a</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">H</span></em>, <em class="sig-param"><span class="pre">rho</span></em>, <em class="sig-param"><span class="pre">Gamma</span></em>, <em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">d0</span></em>, <em class="sig-param"><span class="pre">Jg</span></em>, <em class="sig-param"><span class="pre">Je</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rhodot_a" title="Link to this definition">#</a></dt>
+<dd><p>RHODOT Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="rabiMatrix">
+<span class="sig-name descname"><span class="pre">rabiMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">isAveraged</span></em>, <em class="sig-param"><span class="pre">transition</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rabiMatrix" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the (reduced) Rabi-frequency using the atomic and laser
+properties</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="rabi">
+<span class="sig-name descname"><span class="pre">rabi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">isAveraged</span></em>, <em class="sig-param"><span class="pre">transition</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rabi" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the (reduced) Rabi-frequency using the atomic and laser
+properties</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="cmd_rmdir">
+<span class="sig-name descname"><span class="pre">cmd_rmdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">folderspec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmd_rmdir" title="Link to this definition">#</a></dt>
+<dd><p>cmd_rmdir removes a directory and its contents</p>
+<p>Removes all directories and files in the specified directory in
+addition to the directory itself.  Used to remove a directory tree.
+See also: <code class="docutils literal notranslate"><span class="pre">xtests\generic_utilies_test.m</span></code></p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="angdist">
+<span class="sig-name descname"><span class="pre">angdist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">pol</span></em><span class="sig-paren">)</span><a class="headerlink" href="#angdist" title="Link to this definition">#</a></dt>
+<dd><p>ANGDIST Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="convertidx">
+<span class="sig-name descname"><span class="pre">convertidx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#convertidx" title="Link to this definition">#</a></dt>
+<dd><p>Conversion between state vector index and (F,M) quantum numbers. If the number
+of inputs is 3, then the inputs should be (Fg,Fe,index), the outputs will
+be (F,M,q). Here Fg, Fe are lists of ground or excited states angular
+momentum quantum number F; q = 0 means it is the ground state, q = 1
+means it is the excited state. If the number of inputs is 5, then the
+inputs should be (Fg,Fe,F,M,q), the outputs will be the index.</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="hamiltonian_al_a">
+<span class="sig-name descname"><span class="pre">hamiltonian_al_a</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">nlaser</span></em>, <em class="sig-param"><span class="pre">Omega</span></em>, <em class="sig-param"><span class="pre">Delta</span></em>, <em class="sig-param"><span class="pre">phi</span></em>, <em class="sig-param"><span class="pre">direc</span></em>, <em class="sig-param"><span class="pre">center</span></em>, <em class="sig-param"><span class="pre">w0</span></em>, <em class="sig-param"><span class="pre">k</span></em>, <em class="sig-param"><span class="pre">waveform</span></em>, <em class="sig-param"><span class="pre">pol</span></em>, <em class="sig-param"><span class="pre">d</span></em>, <em class="sig-param"><span class="pre">ee</span></em>, <em class="sig-param"><span class="pre">r</span></em>, <em class="sig-param"><span class="pre">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hamiltonian_al_a" title="Link to this definition">#</a></dt>
+<dd><p>HAMILTONIAN_AL Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="gaussian_grad">
+<span class="sig-name descname"><span class="pre">gaussian_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">in1</span></em>, <em class="sig-param"><span class="pre">w0</span></em>, <em class="sig-param"><span class="pre">k</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gaussian_grad" title="Link to this definition">#</a></dt>
+<dd><p>GAUSSIAN_GRAD
+GE = GAUSSIAN_GRAD(IN1,W0,K)</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="rhodot">
+<span class="sig-name descname"><span class="pre">rhodot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">H</span></em>, <em class="sig-param"><span class="pre">rho</span></em>, <em class="sig-param"><span class="pre">Gamma</span></em>, <em class="sig-param"><span class="pre">d0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rhodot" title="Link to this definition">#</a></dt>
+<dd><p>RHODOT Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="acceleration">
+<span class="sig-name descname"><span class="pre">acceleration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">gradH</span></em>, <em class="sig-param"><span class="pre">rho0</span></em>, <em class="sig-param"><span class="pre">hbaroverm</span></em><span class="sig-paren">)</span><a class="headerlink" href="#acceleration" title="Link to this definition">#</a></dt>
+<dd><p>ACCEL Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="hamiltonian_al">
+<span class="sig-name descname"><span class="pre">hamiltonian_al</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">N</span></em>, <em class="sig-param"><span class="pre">nlaser</span></em>, <em class="sig-param"><span class="pre">Omega</span></em>, <em class="sig-param"><span class="pre">Delta</span></em>, <em class="sig-param"><span class="pre">phi</span></em>, <em class="sig-param"><span class="pre">direc</span></em>, <em class="sig-param"><span class="pre">center</span></em>, <em class="sig-param"><span class="pre">w0</span></em>, <em class="sig-param"><span class="pre">k</span></em>, <em class="sig-param"><span class="pre">waveform</span></em>, <em class="sig-param"><span class="pre">d</span></em>, <em class="sig-param"><span class="pre">r</span></em>, <em class="sig-param"><span class="pre">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hamiltonian_al" title="Link to this definition">#</a></dt>
+<dd><p>HAMILTONIAN_AL Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="wignersixj">
+<span class="sig-name descname"><span class="pre">wignersixj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">j1</span></em>, <em class="sig-param"><span class="pre">j2</span></em>, <em class="sig-param"><span class="pre">j3</span></em>, <em class="sig-param"><span class="pre">l1</span></em>, <em class="sig-param"><span class="pre">l2</span></em>, <em class="sig-param"><span class="pre">l3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#wignersixj" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the Wigner 6-j symbole:
+{j1 j2 j3;l1 l2 l3}. See Steck’s notes, page 306</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="pinky">
+<span class="sig-name descname"><span class="pre">pinky</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Xin</span></em>, <em class="sig-param"><span class="pre">Yin</span></em>, <em class="sig-param"><span class="pre">dist_in</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pinky" title="Link to this definition">#</a></dt>
+<dd><p>check input</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="PlotSphereIntensity">
+<span class="sig-name descname"><span class="pre">PlotSphereIntensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">az</span></em>, <em class="sig-param"><span class="pre">el</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PlotSphereIntensity" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="cgcoefficient">
+<span class="sig-name descname"><span class="pre">cgcoefficient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">j1</span></em>, <em class="sig-param"><span class="pre">m1</span></em>, <em class="sig-param"><span class="pre">j2</span></em>, <em class="sig-param"><span class="pre">m2</span></em>, <em class="sig-param"><span class="pre">j3</span></em>, <em class="sig-param"><span class="pre">m3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#cgcoefficient" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the C-G coefficient &lt;j1,m1;j2,m2|j3,m3&gt;. See Steck’s notes 
+Eq. (7.51)</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="gaussian_gen">
+<span class="sig-name descname"><span class="pre">gaussian_gen</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gaussian_gen" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="fluxdist">
+<span class="sig-name descname"><span class="pre">fluxdist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">inputArg1</span></em>, <em class="sig-param"><span class="pre">inputArg2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#fluxdist" title="Link to this definition">#</a></dt>
+<dd><p>FLUXDIST Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="deleteMeSim">
+<span class="sig-name descname"><span class="pre">deleteMeSim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">serialNumber</span></em>, <em class="sig-param"><span class="pre">isForceDelete</span></em><span class="sig-paren">)</span><a class="headerlink" href="#deleteMeSim" title="Link to this definition">#</a></dt>
+<dd><p>LOADBECEX Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="loadMeSim">
+<span class="sig-name descname"><span class="pre">loadMeSim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">serialNumber</span></em><span class="sig-paren">)</span><a class="headerlink" href="#loadMeSim" title="Link to this definition">#</a></dt>
+<dd><p>LOADBECEX Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="decompfactor">
+<span class="sig-name descname"><span class="pre">decompfactor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Jg</span></em>, <em class="sig-param"><span class="pre">Je</span></em>, <em class="sig-param"><span class="pre">k</span></em>, <em class="sig-param"><span class="pre">Fe</span></em>, <em class="sig-param"><span class="pre">Fg</span></em>, <em class="sig-param"><span class="pre">I</span></em><span class="sig-paren">)</span><a class="headerlink" href="#decompfactor" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="gaussian_prof">
+<span class="sig-name descname"><span class="pre">gaussian_prof</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">in1</span></em>, <em class="sig-param"><span class="pre">w0</span></em>, <em class="sig-param"><span class="pre">k</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gaussian_prof" title="Link to this definition">#</a></dt>
+<dd><p>GAUSSIAN_PROF
+E = GAUSSIAN_PROF(IN1,W0,K)</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="gaussiantr">
+<span class="sig-name descname"><span class="pre">gaussiantr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">r</span></em>, <em class="sig-param"><span class="pre">w0</span></em>, <em class="sig-param"><span class="pre">k</span></em>, <em class="sig-param"><span class="pre">direc</span></em>, <em class="sig-param"><span class="pre">center</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gaussiantr" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="becexp.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">BecExp</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="hardware.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Hardware</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-src.trial.sim.Sim">Sim</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simrun">SimRun</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesim">MeSim</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sesim">SeSim</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Xiao Chai
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Xiao Chai.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

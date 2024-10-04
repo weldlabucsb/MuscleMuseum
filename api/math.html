@@ -1,0 +1,1559 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Math &#8212; MuscleMuseum 0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=e1a75a79"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/math';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Misc" href="misc.html" />
+    <link rel="prev" title="Hardware" href="hardware.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MuscleMuseum 0.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../intro/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/install.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/quick.html">Quick Start</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="atom.html">Atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="field.html">Field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial.html">Trial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="becexp.html">BecExp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sim.html">Sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html">Hardware</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Misc</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../sup/support.html">Support</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/api/math.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Math</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitdata">FitData</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#waveform">Waveform</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#roi">Roi</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="math">
+<h1>Math<a class="headerlink" href="#math" title="Link to this heading">#</a></h1>
+<section id="fitdata">
+<h2>FitData<a class="headerlink" href="#fitdata" title="Link to this heading">#</a></h2>
+<dl class="mat class" id="module-src.math.FitData">
+<dt class="sig sig-object mat" id="FitData">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">FitData</span></span><a class="headerlink" href="#FitData" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
+<p>FIT Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="FitData.FitData">
+<span class="sig-name descname"><span class="pre">FitData</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#FitData.FitData" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="FitData.Coefficient">
+<span class="sig-name descname"><span class="pre">Coefficient</span></span><a class="headerlink" href="#FitData.Coefficient" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="FitData.Func">
+<span class="sig-name descname"><span class="pre">Func</span></span><a class="headerlink" href="#FitData.Func" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="FitData.Gof">
+<span class="sig-name descname"><span class="pre">Gof</span></span><a class="headerlink" href="#FitData.Gof" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="FitData.Lower">
+<span class="sig-name descname"><span class="pre">Lower</span></span><a class="headerlink" href="#FitData.Lower" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="FitData.MaxFunEvals">
+<span class="sig-name descname"><span class="pre">MaxFunEvals</span></span><em class="property"> <span class="pre">=</span> <span class="pre">2000</span></em><a class="headerlink" href="#FitData.MaxFunEvals" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="FitData.MaxIter">
+<span class="sig-name descname"><span class="pre">MaxIter</span></span><em class="property"> <span class="pre">=</span> <span class="pre">2000</span></em><a class="headerlink" href="#FitData.MaxIter" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="FitData.Result">
+<span class="sig-name descname"><span class="pre">Result</span></span><a class="headerlink" href="#FitData.Result" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="FitData.StartPoint">
+<span class="sig-name descname"><span class="pre">StartPoint</span></span><a class="headerlink" href="#FitData.StartPoint" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="FitData.TolFun">
+<span class="sig-name descname"><span class="pre">TolFun</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1E-16</span></em><a class="headerlink" href="#FitData.TolFun" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="FitData.Upper">
+<span class="sig-name descname"><span class="pre">Upper</span></span><a class="headerlink" href="#FitData.Upper" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="FitData1D">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">FitData1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#FitData1D" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#FitData" title="FitData"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData</span></code></a></p>
+<p>FIT1D Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="FitData1D.FitData1D">
+<span class="sig-name descname"><span class="pre">FitData1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#FitData1D.FitData1D" title="Link to this definition">#</a></dt>
+<dd><p>FIT1D Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="FitData1D.FitPlotData">
+<span class="sig-name descname"><span class="pre">FitPlotData</span></span><a class="headerlink" href="#FitData1D.FitPlotData" title="Link to this definition">#</a></dt>
+<dd><p>n * 2 array</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="FitData1D.RawData">
+<span class="sig-name descname"><span class="pre">RawData</span></span><a class="headerlink" href="#FitData1D.RawData" title="Link to this definition">#</a></dt>
+<dd><p>n * 2 array</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="FitData1D.do">
+<span class="sig-name descname"><span class="pre">do</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#FitData1D.do" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="FitData1D.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">targetAxes</span></em>, <em class="sig-param"><span class="pre">isRender</span></em><span class="sig-paren">)</span><a class="headerlink" href="#FitData1D.plot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="ParabolicFit1D">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ParabolicFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ParabolicFit1D" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a></p>
+<p>GAUSSIANFIT1D Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="ParabolicFit1D.ParabolicFit1D">
+<span class="sig-name descname"><span class="pre">ParabolicFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ParabolicFit1D.ParabolicFit1D" title="Link to this definition">#</a></dt>
+<dd><p>GAUSSIANFIT1D Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="SqrtParabolicFit1D">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SqrtParabolicFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SqrtParabolicFit1D" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a></p>
+<p>GAUSSIANFIT1D Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="SqrtParabolicFit1D.SqrtParabolicFit1D">
+<span class="sig-name descname"><span class="pre">SqrtParabolicFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SqrtParabolicFit1D.SqrtParabolicFit1D" title="Link to this definition">#</a></dt>
+<dd><p>GAUSSIANFIT1D Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="TriangleFit1D">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TriangleFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TriangleFit1D" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a></p>
+<p>GAUSSIANFIT1D Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="TriangleFit1D.TriangleFit1D">
+<span class="sig-name descname"><span class="pre">TriangleFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TriangleFit1D.TriangleFit1D" title="Link to this definition">#</a></dt>
+<dd><p>GAUSSIANFIT1D Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="GaussianFit1D">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">GaussianFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#GaussianFit1D" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a></p>
+<p>GAUSSIANFIT1D Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="GaussianFit1D.GaussianFit1D">
+<span class="sig-name descname"><span class="pre">GaussianFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#GaussianFit1D.GaussianFit1D" title="Link to this definition">#</a></dt>
+<dd><p>GAUSSIANFIT1D Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="SineFit1D">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SineFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SineFit1D" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a></p>
+<p>GAUSSIANFIT1D Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="SineFit1D.SineFit1D">
+<span class="sig-name descname"><span class="pre">SineFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SineFit1D.SineFit1D" title="Link to this definition">#</a></dt>
+<dd><p>GAUSSIANFIT1D Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="LinearFit1D">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LinearFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LinearFit1D" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a></p>
+<p>GAUSSIANFIT1D Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="LinearFit1D.LinearFit1D">
+<span class="sig-name descname"><span class="pre">LinearFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LinearFit1D.LinearFit1D" title="Link to this definition">#</a></dt>
+<dd><p>GAUSSIANFIT1D Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="BosonicGaussianFit1D">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BosonicGaussianFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BosonicGaussianFit1D" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a></p>
+<p>GAUSSIANFIT1D Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="BosonicGaussianFit1D.BosonicGaussianFit1D">
+<span class="sig-name descname"><span class="pre">BosonicGaussianFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BosonicGaussianFit1D.BosonicGaussianFit1D" title="Link to this definition">#</a></dt>
+<dd><p>GAUSSIANFIT1D Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+<section id="waveform">
+<h2>Waveform<a class="headerlink" href="#waveform" title="Link to this heading">#</a></h2>
+<dl class="mat class" id="module-src.math.Waveform">
+<dt class="sig sig-object mat" id="TrapezoidalPulse">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TrapezoidalPulse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TrapezoidalPulse" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PartialPeriodicWaveform" title="PartialPeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PartialPeriodicWaveform</span></code></a>, <a class="reference internal" href="#ConstantTop" title="ConstantTop"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">ConstantTop</span></code></a></p>
+<p>SINEWAVE Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="TrapezoidalPulse.TrapezoidalPulse">
+<span class="sig-name descname"><span class="pre">TrapezoidalPulse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TrapezoidalPulse.TrapezoidalPulse" title="Link to this definition">#</a></dt>
+<dd><p>SINEWAVE Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="TrapezoidalPulse.TimeFunc">
+<span class="sig-name descname"><span class="pre">TimeFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TrapezoidalPulse.TimeFunc" title="Link to this definition">#</a></dt>
+<dd><p>METHOD1 Summary of this method goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="SineWave">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SineWave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SineWave" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PeriodicWaveform" title="PeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PeriodicWaveform</span></code></a></p>
+<p>SINEWAVE Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="SineWave.SineWave">
+<span class="sig-name descname"><span class="pre">SineWave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SineWave.SineWave" title="Link to this definition">#</a></dt>
+<dd><p>SINEWAVE Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="SineWave.TimeFunc">
+<span class="sig-name descname"><span class="pre">TimeFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SineWave.TimeFunc" title="Link to this definition">#</a></dt>
+<dd><p>METHOD1 Summary of this method goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat application">
+<dt class="sig sig-object mat" id="WaveformEditor">
+<span class="sig-name descname"><span class="pre">WaveformEditor</span></span><a class="headerlink" href="#WaveformEditor" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="TanhSinePulse">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TanhSinePulse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TanhSinePulse" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PartialPeriodicWaveform" title="PartialPeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PartialPeriodicWaveform</span></code></a></p>
+<p>SINEWAVE Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="TanhSinePulse.TanhSinePulse">
+<span class="sig-name descname"><span class="pre">TanhSinePulse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TanhSinePulse.TanhSinePulse" title="Link to this definition">#</a></dt>
+<dd><p>SINEWAVE Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="TanhSinePulse.TimeFunc">
+<span class="sig-name descname"><span class="pre">TimeFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TanhSinePulse.TimeFunc" title="Link to this definition">#</a></dt>
+<dd><p>METHOD1 Summary of this method goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="ConstantWave">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ConstantWave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ConstantWave" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PeriodicWaveform" title="PeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PeriodicWaveform</span></code></a>, <a class="reference internal" href="#ConstantTop" title="ConstantTop"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">ConstantTop</span></code></a></p>
+<p>CONSTANTWAVE Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="ConstantWave.ConstantWave">
+<span class="sig-name descname"><span class="pre">ConstantWave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ConstantWave.ConstantWave" title="Link to this definition">#</a></dt>
+<dd><p>CONSTANTWAVE Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="ConstantWave.TimeFunc">
+<span class="sig-name descname"><span class="pre">TimeFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ConstantWave.TimeFunc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PartialPeriodicWaveform</span></span><a class="headerlink" href="#PartialPeriodicWaveform" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a></p>
+<p>PERIODICWAVEFORM Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.PartialPeriodicWaveform">
+<span class="sig-name descname"><span class="pre">PartialPeriodicWaveform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PartialPeriodicWaveform.PartialPeriodicWaveform" title="Link to this definition">#</a></dt>
+<dd><p>PERIODICWAVEFORM Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.Amplitude">
+<span class="sig-name descname"><span class="pre">Amplitude</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#PartialPeriodicWaveform.Amplitude" title="Link to this definition">#</a></dt>
+<dd><p>Peak-to-peak amplitude, usually in Volts.</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.DurationOneCycle">
+<span class="sig-name descname"><span class="pre">DurationOneCycle</span></span><a class="headerlink" href="#PartialPeriodicWaveform.DurationOneCycle" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.EndTimeAllCycle">
+<span class="sig-name descname"><span class="pre">EndTimeAllCycle</span></span><a class="headerlink" href="#PartialPeriodicWaveform.EndTimeAllCycle" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.FallTime">
+<span class="sig-name descname"><span class="pre">FallTime</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBeNonnegative}</span></em><a class="headerlink" href="#PartialPeriodicWaveform.FallTime" title="Link to this definition">#</a></dt>
+<dd><p>In s</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.Frequency">
+<span class="sig-name descname"><span class="pre">Frequency</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBePositive}</span></em><a class="headerlink" href="#PartialPeriodicWaveform.Frequency" title="Link to this definition">#</a></dt>
+<dd><p>In Hz</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.NCycle">
+<span class="sig-name descname"><span class="pre">NCycle</span></span><em class="property"> <span class="pre">=</span> <span class="pre">10</span></em><a class="headerlink" href="#PartialPeriodicWaveform.NCycle" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.NPeriod">
+<span class="sig-name descname"><span class="pre">NPeriod</span></span><a class="headerlink" href="#PartialPeriodicWaveform.NPeriod" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.NRepeat">
+<span class="sig-name descname"><span class="pre">NRepeat</span></span><a class="headerlink" href="#PartialPeriodicWaveform.NRepeat" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.Offset">
+<span class="sig-name descname"><span class="pre">Offset</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#PartialPeriodicWaveform.Offset" title="Link to this definition">#</a></dt>
+<dd><p>Offest, usually in Volts.</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.Period">
+<span class="sig-name descname"><span class="pre">Period</span></span><a class="headerlink" href="#PartialPeriodicWaveform.Period" title="Link to this definition">#</a></dt>
+<dd><p>In s</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.PeriodicDuration">
+<span class="sig-name descname"><span class="pre">PeriodicDuration</span></span><a class="headerlink" href="#PartialPeriodicWaveform.PeriodicDuration" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.PeriodicEndTime">
+<span class="sig-name descname"><span class="pre">PeriodicEndTime</span></span><a class="headerlink" href="#PartialPeriodicWaveform.PeriodicEndTime" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.PeriodicStartTime">
+<span class="sig-name descname"><span class="pre">PeriodicStartTime</span></span><a class="headerlink" href="#PartialPeriodicWaveform.PeriodicStartTime" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.Phase">
+<span class="sig-name descname"><span class="pre">Phase</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#PartialPeriodicWaveform.Phase" title="Link to this definition">#</a></dt>
+<dd><p>In radians</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.RiseTime">
+<span class="sig-name descname"><span class="pre">RiseTime</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBeNonnegative}</span></em><a class="headerlink" href="#PartialPeriodicWaveform.RiseTime" title="Link to this definition">#</a></dt>
+<dd><p>In s</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.SampleAfter">
+<span class="sig-name descname"><span class="pre">SampleAfter</span></span><a class="headerlink" href="#PartialPeriodicWaveform.SampleAfter" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.SampleBefore">
+<span class="sig-name descname"><span class="pre">SampleBefore</span></span><a class="headerlink" href="#PartialPeriodicWaveform.SampleBefore" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.SampleExtra">
+<span class="sig-name descname"><span class="pre">SampleExtra</span></span><a class="headerlink" href="#PartialPeriodicWaveform.SampleExtra" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.SampleOneCycle">
+<span class="sig-name descname"><span class="pre">SampleOneCycle</span></span><a class="headerlink" href="#PartialPeriodicWaveform.SampleOneCycle" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.plotExtra">
+<span class="sig-name descname"><span class="pre">plotExtra</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PartialPeriodicWaveform.plotExtra" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="PartialPeriodicWaveform.plotOneCycle">
+<span class="sig-name descname"><span class="pre">plotOneCycle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PartialPeriodicWaveform.plotOneCycle" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="PeriodicWaveform">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PeriodicWaveform</span></span><a class="headerlink" href="#PeriodicWaveform" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a></p>
+<p>PERIODICWAVEFORM Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="PeriodicWaveform.PeriodicWaveform">
+<span class="sig-name descname"><span class="pre">PeriodicWaveform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PeriodicWaveform.PeriodicWaveform" title="Link to this definition">#</a></dt>
+<dd><p>PERIODICWAVEFORM Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="PeriodicWaveform.Amplitude">
+<span class="sig-name descname"><span class="pre">Amplitude</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#PeriodicWaveform.Amplitude" title="Link to this definition">#</a></dt>
+<dd><p>Peak-to-peak amplitude, usually in Volts.</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PeriodicWaveform.DurationOneCycle">
+<span class="sig-name descname"><span class="pre">DurationOneCycle</span></span><a class="headerlink" href="#PeriodicWaveform.DurationOneCycle" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PeriodicWaveform.EndTimeAllCycle">
+<span class="sig-name descname"><span class="pre">EndTimeAllCycle</span></span><a class="headerlink" href="#PeriodicWaveform.EndTimeAllCycle" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PeriodicWaveform.Frequency">
+<span class="sig-name descname"><span class="pre">Frequency</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBePositive}</span></em><a class="headerlink" href="#PeriodicWaveform.Frequency" title="Link to this definition">#</a></dt>
+<dd><p>In Hz</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PeriodicWaveform.NCycle">
+<span class="sig-name descname"><span class="pre">NCycle</span></span><em class="property"> <span class="pre">=</span> <span class="pre">10</span></em><a class="headerlink" href="#PeriodicWaveform.NCycle" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PeriodicWaveform.NPeriod">
+<span class="sig-name descname"><span class="pre">NPeriod</span></span><a class="headerlink" href="#PeriodicWaveform.NPeriod" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PeriodicWaveform.NRepeat">
+<span class="sig-name descname"><span class="pre">NRepeat</span></span><a class="headerlink" href="#PeriodicWaveform.NRepeat" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PeriodicWaveform.Offset">
+<span class="sig-name descname"><span class="pre">Offset</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#PeriodicWaveform.Offset" title="Link to this definition">#</a></dt>
+<dd><p>Offest, usually in Volts.</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PeriodicWaveform.Period">
+<span class="sig-name descname"><span class="pre">Period</span></span><a class="headerlink" href="#PeriodicWaveform.Period" title="Link to this definition">#</a></dt>
+<dd><p>In s</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PeriodicWaveform.Phase">
+<span class="sig-name descname"><span class="pre">Phase</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#PeriodicWaveform.Phase" title="Link to this definition">#</a></dt>
+<dd><p>In radians</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PeriodicWaveform.SampleExtra">
+<span class="sig-name descname"><span class="pre">SampleExtra</span></span><a class="headerlink" href="#PeriodicWaveform.SampleExtra" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="PeriodicWaveform.SampleOneCycle">
+<span class="sig-name descname"><span class="pre">SampleOneCycle</span></span><a class="headerlink" href="#PeriodicWaveform.SampleOneCycle" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="PeriodicWaveform.plotExtra">
+<span class="sig-name descname"><span class="pre">plotExtra</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PeriodicWaveform.plotExtra" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="PeriodicWaveform.plotOneCycle">
+<span class="sig-name descname"><span class="pre">plotOneCycle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PeriodicWaveform.plotOneCycle" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="LinearRamp">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LinearRamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LinearRamp" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#TrapezoidalPulse" title="TrapezoidalPulse"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">TrapezoidalPulse</span></code></a></p>
+<p>LINEARRAMP Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="LinearRamp.LinearRamp">
+<span class="sig-name descname"><span class="pre">LinearRamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LinearRamp.LinearRamp" title="Link to this definition">#</a></dt>
+<dd><p>LINEARRAMP Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="LinearRamp.RampTime">
+<span class="sig-name descname"><span class="pre">RampTime</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#LinearRamp.RampTime" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LinearRamp.StartValue">
+<span class="sig-name descname"><span class="pre">StartValue</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#LinearRamp.StartValue" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LinearRamp.StopValue">
+<span class="sig-name descname"><span class="pre">StopValue</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#LinearRamp.StopValue" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="Waveform">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Waveform</span></span><a class="headerlink" href="#Waveform" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
+<p>WAVEFORM Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Waveform.Waveform">
+<span class="sig-name descname"><span class="pre">Waveform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Waveform.Waveform" title="Link to this definition">#</a></dt>
+<dd><p>WAVEFORM Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="Waveform.Duration">
+<span class="sig-name descname"><span class="pre">Duration</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBePositive}</span></em><a class="headerlink" href="#Waveform.Duration" title="Link to this definition">#</a></dt>
+<dd><p>How long of the waveform, in s</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Waveform.EndTime">
+<span class="sig-name descname"><span class="pre">EndTime</span></span><a class="headerlink" href="#Waveform.EndTime" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Waveform.NSample">
+<span class="sig-name descname"><span class="pre">NSample</span></span><a class="headerlink" href="#Waveform.NSample" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Waveform.Sample">
+<span class="sig-name descname"><span class="pre">Sample</span></span><a class="headerlink" href="#Waveform.Sample" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Waveform.SamplingRate">
+<span class="sig-name descname"><span class="pre">SamplingRate</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBePositive}</span> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#Waveform.SamplingRate" title="Link to this definition">#</a></dt>
+<dd><p>In Hz</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Waveform.Scan">
+<span class="sig-name descname"><span class="pre">Scan</span></span><em class="property"> <span class="pre">table</span> <span class="pre">=</span> <span class="pre">table(string.empty,string.empty,'VariableNames',{'ParameterName','VariableName'})</span></em><a class="headerlink" href="#Waveform.Scan" title="Link to this definition">#</a></dt>
+<dd><p>For scanning in Hardware control</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Waveform.StartTime">
+<span class="sig-name descname"><span class="pre">StartTime</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#Waveform.StartTime" title="Link to this definition">#</a></dt>
+<dd><p>Start time, in s</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Waveform.TimeStep">
+<span class="sig-name descname"><span class="pre">TimeStep</span></span><a class="headerlink" href="#Waveform.TimeStep" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Waveform.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Waveform.plot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="ConstantTop">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ConstantTop</span></span><a class="headerlink" href="#ConstantTop" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
+<p>CONSTANTTOP Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="ConstantTop.ConstantTop">
+<span class="sig-name descname"><span class="pre">ConstantTop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ConstantTop.ConstantTop" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="TrapezoidalSinePulse">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TrapezoidalSinePulse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TrapezoidalSinePulse" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PartialPeriodicWaveform" title="PartialPeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PartialPeriodicWaveform</span></code></a></p>
+<p>SINEWAVE Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="TrapezoidalSinePulse.TrapezoidalSinePulse">
+<span class="sig-name descname"><span class="pre">TrapezoidalSinePulse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TrapezoidalSinePulse.TrapezoidalSinePulse" title="Link to this definition">#</a></dt>
+<dd><p>SINEWAVE Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="TrapezoidalSinePulse.TimeFunc">
+<span class="sig-name descname"><span class="pre">TimeFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TrapezoidalSinePulse.TimeFunc" title="Link to this definition">#</a></dt>
+<dd><p>METHOD1 Summary of this method goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="PchipSinePulse">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PchipSinePulse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PchipSinePulse" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PartialPeriodicWaveform" title="PartialPeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PartialPeriodicWaveform</span></code></a></p>
+<p>SINEWAVE Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="PchipSinePulse.PchipSinePulse">
+<span class="sig-name descname"><span class="pre">PchipSinePulse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PchipSinePulse.PchipSinePulse" title="Link to this definition">#</a></dt>
+<dd><p>SINEWAVE Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="PchipSinePulse.TimeFunc">
+<span class="sig-name descname"><span class="pre">TimeFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PchipSinePulse.TimeFunc" title="Link to this definition">#</a></dt>
+<dd><p>METHOD1 Summary of this method goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat application">
+<dt class="sig sig-object mat" id="WaveformListEditor">
+<span class="sig-name descname"><span class="pre">WaveformListEditor</span></span><a class="headerlink" href="#WaveformListEditor" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="LinearFrequencyRamp">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LinearFrequencyRamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LinearFrequencyRamp" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a></p>
+<p>LINEARRAMP Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="LinearFrequencyRamp.LinearFrequencyRamp">
+<span class="sig-name descname"><span class="pre">LinearFrequencyRamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LinearFrequencyRamp.LinearFrequencyRamp" title="Link to this definition">#</a></dt>
+<dd><p>LINEARRAMP Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="LinearFrequencyRamp.Amplitude">
+<span class="sig-name descname"><span class="pre">Amplitude</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#LinearFrequencyRamp.Amplitude" title="Link to this definition">#</a></dt>
+<dd><p>Peak-to-peak amplitude, usually in Volts.</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LinearFrequencyRamp.Offset">
+<span class="sig-name descname"><span class="pre">Offset</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#LinearFrequencyRamp.Offset" title="Link to this definition">#</a></dt>
+<dd><p>Offest, usually in Volts.</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LinearFrequencyRamp.Phase">
+<span class="sig-name descname"><span class="pre">Phase</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#LinearFrequencyRamp.Phase" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LinearFrequencyRamp.StartFrequency">
+<span class="sig-name descname"><span class="pre">StartFrequency</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBePositive}</span></em><a class="headerlink" href="#LinearFrequencyRamp.StartFrequency" title="Link to this definition">#</a></dt>
+<dd><p>Linear frequency in Hz</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="LinearFrequencyRamp.StopFrequency">
+<span class="sig-name descname"><span class="pre">StopFrequency</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBePositive}</span></em><a class="headerlink" href="#LinearFrequencyRamp.StopFrequency" title="Link to this definition">#</a></dt>
+<dd><p>Linear frequency in Hz</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="LinearFrequencyRamp.TimeFunc">
+<span class="sig-name descname"><span class="pre">TimeFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LinearFrequencyRamp.TimeFunc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="WaveformList">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">WaveformList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WaveformList" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
+<p>WAVEFORMLIST Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="WaveformList.WaveformList">
+<span class="sig-name descname"><span class="pre">WaveformList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WaveformList.WaveformList" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="WaveformList.ConcatMethod">
+<span class="sig-name descname"><span class="pre">ConcatMethod</span></span><em class="property"> <span class="pre">string</span> <span class="pre">{mustBeMember(ConcatMethod,{'Sequential','Simultaneous'})}</span> <span class="pre">=</span> <span class="pre">&quot;Sequential&quot;</span></em><a class="headerlink" href="#WaveformList.ConcatMethod" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="WaveformList.IsTriggerAdvance">
+<span class="sig-name descname"><span class="pre">IsTriggerAdvance</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">false</span></em><a class="headerlink" href="#WaveformList.IsTriggerAdvance" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="WaveformList.NSample">
+<span class="sig-name descname"><span class="pre">NSample</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#WaveformList.NSample" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="WaveformList.Name">
+<span class="sig-name descname"><span class="pre">Name</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#WaveformList.Name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="WaveformList.PatchConstant">
+<span class="sig-name descname"><span class="pre">PatchConstant</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#WaveformList.PatchConstant" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="WaveformList.PatchMethod">
+<span class="sig-name descname"><span class="pre">PatchMethod</span></span><em class="property"> <span class="pre">string</span> <span class="pre">{mustBeMember(PatchMethod,{'Continue','Constant'})}</span> <span class="pre">=</span> <span class="pre">&quot;Continue&quot;</span></em><a class="headerlink" href="#WaveformList.PatchMethod" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="WaveformList.RepeatMode">
+<span class="sig-name descname"><span class="pre">RepeatMode</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#WaveformList.RepeatMode" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="WaveformList.Sample">
+<span class="sig-name descname"><span class="pre">Sample</span></span><a class="headerlink" href="#WaveformList.Sample" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="WaveformList.SamplingRate">
+<span class="sig-name descname"><span class="pre">SamplingRate</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#WaveformList.SamplingRate" title="Link to this definition">#</a></dt>
+<dd><p>In Hz</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="WaveformList.TimeStep">
+<span class="sig-name descname"><span class="pre">TimeStep</span></span><a class="headerlink" href="#WaveformList.TimeStep" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="WaveformList.WaveformOrigin">
+<span class="sig-name descname"><span class="pre">WaveformOrigin</span></span><em class="property"> <span class="pre">cell</span></em><a class="headerlink" href="#WaveformList.WaveformOrigin" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="WaveformList.WaveformPrepared">
+<span class="sig-name descname"><span class="pre">WaveformPrepared</span></span><em class="property"> <span class="pre">Table</span></em><a class="headerlink" href="#WaveformList.WaveformPrepared" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="WaveformList.TimeFunc">
+<span class="sig-name descname"><span class="pre">TimeFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WaveformList.TimeFunc" title="Link to this definition">#</a></dt>
+<dd><p>Check waveform origin</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="WaveformList.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WaveformList.plot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+<section id="roi">
+<h2>Roi<a class="headerlink" href="#roi" title="Link to this heading">#</a></h2>
+<dl class="mat class" id="module-src.math.Roi">
+<dt class="sig sig-object mat" id="Roi">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Roi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">roiName</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Roi" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
+<p>ROI Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Roi.Roi">
+<span class="sig-name descname"><span class="pre">Roi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">roiName</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Roi.Roi" title="Link to this definition">#</a></dt>
+<dd><p>ROI Construct an instance of the Roi class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="Roi.Angle">
+<span class="sig-name descname"><span class="pre">Angle</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#Roi.Angle" title="Link to this definition">#</a></dt>
+<dd><p>In degrees</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Roi.CenterSize">
+<span class="sig-name descname"><span class="pre">CenterSize</span></span><em class="property"> <span class="pre">(1,4)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[512.5,512.5,1024,1024]</span></em><a class="headerlink" href="#Roi.CenterSize" title="Link to this definition">#</a></dt>
+<dd><p>[centerY,centerX,sizeY,sizeX]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Roi.CornerList">
+<span class="sig-name descname"><span class="pre">CornerList</span></span><a class="headerlink" href="#Roi.CornerList" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Roi.ImageSize">
+<span class="sig-name descname"><span class="pre">ImageSize</span></span><em class="property"> <span class="pre">(1,2)</span> <span class="pre">double</span></em><a class="headerlink" href="#Roi.ImageSize" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Roi.ImageSizeRotated">
+<span class="sig-name descname"><span class="pre">ImageSizeRotated</span></span><em class="property"> <span class="pre">(1,2)</span> <span class="pre">double</span></em><a class="headerlink" href="#Roi.ImageSizeRotated" title="Link to this definition">#</a></dt>
+<dd><p>Image size after rotation. By default we use the “loose” bounding box option of the imrotate function</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Roi.IsSubRoi">
+<span class="sig-name descname"><span class="pre">IsSubRoi</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">false</span></em><a class="headerlink" href="#Roi.IsSubRoi" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Roi.NSub">
+<span class="sig-name descname"><span class="pre">NSub</span></span><a class="headerlink" href="#Roi.NSub" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Roi.Name">
+<span class="sig-name descname"><span class="pre">Name</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#Roi.Name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Roi.SubRoi">
+<span class="sig-name descname"><span class="pre">SubRoi</span></span><em class="property"> <span class="pre">Roi</span></em><a class="headerlink" href="#Roi.SubRoi" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Roi.SubRoiCenterSize">
+<span class="sig-name descname"><span class="pre">SubRoiCenterSize</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Roi.SubRoiCenterSize" title="Link to this definition">#</a></dt>
+<dd><p>N * 4 array or 1 * 4 array. In the full image basis.</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Roi.SubRoiNRowColumn">
+<span class="sig-name descname"><span class="pre">SubRoiNRowColumn</span></span><em class="property"> <span class="pre">(1,2)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[1,1]</span></em><a class="headerlink" href="#Roi.SubRoiNRowColumn" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Roi.SubRoiSeparation">
+<span class="sig-name descname"><span class="pre">SubRoiSeparation</span></span><em class="property"> <span class="pre">(1,2)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[100,100]</span></em><a class="headerlink" href="#Roi.SubRoiSeparation" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Roi.XList">
+<span class="sig-name descname"><span class="pre">XList</span></span><a class="headerlink" href="#Roi.XList" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Roi.YList">
+<span class="sig-name descname"><span class="pre">YList</span></span><a class="headerlink" href="#Roi.YList" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Roi.YXBoundary">
+<span class="sig-name descname"><span class="pre">YXBoundary</span></span><em class="property"> <span class="pre">(1,4)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[1,1024,1,1024]</span></em><a class="headerlink" href="#Roi.YXBoundary" title="Link to this definition">#</a></dt>
+<dd><p>[Y1,Y2,X1,X2]</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Roi.createMask">
+<span class="sig-name descname"><span class="pre">createMask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">maskPoints</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Roi.createMask" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Roi.full2NoRotationFull">
+<span class="sig-name descname"><span class="pre">full2NoRotationFull</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fullCoord</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Roi.full2NoRotationFull" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Roi.full2Roi">
+<span class="sig-name descname"><span class="pre">full2Roi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fullCoord</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Roi.full2Roi" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Roi.grid">
+<span class="sig-name descname"><span class="pre">grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">nRow</span></em>, <em class="sig-param"><span class="pre">nColumn</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Roi.grid" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Roi.isInRoi">
+<span class="sig-name descname"><span class="pre">isInRoi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fullCoord</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Roi.isInRoi" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Roi.isNoRotationFullInRoi">
+<span class="sig-name descname"><span class="pre">isNoRotationFullInRoi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">noRotFullCoord</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Roi.isNoRotationFullInRoi" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="Roi.loadobj">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">loadobj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">s</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Roi.loadobj" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Roi.noRotationFull2Full">
+<span class="sig-name descname"><span class="pre">noRotationFull2Full</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">noRotFullCoord</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Roi.noRotationFull2Full" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Roi.noRotationFull2Roi">
+<span class="sig-name descname"><span class="pre">noRotationFull2Roi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">noRotFullCoord</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Roi.noRotationFull2Roi" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Roi.roi2Full">
+<span class="sig-name descname"><span class="pre">roi2Full</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">roiCoord</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Roi.roi2Full" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Roi.roi2NoRotationFull">
+<span class="sig-name descname"><span class="pre">roi2NoRotationFull</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">roiCoord</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Roi.roi2NoRotationFull" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Roi.rotate">
+<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rotateAngle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Roi.rotate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Roi.saveobj">
+<span class="sig-name descname"><span class="pre">saveobj</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Roi.saveobj" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Roi.select">
+<span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Roi.select" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Roi.selectSub">
+<span class="sig-name descname"><span class="pre">selectSub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Roi.selectSub" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Roi.setSub">
+<span class="sig-name descname"><span class="pre">setSub</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Roi.setSub" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="hardware.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Hardware</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="misc.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Misc</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitdata">FitData</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#waveform">Waveform</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#roi">Roi</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Xiao Chai
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Xiao Chai.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

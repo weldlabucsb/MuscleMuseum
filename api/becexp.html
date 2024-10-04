@@ -1,0 +1,1653 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>BecExp &#8212; MuscleMuseum 0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=e1a75a79"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/becexp';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sim" href="sim.html" />
+    <link rel="prev" title="Trial" href="trial.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MuscleMuseum 0.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../intro/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/install.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/quick.html">Quick Start</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="atom.html">Atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="field.html">Field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial.html">Trial</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">BecExp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sim.html">Sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html">Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math.html">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Misc</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../sup/support.html">Support</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/api/becexp.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>BecExp</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-src.trial.becExp.BecExp">BecExp</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#becanalysis">BecAnalysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apps">Apps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="becexp">
+<h1>BecExp<a class="headerlink" href="#becexp" title="Link to this heading">#</a></h1>
+<section id="module-src.trial.becExp.BecExp">
+<span id="id1"></span><h2>BecExp<a class="headerlink" href="#module-src.trial.becExp.BecExp" title="Link to this heading">#</a></h2>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="BecExp">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BecExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="trial.html#Trial" title="Trial"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Trial</span></code></a></p>
+<p>BecExp This is BecExp. Test Test.
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.BecExp">
+<span class="sig-name descname"><span class="pre">BecExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.BecExp" title="Link to this definition">#</a></dt>
+<dd><p>BECEXP Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecExp.Acquisition">
+<span class="sig-name descname"><span class="pre">Acquisition</span></span><em class="property"> <span class="pre">Acquisition</span></em><a class="headerlink" href="#BecExp.Acquisition" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecExp.AnalysisMethod">
+<span class="sig-name descname"><span class="pre">AnalysisMethod</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#BecExp.AnalysisMethod" title="Link to this definition">#</a></dt>
+<dd><p>List of analysis methods</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecExp.Atom">
+<span class="sig-name descname"><span class="pre">Atom</span></span><em class="property"> <span class="pre">Atom</span></em><a class="headerlink" href="#BecExp.Atom" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecExp.CiceroData">
+<span class="sig-name descname"><span class="pre">CiceroData</span></span><em class="property"> <span class="pre">struct</span></em><a class="headerlink" href="#BecExp.CiceroData" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecExp.CloudCenter">
+<span class="sig-name descname"><span class="pre">CloudCenter</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#BecExp.CloudCenter" title="Link to this definition">#</a></dt>
+<dd><p>Cloud center [y_0,x_0] from previous measurement, in pixels</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecExp.HardwareData">
+<span class="sig-name descname"><span class="pre">HardwareData</span></span><em class="property"> <span class="pre">struct</span></em><a class="headerlink" href="#BecExp.HardwareData" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecExp.Roi">
+<span class="sig-name descname"><span class="pre">Roi</span></span><em class="property"> <span class="pre">Roi</span></em><a class="headerlink" href="#BecExp.Roi" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecExp.ScopeData">
+<span class="sig-name descname"><span class="pre">ScopeData</span></span><em class="property"> <span class="pre">struct</span></em><a class="headerlink" href="#BecExp.ScopeData" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecExp.SubRoi">
+<span class="sig-name descname"><span class="pre">SubRoi</span></span><em class="property"> <span class="pre">Roi</span></em><a class="headerlink" href="#BecExp.SubRoi" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.addAnalysis">
+<span class="sig-name descname"><span class="pre">addAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">newAnalysisList</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.addAnalysis" title="Link to this definition">#</a></dt>
+<dd><p>ADDANALYSIS Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.browserShow">
+<span class="sig-name descname"><span class="pre">browserShow</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.browserShow" title="Link to this definition">#</a></dt>
+<dd><p>SHOW Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.countExistedLog">
+<span class="sig-name descname"><span class="pre">countExistedLog</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.countExistedLog" title="Link to this definition">#</a></dt>
+<dd><p>COUNTEXISTEDLOG Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.deleteRun">
+<span class="sig-name descname"><span class="pre">deleteRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.deleteRun" title="Link to this definition">#</a></dt>
+<dd><p>DELETERUN Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.fastStop">
+<span class="sig-name descname"><span class="pre">fastStop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.fastStop" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.fetchCiceroLog">
+<span class="sig-name descname"><span class="pre">fetchCiceroLog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.fetchCiceroLog" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.fetchHardwareLog">
+<span class="sig-name descname"><span class="pre">fetchHardwareLog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.fetchHardwareLog" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.pause">
+<span class="sig-name descname"><span class="pre">pause</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.pause" title="Link to this definition">#</a></dt>
+<dd><p>PAUSE Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.readCiceroLog">
+<span class="sig-name descname"><span class="pre">readCiceroLog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.readCiceroLog" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.readRun">
+<span class="sig-name descname"><span class="pre">readRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.readRun" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.readRunRoi">
+<span class="sig-name descname"><span class="pre">readRunRoi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.readRunRoi" title="Link to this definition">#</a></dt>
+<dd><p>READRUNROI Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">anaylsisName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.refresh" title="Link to this definition">#</a></dt>
+<dd><p>REFRESH Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.removeAnalysis">
+<span class="sig-name descname"><span class="pre">removeAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">removeAnalysisList</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.removeAnalysis" title="Link to this definition">#</a></dt>
+<dd><p>REMOVEANALYSIS Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.resume">
+<span class="sig-name descname"><span class="pre">resume</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.resume" title="Link to this definition">#</a></dt>
+<dd><p>RESUME Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.setAnalyzer">
+<span class="sig-name descname"><span class="pre">setAnalyzer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.setAnalyzer" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.show" title="Link to this definition">#</a></dt>
+<dd><p>SHOW Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.sortAnalysis">
+<span class="sig-name descname"><span class="pre">sortAnalysis</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.sortAnalysis" title="Link to this definition">#</a></dt>
+<dd><p>SORTANALYSIS Summary of this function goes here
+We need to run different analysis in certain order so we have to sort
+the analysis methods</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.start" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.stop" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.updateDatabase">
+<span class="sig-name descname"><span class="pre">updateDatabase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.updateDatabase" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.updateHardware">
+<span class="sig-name descname"><span class="pre">updateHardware</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.updateHardware" title="Link to this definition">#</a></dt>
+<dd><p>UPDATEHARDWARE Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.updateScopeData">
+<span class="sig-name descname"><span class="pre">updateScopeData</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.updateScopeData" title="Link to this definition">#</a></dt>
+<dd><p>UPDATESCOPEDATA Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.writeDatabase">
+<span class="sig-name descname"><span class="pre">writeDatabase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.writeDatabase" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+<section id="becanalysis">
+<h2>BecAnalysis<a class="headerlink" href="#becanalysis" title="Link to this heading">#</a></h2>
+<dl class="mat class" id="module-src.trial.becExp.BecAnalysis">
+<dt class="sig sig-object mat" id="Od">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Od</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Od" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
+<p>OD Calculate and plot optical depth
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Od.Od">
+<span class="sig-name descname"><span class="pre">Od</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Od.Od" title="Link to this definition">#</a></dt>
+<dd><p>OD Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="Od.CLim">
+<span class="sig-name descname"><span class="pre">CLim</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[0,4]</span></em><a class="headerlink" href="#Od.CLim" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Od.CameraLightData">
+<span class="sig-name descname"><span class="pre">CameraLightData</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Od.CameraLightData" title="Link to this definition">#</a></dt>
+<dd><p>For calculating cross section. Background subtracted. Fringe removed.</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Od.Colormap">
+<span class="sig-name descname"><span class="pre">Colormap</span></span><em class="property"> <span class="pre">=</span> <span class="pre">jet</span></em><a class="headerlink" href="#Od.Colormap" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Od.FringeRemovalMask">
+<span class="sig-name descname"><span class="pre">FringeRemovalMask</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Od.FringeRemovalMask" title="Link to this definition">#</a></dt>
+<dd><p>2*N array. First column is y coordinate. Second column is x coordinate.</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Od.FringeRemovalMethod">
+<span class="sig-name descname"><span class="pre">FringeRemovalMethod</span></span><em class="property"> <span class="pre">string</span> <span class="pre">=</span> <span class="pre">&quot;LSR&quot;</span></em><a class="headerlink" href="#Od.FringeRemovalMethod" title="Link to this definition">#</a></dt>
+<dd><p>Least square regression</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Od.OdData">
+<span class="sig-name descname"><span class="pre">OdData</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Od.OdData" title="Link to this definition">#</a></dt>
+<dd><p>Calculated OdData</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Od.RoiData">
+<span class="sig-name descname"><span class="pre">RoiData</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Od.RoiData" title="Link to this definition">#</a></dt>
+<dd><p>Raw RoiData, including atom/light/dark.</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Od.doFringeRemoval">
+<span class="sig-name descname"><span class="pre">doFringeRemoval</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Od.doFringeRemoval" title="Link to this definition">#</a></dt>
+<dd><p>First calculate atom and light with background subtraction</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Od.finalize">
+<span class="sig-name descname"><span class="pre">finalize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Od.finalize" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="Od.handlePropEvents">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">handlePropEvents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">src</span></em>, <em class="sig-param"><span class="pre">evnt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Od.handlePropEvents" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Od.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Od.initialize" title="Link to this definition">#</a></dt>
+<dd><p>Initialize matrices</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Od.plotOdAnimation">
+<span class="sig-name descname"><span class="pre">plotOdAnimation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Od.plotOdAnimation" title="Link to this definition">#</a></dt>
+<dd><p>Initialize figure</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Od.plotOdMix">
+<span class="sig-name descname"><span class="pre">plotOdMix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Od.plotOdMix" title="Link to this definition">#</a></dt>
+<dd><p>Initialize</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Od.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Od.refresh" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Od.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Od.show" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Od.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Od.update" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="DensityFit">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">DensityFit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#DensityFit" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
+<p>OD Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="DensityFit.DensityFit">
+<span class="sig-name descname"><span class="pre">DensityFit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#DensityFit.DensityFit" title="Link to this definition">#</a></dt>
+<dd><p>OD Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="DensityFit.BackGroundDensity">
+<span class="sig-name descname"><span class="pre">BackGroundDensity</span></span><a class="headerlink" href="#DensityFit.BackGroundDensity" title="Link to this definition">#</a></dt>
+<dd><p>m^-2</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="DensityFit.CondensateCenter">
+<span class="sig-name descname"><span class="pre">CondensateCenter</span></span><a class="headerlink" href="#DensityFit.CondensateCenter" title="Link to this definition">#</a></dt>
+<dd><p>[x0c;y0c] in pixel</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="DensityFit.CondensateCentralDensity">
+<span class="sig-name descname"><span class="pre">CondensateCentralDensity</span></span><a class="headerlink" href="#DensityFit.CondensateCentralDensity" title="Link to this definition">#</a></dt>
+<dd><p>m^-2</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="DensityFit.CondensateSize">
+<span class="sig-name descname"><span class="pre">CondensateSize</span></span><a class="headerlink" href="#DensityFit.CondensateSize" title="Link to this definition">#</a></dt>
+<dd><p>[wc_x;wc_y] in m</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="DensityFit.FitData">
+<span class="sig-name descname"><span class="pre">FitData</span></span><a class="headerlink" href="#DensityFit.FitData" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="DensityFit.FitMethod">
+<span class="sig-name descname"><span class="pre">FitMethod</span></span><em class="property"> <span class="pre">string</span> <span class="pre">=</span> <span class="pre">&quot;BosonicGaussianFit1D&quot;</span></em><a class="headerlink" href="#DensityFit.FitMethod" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="DensityFit.ThermalCloudCenter">
+<span class="sig-name descname"><span class="pre">ThermalCloudCenter</span></span><a class="headerlink" href="#DensityFit.ThermalCloudCenter" title="Link to this definition">#</a></dt>
+<dd><p>[x0t;y0t] in pixel</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="DensityFit.ThermalCloudCentralDensity">
+<span class="sig-name descname"><span class="pre">ThermalCloudCentralDensity</span></span><a class="headerlink" href="#DensityFit.ThermalCloudCentralDensity" title="Link to this definition">#</a></dt>
+<dd><p>m^-2</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="DensityFit.ThermalCloudSize">
+<span class="sig-name descname"><span class="pre">ThermalCloudSize</span></span><a class="headerlink" href="#DensityFit.ThermalCloudSize" title="Link to this definition">#</a></dt>
+<dd><p>[wt_x;wt_y] in m</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="DensityFit.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#DensityFit.initialize" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="DensityFit.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#DensityFit.refresh" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="DensityFit.updateData">
+<span class="sig-name descname"><span class="pre">updateData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#DensityFit.updateData" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="DensityFit.updateFigure">
+<span class="sig-name descname"><span class="pre">updateFigure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">~</span></em><span class="sig-paren">)</span><a class="headerlink" href="#DensityFit.updateFigure" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="CenterFit">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">CenterFit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#CenterFit" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
+<p>OD Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="CenterFit.CenterFit">
+<span class="sig-name descname"><span class="pre">CenterFit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#CenterFit.CenterFit" title="Link to this definition">#</a></dt>
+<dd><p>OD Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="CenterFit.CondensateCenterAcceleration">
+<span class="sig-name descname"><span class="pre">CondensateCenterAcceleration</span></span><a class="headerlink" href="#CenterFit.CondensateCenterAcceleration" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="CenterFit.CondensateCenterMean">
+<span class="sig-name descname"><span class="pre">CondensateCenterMean</span></span><a class="headerlink" href="#CenterFit.CondensateCenterMean" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="CenterFit.CondensateCenterRange">
+<span class="sig-name descname"><span class="pre">CondensateCenterRange</span></span><a class="headerlink" href="#CenterFit.CondensateCenterRange" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="CenterFit.CondensateCenterSlope">
+<span class="sig-name descname"><span class="pre">CondensateCenterSlope</span></span><a class="headerlink" href="#CenterFit.CondensateCenterSlope" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="CenterFit.CondensateCenterSloshAmplitude">
+<span class="sig-name descname"><span class="pre">CondensateCenterSloshAmplitude</span></span><a class="headerlink" href="#CenterFit.CondensateCenterSloshAmplitude" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="CenterFit.CondensateCenterSloshFrequency">
+<span class="sig-name descname"><span class="pre">CondensateCenterSloshFrequency</span></span><a class="headerlink" href="#CenterFit.CondensateCenterSloshFrequency" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="CenterFit.CondensateCenterSloshOffset">
+<span class="sig-name descname"><span class="pre">CondensateCenterSloshOffset</span></span><a class="headerlink" href="#CenterFit.CondensateCenterSloshOffset" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="CenterFit.FitDataCondensate">
+<span class="sig-name descname"><span class="pre">FitDataCondensate</span></span><a class="headerlink" href="#CenterFit.FitDataCondensate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="CenterFit.FitDataThermal">
+<span class="sig-name descname"><span class="pre">FitDataThermal</span></span><a class="headerlink" href="#CenterFit.FitDataThermal" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="CenterFit.FitMethod">
+<span class="sig-name descname"><span class="pre">FitMethod</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;LinearFit1D&quot;</span></em><a class="headerlink" href="#CenterFit.FitMethod" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="CenterFit.IsSaveCenter">
+<span class="sig-name descname"><span class="pre">IsSaveCenter</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">false</span></em><a class="headerlink" href="#CenterFit.IsSaveCenter" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="CenterFit.ThermalCloudCenterAcceleration">
+<span class="sig-name descname"><span class="pre">ThermalCloudCenterAcceleration</span></span><a class="headerlink" href="#CenterFit.ThermalCloudCenterAcceleration" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="CenterFit.ThermalCloudCenterMean">
+<span class="sig-name descname"><span class="pre">ThermalCloudCenterMean</span></span><a class="headerlink" href="#CenterFit.ThermalCloudCenterMean" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="CenterFit.ThermalCloudCenterRange">
+<span class="sig-name descname"><span class="pre">ThermalCloudCenterRange</span></span><a class="headerlink" href="#CenterFit.ThermalCloudCenterRange" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="CenterFit.ThermalCloudCenterSlope">
+<span class="sig-name descname"><span class="pre">ThermalCloudCenterSlope</span></span><a class="headerlink" href="#CenterFit.ThermalCloudCenterSlope" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="CenterFit.ThermalCloudCenterSloshAmplitude">
+<span class="sig-name descname"><span class="pre">ThermalCloudCenterSloshAmplitude</span></span><a class="headerlink" href="#CenterFit.ThermalCloudCenterSloshAmplitude" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="CenterFit.ThermalCloudCenterSloshFrequency">
+<span class="sig-name descname"><span class="pre">ThermalCloudCenterSloshFrequency</span></span><a class="headerlink" href="#CenterFit.ThermalCloudCenterSloshFrequency" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="CenterFit.ThermalCloudCenterSloshOffset">
+<span class="sig-name descname"><span class="pre">ThermalCloudCenterSloshOffset</span></span><a class="headerlink" href="#CenterFit.ThermalCloudCenterSloshOffset" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="CenterFit.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CenterFit.initialize" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="CenterFit.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CenterFit.refresh" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="CenterFit.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CenterFit.save" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="CenterFit.updateData">
+<span class="sig-name descname"><span class="pre">updateData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">~</span></em><span class="sig-paren">)</span><a class="headerlink" href="#CenterFit.updateData" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="CenterFit.updateFigure">
+<span class="sig-name descname"><span class="pre">updateFigure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">~</span></em><span class="sig-paren">)</span><a class="headerlink" href="#CenterFit.updateFigure" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="BecAnalysis">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BecAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecAnalysis" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.SetGetExactNames</span></code></p>
+<p>BECANALYSIS Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="BecAnalysis.BecAnalysis">
+<span class="sig-name descname"><span class="pre">BecAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecAnalysis.BecAnalysis" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecAnalysis.BecExp">
+<span class="sig-name descname"><span class="pre">BecExp</span></span><em class="property"> <span class="pre">BecExp</span></em><a class="headerlink" href="#BecAnalysis.BecExp" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecAnalysis.Chart">
+<span class="sig-name descname"><span class="pre">Chart</span></span><em class="property"> <span class="pre">Chart</span></em><a class="headerlink" href="#BecAnalysis.Chart" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecAnalysis.Gui">
+<span class="sig-name descname"><span class="pre">Gui</span></span><em class="property"> <span class="pre">Gui</span></em><a class="headerlink" href="#BecAnalysis.Gui" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="BecAnalysis.browserShow">
+<span class="sig-name descname"><span class="pre">browserShow</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecAnalysis.browserShow" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecAnalysis.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecAnalysis.close" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecAnalysis.finalize">
+<span class="sig-name descname"><span class="pre">finalize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecAnalysis.finalize" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecAnalysis.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecAnalysis.initialize" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecAnalysis.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecAnalysis.refresh" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecAnalysis.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecAnalysis.save" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecAnalysis.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecAnalysis.show" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecAnalysis.toggle">
+<span class="sig-name descname"><span class="pre">toggle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">isEnabled</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecAnalysis.toggle" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecAnalysis.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecAnalysis.update" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecAnalysis.updateData">
+<span class="sig-name descname"><span class="pre">updateData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecAnalysis.updateData" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecAnalysis.updateFigure">
+<span class="sig-name descname"><span class="pre">updateFigure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecAnalysis.updateFigure" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="ScopeValue">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ScopeValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ScopeValue" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
+<p>OD Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="ScopeValue.ScopeValue">
+<span class="sig-name descname"><span class="pre">ScopeValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ScopeValue.ScopeValue" title="Link to this definition">#</a></dt>
+<dd><p>OD Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="ScopeValue.FullValueName">
+<span class="sig-name descname"><span class="pre">FullValueName</span></span><a class="headerlink" href="#ScopeValue.FullValueName" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="ScopeValue.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ScopeValue.initialize" title="Link to this definition">#</a></dt>
+<dd><p>Check if we can plot scope values</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="ScopeValue.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ScopeValue.refresh" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="ScopeValue.updateData">
+<span class="sig-name descname"><span class="pre">updateData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">~</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ScopeValue.updateData" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="ScopeValue.updateFigure">
+<span class="sig-name descname"><span class="pre">updateFigure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">~</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ScopeValue.updateFigure" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="KapitzaDirac">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">KapitzaDirac</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#KapitzaDirac" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
+<p>OD Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="KapitzaDirac.KapitzaDirac">
+<span class="sig-name descname"><span class="pre">KapitzaDirac</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#KapitzaDirac.KapitzaDirac" title="Link to this definition">#</a></dt>
+<dd><p>OD Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="KapitzaDirac.handlePropEvents">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">handlePropEvents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">src</span></em>, <em class="sig-param"><span class="pre">evnt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#KapitzaDirac.handlePropEvents" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="KapitzaDirac.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#KapitzaDirac.initialize" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="KapitzaDirac.updateData">
+<span class="sig-name descname"><span class="pre">updateData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#KapitzaDirac.updateData" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="KapitzaDirac.updateFigure">
+<span class="sig-name descname"><span class="pre">updateFigure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">~</span></em><span class="sig-paren">)</span><a class="headerlink" href="#KapitzaDirac.updateFigure" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="AtomNumber">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">AtomNumber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AtomNumber" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
+<p>OD Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="AtomNumber.AtomNumber">
+<span class="sig-name descname"><span class="pre">AtomNumber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AtomNumber.AtomNumber" title="Link to this definition">#</a></dt>
+<dd><p>OD Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="AtomNumber.Condensate">
+<span class="sig-name descname"><span class="pre">Condensate</span></span><a class="headerlink" href="#AtomNumber.Condensate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="AtomNumber.FitDataCondensate">
+<span class="sig-name descname"><span class="pre">FitDataCondensate</span></span><a class="headerlink" href="#AtomNumber.FitDataCondensate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="AtomNumber.FitDataRaw">
+<span class="sig-name descname"><span class="pre">FitDataRaw</span></span><a class="headerlink" href="#AtomNumber.FitDataRaw" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="AtomNumber.FitDataThermal">
+<span class="sig-name descname"><span class="pre">FitDataThermal</span></span><a class="headerlink" href="#AtomNumber.FitDataThermal" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="AtomNumber.FitMethod">
+<span class="sig-name descname"><span class="pre">FitMethod</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;None&quot;</span></em><a class="headerlink" href="#AtomNumber.FitMethod" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="AtomNumber.IsShowCondensate">
+<span class="sig-name descname"><span class="pre">IsShowCondensate</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">true</span></em><a class="headerlink" href="#AtomNumber.IsShowCondensate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="AtomNumber.IsShowNormalized">
+<span class="sig-name descname"><span class="pre">IsShowNormalized</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">true</span></em><a class="headerlink" href="#AtomNumber.IsShowNormalized" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="AtomNumber.IsShowRaw">
+<span class="sig-name descname"><span class="pre">IsShowRaw</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">true</span></em><a class="headerlink" href="#AtomNumber.IsShowRaw" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="AtomNumber.IsShowThermal">
+<span class="sig-name descname"><span class="pre">IsShowThermal</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">true</span></em><a class="headerlink" href="#AtomNumber.IsShowThermal" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="AtomNumber.IsShowTotal">
+<span class="sig-name descname"><span class="pre">IsShowTotal</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">true</span></em><a class="headerlink" href="#AtomNumber.IsShowTotal" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="AtomNumber.Raw">
+<span class="sig-name descname"><span class="pre">Raw</span></span><a class="headerlink" href="#AtomNumber.Raw" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="AtomNumber.Thermal">
+<span class="sig-name descname"><span class="pre">Thermal</span></span><a class="headerlink" href="#AtomNumber.Thermal" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="AtomNumber.Total">
+<span class="sig-name descname"><span class="pre">Total</span></span><a class="headerlink" href="#AtomNumber.Total" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="AtomNumber.Unit">
+<span class="sig-name descname"><span class="pre">Unit</span></span><em class="property"> <span class="pre">=</span> <span class="pre">10^6</span></em><a class="headerlink" href="#AtomNumber.Unit" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="AtomNumber.YLim">
+<span class="sig-name descname"><span class="pre">YLim</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[0,30]</span></em><a class="headerlink" href="#AtomNumber.YLim" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="AtomNumber.handlePropEvents">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">handlePropEvents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">src</span></em>, <em class="sig-param"><span class="pre">evnt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AtomNumber.handlePropEvents" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="AtomNumber.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AtomNumber.initialize" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="AtomNumber.updateData">
+<span class="sig-name descname"><span class="pre">updateData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AtomNumber.updateData" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="AtomNumber.updateFigure">
+<span class="sig-name descname"><span class="pre">updateFigure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">~</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AtomNumber.updateFigure" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="Ad">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Ad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Ad" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
+<p>OD Calculate and plot optical depth
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Ad.Ad">
+<span class="sig-name descname"><span class="pre">Ad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Ad.Ad" title="Link to this definition">#</a></dt>
+<dd><p>OD Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="Ad.AdData">
+<span class="sig-name descname"><span class="pre">AdData</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Ad.AdData" title="Link to this definition">#</a></dt>
+<dd><p>Calculated AdData</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Ad.AdMethod">
+<span class="sig-name descname"><span class="pre">AdMethod</span></span><em class="property"> <span class="pre">string</span> <span class="pre">=</span> <span class="pre">&quot;StrongLight&quot;</span></em><a class="headerlink" href="#Ad.AdMethod" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Ad.Blur">
+<span class="sig-name descname"><span class="pre">Blur</span></span><em class="property"> <span class="pre">=</span> <span class="pre">100</span></em><a class="headerlink" href="#Ad.Blur" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Ad.CLim">
+<span class="sig-name descname"><span class="pre">CLim</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[0,8]</span></em><a class="headerlink" href="#Ad.CLim" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Ad.Colormap">
+<span class="sig-name descname"><span class="pre">Colormap</span></span><em class="property"> <span class="pre">=</span> <span class="pre">jet</span></em><a class="headerlink" href="#Ad.Colormap" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Ad.CrossSectionData">
+<span class="sig-name descname"><span class="pre">CrossSectionData</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#Ad.CrossSectionData" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Ad.Unit">
+<span class="sig-name descname"><span class="pre">Unit</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1e13</span></em><a class="headerlink" href="#Ad.Unit" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Ad.finalize">
+<span class="sig-name descname"><span class="pre">finalize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Ad.finalize" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="Ad.handlePropEvents">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">handlePropEvents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">src</span></em>, <em class="sig-param"><span class="pre">evnt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Ad.handlePropEvents" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Ad.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Ad.initialize" title="Link to this definition">#</a></dt>
+<dd><p>Initialize matrices</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Ad.plotAdAnimation">
+<span class="sig-name descname"><span class="pre">plotAdAnimation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Ad.plotAdAnimation" title="Link to this definition">#</a></dt>
+<dd><p>Initialize figure</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Ad.plotAdMix">
+<span class="sig-name descname"><span class="pre">plotAdMix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">adData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Ad.plotAdMix" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Ad.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Ad.refresh" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Ad.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Ad.save" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Ad.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Ad.show" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Ad.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Ad.update" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="Tof">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Tof</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tof" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
+<p>OD Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Tof.Tof">
+<span class="sig-name descname"><span class="pre">Tof</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tof.Tof" title="Link to this definition">#</a></dt>
+<dd><p>OD Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="Tof.FitDataCondensate">
+<span class="sig-name descname"><span class="pre">FitDataCondensate</span></span><a class="headerlink" href="#Tof.FitDataCondensate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Tof.FitDataThermal">
+<span class="sig-name descname"><span class="pre">FitDataThermal</span></span><a class="headerlink" href="#Tof.FitDataThermal" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Tof.Temperature">
+<span class="sig-name descname"><span class="pre">Temperature</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Tof.Temperature" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Tof.ThermalCloudCentralDensityInSitu">
+<span class="sig-name descname"><span class="pre">ThermalCloudCentralDensityInSitu</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Tof.ThermalCloudCentralDensityInSitu" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Tof.ThermalCloudSizeInSitu">
+<span class="sig-name descname"><span class="pre">ThermalCloudSizeInSitu</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Tof.ThermalCloudSizeInSitu" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Tof.TofTime">
+<span class="sig-name descname"><span class="pre">TofTime</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Tof.TofTime" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Tof.TrappingFrequency">
+<span class="sig-name descname"><span class="pre">TrappingFrequency</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Tof.TrappingFrequency" title="Link to this definition">#</a></dt>
+<dd><p>[omega_x;omega_y]</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Tof.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Tof.initialize" title="Link to this definition">#</a></dt>
+<dd><p>Check if we can do TOF analysis</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Tof.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Tof.refresh" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Tof.updateData">
+<span class="sig-name descname"><span class="pre">updateData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">~</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tof.updateData" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Tof.updateFigure">
+<span class="sig-name descname"><span class="pre">updateFigure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">~</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tof.updateFigure" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="Imaging">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Imaging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Imaging" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
+<p>IMAGING Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Imaging.Imaging">
+<span class="sig-name descname"><span class="pre">Imaging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Imaging.Imaging" title="Link to this definition">#</a></dt>
+<dd><p>IMAGING Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="Imaging.DarkMean">
+<span class="sig-name descname"><span class="pre">DarkMean</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Imaging.DarkMean" title="Link to this definition">#</a></dt>
+<dd><p>averaged over the ROI</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Imaging.ImagingStage">
+<span class="sig-name descname"><span class="pre">ImagingStage</span></span><em class="property"> <span class="pre">string</span> <span class="pre">=</span> <span class="pre">&quot;LF&quot;</span></em><a class="headerlink" href="#Imaging.ImagingStage" title="Link to this definition">#</a></dt>
+<dd><p>LF:low-field. HF:high-field. NI:non-inter</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Imaging.ImagingTime">
+<span class="sig-name descname"><span class="pre">ImagingTime</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#Imaging.ImagingTime" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Imaging.ImagingTimeUnit">
+<span class="sig-name descname"><span class="pre">ImagingTimeUnit</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#Imaging.ImagingTimeUnit" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Imaging.LightMean">
+<span class="sig-name descname"><span class="pre">LightMean</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Imaging.LightMean" title="Link to this definition">#</a></dt>
+<dd><p>averaged over the ROI</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Imaging.QuantumEfficiency">
+<span class="sig-name descname"><span class="pre">QuantumEfficiency</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#Imaging.QuantumEfficiency" title="Link to this definition">#</a></dt>
+<dd><p>read from the camera specs</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Imaging.SaturationParameterMean">
+<span class="sig-name descname"><span class="pre">SaturationParameterMean</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Imaging.SaturationParameterMean" title="Link to this definition">#</a></dt>
+<dd><p>I/I_sat, averaged over ROI</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Imaging.SaturationParameterMeanOverall">
+<span class="sig-name descname"><span class="pre">SaturationParameterMeanOverall</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Imaging.SaturationParameterMeanOverall" title="Link to this definition">#</a></dt>
+<dd><p>I/I_sat, averaged over ROI and all runs</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Imaging.SaturationParameterPropagation">
+<span class="sig-name descname"><span class="pre">SaturationParameterPropagation</span></span><a class="headerlink" href="#Imaging.SaturationParameterPropagation" title="Link to this definition">#</a></dt>
+<dd><p>(s_atom + s_light)/2, 2D distribution. This accounts for the propagation effects</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Imaging.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Imaging.initialize" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Imaging.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Imaging.refresh" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Imaging.updateData">
+<span class="sig-name descname"><span class="pre">updateData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Imaging.updateData" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Imaging.updateFigure">
+<span class="sig-name descname"><span class="pre">updateFigure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">~</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Imaging.updateFigure" title="Link to this definition">#</a></dt>
+<dd><p>Check if we have the figure handle</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+<section id="apps">
+<h2>Apps<a class="headerlink" href="#apps" title="Link to this heading">#</a></h2>
+<dl class="mat application" id="module-src.trial.becExp.app">
+<dt class="sig sig-object mat" id="AdPreviewer">
+<span class="sig-name descname"><span class="pre">AdPreviewer</span></span><a class="headerlink" href="#AdPreviewer" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat application">
+<dt class="sig sig-object mat" id="BecControlPanel">
+<span class="sig-name descname"><span class="pre">BecControlPanel</span></span><a class="headerlink" href="#BecControlPanel" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat application">
+<dt class="sig sig-object mat" id="OdPreviewer">
+<span class="sig-name descname"><span class="pre">OdPreviewer</span></span><a class="headerlink" href="#OdPreviewer" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat application">
+<dt class="sig sig-object mat" id="DensityFitDisplay">
+<span class="sig-name descname"><span class="pre">DensityFitDisplay</span></span><a class="headerlink" href="#DensityFitDisplay" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat application">
+<dt class="sig sig-object mat" id="FringeRemoval">
+<span class="sig-name descname"><span class="pre">FringeRemoval</span></span><a class="headerlink" href="#FringeRemoval" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat application">
+<dt class="sig sig-object mat" id="BecBrowser">
+<span class="sig-name descname"><span class="pre">BecBrowser</span></span><a class="headerlink" href="#BecBrowser" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
+<dl class="mat function" id="module-src.trial.becExp.func">
+<dt class="sig sig-object mat" id="runLocalTest">
+<span class="sig-name descname"><span class="pre">runLocalTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">testCiceroLogOrigin</span></em>, <em class="sig-param"><span class="pre">samplePath</span></em>, <em class="sig-param"><span class="pre">dataPath</span></em>, <em class="sig-param"><span class="pre">pauseTime</span></em><span class="sig-paren">)</span><a class="headerlink" href="#runLocalTest" title="Link to this definition">#</a></dt>
+<dd><p>RUNLOCALTEST Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="computeAbsorption">
+<span class="sig-name descname"><span class="pre">computeAbsorption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">imageData</span></em>, <em class="sig-param"><span class="pre">absorpMin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#computeAbsorption" title="Link to this definition">#</a></dt>
+<dd><p>CALCULATEABSORPTION calculate absorption signal
+imageData: must be a 4-D array. The first two dimensions store the
+image data. The third dimension is the run index. The last dimension
+represents “atom”/”light”/”dark” image labels (or “atom”/”light”).
+absorp: absorption signal. Must be between 0 and 1 where 0 means
+totally absorbed by atoms.</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="loadBecExp">
+<span class="sig-name descname"><span class="pre">loadBecExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">serialNumber</span></em><span class="sig-paren">)</span><a class="headerlink" href="#loadBecExp" title="Link to this definition">#</a></dt>
+<dd><p>LOADBECEX Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="absorption2Od">
+<span class="sig-name descname"><span class="pre">absorption2Od</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">absorp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#absorption2Od" title="Link to this definition">#</a></dt>
+<dd><p>Convert absorption signal to optical depth (OD).</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="deleteBecExp">
+<span class="sig-name descname"><span class="pre">deleteBecExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">serialNumber</span></em>, <em class="sig-param"><span class="pre">isForceDelete</span></em><span class="sig-paren">)</span><a class="headerlink" href="#deleteBecExp" title="Link to this definition">#</a></dt>
+<dd><p>LOADBECEX Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="sortBecAnalysis">
+<span class="sig-name descname"><span class="pre">sortBecAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">analysisList</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sortBecAnalysis" title="Link to this definition">#</a></dt>
+<dd><p>SORTANALYSIS Summary of this function goes here
+We need to run different analysis in certain order so we have to sort
+the analysis methods</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="trial.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Trial</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="sim.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Sim</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-src.trial.becExp.BecExp">BecExp</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#becanalysis">BecAnalysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apps">Apps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Xiao Chai
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Xiao Chai.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

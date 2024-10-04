@@ -1,0 +1,1199 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Field &#8212; MuscleMuseum 0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=e1a75a79"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/field';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Trial" href="trial.html" />
+    <link rel="prev" title="Atom" href="atom.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MuscleMuseum 0.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../intro/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/install.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/quick.html">Quick Start</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="atom.html">Atom</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial.html">Trial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="becexp.html">BecExp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sim.html">Sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware.html">Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math.html">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Misc</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../sup/support.html">Support</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/api/field.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Field</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#laser">Laser</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#magneticfield">MagneticField</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#potential">Potential</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="field">
+<h1>Field<a class="headerlink" href="#field" title="Link to this heading">#</a></h1>
+<section id="laser">
+<h2>Laser<a class="headerlink" href="#laser" title="Link to this heading">#</a></h2>
+<dl class="mat class" id="module-src.field.Laser">
+<dt class="sig sig-object mat" id="Laser">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Laser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Laser" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.Heterogeneous</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
+<p>Specify the laser parameters.</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Laser.Laser">
+<span class="sig-name descname"><span class="pre">Laser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Laser.Laser" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="Laser.Angle">
+<span class="sig-name descname"><span class="pre">Angle</span></span><em class="property"> <span class="pre">(1,2)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[NaN,NaN]</span></em><a class="headerlink" href="#Laser.Angle" title="Link to this definition">#</a></dt>
+<dd><p>[Polar angle theta, Azimth angle phi] in radians</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Laser.AngularFrequency">
+<span class="sig-name descname"><span class="pre">AngularFrequency</span></span><a class="headerlink" href="#Laser.AngularFrequency" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Laser.AngularWavenumber">
+<span class="sig-name descname"><span class="pre">AngularWavenumber</span></span><a class="headerlink" href="#Laser.AngularWavenumber" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Laser.AngularWavevector">
+<span class="sig-name descname"><span class="pre">AngularWavevector</span></span><a class="headerlink" href="#Laser.AngularWavevector" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Laser.Direction">
+<span class="sig-name descname"><span class="pre">Direction</span></span><em class="property"> <span class="pre">(3,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[NaN;NaN;NaN]</span></em><a class="headerlink" href="#Laser.Direction" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Laser.ElectricFieldAmplitude">
+<span class="sig-name descname"><span class="pre">ElectricFieldAmplitude</span></span><a class="headerlink" href="#Laser.ElectricFieldAmplitude" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Laser.Frequency">
+<span class="sig-name descname"><span class="pre">Frequency</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">NaN</span></em><a class="headerlink" href="#Laser.Frequency" title="Link to this definition">#</a></dt>
+<dd><p>Absolute frequency in Hz. Linear frequency</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Laser.Intensity">
+<span class="sig-name descname"><span class="pre">Intensity</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">NaN</span></em><a class="headerlink" href="#Laser.Intensity" title="Link to this definition">#</a></dt>
+<dd><p>In W/m^2</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Laser.IntensityLu">
+<span class="sig-name descname"><span class="pre">IntensityLu</span></span><a class="headerlink" href="#Laser.IntensityLu" title="Link to this definition">#</a></dt>
+<dd><p>Intensity in mW/cm^2</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Laser.Phase">
+<span class="sig-name descname"><span class="pre">Phase</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#Laser.Phase" title="Link to this definition">#</a></dt>
+<dd><p>In radians</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Laser.Polarization">
+<span class="sig-name descname"><span class="pre">Polarization</span></span><em class="property"> <span class="pre">(3,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[NaN;NaN;NaN]</span></em><a class="headerlink" href="#Laser.Polarization" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Laser.Power">
+<span class="sig-name descname"><span class="pre">Power</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">NaN</span></em><a class="headerlink" href="#Laser.Power" title="Link to this definition">#</a></dt>
+<dd><p>In Watts</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Laser.Wavelength">
+<span class="sig-name descname"><span class="pre">Wavelength</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">NaN</span></em><a class="headerlink" href="#Laser.Wavelength" title="Link to this definition">#</a></dt>
+<dd><p>In meter</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Laser.WavelengthInAir">
+<span class="sig-name descname"><span class="pre">WavelengthInAir</span></span><a class="headerlink" href="#Laser.WavelengthInAir" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Laser.Wavenumber">
+<span class="sig-name descname"><span class="pre">Wavenumber</span></span><a class="headerlink" href="#Laser.Wavenumber" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Laser.Wavevector">
+<span class="sig-name descname"><span class="pre">Wavevector</span></span><a class="headerlink" href="#Laser.Wavevector" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Laser.rotate">
+<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">eul</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Laser.rotate" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Laser.rotateToAngle">
+<span class="sig-name descname"><span class="pre">rotateToAngle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">angle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Laser.rotateToAngle" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Laser.spacePhaseFunc">
+<span class="sig-name descname"><span class="pre">spacePhaseFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Laser.spacePhaseFunc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Laser.spaceTimePhaseFunc">
+<span class="sig-name descname"><span class="pre">spaceTimePhaseFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Laser.spaceTimePhaseFunc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Laser.timePhaseFunc">
+<span class="sig-name descname"><span class="pre">timePhaseFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Laser.timePhaseFunc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="GaussianBeam">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">GaussianBeam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options1</span></em>, <em class="sig-param"><span class="pre">options2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#GaussianBeam" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a></p>
+<p>PLANEWAVE Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="GaussianBeam.GaussianBeam">
+<span class="sig-name descname"><span class="pre">GaussianBeam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options1</span></em>, <em class="sig-param"><span class="pre">options2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#GaussianBeam.GaussianBeam" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="GaussianBeam.Center">
+<span class="sig-name descname"><span class="pre">Center</span></span><em class="property"> <span class="pre">(3,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[0;0;0]</span></em><a class="headerlink" href="#GaussianBeam.Center" title="Link to this definition">#</a></dt>
+<dd><p>In meters</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="GaussianBeam.IntensityAveraged">
+<span class="sig-name descname"><span class="pre">IntensityAveraged</span></span><a class="headerlink" href="#GaussianBeam.IntensityAveraged" title="Link to this definition">#</a></dt>
+<dd><p>In W/m^2</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="GaussianBeam.RayleighRange">
+<span class="sig-name descname"><span class="pre">RayleighRange</span></span><a class="headerlink" href="#GaussianBeam.RayleighRange" title="Link to this definition">#</a></dt>
+<dd><p>In meters</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="GaussianBeam.Waist">
+<span class="sig-name descname"><span class="pre">Waist</span></span><em class="property"> <span class="pre">(2,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[NaN;NaN]</span></em><a class="headerlink" href="#GaussianBeam.Waist" title="Link to this definition">#</a></dt>
+<dd><p>In meters</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+<section id="magneticfield">
+<h2>MagneticField<a class="headerlink" href="#magneticfield" title="Link to this heading">#</a></h2>
+<dl class="mat class" id="module-src.field.MagneticField">
+<dt class="sig sig-object mat" id="MagneticField">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">MagneticField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MagneticField" title="Link to this definition">#</a></dt>
+<dd><p>MAGFIELD Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="MagneticField.MagneticField">
+<span class="sig-name descname"><span class="pre">MagneticField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MagneticField.MagneticField" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="MagneticField.ArbitraryDistribution">
+<span class="sig-name descname"><span class="pre">ArbitraryDistribution</span></span><em class="property"> <span class="pre">function_handle</span></em><a class="headerlink" href="#MagneticField.ArbitraryDistribution" title="Link to this definition">#</a></dt>
+<dd><p>Quadratic double = zeros(3,3,3) %not implemented.</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MagneticField.Bias">
+<span class="sig-name descname"><span class="pre">Bias</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">zeros(3,1)</span></em><a class="headerlink" href="#MagneticField.Bias" title="Link to this definition">#</a></dt>
+<dd><p>In Tesla.</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MagneticField.BiasLu">
+<span class="sig-name descname"><span class="pre">BiasLu</span></span><a class="headerlink" href="#MagneticField.BiasLu" title="Link to this definition">#</a></dt>
+<dd><p>In Gauss</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MagneticField.FieldZero">
+<span class="sig-name descname"><span class="pre">FieldZero</span></span><a class="headerlink" href="#MagneticField.FieldZero" title="Link to this definition">#</a></dt>
+<dd><p>In meter</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MagneticField.Gradient">
+<span class="sig-name descname"><span class="pre">Gradient</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">zeros(3,3)</span></em><a class="headerlink" href="#MagneticField.Gradient" title="Link to this definition">#</a></dt>
+<dd><p>[dBx/dx,dBx/dy,dBx/dz;dBy/dx,dBy/dy,dBy/dz;dBz/dx,dBz/dy,dBz/dz]. %In Tesla/meter</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MagneticField.GradientLu">
+<span class="sig-name descname"><span class="pre">GradientLu</span></span><a class="headerlink" href="#MagneticField.GradientLu" title="Link to this definition">#</a></dt>
+<dd><p>In Gauss/cm</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="MagneticField.spaceFunc">
+<span class="sig-name descname"><span class="pre">spaceFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MagneticField.spaceFunc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+<section id="potential">
+<h2>Potential<a class="headerlink" href="#potential" title="Link to this heading">#</a></h2>
+<dl class="mat class" id="module-src.field.Potential">
+<dt class="sig sig-object mat" id="Potential">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Potential" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
+<p>POTENTIAL Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Potential.Potential">
+<span class="sig-name descname"><span class="pre">Potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Potential.Potential" title="Link to this definition">#</a></dt>
+<dd><p>POTENTIAL Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="Potential.Atom">
+<span class="sig-name descname"><span class="pre">Atom</span></span><em class="property"> <span class="pre">Atom</span></em><a class="headerlink" href="#Potential.Atom" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Potential.Manifold">
+<span class="sig-name descname"><span class="pre">Manifold</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#Potential.Manifold" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Potential.Name">
+<span class="sig-name descname"><span class="pre">Name</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#Potential.Name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Potential.StateIndex">
+<span class="sig-name descname"><span class="pre">StateIndex</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Potential.StateIndex" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="OpticalTrap">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">OpticalTrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalTrap" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#OpticalPotential" title="OpticalPotential"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OpticalPotential</span></code></a></p>
+<p>OPTICALTRAP Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalTrap.OpticalTrap">
+<span class="sig-name descname"><span class="pre">OpticalTrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalTrap.OpticalTrap" title="Link to this definition">#</a></dt>
+<dd><p>OPTICALTRAP Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalTrap.AxialFrequency">
+<span class="sig-name descname"><span class="pre">AxialFrequency</span></span><a class="headerlink" href="#OpticalTrap.AxialFrequency" title="Link to this definition">#</a></dt>
+<dd><p>in Hz, linear frequency</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalTrap.Depth">
+<span class="sig-name descname"><span class="pre">Depth</span></span><a class="headerlink" href="#OpticalTrap.Depth" title="Link to this definition">#</a></dt>
+<dd><p>in Hz</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalTrap.RadialFrequency">
+<span class="sig-name descname"><span class="pre">RadialFrequency</span></span><a class="headerlink" href="#OpticalTrap.RadialFrequency" title="Link to this definition">#</a></dt>
+<dd><p>in Hz, linear frequency</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="OpticalPotential">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">OpticalPotential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalPotential" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Potential" title="Potential"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Potential</span></code></a>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.Heterogeneous</span></code></p>
+<p>OPTICALPOTENTIAL Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalPotential.OpticalPotential">
+<span class="sig-name descname"><span class="pre">OpticalPotential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalPotential.OpticalPotential" title="Link to this definition">#</a></dt>
+<dd><p>OPTICALPOTENTIAL Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalPotential.Laser">
+<span class="sig-name descname"><span class="pre">Laser</span></span><em class="property"> <span class="pre">Laser</span></em><a class="headerlink" href="#OpticalPotential.Laser" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalPotential.RecoilEnergy">
+<span class="sig-name descname"><span class="pre">RecoilEnergy</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#OpticalPotential.RecoilEnergy" title="Link to this definition">#</a></dt>
+<dd><p>in Hz</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalPotential.RecoilMomentum">
+<span class="sig-name descname"><span class="pre">RecoilMomentum</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#OpticalPotential.RecoilMomentum" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalPotential.RecoilTemperature">
+<span class="sig-name descname"><span class="pre">RecoilTemperature</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#OpticalPotential.RecoilTemperature" title="Link to this definition">#</a></dt>
+<dd><p>in K</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalPotential.RecoilVelocity">
+<span class="sig-name descname"><span class="pre">RecoilVelocity</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#OpticalPotential.RecoilVelocity" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalPotential.ScalarPolarizabilityGround">
+<span class="sig-name descname"><span class="pre">ScalarPolarizabilityGround</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#OpticalPotential.ScalarPolarizabilityGround" title="Link to this definition">#</a></dt>
+<dd><p>in Hz/(V/m)^2</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="MagneticPotential">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">MagneticPotential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">magneticField</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MagneticPotential" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Potential" title="Potential"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Potential</span></code></a>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.Heterogeneous</span></code></p>
+<p>OPTICALPOTENTIAL Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="MagneticPotential.MagneticPotential">
+<span class="sig-name descname"><span class="pre">MagneticPotential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">magneticField</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MagneticPotential.MagneticPotential" title="Link to this definition">#</a></dt>
+<dd><p>OPTICALPOTENTIAL Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="MagneticPotential.EnergyFactor">
+<span class="sig-name descname"><span class="pre">EnergyFactor</span></span><a class="headerlink" href="#MagneticPotential.EnergyFactor" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MagneticPotential.EnergyFactorHighField">
+<span class="sig-name descname"><span class="pre">EnergyFactorHighField</span></span><a class="headerlink" href="#MagneticPotential.EnergyFactorHighField" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MagneticPotential.EnergyFactorLowField">
+<span class="sig-name descname"><span class="pre">EnergyFactorLowField</span></span><a class="headerlink" href="#MagneticPotential.EnergyFactorLowField" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MagneticPotential.MagneticField">
+<span class="sig-name descname"><span class="pre">MagneticField</span></span><em class="property"> <span class="pre">MagneticField</span></em><a class="headerlink" href="#MagneticPotential.MagneticField" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="MagneticPotential.spaceFuncHighField">
+<span class="sig-name descname"><span class="pre">spaceFuncHighField</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MagneticPotential.spaceFuncHighField" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MagneticPotential.spaceFuncLowField">
+<span class="sig-name descname"><span class="pre">spaceFuncLowField</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MagneticPotential.spaceFuncLowField" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
+<dt class="sig sig-object mat" id="OpticalLattice">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">OpticalLattice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#OpticalPotential" title="OpticalPotential"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OpticalPotential</span></code></a></p>
+<p>OPTICALLATTICE Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.OpticalLattice">
+<span class="sig-name descname"><span class="pre">OpticalLattice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.OpticalLattice" title="Link to this definition">#</a></dt>
+<dd><p>OPTICALLATTICE Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.AmpMod">
+<span class="sig-name descname"><span class="pre">AmpMod</span></span><a class="headerlink" href="#OpticalLattice.AmpMod" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.AmpModCoupling">
+<span class="sig-name descname"><span class="pre">AmpModCoupling</span></span><a class="headerlink" href="#OpticalLattice.AmpModCoupling" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.AxialFrequency">
+<span class="sig-name descname"><span class="pre">AxialFrequency</span></span><a class="headerlink" href="#OpticalLattice.AxialFrequency" title="Link to this definition">#</a></dt>
+<dd><p>in Hz, best value</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.AxialFrequencyKd">
+<span class="sig-name descname"><span class="pre">AxialFrequencyKd</span></span><a class="headerlink" href="#OpticalLattice.AxialFrequencyKd" title="Link to this definition">#</a></dt>
+<dd><p>in Hz, linear frequency, calculated from KD depth</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.AxialFrequencyLaser">
+<span class="sig-name descname"><span class="pre">AxialFrequencyLaser</span></span><a class="headerlink" href="#OpticalLattice.AxialFrequencyLaser" title="Link to this definition">#</a></dt>
+<dd><p>in Hz, linear frequency, calculated from laser power and waists</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.AxialFrequencySpec">
+<span class="sig-name descname"><span class="pre">AxialFrequencySpec</span></span><a class="headerlink" href="#OpticalLattice.AxialFrequencySpec" title="Link to this definition">#</a></dt>
+<dd><p>in Hz, linear frequency, calculated from spectrum depth</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.BandEnergy">
+<span class="sig-name descname"><span class="pre">BandEnergy</span></span><a class="headerlink" href="#OpticalLattice.BandEnergy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.BandIndexMax">
+<span class="sig-name descname"><span class="pre">BandIndexMax</span></span><a class="headerlink" href="#OpticalLattice.BandIndexMax" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.BandIndexMaxFourier">
+<span class="sig-name descname"><span class="pre">BandIndexMaxFourier</span></span><em class="property"> <span class="pre">=</span> <span class="pre">101</span></em><a class="headerlink" href="#OpticalLattice.BandIndexMaxFourier" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.BandIndexMaxFourierDefault">
+<span class="sig-name descname"><span class="pre">BandIndexMaxFourierDefault</span></span><em class="property"> <span class="pre">=</span> <span class="pre">101</span></em><a class="headerlink" href="#OpticalLattice.BandIndexMaxFourierDefault" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.BerryConnection">
+<span class="sig-name descname"><span class="pre">BerryConnection</span></span><a class="headerlink" href="#OpticalLattice.BerryConnection" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.BlochState">
+<span class="sig-name descname"><span class="pre">BlochState</span></span><a class="headerlink" href="#OpticalLattice.BlochState" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.BlochStateFourier">
+<span class="sig-name descname"><span class="pre">BlochStateFourier</span></span><a class="headerlink" href="#OpticalLattice.BlochStateFourier" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.BlochStatePeriodic">
+<span class="sig-name descname"><span class="pre">BlochStatePeriodic</span></span><a class="headerlink" href="#OpticalLattice.BlochStatePeriodic" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.Depth">
+<span class="sig-name descname"><span class="pre">Depth</span></span><a class="headerlink" href="#OpticalLattice.Depth" title="Link to this definition">#</a></dt>
+<dd><p>in Hz, best value</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.DepthKd">
+<span class="sig-name descname"><span class="pre">DepthKd</span></span><a class="headerlink" href="#OpticalLattice.DepthKd" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.DepthLaser">
+<span class="sig-name descname"><span class="pre">DepthLaser</span></span><a class="headerlink" href="#OpticalLattice.DepthLaser" title="Link to this definition">#</a></dt>
+<dd><p>in Hz, calculated from laser power and waists</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.DepthLu">
+<span class="sig-name descname"><span class="pre">DepthLu</span></span><a class="headerlink" href="#OpticalLattice.DepthLu" title="Link to this definition">#</a></dt>
+<dd><p>in Er, best value</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.DepthSpec">
+<span class="sig-name descname"><span class="pre">DepthSpec</span></span><a class="headerlink" href="#OpticalLattice.DepthSpec" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.LatticeSpacing">
+<span class="sig-name descname"><span class="pre">LatticeSpacing</span></span><a class="headerlink" href="#OpticalLattice.LatticeSpacing" title="Link to this definition">#</a></dt>
+<dd><p>in meters</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.QuasiMomentumList">
+<span class="sig-name descname"><span class="pre">QuasiMomentumList</span></span><a class="headerlink" href="#OpticalLattice.QuasiMomentumList" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.RadialFrequency">
+<span class="sig-name descname"><span class="pre">RadialFrequency</span></span><a class="headerlink" href="#OpticalLattice.RadialFrequency" title="Link to this definition">#</a></dt>
+<dd><p>in Hz, best value</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.RadialFrequencyKd">
+<span class="sig-name descname"><span class="pre">RadialFrequencyKd</span></span><a class="headerlink" href="#OpticalLattice.RadialFrequencyKd" title="Link to this definition">#</a></dt>
+<dd><p>in Hz, linear frequency, calculated from KD depth</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.RadialFrequencyLaser">
+<span class="sig-name descname"><span class="pre">RadialFrequencyLaser</span></span><a class="headerlink" href="#OpticalLattice.RadialFrequencyLaser" title="Link to this definition">#</a></dt>
+<dd><p>in Hz, linear frequency, calculated from laser power and waists</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.RadialFrequencySlosh">
+<span class="sig-name descname"><span class="pre">RadialFrequencySlosh</span></span><a class="headerlink" href="#OpticalLattice.RadialFrequencySlosh" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.RadialFrequencySpec">
+<span class="sig-name descname"><span class="pre">RadialFrequencySpec</span></span><a class="headerlink" href="#OpticalLattice.RadialFrequencySpec" title="Link to this definition">#</a></dt>
+<dd><p>in Hz, linear frequency, calculated from spectrum depth</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.SpaceList">
+<span class="sig-name descname"><span class="pre">SpaceList</span></span><a class="headerlink" href="#OpticalLattice.SpaceList" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.HamiltonianAmpModFourier1D">
+<span class="sig-name descname"><span class="pre">HamiltonianAmpModFourier1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">wf</span></em>, <em class="sig-param"><span class="pre">nMax</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.HamiltonianAmpModFourier1D" title="Link to this definition">#</a></dt>
+<dd><p>HAMILTONIANMOD Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeAll1D">
+<span class="sig-name descname"><span class="pre">computeAll1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">nq</span></em>, <em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeAll1D" title="Link to this definition">#</a></dt>
+<dd><p>COMPUTEALL1D Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeAmpModCoupling1D">
+<span class="sig-name descname"><span class="pre">computeAmpModCoupling1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeAmpModCoupling1D" title="Link to this definition">#</a></dt>
+<dd><p>computeAmpModCoupling1D Summary of this function goes here</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>q</strong></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeAxialFrequency">
+<span class="sig-name descname"><span class="pre">computeAxialFrequency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">depth</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeAxialFrequency" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeBand1D">
+<span class="sig-name descname"><span class="pre">computeBand1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeBand1D" title="Link to this definition">#</a></dt>
+<dd><p>Calculate Bloch state for quasimomentum q and band index n.</p>
+<p>q Sampling quasimomentum [p/hbar] in unit of 1/meter.
+n: Band index. Start from zero. So n = 0 means the s band.
+x: Optional. The sampling 1D spatial grids in unit of meter.
+E: Band energy given as a length(n) * length(q) matrix, where nmax
+is the band index cutoff = 2*(max(n)+1)+49. In Hz.
+Fjn: Bloch states in Fourier space. Fjn is a matrix of dimension
+nmax * length(n) * length(q). The first dimension denotes band indexes.
+phi: Bloch states in real space. If x is given, phi is a matrix of
+dimension length(x) * length(q) * length(n). If not, phi is a
+cell of function handles with dimension length(q) *
+length(n).
+u: the periodic part of phi.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeBandPopulation1D">
+<span class="sig-name descname"><span class="pre">computeBandPopulation1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">psicj</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeBandPopulation1D" title="Link to this definition">#</a></dt>
+<dd><p>Calculate band population for wavefunction psi.
+psicj: The wavefunctions. It is recommended to input the
+conjugate of psi. psicj is assumed to be a npsi * length(x)
+matrix, where npsi the number of wavefunctions we want to
+compute band population.
+n: Maximum band index. By default we calculate up to the d
+band.
+x: The sampling 1D spatial grids in unit of meter. Must be
+the same size as the wave function.
+pop: Output band population as a npsi * n+1 matrix.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeBandPopulationFourier1D">
+<span class="sig-name descname"><span class="pre">computeBandPopulationFourier1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">ucj</span></em>, <em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeBandPopulationFourier1D" title="Link to this definition">#</a></dt>
+<dd><p>Calculate band population for wavefunction u.
+ucj: The conjugate of the Fourier space wave function u.
+ucj is assumed to be a nu * nFourierComponent
+matrix, where nu the number of wavefunctions we want to
+compute band population.
+q: The sampling quasi-momentum in unit of 1/meter.
+n: Maximum band index. By default we calculate up to the d
+band.
+pop: Output band population as a nu * (n+1) * nq matrix.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeBerryConnection1D">
+<span class="sig-name descname"><span class="pre">computeBerryConnection1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeBerryConnection1D" title="Link to this definition">#</a></dt>
+<dd><p>COMPUTEBOCOUPLING1D Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeFloquetAmpMod1D">
+<span class="sig-name descname"><span class="pre">computeFloquetAmpMod1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">wf</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeFloquetAmpMod1D" title="Link to this definition">#</a></dt>
+<dd><p>COMPUTEFLOQUETAMPMOD1D Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeRadialFrequency">
+<span class="sig-name descname"><span class="pre">computeRadialFrequency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">depth</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeRadialFrequency" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeTransitionFrequency1D">
+<span class="sig-name descname"><span class="pre">computeTransitionFrequency1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">n1</span></em>, <em class="sig-param"><span class="pre">n2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeTransitionFrequency1D" title="Link to this definition">#</a></dt>
+<dd><p>Compute transition frequencies between Bloch states.
+q: Quasimomentum [p/hbar] in unit of 1/meter. q can be a 1 * N array
+n1: The band index 1. Start from zero. So n = 0 means the s band.
+n2: The band index 2.
+freq: The transition frequencies. If q is an array, freq is also an
+array with the same size.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeTransitionQuasiMomentum1D">
+<span class="sig-name descname"><span class="pre">computeTransitionQuasiMomentum1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">freq</span></em>, <em class="sig-param"><span class="pre">n1</span></em>, <em class="sig-param"><span class="pre">n2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeTransitionQuasiMomentum1D" title="Link to this definition">#</a></dt>
+<dd><p>Compute transition quasi-momentum between Bloch states for specific freq.
+q: Quasimomentum [p/hbar] in unit of 1/meter. q can be a 1 * N array
+n1: The band index 1. Start from zero. So n = 0 means the s band.
+n2: The band index 2.
+freq: The transition frequencies. If q is an array, freq is also an
+array with the same size.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.plotAmpModCoupling1D">
+<span class="sig-name descname"><span class="pre">plotAmpModCoupling1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">isPlotDiagonal</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.plotAmpModCoupling1D" title="Link to this definition">#</a></dt>
+<dd><p>PLOTAMPMODCOUPLING1D Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.plotBand1D">
+<span class="sig-name descname"><span class="pre">plotBand1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.plotBand1D" title="Link to this definition">#</a></dt>
+<dd><p>PLOTBAND1D Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.plotBandTransition1D">
+<span class="sig-name descname"><span class="pre">plotBandTransition1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">freq</span></em>, <em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.plotBandTransition1D" title="Link to this definition">#</a></dt>
+<dd><p>PLOTBANDTRANSITION1D Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.plotBerryConnection1D">
+<span class="sig-name descname"><span class="pre">plotBerryConnection1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">isPlotDiagonal</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.plotBerryConnection1D" title="Link to this definition">#</a></dt>
+<dd><p>PLOTAMPMODCOUPLING1D Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.removeGauge">
+<span class="sig-name descname"><span class="pre">removeGauge</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.removeGauge" title="Link to this definition">#</a></dt>
+<dd><p>REMOVEGAUGE Summary of this function goes here
+Detailed explanation goes here</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.spaceFunc">
+<span class="sig-name descname"><span class="pre">spaceFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.spaceFunc" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.updateIntensity">
+<span class="sig-name descname"><span class="pre">updateIntensity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.updateIntensity" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="atom.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Atom</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="trial.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Trial</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#laser">Laser</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#magneticfield">MagneticField</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#potential">Potential</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Xiao Chai
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, Xiao Chai.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
