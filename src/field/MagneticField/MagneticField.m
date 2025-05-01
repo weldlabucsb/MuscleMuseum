@@ -5,7 +5,7 @@ classdef MagneticField
     properties
         Bias double = zeros(3,1) %In Tesla.
         Gradient double = zeros(3,3) %[dBx/dx,dBx/dy,dBx/dz;dBy/dx,dBy/dy,dBy/dz;dBz/dx,dBz/dy,dBz/dz]. %In Tesla/meter
-        % Quadratic double = zeros(3,3,3) %not implemented.
+        Quadratic double = zeros(3,3,3) %not implemented.
         ArbitraryDistribution function_handle
     end
 
@@ -21,7 +21,7 @@ classdef MagneticField
             arguments
                 options.bias double = zeros(3,1)
                 options.gradient double = zeros(3,3)
-                % options.quadratic double = zeros(3,3,3)
+                options.quadratic double = zeros(3,3,3)
                 options.distribution function_handle = function_handle.empty
             end
             if ~isempty(options.distribution)
@@ -29,7 +29,7 @@ classdef MagneticField
             else
                 obj.Bias = options.bias;
                 obj.Gradient = options.gradient;
-                % obj.Quadratic = options.quadratic;
+                obj.Quadratic = options.quadratic;
             end
         end
 
@@ -48,14 +48,17 @@ classdef MagneticField
         function func = spaceFunc(obj)  
             bias = obj.Bias;
             grad = obj.Gradient;
-            % quad = obj.Quadratic;
+            quad = obj.Quadratic;
             if ~isempty(obj.ArbitraryDistribution)
                 func = obj.ArbitraryDistribution;
             else
                 func = @(r) sFunc(r);
             end
             function B = sFunc(r)
-                B = bias + grad*r;
+                B = bias + grad*r + ...
+                    [sum(r.*(squeeze(quad(1,:,:))*r),1);
+                    sum(r.*(squeeze(quad(2,:,:))*r),1);
+                    sum(r.*(squeeze(quad(3,:,:))*r),1)];
             end
         end
 

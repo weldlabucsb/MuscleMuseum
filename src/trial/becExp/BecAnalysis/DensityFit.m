@@ -5,6 +5,8 @@ classdef DensityFit < BecAnalysis
     properties
         FitMethod string = "BosonicGaussianFit1D"
         FitData
+        DensityLimX double = [0,1]
+        DensityLimY double = [0,1]
     end
 
     properties (SetAccess = protected)
@@ -48,6 +50,8 @@ classdef DensityFit < BecAnalysis
             becExp = obj.BecExp;
             nSub = becExp.Roi.NSub;
             nSub(nSub == 0) = 1;
+            obj.DensityLimX = [0,1];
+            obj.DensityLimY = [0,1];
 
             %% Initialize plots
             obj.Gui(1).initialize(becExp)
@@ -189,6 +193,18 @@ classdef DensityFit < BecAnalysis
                         case "BosonicGaussianFit1D"
                             fitData(1,ii,jj) = BosonicGaussianFit1D([xList,xRaw]);
                             fitData(2,ii,jj) = BosonicGaussianFit1D([yList,yRaw]);
+                    end
+                    if min(xRaw)<obj.DensityLimX(1)
+                        obj.DensityLimX(1) = min(xRaw);
+                    end
+                    if max(xRaw)>obj.DensityLimX(2)
+                        obj.DensityLimX(2) = max(xRaw);
+                    end
+                    if min(yRaw)<obj.DensityLimY(1)
+                        obj.DensityLimY(1) = min(yRaw);
+                    end
+                    if max(yRaw)>obj.DensityLimY(2)
+                        obj.DensityLimY(2) = max(yRaw);
                     end
                 end
             end

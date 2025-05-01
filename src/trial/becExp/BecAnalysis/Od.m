@@ -233,6 +233,10 @@ classdef Od < BecAnalysis
             ax.XTick = (tickSpace/2):tickSpace:(tickSpace*double(nRun)-tickSpace/2);
             ax.XTickLabel = string(obj.BecExp.ScannedParameterListSorted);
             set(ax,'box','off')
+            ax.Units = "pixels";
+            outerpos = ax.OuterPosition;
+            fig.Position(4) = fig.Position(3) * outerpos(4)/outerpos(3)*1.05;
+            ax.OuterPosition(2) = 0;
             
         end
 
