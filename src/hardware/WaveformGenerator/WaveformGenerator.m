@@ -13,7 +13,8 @@ classdef (Abstract) WaveformGenerator < Hardware
     %       OutputMode: Tells whether the AWG outputs the full waveform or
     %       turns off when the trigger is off, option is 'Normal' and
     %       'Gated', default 'Normal
-    %       IsOutput: A logical variable that describes 
+    %       IsOutput: A logical array that tells which of the NChannels are
+    %       enabled or not.
     %       OutputLoad: Tells whether the output load is infinite or 50ohm.
     %       Options are '50' and 'Infinity', default '50'.
     %       WaveformList: Cell that stores the waveformlist object for each
