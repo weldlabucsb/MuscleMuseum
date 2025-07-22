@@ -36,6 +36,8 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
         ImagePath {mustBeFolder} = "." %Folder location where to save the generated images
         ImagePrefix string = "run" %String prefix that describes how to name the images
         ImageFormat string = "tif" %Image format
+        NewRoi (1, 4) int32 %2x2 int array [ymin ymax xmin xmax]that sets the ROI of the images to be saved, ideally smaller than the max ROI
+        UseNewRoi logical = 0 %Logical value determining whether to use default ROI or use a smaller defined one.
     end
 
     properties (Dependent)
@@ -91,6 +93,26 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
             configFun(obj);
         end
 
+        function setCameraROI(obj, ROI)
+            % Sets NewROI property, sets UseNewROI property to true, and if enabled adjusts videoinput with new roi. 
+            % ROI is of the format [ymin ymax xmin xmax];
+            obj.NewRoi=ROI;
+            obj.UseNewRoi=1;
+            if ~isempty(obj.VideoInput)
+                obj.VideoInput.ROIPosition=[obj.NewRoi(3)-1 obj.NewRoi(4)-obj.NewRoi(3)+1 obj.NewRoi(1)-1 obj.NewRoi(2)-obj.NewRoi(1)+1];
+            end
+        end
+
+        function clearCameraROI(obj)
+            % Clears NewRoi property, sets UseNewROI property to false, and
+            % if enabled adjusts videoinput back to old roi.
+            obj.NewRoi=[1 obj.ImageSize(1) 1 obj.ImageSize(2)];
+            obj.UseNewRoi=0;
+            if ~isempty(obj.VideoInput)
+                obj.VideoInput.ROIPosition=[obj.NewRoi(3)-1 obj.NewRoi(4)-obj.NewRoi(3)+1 obj.NewRoi(1)-1 obj.NewRoi(2)-obj.NewRoi(1)+1];
+            end
+        end
+
         function setCallback(obj,callbackFunc)
             %Set camera callback function to be called when sufficient
             %images have been taken.
@@ -127,15 +149,25 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
         function imageDataKilled = killBadPixel(obj,imageData)
             %Takes an average of rows/collumns surrounding bad pixels and
             %replaces them.
-            if ~all(size(imageData,1,2) == obj.ImageSize)
+            if (~all(size(imageData,1,2) == obj.ImageSize)) && (~obj.UseNewRoi)
                 error("Image data size is wrong.")
             end
+
+            if (obj.UseNewRoi) && (~all(size(imageData,1,2)== [obj.NewRoi(4)-obj.NewRoi(3)+1 obj.NewRoi(2)-obj.NewRoi(1)+1]))
+                error("Image data size is wrong.")
+
+            end
+
             imageDataKilled = imageData;
             nDim = ndims(imageData);
             C=repmat({':'},1,nDim-2);
             bW = obj.BadWidth;
             if ~isempty(obj.BadRow)
                 bR = obj.BadRow;
+                if obj.UseNewRoi
+                    bR=bR-obj.NewRoi(3)+1;
+                    bR=bR(bR>0); % selects only positive values from adjusted array.
+                end
                 for ii = 1:numel(bR)
                     replace = (imageDataKilled(bR(ii)-bW-1,:,C{:})+imageDataKilled(bR(ii)+bW+1,:,C{:}))/2;
                     imageDataKilled(bR(ii)-bW:bR(ii)+bW,:,C{:}) = repmat(replace,2*bW + 1,1);
@@ -146,9 +178,14 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
                 end
             end
             if ~isempty(obj.BadColumn)
-                for ii = 1:numel(obj.BadColumn)
-                    replace = (imageDataKilled(:,obj.BadColumn(ii)-obj.BadWidth-1,C{:})+imageDataKilled(:,obj.BadColumn(ii)+obj.BadWidth+1,C{:}))/2;
-                    imageDataKilled(:,obj.BadColumn(ii)-obj.BadWidth : obj.BadColumn(ii)+obj.BadWidth,C{:}) = repmat(replace,1,2*obj.BadWidth + 1);
+                bC = obj.BadColumn;
+                if obj.UseNewRoi
+                    bC=bC-obj.NewRoi(1)+1;
+                    bC=bC(bC>0); % selects only positive values from adjusted array.
+                end
+                for ii = 1:numel(bC)
+                    replace = (imageDataKilled(:,bC(ii)-obj.BadWidth-1,C{:})+imageDataKilled(:,bC(ii)+obj.BadWidth+1,C{:}))/2;
+                    imageDataKilled(:,bC(ii)-obj.BadWidth : bC(ii)+obj.BadWidth,C{:}) = repmat(replace,1,2*obj.BadWidth + 1);
                 end
             end
         end
