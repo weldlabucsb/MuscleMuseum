@@ -27,6 +27,7 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
 
     properties (SetAccess = private,Transient)
         VideoInput %MATLAB camera connection object, class videoinput
+        ImageCount int32 =1 %counts number of images taken
     end
 
     properties
@@ -35,7 +36,7 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
         ImageGroupSize int32 %Specify the number of frames that must be acquired before we save the images
         ImagePath {mustBeFolder} = "." %Folder location where to save the generated images
         ImagePrefix string = "run" %String prefix that describes how to name the images
-        ImageFormat string = "tif" %Image format
+        ImageFormat string = ".tif" %Image format
         NewRoi (1, 4) int32 %2x2 int array [ymin ymax xmin xmax]that sets the ROI of the images to be saved, ideally smaller than the max ROI
         UseNewRoi logical = 0 %Logical value determining whether to use default ROI or use a smaller defined one.
     end
@@ -81,6 +82,7 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
                 error(msg)
             end
             obj.VideoInput = vid;
+            obj.ImageCount = 1;
         end
 
         function setCameraParameter(obj)
@@ -195,6 +197,15 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
             px = obj.PixelSize / obj.Magnification;
         end
 
+        function setDefaultCallback(obj)
+            % Sets default callback to videoinput object so that image is
+            % saved to ImagePath folder with Prefix and count in label when
+            % callback is triggered.
+            if ~isempty(obj.VideoInput)
+                obj.setCallback(@(src,evt) obj.saveImage(evt,src));
+            end
+        end
+
     end
     methods (Access = private, Hidden)
 
@@ -210,6 +221,46 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
             [~,ia,ib] = intersect(propList,fieldList);
             structcell = struct2cell(struct);
             set(obj,propList(ia)',structcell(ib)')
+        end
+
+        function saveImage(obj, ~, vid)
+            %Default callback function for saving images
+            NImages=obj.ImageGroupSize;
+            
+            %% Get data from camera
+            if ~isnumeric(vid)
+                mData = getdata(vid,NImages);
+            else
+                % This is for Andor
+                mData = vid;
+            end
+            
+            
+            for ii = 1:NImages
+                ImageLabel=obj.ImagePrefix+num2str(obj.ImageCount);
+                fullFilePath = strcat(obj.ImagePath, '\',  (ImageLabel + obj.ImageFormat));
+                if obj.ImageFormat == ".tif"
+                    t = Tiff(fullFilePath,'w');
+                    if obj.UseNewRoi
+                        setTag(t,'ImageWidth',double(obj.NewRoi(4)-obj.NewRoi(3)+1));
+                        setTag(t,'ImageLength',double(obj.NewRoi(2)-obj.NewRoi(1)+1));
+                    else
+                        setTag(t,'ImageWidth',double(obj.ImageSize(2)));
+                        setTag(t,'ImageLength',double(obj.ImageSize(1)));
+                    end
+                    setTag(t,'Photometric',Tiff.Photometric.MinIsBlack)
+                    setTag(t,'BitsPerSample',double(obj.BitsPerSample));
+                    setTag(t,'SamplesPerPixel',1);
+                    setTag(t,'Compression',Tiff.Compression.None);
+                    setTag(t,'PlanarConfiguration',Tiff.PlanarConfiguration.Chunky)
+                    setTag(t,'RowsPerStrip',1)
+                    write(t,mData(:,:,ii));
+                    close(t)
+                else
+                    imwrite(mData(:,:,ii), fullFilePath);
+                end
+                obj.ImageCount=obj.ImageCount+1;
+            end
         end
 
     end

@@ -14,6 +14,8 @@ classdef Pco < Acquisition
             obj@Acquisition(acqName);
             obj.CameraType = "Pco";
             obj.AdaptorName = "pcocameraadaptor_r2023a";
+            obj.ImageGroupSize= 3;
+            obj.ConfigFun=@(obj) obj.setCameraParameterAbsorption;
         end
 
         function setCameraParameterAbsorption(obj)
@@ -25,12 +27,11 @@ classdef Pco < Acquisition
             end
             vid = obj.VideoInput;
             vid.FramesPerTrigger = 1; %Set frames per trigger
-            vid.FramesAcquiredFcnCount = 3;
+            vid.FramesAcquiredFcnCount = obj.ImageGroupSize;
             vid.LoggingMode = 'memory'; %Set logging to memory
             src = getselectedsource(vid); %Create adaptor source
             src.TMTimestampMode = 'Binary'; %Set timestamp mode
             obj.IsExternalTriggered = true;
-            obj.ImageGroupSize = 3;
 
             triggerconfig(vid, 'hardware', '', 'ExternExposureStart'); %Configure trigger type and mode
             vid.TriggerRepeat = inf;
