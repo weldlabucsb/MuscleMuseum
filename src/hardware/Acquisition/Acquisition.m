@@ -90,7 +90,7 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
 
         function setCameraParameter(obj)
             %Set camera parameters using the predefined configuration
-            %functions.
+            %functions. Call after connectCamera but before startCamera.
             if isempty(obj.VideoInput)
                 error('Camera not connected. Try the "connectCamera" method first.')
             end
@@ -101,6 +101,7 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
         function setCameraROI(obj, ROI)
             % Sets NewROI property, sets UseNewROI property to true, and if enabled adjusts videoinput with new roi. 
             % ROI is of the format [ymin ymax xmin xmax];
+            % Call before startCamera, or before connectCamera for Andor.
             obj.HwRoi=ROI;
             obj.IsOverrideRoi=1;
             if ~isempty(obj.VideoInput)
@@ -113,11 +114,12 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
 
         function clearCameraROI(obj)
             % Clears NewRoi property, sets UseNewROI property to false, and
-            % if enabled adjusts videoinput back to old roi.
+            % if enabled adjusts videoinput ROIPosition property back to maximum ROI.
+            % Call before startCamera, or connectCamera for Andor.
             obj.HwRoi=[1 obj.ImageSize(1) 1 obj.ImageSize(2)];
             obj.IsOverrideRoi=0;
             if ~isempty(obj.VideoInput)
-                obj.VideoInput.ROIPosition=[obj.HwRoi(3)-1 obj.HwRoi(4)-obj.HwRoi(3)+1 obj.HwRoi(1)-1 obj.HwRoi(2)-obj.HwRoi(1)+1];
+                obj.VideoInput.ROIPosition=[(obj.HwRoi(3)-1) (obj.HwRoi(1)-1) (obj.HwRoi(4)-obj.HwRoi(3)+1)  (obj.HwRoi(2)-obj.HwRoi(1)+1)];
             end
         end
 

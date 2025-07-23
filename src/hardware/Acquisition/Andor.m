@@ -24,6 +24,7 @@ classdef Andor < Acquisition
             end
             obj@Acquisition(acqName);
             obj.CameraType = "Andor";
+            obj.ImageGroupSize=3;
         end
 
         function connectCamera(obj)
@@ -53,7 +54,9 @@ classdef Andor < Acquisition
             data.AcquisitionMode = "Absorption";
             data.ExposureTime = obj.ExposureTime;
             data.BitPerSample = obj.BitsPerSample;
-            obj.ImageGroupSize = 3;
+            data.ImageGroupSize = obj.ImageGroupSize;
+            data.HwRoi=obj.HwRoi;
+            data.IsOverrideRoi=obj.IsOverrideRoi;
             send(obj.WorkerQueue,data);
         end
 
@@ -113,7 +116,9 @@ classdef Andor < Acquisition
             isAcq = false;
             acqMode = "Absorption";
             bitPerSample = 16;
-
+            groupSize=3;
+            isOverrideRoi=0;
+            hwRoi=[0 0 0 0];
             while true
                 pause(0.1)
                 if ~isSet
@@ -134,17 +139,24 @@ classdef Andor < Acquisition
                         CheckWarning(ret);
                         [ret,XPixels, YPixels]=GetDetector;           %   Get the CCD size
                         CheckWarning(ret);
-                        [ret]=SetImage(1, 1, 1, XPixels, 1, YPixels); %   Set the image size
+                        if data.IsOverrideRoi
+                            [ret]=SetImage(1,1,data.HwRoi(3), data.HwRoi(4), data.HwRoi(1), data.HwRoi(2));
+                            isOverrideRoi=1;
+                            hwRoi=data.HwRoi;
+                        else
+                            [ret]=SetImage(1, 1, 1, XPixels, 1, YPixels); %   Set the image size
+                            isOverrideRoi=0;
+                        end
                         CheckWarning(ret);
                         [ret]=SetEMCCDGain(1);                        %   Set EMCCD gain
                         CheckWarning(ret);
                         bitPerSample = data.BitPerSample;
+                        groupSize=data.ImageGroupSize;
 
                         %% Set acquisition mode
                         switch data.AcquisitionMode
                             case "Absorption"
                                 acqMode = "Absorption";
-                                groupSize = 3;
 
                                 [ret]=SetAcquisitionMode(3);        %   Set acquisition mode; 3 for Kinetic Series
                                 CheckWarning(ret);
@@ -178,9 +190,19 @@ classdef Andor < Acquisition
                     if (lastIndex - firstIndex + 1) == groupSize
                         switch acqMode
                             case "Absorption"
-                                [~, mData, ~, ~] = GetImages(firstIndex, lastIndex, ...
-                                    prod([XPixels,YPixels,groupSize]));
-                                mData = reshape(mData, XPixels, YPixels, groupSize);
+                                if isOverrideRoi
+                                    sizex=hwRoi(4)-hwRoi(3)+1;
+                                    sizey=hwRoi(2)-hwRoi(1)+1;
+                                    [~, mData, ~, ~] = GetImages(firstIndex, lastIndex, ...
+                                        prod([sizex,sizey,groupSize]));
+                                    mData = reshape(mData, sizex, sizey, groupSize);
+                                else
+                                    [~, mData, ~, ~] = GetImages(firstIndex, lastIndex, ...
+                                        prod([XPixels,YPixels,groupSize]));
+                                    mData = reshape(mData, XPixels, YPixels, groupSize);
+                                end
+
+                                
                                 for ii = 1:groupSize
                                     mData(:,:,ii) = flip(transpose(mData(:,:,ii)),1);
                                 end
