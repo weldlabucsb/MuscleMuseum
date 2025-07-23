@@ -37,8 +37,8 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
         ImagePath {mustBeFolder} = "." %Folder location where to save the generated images
         ImagePrefix string = "run" %String prefix that describes how to name the images
         ImageFormat string = ".tif" %Image format
-        NewRoi (1, 4) double %2x2 int array [ymin ymax xmin xmax]that sets the ROI of the images to be saved, ideally smaller than the max ROI
-        UseNewRoi logical = 0 %Logical value determining whether to use default ROI or use a smaller defined one.
+        HwRoi (1, 4) double %2x2 int array [ymin ymax xmin xmax]that sets the ROI of the images to be saved, ideally smaller than the max ROI
+        IsOverrideRoi logical = 0 %Logical value determining whether to use default ROI or use a smaller defined one.
     end
 
     properties (Dependent)
@@ -83,8 +83,8 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
             end
             obj.VideoInput = vid;
             obj.ImageCount = 1;
-            if obj.UseNewRoi
-                obj.setCameraROI(obj.NewRoi);
+            if obj.IsOverrideRoi
+                obj.setCameraROI(obj.HwRoi);
             end
         end
 
@@ -101,12 +101,12 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
         function setCameraROI(obj, ROI)
             % Sets NewROI property, sets UseNewROI property to true, and if enabled adjusts videoinput with new roi. 
             % ROI is of the format [ymin ymax xmin xmax];
-            obj.NewRoi=ROI;
-            obj.UseNewRoi=1;
+            obj.HwRoi=ROI;
+            obj.IsOverrideRoi=1;
             if ~isempty(obj.VideoInput)
-                disp(obj.NewRoi);
-                disp([(obj.NewRoi(3)-1) (obj.NewRoi(1)-1) (obj.NewRoi(4)-obj.NewRoi(3)+1)  (obj.NewRoi(2)-obj.NewRoi(1)+1)]);
-                calcRoi=[(obj.NewRoi(3)-1) (obj.NewRoi(1)-1) (obj.NewRoi(4)-obj.NewRoi(3)+1)  (obj.NewRoi(2)-obj.NewRoi(1)+1)];
+                disp(obj.HwRoi);
+                disp([(obj.HwRoi(3)-1) (obj.HwRoi(1)-1) (obj.HwRoi(4)-obj.HwRoi(3)+1)  (obj.HwRoi(2)-obj.HwRoi(1)+1)]);
+                calcRoi=[(obj.HwRoi(3)-1) (obj.HwRoi(1)-1) (obj.HwRoi(4)-obj.HwRoi(3)+1)  (obj.HwRoi(2)-obj.HwRoi(1)+1)];
                 obj.VideoInput.ROIPosition=double(calcRoi);
             end
         end
@@ -114,10 +114,10 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
         function clearCameraROI(obj)
             % Clears NewRoi property, sets UseNewROI property to false, and
             % if enabled adjusts videoinput back to old roi.
-            obj.NewRoi=[1 obj.ImageSize(1) 1 obj.ImageSize(2)];
-            obj.UseNewRoi=0;
+            obj.HwRoi=[1 obj.ImageSize(1) 1 obj.ImageSize(2)];
+            obj.IsOverrideRoi=0;
             if ~isempty(obj.VideoInput)
-                obj.VideoInput.ROIPosition=[obj.NewRoi(3)-1 obj.NewRoi(4)-obj.NewRoi(3)+1 obj.NewRoi(1)-1 obj.NewRoi(2)-obj.NewRoi(1)+1];
+                obj.VideoInput.ROIPosition=[obj.HwRoi(3)-1 obj.HwRoi(4)-obj.HwRoi(3)+1 obj.HwRoi(1)-1 obj.HwRoi(2)-obj.HwRoi(1)+1];
             end
         end
 
@@ -158,11 +158,11 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
         function imageDataKilled = killBadPixel(obj,imageData)
             %Takes an average of rows/collumns surrounding bad pixels and
             %replaces them.
-            if (~all(size(imageData,1,2) == obj.ImageSize)) && (~obj.UseNewRoi)
+            if (~all(size(imageData,1,2) == obj.ImageSize)) && (~obj.IsOverrideRoi)
                 error("Image data size is wrong.")
             end
 
-            if (obj.UseNewRoi) && (~all(size(imageData,1,2)== [obj.NewRoi(4)-obj.NewRoi(3)+1 obj.NewRoi(2)-obj.NewRoi(1)+1]))
+            if (obj.IsOverrideRoi) && (~all(size(imageData,1,2)== [obj.HwRoi(4)-obj.HwRoi(3)+1 obj.HwRoi(2)-obj.HwRoi(1)+1]))
                 error("Image data size is wrong.")
 
             end
@@ -173,8 +173,8 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
             bW = obj.BadWidth;
             if ~isempty(obj.BadRow)
                 bR = obj.BadRow;
-                if obj.UseNewRoi
-                    bR=bR-obj.NewRoi(3)+1;
+                if obj.IsOverrideRoi
+                    bR=bR-obj.HwRoi(3)+1;
                     bR=bR(bR>0); % selects only positive values from adjusted array.
                 end
                 for ii = 1:numel(bR)
@@ -188,8 +188,8 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
             end
             if ~isempty(obj.BadColumn)
                 bC = obj.BadColumn;
-                if obj.UseNewRoi
-                    bC=bC-obj.NewRoi(1)+1;
+                if obj.IsOverrideRoi
+                    bC=bC-obj.HwRoi(1)+1;
                     bC=bC(bC>0); % selects only positive values from adjusted array.
                 end
                 for ii = 1:numel(bC)
@@ -250,9 +250,9 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
                 fullFilePath = strcat(obj.ImagePath, '\',  (ImageLabel + obj.ImageFormat));
                 if obj.ImageFormat == ".tif"
                     t = Tiff(fullFilePath,'w');
-                    if obj.UseNewRoi
-                        setTag(t,'ImageWidth',double(obj.NewRoi(4)-obj.NewRoi(3)+1));
-                        setTag(t,'ImageLength',double(obj.NewRoi(2)-obj.NewRoi(1)+1));
+                    if obj.IsOverrideRoi
+                        setTag(t,'ImageWidth',double(obj.HwRoi(4)-obj.HwRoi(3)+1));
+                        setTag(t,'ImageLength',double(obj.HwRoi(2)-obj.HwRoi(1)+1));
                     else
                         setTag(t,'ImageWidth',double(obj.ImageSize(2)));
                         setTag(t,'ImageLength',double(obj.ImageSize(1)));
