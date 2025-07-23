@@ -37,7 +37,7 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
         ImagePath {mustBeFolder} = "." %Folder location where to save the generated images
         ImagePrefix string = "run" %String prefix that describes how to name the images
         ImageFormat string = ".tif" %Image format
-        NewRoi (1, 4) int32 %2x2 int array [ymin ymax xmin xmax]that sets the ROI of the images to be saved, ideally smaller than the max ROI
+        NewRoi (1, 4) double %2x2 int array [ymin ymax xmin xmax]that sets the ROI of the images to be saved, ideally smaller than the max ROI
         UseNewRoi logical = 0 %Logical value determining whether to use default ROI or use a smaller defined one.
     end
 
@@ -83,6 +83,9 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
             end
             obj.VideoInput = vid;
             obj.ImageCount = 1;
+            if obj.UseNewRoi
+                obj.setCameraROI(obj.NewRoi);
+            end
         end
 
         function setCameraParameter(obj)
@@ -101,7 +104,10 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
             obj.NewRoi=ROI;
             obj.UseNewRoi=1;
             if ~isempty(obj.VideoInput)
-                obj.VideoInput.ROIPosition=[obj.NewRoi(3)-1 obj.NewRoi(4)-obj.NewRoi(3)+1 obj.NewRoi(1)-1 obj.NewRoi(2)-obj.NewRoi(1)+1];
+                disp(obj.NewRoi);
+                disp([(obj.NewRoi(3)-1) (obj.NewRoi(1)-1) (obj.NewRoi(4)-obj.NewRoi(3)+1)  (obj.NewRoi(2)-obj.NewRoi(1)+1)]);
+                calcRoi=[(obj.NewRoi(3)-1) (obj.NewRoi(1)-1) (obj.NewRoi(4)-obj.NewRoi(3)+1)  (obj.NewRoi(2)-obj.NewRoi(1)+1)];
+                obj.VideoInput.ROIPosition=double(calcRoi);
             end
         end
 
@@ -131,6 +137,7 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
                 error('Camera not connected. Try the "connectCamera" method first.')
             end
             vid = obj.VideoInput;
+            
             start(vid);
         end
 
@@ -229,12 +236,14 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
             
             %% Get data from camera
             if ~isnumeric(vid)
+                
                 mData = getdata(vid,NImages);
             else
                 % This is for Andor
                 mData = vid;
             end
             
+            disp(size(mData));
             
             for ii = 1:NImages
                 ImageLabel=obj.ImagePrefix+num2str(obj.ImageCount);
@@ -256,6 +265,7 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
                     setTag(t,'RowsPerStrip',1)
                     write(t,mData(:,:,ii));
                     close(t)
+                    disp(size(mData))
                 else
                     imwrite(mData(:,:,ii), fullFilePath);
                 end
