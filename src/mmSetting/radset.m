@@ -11,7 +11,11 @@ classdef radset < MmSetting
             %RAD Construct an instance of this class
             %   Detailed explanation goes here
             obj@MmSetting
-            obj.TableColumn = dictionary(["a","b","c"],["doubleMatrix","stringMatrix","logical"]);
+            columnName = ["a","b","d","f","rd"];
+            columnType = ["doubleMatrix","double","string","stringMatrix","logical"];
+            defaultValue = ["[1,2]","1","""asdf""","""asdf,dddd""","1"];
+            obj.TableColumn = dictionary(columnName,columnType);
+            obj.DefaultValue = dictionary(columnName,defaultValue);
         end
     end
 end
