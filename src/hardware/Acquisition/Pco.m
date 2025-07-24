@@ -1,8 +1,13 @@
 classdef Pco < Acquisition
+    % PCO Pco class
+    % Creates a subclass of the Acquisition class with properties specific
+    % to our PCO camera as well as explicit code to connect to and control
+    % this camera.
     methods
         function obj = Pco(acqName)
-            %KEYSIGHT Construct an instance of this class
-            %   Detailed explanation goes here
+            %PCO Construct an instance of this class
+            %   Creates an Acquisition object and saves the CameraType and
+            %   AdaptorName used to connect to the camera.
             arguments
                 acqName string
             end
@@ -13,7 +18,8 @@ classdef Pco < Acquisition
 
         function setCameraParameterAbsorption(obj)
             %Set camera parameters using the predefined configuration
-            %functions.
+            %functions. Assumes videoinput object has been created and
+            %modifies it to predefined settings.
             if isempty(obj.VideoInput)
                 error('Camera not connected. Try the "connectCamera" method first.')
             end

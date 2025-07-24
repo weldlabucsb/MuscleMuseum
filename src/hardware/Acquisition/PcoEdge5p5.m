@@ -1,4 +1,6 @@
 classdef PcoEdge5p5 < Pco
+    % PCOEDGE5P5 Subclass of the Pco and Acquisition class
+    % Adds additional parameters corresponding to the PcoEdge 5.5 camera.
     methods
         function obj = PcoEdge5p5(acqName)
             arguments
