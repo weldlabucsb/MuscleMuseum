@@ -1,7 +1,7 @@
 classdef BosonicBimodalFit1D < FitData1D
     % Thomas-Fermi condensate + thermal Gaussian
 
-    properties
+    properties (Constant)
         ScaleFactor double = 1.1  % Exclusion radius factor
     end
 
@@ -14,7 +14,7 @@ classdef BosonicBimodalFit1D < FitData1D
             
             obj.Func = fittype( ...
               ['A*((max(0,1-((x-x0)./R).^2))).^(3/2) + ', ...
-               'B*exp(-(x-xg).^2/(2*sg^2)) + C'], ...
+               'B*boseFunctionApprox(exp(-(x-xg).^2/(2*sg^2)),2.5) + C'], ...
               'independent','x', ...
               'coefficients',{'A','x0','R','B','xg','sg','C'});
         end
@@ -54,7 +54,7 @@ classdef BosonicBimodalFit1D < FitData1D
             x2 = x(mask2);   y2 = y(mask2);
 
             gaussType = fittype( ...
-              'B*exp(-(x-xg).^2/(2*sg^2)) + C', ...
+              'B*boseFunctionApprox(exp(-(x-xg).^2/(2*sg^2)),2.5) + C', ...
               'independent','x','coefficients',{'B','xg','sg','C'});
 
             opts2 = fitoptions(gaussType);
@@ -82,15 +82,6 @@ classdef BosonicBimodalFit1D < FitData1D
         end
 
         function obj = do(obj)
-            % Build fitoptions from guesses and solver tolerances
-            opts = fitoptions(obj.Func);
-            opts.StartPoint = obj.StartPoint;
-            opts.Lower      = obj.Lower;
-            opts.Upper      = obj.Upper;
-            opts.TolFun     = obj.TolFun;
-            opts.MaxFunEvals= obj.MaxFunEvals;
-            opts.MaxIter    = obj.MaxIter;
-
             % optional: down‐weight the TF core
             x = obj.RawData(:,1);
             y = obj.RawData(:,2);
@@ -100,7 +91,7 @@ classdef BosonicBimodalFit1D < FitData1D
             opts.Weights = w;
 
             % Execute the combined fit
-            [f, gof] = fit(x, y, obj.Func, opts);
+            [f, gof] = fit(x, y, obj.Func, obj.Option);
 
             obj.Result      = f;
             obj.Gof         = gof;
