@@ -37,6 +37,15 @@ classdef Pco < Acquisition
             vid.TriggerRepeat = inf;
             src.IO_1SignalPolarity = 'rising'; %Configure polarity of IO signal at trigger port
             src.ExposureTime_s = obj.ExposureTime;
+            if obj.IsOverrideRoi
+                calcRoi=[(obj.HwRoi(3)-1) (obj.HwRoi(1)-1) (obj.HwRoi(4)-obj.HwRoi(3)+1)  (obj.HwRoi(2)-obj.HwRoi(1)+1)];
+                % obj.VideoInput.ROIPosition=double(calcRoi);
+                src.H1HardwareROI_X_Offset=calcRoi(1);
+                src.H2HardwareROI_Width=calcRoi(3);
+                src.H4HardwareROI_Y_Offset=calcRoi(2);
+                src.H5HardwareROI_Height=calcRoi(4);
+
+            end
         end
 
         function setCameraROI(obj, ROI)
@@ -48,8 +57,8 @@ classdef Pco < Acquisition
             obj.HwRoi=ROI;
             obj.IsOverrideRoi=1;
             if ~isempty(obj.VideoInput)
-                disp(obj.HwRoi);
-                disp([(obj.HwRoi(3)-1) (obj.HwRoi(1)-1) (obj.HwRoi(4)-obj.HwRoi(3)+1)  (obj.HwRoi(2)-obj.HwRoi(1)+1)]);
+                % disp(obj.HwRoi);
+                % disp([(obj.HwRoi(3)-1) (obj.HwRoi(1)-1) (obj.HwRoi(4)-obj.HwRoi(3)+1)  (obj.HwRoi(2)-obj.HwRoi(1)+1)]);
                 calcRoi=[(obj.HwRoi(3)-1) (obj.HwRoi(1)-1) (obj.HwRoi(4)-obj.HwRoi(3)+1)  (obj.HwRoi(2)-obj.HwRoi(1)+1)];
                 % obj.VideoInput.ROIPosition=double(calcRoi);
                 source=getselectedsource(obj.VideoInput);
