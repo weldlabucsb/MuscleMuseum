@@ -273,6 +273,7 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
                 end
                 obj.ImageCount=obj.ImageCount+1;
             end
+            
         end
 
     end
