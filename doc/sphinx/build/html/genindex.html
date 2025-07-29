@@ -151,6 +151,7 @@
 <li class="toctree-l1"><a class="reference internal" href="intro/introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro/quick.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main/waveform.html">Waveform and WaveformList</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="api/index.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/atom.html">Atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/field.html">Field</a></li>
@@ -493,8 +494,6 @@ document.write(`
 </li>
       <li><a href="api/field.html#MagneticField.Bias">Bias (MagneticField attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/atom.html#OneJManifold.BiasDressedStateList">BiasDressedStateList() (OneJManifold method)</a>
 
       <ul>
@@ -503,6 +502,8 @@ document.write(`
         <li><a href="api/atom.html#TwoJManifoldDivalent.BiasDressedStateList">(TwoJManifoldDivalent method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/atom.html#OneJManifold.BiasDressedStateListTest">BiasDressedStateListTest() (OneJManifold method)</a>
 </li>
       <li><a href="api/field.html#MagneticField.BiasLu">BiasLu (MagneticField attribute)</a>
@@ -524,6 +525,10 @@ document.write(`
       <li><a href="api/misc.html#Constants.BohrRadius">BohrRadius (Constants attribute)</a>
 </li>
       <li><a href="api/misc.html#Constants.BoltzmannConstant">BoltzmannConstant (Constants attribute)</a>
+</li>
+      <li><a href="api/math.html#BosonicBimodalFit1D">BosonicBimodalFit1D (built-in class)</a>
+</li>
+      <li><a href="api/math.html#BosonicBimodalFit1D.BosonicBimodalFit1D">BosonicBimodalFit1D() (BosonicBimodalFit1D method)</a>
 </li>
       <li><a href="api/math.html#BosonicGaussianFit1D">BosonicGaussianFit1D (built-in class)</a>
 </li>
@@ -821,10 +826,10 @@ document.write(`
         <li><a href="api/field.html#OpticalTrap.Depth">(OpticalTrap attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/field.html#OpticalLattice.DepthKd">DepthKd (OpticalLattice attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/field.html#OpticalLattice.DepthLaser">DepthLaser (OpticalLattice attribute)</a>
 </li>
       <li><a href="api/field.html#OpticalLattice.DepthLu">DepthLu (OpticalLattice attribute)</a>
@@ -869,8 +874,12 @@ document.write(`
 </li>
       <li><a href="api/atom.html#Divalent.Divalent">Divalent() (Divalent method)</a>
 </li>
-      <li><a href="api/math.html#FitData1D.do">do() (FitData1D method)</a>
+      <li><a href="api/math.html#BosonicBimodalFit1D.do">do() (BosonicBimodalFit1D method)</a>
+
+      <ul>
+        <li><a href="api/math.html#FitData1D.do">(FitData1D method)</a>
 </li>
+      </ul></li>
       <li><a href="api/becexp.html#Od.doFringeRemoval">doFringeRemoval() (Od method)</a>
 </li>
       <li><a href="api/atom.html#TwoJManifold.DopplerTemperature">DopplerTemperature (TwoJManifold attribute)</a>
@@ -1121,10 +1130,10 @@ document.write(`
       </ul></li>
       <li><a href="api/math.html#ModulatedWaveform.getModulation">getModulation() (ModulatedWaveform method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/hardware.html#getPl">getPl() (built-in function)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/hardware.html#getScope">getScope() (built-in function)</a>
 </li>
       <li><a href="api/hardware.html#getWg">getWg() (built-in function)</a>
@@ -1139,9 +1148,13 @@ document.write(`
 </li>
       <li><a href="api/math.html#Roi.grid">grid() (Roi method)</a>
 </li>
-      <li><a href="api/math.html#BosonicGaussianFit1D.guessCoefficient">guessCoefficient() (BosonicGaussianFit1D method)</a>
+      <li><a href="api/math.html#BosonicBimodalFit1D.guessCoefficient">guessCoefficient() (BosonicBimodalFit1D method)</a>
 
       <ul>
+        <li><a href="api/math.html#BosonicGaussianFit1D.guessCoefficient">(BosonicGaussianFit1D method)</a>
+</li>
+        <li><a href="api/math.html#GaussianFit1D.guessCoefficient">(GaussianFit1D method)</a>
+</li>
         <li><a href="api/math.html#LinearFit1D.guessCoefficient">(LinearFit1D method)</a>
 </li>
         <li><a href="api/math.html#ParabolicFit1D.guessCoefficient">(ParabolicFit1D method)</a>
@@ -1969,13 +1982,15 @@ document.write(`
         <li><a href="api/math.html#PeriodicWaveform.Phase">(PeriodicWaveform attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/becexp.html#BecExp.PhaseLockAssociation">PhaseLockAssociation (BecExp attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/hardware.html#PhaseLockControlPanel">PhaseLockControlPanel (built-in application)</a>
 </li>
       <li><a href="api/math.html#ModulatedWaveform.PhaseModulation">PhaseModulation (ModulatedWaveform attribute)</a>
+</li>
+      <li><a href="api/becexp.html#Tof.PhaseSpaceDensity">PhaseSpaceDensity (Tof attribute)</a>
 </li>
       <li><a href="api/hardware.html#PicoScope">PicoScope (built-in class)</a>
 </li>
@@ -2349,6 +2364,8 @@ document.write(`
       </ul></li>
       <li><a href="api/field.html#OpticalPotential.ScalarPolarizabilityGround">ScalarPolarizabilityGround (OpticalPotential attribute)</a>
 </li>
+      <li><a href="api/math.html#BosonicBimodalFit1D.ScaleFactor">ScaleFactor (BosonicBimodalFit1D attribute)</a>
+</li>
       <li><a href="api/math.html#Waveform.Scan">Scan (Waveform attribute)</a>
 </li>
       <li><a href="api/trial.html#Trial.ScannedParameter">ScannedParameter (Trial attribute)</a>
@@ -2433,13 +2450,13 @@ document.write(`
         <li><a href="api/sim.html#SeSim1D.setConfigProperty">(SeSim1D method)</a>
 </li>
       </ul></li>
-      <li><a href="api/math.html#GaussianFit1D.setData">setData() (GaussianFit1D method)</a>
-</li>
       <li><a href="api/math.html#FitData.setDefaultOverride">setDefaultOverride() (FitData method)</a>
 </li>
-      <li><a href="api/math.html#BosonicGaussianFit1D.setFormula">setFormula() (BosonicGaussianFit1D method)</a>
+      <li><a href="api/math.html#BosonicBimodalFit1D.setFormula">setFormula() (BosonicBimodalFit1D method)</a>
 
       <ul>
+        <li><a href="api/math.html#BosonicGaussianFit1D.setFormula">(BosonicGaussianFit1D method)</a>
+</li>
         <li><a href="api/math.html#GaussianFit1D.setFormula">(GaussianFit1D method)</a>
 </li>
         <li><a href="api/math.html#LinearFit1D.setFormula">(LinearFit1D method)</a>
@@ -2515,10 +2532,10 @@ document.write(`
 </li>
       <li><a href="api/hardware.html#Scope.SineAmplitude">SineAmplitude (Scope attribute)</a>
 </li>
-      <li><a href="api/hardware.html#Scope.SineFit">SineFit (Scope attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/hardware.html#Scope.SineFit">SineFit (Scope attribute)</a>
+</li>
       <li><a href="api/math.html#SineFit1D">SineFit1D (built-in class)</a>
 </li>
       <li><a href="api/math.html#SineFit1D.SineFit1D">SineFit1D() (SineFit1D method)</a>
@@ -3202,7 +3219,7 @@ document.write(`
   <div class="footer-item">
     
 <p class="component-author">
-By Xiao Chai
+By Weld Lab
 </p>
 
   </div>
@@ -3212,7 +3229,7 @@ By Xiao Chai
 
   <p class="copyright">
     
-      © Copyright 2024, Xiao Chai.
+      © Copyright 2025, Weld Lab.
       <br/>
     
   </p>

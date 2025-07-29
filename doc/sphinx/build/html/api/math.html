@@ -152,6 +152,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro/introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../intro/quick.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../main/waveform.html">Waveform and WaveformList</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="atom.html">Atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="field.html">Field</a></li>
@@ -331,6 +332,47 @@ document.write(`
 <section id="fitdata">
 <h2>FitData<a class="headerlink" href="#fitdata" title="Link to this heading">#</a></h2>
 <dl class="mat class" id="module-src.math.FitData">
+<dt class="sig sig-object mat" id="BosonicBimodalFit1D">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BosonicBimodalFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BosonicBimodalFit1D" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a></p>
+<p>Thomas-Fermi condensate + thermal Gaussian</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="BosonicBimodalFit1D.BosonicBimodalFit1D">
+<span class="sig-name descname"><span class="pre">BosonicBimodalFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BosonicBimodalFit1D.BosonicBimodalFit1D" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="BosonicBimodalFit1D.ScaleFactor">
+<span class="sig-name descname"><span class="pre">ScaleFactor</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">1.1</span></em><a class="headerlink" href="#BosonicBimodalFit1D.ScaleFactor" title="Link to this definition">#</a></dt>
+<dd><p>Exclusion radius factor</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="BosonicBimodalFit1D.do">
+<span class="sig-name descname"><span class="pre">do</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BosonicBimodalFit1D.do" title="Link to this definition">#</a></dt>
+<dd><p>optional: down‐weight the TF core</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BosonicBimodalFit1D.guessCoefficient">
+<span class="sig-name descname"><span class="pre">guessCoefficient</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BosonicBimodalFit1D.guessCoefficient" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BosonicBimodalFit1D.setFormula">
+<span class="sig-name descname"><span class="pre">setFormula</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BosonicBimodalFit1D.setFormula" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="mat class">
 <dt class="sig sig-object mat" id="BosonicGaussianFit1D">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BosonicGaussianFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BosonicGaussianFit1D" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a></p>
@@ -566,8 +608,8 @@ Detailed explanation goes here</p>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
-<dt class="sig sig-object mat" id="GaussianFit1D.setData">
-<span class="sig-name descname"><span class="pre">setData</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GaussianFit1D.setData" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object mat" id="GaussianFit1D.guessCoefficient">
+<span class="sig-name descname"><span class="pre">guessCoefficient</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GaussianFit1D.guessCoefficient" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat method">
@@ -1425,67 +1467,77 @@ Detailed explanation goes here</p>
 <dt class="sig sig-object mat" id="Waveform">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Waveform</span></span><a class="headerlink" href="#Waveform" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
-<p>WAVEFORM Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a> generates and stores waveforms. By definition, a
+waveform can refer to either a function of time, or a time-sequence of
+samples. The definition of a <a class="reference internal" href="#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a> is given by the output
+of the <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code>, as a function handle, which takes a time
+array as the argument. Every concrete subclass of <a class="reference internal" href="#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a>
+must define a <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code> method. The samples of the
+<a class="reference internal" href="#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a> is then calculated whenever <a class="reference internal" href="#Waveform.Sample" title="Waveform.Sample"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Sample</span></code></a> is
+called, based on the <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code> and the other paramters.</p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Waveform.Waveform">
 <span class="sig-name descname"><span class="pre">Waveform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Waveform.Waveform" title="Link to this definition">#</a></dt>
-<dd><p>WAVEFORM Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct an instance of this class</p>
 </dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="Waveform.Duration">
 <span class="sig-name descname"><span class="pre">Duration</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBeNonnegative}</span> <span class="pre">=</span> <span class="pre">0.1</span></em><a class="headerlink" href="#Waveform.Duration" title="Link to this definition">#</a></dt>
-<dd><p>How long of the waveform, in s</p>
+<dd><p>In seconds</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Waveform.EndTime">
 <span class="sig-name descname"><span class="pre">EndTime</span></span><a class="headerlink" href="#Waveform.EndTime" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Dependent. on <a class="reference internal" href="#Waveform.StartTime" title="Waveform.StartTime"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StartTime</span></code></a> and <a class="reference internal" href="#Waveform.Duration" title="Waveform.Duration"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Duration</span></code></a></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Waveform.NSample">
 <span class="sig-name descname"><span class="pre">NSample</span></span><a class="headerlink" href="#Waveform.NSample" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Dependent on <a class="reference internal" href="#Waveform.SamplingRate" title="Waveform.SamplingRate"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">SamplingRate</span></code></a> and <a class="reference internal" href="#Waveform.Duration" title="Waveform.Duration"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Duration</span></code></a></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Waveform.Sample">
 <span class="sig-name descname"><span class="pre">Sample</span></span><a class="headerlink" href="#Waveform.Sample" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Dependent on <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code>, <a class="reference internal" href="#Waveform.StartTime" title="Waveform.StartTime"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StartTime</span></code></a>, <a class="reference internal" href="#Waveform.TimeStep" title="Waveform.TimeStep"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TimeStep</span></code></a>, and <a class="reference internal" href="#Waveform.EndTime" title="Waveform.EndTime"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">EndTime</span></code></a></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Waveform.SamplingRate">
 <span class="sig-name descname"><span class="pre">SamplingRate</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBePositive}</span> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#Waveform.SamplingRate" title="Link to this definition">#</a></dt>
-<dd><p>In Hz</p>
+<dd><p>In Hertz</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Waveform.Scan">
 <span class="sig-name descname"><span class="pre">Scan</span></span><em class="property"> <span class="pre">table</span> <span class="pre">=</span> <span class="pre">table(string.empty,string.empty,'VariableNames',{'ParameterName','VariableName'})</span></em><a class="headerlink" href="#Waveform.Scan" title="Link to this definition">#</a></dt>
-<dd><p>For scanning in Hardware control</p>
+<dd><p>For scanning parameters in Hardware control panel</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Waveform.StartTime">
 <span class="sig-name descname"><span class="pre">StartTime</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#Waveform.StartTime" title="Link to this definition">#</a></dt>
-<dd><p>Start time, in s</p>
+<dd><p>In seconds</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Waveform.TimeStep">
 <span class="sig-name descname"><span class="pre">TimeStep</span></span><a class="headerlink" href="#Waveform.TimeStep" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Dependent on <a class="reference internal" href="#Waveform.SamplingRate" title="Waveform.SamplingRate"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">SamplingRate</span></code></a></p>
+</dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Waveform.plot">
 <span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Waveform.plot" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Plot and render the waveform using the given sampling rate</p>
+</dd></dl>
 
 </dd>
 </dl>
@@ -1849,7 +1901,7 @@ Detailed explanation goes here</p>
   <div class="footer-item">
     
 <p class="component-author">
-By Xiao Chai
+By Weld Lab
 </p>
 
   </div>
@@ -1859,7 +1911,7 @@ By Xiao Chai
 
   <p class="copyright">
     
-      © Copyright 2024, Xiao Chai.
+      © Copyright 2025, Weld Lab.
       <br/>
     
   </p>
