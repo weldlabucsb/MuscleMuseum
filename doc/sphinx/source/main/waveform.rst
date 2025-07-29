@@ -53,7 +53,7 @@ Alternatively, we can use the built-in dependent property :attr:`Sample` and the
     sample = sw.Sample; %call the dependent property to calculate the samples
     sw.plot %plot the waveform using the plot method
 
-In order to handle different types of waveforms, we include a few abstract subclasses of :class:`waveform`, namely 
+In order to handle different types of waveforms, we include a few abstract subclasses of :class:`Waveform`, namely 
 :class:`PeriodicWaveform`, :class:`PartialPeriodicWaveform`, :class:`ModulatedWaveform`, and :class:`RandomWaveform`. 
 Their inheritance relationship is shown in the following class diagram:
 
