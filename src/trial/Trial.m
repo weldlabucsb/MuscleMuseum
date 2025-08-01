@@ -8,6 +8,7 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
         NRun int32 = 1
         ScannedParameter string = "dummy"
         ScannedParameterUnit string = "V"
+        Is2dScan logical = false
     end
 
     properties (SetAccess = private)

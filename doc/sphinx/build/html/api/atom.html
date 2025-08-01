@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,13 +40,15 @@
     <script src="../_static/documentation_options.js?v=e1a75a79"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/atom';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Field" href="field.html" />
-    <link rel="prev" title="API" href="index.html" />
+    <link rel="prev" title="TwoAtom" href="atom/TwoAtom.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -155,6 +158,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../main/waveform.html">Waveform and WaveformList</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="atom/index.html">Atom</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="atom/Atom.html">Atom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atom/Alkali.html">Alkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atom/Divalent.html">Divalent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atom/TwoAtom.html">TwoAtom</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="field.html">Field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="trial.html">Trial</a></li>
@@ -207,6 +217,53 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/api/atom.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
 
 
 
@@ -334,9 +391,9 @@ document.write(`
 <span id="id1"></span><h2>Atom<a class="headerlink" href="#module-src.atom.Atom" title="Link to this heading">#</a></h2>
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Alkali">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Alkali</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atomName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Alkali" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a></p>
-<p><a class="reference internal" href="#Alkali" title="Alkali"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Alkali</span></code></a> deals with Alkali atoms’ data and calculations. When
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Alkali</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atomName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/Atom/Alkali.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Alkali" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="atom/Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a></p>
+<p><a class="reference internal" href="atom/Alkali.html#Alkali" title="Alkali"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Alkali</span></code></a> deals with Alkali atoms’ data and calculations. When
 constructed, it calculates some <a class="reference internal" href="#AtomManifold" title="AtomManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">AtomManifold</span></code></a> and transition
 properties, e.g. D1, D2 structures, Cycling and repumping transition
 prameters.</p>
@@ -446,9 +503,9 @@ prameters.</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Atom">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Atom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atomName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Atom" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Atom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atomName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/Atom/Atom.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Atom" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">dynamicprops</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.Heterogeneous</span></code></p>
-<p><a class="reference internal" href="#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a> stores information about alkali/divalent atoms and
+<p><a class="reference internal" href="atom/Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a> stores information about alkali/divalent atoms and
 calculates the atomic structure. This class is based on the
 well-established python package, <a class="reference external" href="https://arc-alkali-rydberg-calculator.readthedocs.io/en/latest/">ARC (Alkali.ne Rydberg Calculator)</a>.
 Most (but not all) of the atomic data are inherited from the ARC
@@ -466,10 +523,10 @@ to define, e.g., the transition matrix elements.</p>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Atom.Atom">
 <span class="sig-name descname"><span class="pre">Atom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atomName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Atom.Atom" title="Link to this definition">#</a></dt>
-<dd><p>When an <a class="reference internal" href="#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a> is constructed, it first imports the
+<dd><p>When an <a class="reference internal" href="atom/Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a> is constructed, it first imports the
 corresponding ARC object using atomName. It then write the ARC
 objest’s properties into its own properties. The ArcObj (ARC
-atom object) is also saved as a property of an <a class="reference internal" href="#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a>
+atom object) is also saved as a property of an <a class="reference internal" href="atom/Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a>
 object for its later uses. Finally, it creates a folder for
 saving the pre-calcualted atomic data.</p>
 <dl class="field-list simple">
@@ -509,13 +566,13 @@ saving the pre-calcualted atomic data.</p>
 <dt class="sig sig-object mat" id="Atom.loadobj">
 <em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">loadobj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">s</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Atom.loadobj" title="Link to this definition">#</a></dt>
 <dd><p>When the object is loaded, reconstruct it using
-<a class="reference internal" href="#Atom.Type" title="Atom.Type"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Atom.Type</span></code></a> and <a class="reference internal" href="#Atom.Name" title="Atom.Name"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Atom.Name</span></code></a></p>
+<a class="reference internal" href="atom/Atom.html#Atom.Type" title="Atom.Type"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Atom.Type</span></code></a> and <a class="reference internal" href="atom/Atom.html#Atom.Name" title="Atom.Name"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Atom.Name</span></code></a></p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Atom.saveobj">
 <span class="sig-name descname"><span class="pre">saveobj</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Atom.saveobj" title="Link to this definition">#</a></dt>
-<dd><p>Only save <a class="reference internal" href="#Atom.Type" title="Atom.Type"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Atom.Type</span></code></a> and <a class="reference internal" href="#Atom.Name" title="Atom.Name"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Atom.Name</span></code></a> into files.</p>
+<dd><p>Only save <a class="reference internal" href="atom/Atom.html#Atom.Type" title="Atom.Type"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Atom.Type</span></code></a> and <a class="reference internal" href="atom/Atom.html#Atom.Name" title="Atom.Name"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Atom.Name</span></code></a> into files.</p>
 </dd></dl>
 
 </dd>
@@ -525,8 +582,8 @@ saving the pre-calcualted atomic data.</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Divalent">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Divalent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atomName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Divalent" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a></p>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Divalent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atomName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/Atom/Divalent.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Divalent" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="atom/Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a></p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
@@ -562,7 +619,7 @@ saving the pre-calcualted atomic data.</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="TwoAtom">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TwoAtom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atomName1</span></em>, <em class="sig-param"><span class="pre">atomName2</span></em>, <em class="sig-param"><span class="pre">manifoldName1</span></em>, <em class="sig-param"><span class="pre">manifoldName2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoAtom" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TwoAtom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atomName1</span></em>, <em class="sig-param"><span class="pre">atomName2</span></em>, <em class="sig-param"><span class="pre">manifoldName1</span></em>, <em class="sig-param"><span class="pre">manifoldName2</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/Atom/TwoAtom.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TwoAtom" title="Link to this definition">#</a></dt>
 <dd><p>TWOATOM Summary of this class goes here
 Detailed explanation goes here</p>
 <div class="members docutils container">
@@ -611,7 +668,7 @@ Detailed explanation goes here</p>
 <h2>Atom Manifold<a class="headerlink" href="#atom-manifold" title="Link to this heading">#</a></h2>
 <dl class="mat class" id="module-src.atom.AtomManifold">
 <dt class="sig sig-object mat" id="AtomManifold">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">AtomManifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AtomManifold" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">AtomManifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/AtomManifold/AtomManifold.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#AtomManifold" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.Heterogeneous</span></code></p>
 <p>TRANSITION Summary of this class goes here
 Detailed explanation goes here</p>
@@ -680,7 +737,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="OneFManifold">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">OneFManifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">l</span></em>, <em class="sig-param"><span class="pre">j</span></em>, <em class="sig-param"><span class="pre">f</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OneFManifold" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">OneFManifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">l</span></em>, <em class="sig-param"><span class="pre">j</span></em>, <em class="sig-param"><span class="pre">f</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/AtomManifold/OneFManifold.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OneFManifold" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#AtomManifold" title="AtomManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">AtomManifold</span></code></a></p>
 <p>TWOJ Summary of this class goes here
 Detailed explanation goes here</p>
@@ -757,7 +814,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="OneJManifold">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">OneJManifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">l</span></em>, <em class="sig-param"><span class="pre">j</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OneJManifold" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">OneJManifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">l</span></em>, <em class="sig-param"><span class="pre">j</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/AtomManifold/OneJManifold.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OneJManifold" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#AtomManifold" title="AtomManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">AtomManifold</span></code></a></p>
 <p>TWOJ Summary of this class goes here
 Detailed explanation goes here</p>
@@ -875,7 +932,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="TwoJManifold">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TwoJManifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">nG</span></em>, <em class="sig-param"><span class="pre">lG</span></em>, <em class="sig-param"><span class="pre">jG</span></em>, <em class="sig-param"><span class="pre">nE</span></em>, <em class="sig-param"><span class="pre">lE</span></em>, <em class="sig-param"><span class="pre">jE</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TwoJManifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">nG</span></em>, <em class="sig-param"><span class="pre">lG</span></em>, <em class="sig-param"><span class="pre">jG</span></em>, <em class="sig-param"><span class="pre">nE</span></em>, <em class="sig-param"><span class="pre">lE</span></em>, <em class="sig-param"><span class="pre">jE</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/AtomManifold/TwoJManifold.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TwoJManifold" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#AtomManifold" title="AtomManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">AtomManifold</span></code></a></p>
 <p>TWOJ Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1101,7 +1158,7 @@ D line Data.</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="TwoJManifoldDivalent">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TwoJManifoldDivalent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">nG</span></em>, <em class="sig-param"><span class="pre">lG</span></em>, <em class="sig-param"><span class="pre">jG</span></em>, <em class="sig-param"><span class="pre">sG</span></em>, <em class="sig-param"><span class="pre">nE</span></em>, <em class="sig-param"><span class="pre">lE</span></em>, <em class="sig-param"><span class="pre">jE</span></em>, <em class="sig-param"><span class="pre">sE</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifoldDivalent" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TwoJManifoldDivalent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">nG</span></em>, <em class="sig-param"><span class="pre">lG</span></em>, <em class="sig-param"><span class="pre">jG</span></em>, <em class="sig-param"><span class="pre">sG</span></em>, <em class="sig-param"><span class="pre">nE</span></em>, <em class="sig-param"><span class="pre">lE</span></em>, <em class="sig-param"><span class="pre">jE</span></em>, <em class="sig-param"><span class="pre">sE</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/AtomManifold/TwoJManifoldDivalent.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TwoJManifoldDivalent" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#AtomManifold" title="AtomManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">AtomManifold</span></code></a></p>
 <p>TWOJ Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1317,55 +1374,55 @@ D line Data.</p>
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
 <dl class="mat function" id="module-src.atom.func">
 <dt class="sig sig-object mat" id="angularMomentumList">
-<span class="sig-name descname"><span class="pre">angularMomentumList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">j</span></em><span class="sig-paren">)</span><a class="headerlink" href="#angularMomentumList" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">angularMomentumList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">j</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/func/angularMomentumList.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#angularMomentumList" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="getAtom">
-<span class="sig-name descname"><span class="pre">getAtom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atomName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#getAtom" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">getAtom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atomName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/func/getAtom.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#getAtom" title="Link to this definition">#</a></dt>
 <dd><p>GETATOM Summary of this function goes here
 Detailed explanation goes here</p>
 </dd></dl>
 
 <dl class="mat script">
 <dt class="sig sig-object mat" id="lithiumDME">
-<span class="sig-name descname"><span class="pre">lithiumDME</span></span><a class="headerlink" href="#lithiumDME" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">lithiumDME</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/func/lithiumDME.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lithiumDME" title="Link to this definition">#</a></dt>
 <dd><p>…</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="magneticAngularMomentum">
-<span class="sig-name descname"><span class="pre">magneticAngularMomentum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">j</span></em><span class="sig-paren">)</span><a class="headerlink" href="#magneticAngularMomentum" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">magneticAngularMomentum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">j</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/func/magneticAngularMomentum.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#magneticAngularMomentum" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="saveAtom">
-<span class="sig-name descname"><span class="pre">saveAtom</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#saveAtom" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">saveAtom</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/func/saveAtom.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#saveAtom" title="Link to this definition">#</a></dt>
 <dd><p>SAVEATOMDATA Summary of this function goes here
 Detailed explanation goes here</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="spinMatrices">
-<span class="sig-name descname"><span class="pre">spinMatrices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">j</span></em><span class="sig-paren">)</span><a class="headerlink" href="#spinMatrices" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">spinMatrices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">j</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/func/spinMatrices.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinMatrices" title="Link to this definition">#</a></dt>
 <dd><p>SPINMATRICES Summary of this function goes here
 Detailed explanation goes here</p>
 </dd></dl>
 
 <dl class="mat script">
 <dt class="sig sig-object mat" id="strontiumDME">
-<span class="sig-name descname"><span class="pre">strontiumDME</span></span><a class="headerlink" href="#strontiumDME" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">strontiumDME</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/func/strontiumDME.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#strontiumDME" title="Link to this definition">#</a></dt>
 <dd><p>…</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="totalAngularMomentum">
-<span class="sig-name descname"><span class="pre">totalAngularMomentum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">j1</span></em>, <em class="sig-param"><span class="pre">j2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#totalAngularMomentum" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">totalAngularMomentum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">j1</span></em>, <em class="sig-param"><span class="pre">j2</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/func/totalAngularMomentum.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#totalAngularMomentum" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="uncoupledSpinBasis">
-<span class="sig-name descname"><span class="pre">uncoupledSpinBasis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">j1</span></em>, <em class="sig-param"><span class="pre">mj1</span></em>, <em class="sig-param"><span class="pre">j2</span></em>, <em class="sig-param"><span class="pre">mj2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#uncoupledSpinBasis" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">uncoupledSpinBasis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">j1</span></em>, <em class="sig-param"><span class="pre">mj1</span></em>, <em class="sig-param"><span class="pre">j2</span></em>, <em class="sig-param"><span class="pre">mj2</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/func/uncoupledSpinBasis.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#uncoupledSpinBasis" title="Link to this definition">#</a></dt>
 <dd><p>uncoupledSpinBasis Convert coupled spin basis to uncoupled.
 j1 and j2 couple to get j3. Get the uncoupled angular
 momentum spin eigen-basis <a href="#id2"><span class="problematic" id="id3">|</span></a>j1,mj1,j2,mj2&gt; under the j3 basis <a href="#id4"><span class="problematic" id="id5">|</span></a>j3,mj3&gt;</p>
@@ -1373,14 +1430,14 @@ momentum spin eigen-basis <a href="#id2"><span class="problematic" id="id3">|</s
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="uncoupledSpinBasisTransformation">
-<span class="sig-name descname"><span class="pre">uncoupledSpinBasisTransformation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">j1</span></em>, <em class="sig-param"><span class="pre">j2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#uncoupledSpinBasisTransformation" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">uncoupledSpinBasisTransformation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">j1</span></em>, <em class="sig-param"><span class="pre">j2</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/func/uncoupledSpinBasisTransformation.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#uncoupledSpinBasisTransformation" title="Link to this definition">#</a></dt>
 <dd><p>Transform the basis from the coupled spin basis to the uncoupled
 spin basis</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="uncoupledSpinMatrices">
-<span class="sig-name descname"><span class="pre">uncoupledSpinMatrices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">j1</span></em>, <em class="sig-param"><span class="pre">j2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#uncoupledSpinMatrices" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">uncoupledSpinMatrices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">j1</span></em>, <em class="sig-param"><span class="pre">j2</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/func/uncoupledSpinMatrices.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#uncoupledSpinMatrices" title="Link to this definition">#</a></dt>
 <dd><p>j1 and j2 couple to get j3. Get the uncoupled angular
 momentum spin matrices under the j3 basis</p>
 </dd></dl>
@@ -1400,12 +1457,12 @@ momentum spin matrices under the j3 basis</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="index.html"
+       href="atom/TwoAtom.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">API</p>
+        <p class="prev-next-title">TwoAtom</p>
       </div>
     </a>
     <a class="right-next"

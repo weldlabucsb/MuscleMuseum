@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=e1a75a79"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/field';</script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -154,6 +157,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../main/waveform.html">Waveform and WaveformList</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="atom/index.html">Atom</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="atom/Atom.html">Atom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atom/Alkali.html">Alkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atom/Divalent.html">Divalent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atom/TwoAtom.html">TwoAtom</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="atom.html">Atom</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="trial.html">Trial</a></li>
@@ -206,6 +216,53 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/api/field.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
 
 
 
@@ -333,7 +390,7 @@ document.write(`
 <h2>Laser<a class="headerlink" href="#laser" title="Link to this heading">#</a></h2>
 <dl class="mat class" id="module-src.field.Laser">
 <dt class="sig sig-object mat" id="GaussianBeam">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">GaussianBeam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options1</span></em>, <em class="sig-param"><span class="pre">options2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#GaussianBeam" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">GaussianBeam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options1</span></em>, <em class="sig-param"><span class="pre">options2</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/field/Laser/GaussianBeam.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GaussianBeam" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a></p>
 <p>PLANEWAVE Summary of this class goes here
 Detailed explanation goes here</p>
@@ -376,7 +433,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Laser">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Laser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Laser" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Laser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/field/Laser/Laser.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Laser" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.Heterogeneous</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
 <p>Specify the laser parameters.</p>
 <div class="members docutils container">
@@ -510,7 +567,7 @@ Detailed explanation goes here</p>
 <h2>MagneticField<a class="headerlink" href="#magneticfield" title="Link to this heading">#</a></h2>
 <dl class="mat class" id="module-src.field.MagneticField">
 <dt class="sig sig-object mat" id="MagneticField">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">MagneticField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MagneticField" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">MagneticField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/field/MagneticField/MagneticField.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MagneticField" title="Link to this definition">#</a></dt>
 <dd><p>MAGFIELD Summary of this class goes here
 Detailed explanation goes here</p>
 <div class="members docutils container">
@@ -578,7 +635,7 @@ Detailed explanation goes here</p>
 <h2>Potential<a class="headerlink" href="#potential" title="Link to this heading">#</a></h2>
 <dl class="mat class" id="module-src.field.Potential">
 <dt class="sig sig-object mat" id="MagneticPotential">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">MagneticPotential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">magneticField</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MagneticPotential" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">MagneticPotential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">magneticField</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/field/Potential/MagneticPotential.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MagneticPotential" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Potential" title="Potential"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Potential</span></code></a>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.Heterogeneous</span></code></p>
 <p>OPTICALPOTENTIAL Summary of this class goes here
 Detailed explanation goes here</p>
@@ -630,7 +687,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="OpticalLattice">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">OpticalLattice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">OpticalLattice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/field/Potential/OpticalLattice.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpticalLattice" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#OpticalPotential" title="OpticalPotential"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OpticalPotential</span></code></a></p>
 <p>OPTICALLATTICE Summary of this class goes here
 Detailed explanation goes here</p>
@@ -976,7 +1033,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="OpticalPotential">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">OpticalPotential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalPotential" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">OpticalPotential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/field/Potential/OpticalPotential.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpticalPotential" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Potential" title="Potential"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Potential</span></code></a>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.Heterogeneous</span></code></p>
 <p>OPTICALPOTENTIAL Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1030,7 +1087,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="OpticalTrap">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">OpticalTrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalTrap" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">OpticalTrap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/field/Potential/OpticalTrap.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpticalTrap" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#OpticalPotential" title="OpticalPotential"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OpticalPotential</span></code></a></p>
 <p>OPTICALTRAP Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1069,7 +1126,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Potential">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Potential" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/field/Potential/Potential.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Potential" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
 <p>POTENTIAL Summary of this class goes here
 Detailed explanation goes here</p>

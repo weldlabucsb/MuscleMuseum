@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=e1a75a79"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/trial';</script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -154,6 +157,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../main/waveform.html">Waveform and WaveformList</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="atom/index.html">Atom</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="atom/Atom.html">Atom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atom/Alkali.html">Alkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atom/Divalent.html">Divalent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atom/TwoAtom.html">TwoAtom</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="atom.html">Atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="field.html">Field</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Trial</a></li>
@@ -206,6 +216,53 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/api/trial.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
 
 
 
@@ -332,7 +389,7 @@ document.write(`
 <h2>Trial<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Trial">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Trial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Trial" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Trial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/Trial.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Trial" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.SetGetExactNames</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">dynamicprops</span></code></p>
 <p>Trial Summary of this class goes here
 Detailed explanation goes here</p>
@@ -358,6 +415,11 @@ Detailed explanation goes here</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Trial.Description">
 <span class="sig-name descname"><span class="pre">Description</span></span><em class="property"> <span class="pre">string</span> <span class="pre">=</span> <span class="pre">&quot;This</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">test</span> <span class="pre">trial.&quot;</span></em><a class="headerlink" href="#Trial.Description" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Trial.Is2dScan">
+<span class="sig-name descname"><span class="pre">Is2dScan</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">false</span></em><a class="headerlink" href="#Trial.Is2dScan" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat attribute">
@@ -441,7 +503,7 @@ Detailed explanation goes here</p>
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
 <dl class="mat function" id="module-src.trial.func">
 <dt class="sig sig-object mat" id="deleteTrial">
-<span class="sig-name descname"><span class="pre">deleteTrial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">conn</span></em>, <em class="sig-param"><span class="pre">databaseTableName</span></em>, <em class="sig-param"><span class="pre">serialNumber</span></em>, <em class="sig-param"><span class="pre">isForceDelete</span></em><span class="sig-paren">)</span><a class="headerlink" href="#deleteTrial" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">deleteTrial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">conn</span></em>, <em class="sig-param"><span class="pre">databaseTableName</span></em>, <em class="sig-param"><span class="pre">serialNumber</span></em>, <em class="sig-param"><span class="pre">isForceDelete</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/func/deleteTrial.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deleteTrial" title="Link to this definition">#</a></dt>
 <dd><p>DELETETRIAL delete folders and database rows for trials with serialNumber
 conn: database connection
 databaseTableName: databas table name
@@ -452,7 +514,7 @@ isForceDelete: boolean. Force to delete or not.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="loadTrial">
-<span class="sig-name descname"><span class="pre">loadTrial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">conn</span></em>, <em class="sig-param"><span class="pre">databaseTableName</span></em>, <em class="sig-param"><span class="pre">serialNumber</span></em><span class="sig-paren">)</span><a class="headerlink" href="#loadTrial" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">loadTrial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">conn</span></em>, <em class="sig-param"><span class="pre">databaseTableName</span></em>, <em class="sig-param"><span class="pre">serialNumber</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/func/loadTrial.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadTrial" title="Link to this definition">#</a></dt>
 <dd><p>LOADTRIAL Summary of this function goes here
 Detailed explanation goes here</p>
 </dd></dl>

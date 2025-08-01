@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=e1a75a79"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/becexp';</script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -154,6 +157,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../main/waveform.html">Waveform and WaveformList</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="atom/index.html">Atom</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="atom/Atom.html">Atom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atom/Alkali.html">Alkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atom/Divalent.html">Divalent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atom/TwoAtom.html">TwoAtom</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="atom.html">Atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="field.html">Field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="trial.html">Trial</a></li>
@@ -206,6 +216,53 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/api/becexp.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
 
 
 
@@ -334,7 +391,7 @@ document.write(`
 <span id="id1"></span><h2>BecExp<a class="headerlink" href="#module-src.trial.becExp.BecExp" title="Link to this heading">#</a></h2>
 <dl class="mat class">
 <dt class="sig sig-object mat" id="BecExp">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BecExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BecExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/BecExp/BecExp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BecExp" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="trial.html#Trial" title="Trial"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Trial</span></code></a></p>
 <p>BecExp This is BecExp. Test Test.
 Detailed explanation goes here</p>
@@ -581,7 +638,7 @@ Detailed explanation goes here</p>
 <h2>BecAnalysis<a class="headerlink" href="#becanalysis" title="Link to this heading">#</a></h2>
 <dl class="mat class" id="module-src.trial.becExp.BecAnalysis">
 <dt class="sig sig-object mat" id="Ad">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Ad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Ad" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Ad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/BecAnalysis/Ad.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Ad" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
 <p>OD Calculate and plot optical depth
 Detailed explanation goes here</p>
@@ -686,7 +743,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="AtomNumber">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">AtomNumber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AtomNumber" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">AtomNumber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/BecAnalysis/AtomNumber.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#AtomNumber" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
 <p>OD Summary of this class goes here
 Detailed explanation goes here</p>
@@ -803,7 +860,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="BecAnalysis">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BecAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecAnalysis" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BecAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/BecAnalysis/BecAnalysis.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BecAnalysis" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.SetGetExactNames</span></code></p>
 <p>BECANALYSIS Summary of this class goes here
 Detailed explanation goes here</p>
@@ -893,7 +950,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="CenterFit">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">CenterFit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#CenterFit" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">CenterFit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/BecAnalysis/CenterFit.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CenterFit" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
 <p>CENTERFIT CenterFit object used to handle fitting and plotting of
 cloud centers over scanned variable in experiment. Currently not
@@ -1087,7 +1144,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="DensityFit">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">DensityFit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#DensityFit" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">DensityFit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/BecAnalysis/DensityFit.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DensityFit" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
 <p>OD Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1191,7 +1248,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Imaging">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Imaging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Imaging" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Imaging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/BecAnalysis/Imaging.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Imaging" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
 <p>IMAGING Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1297,7 +1354,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="KapitzaDirac">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">KapitzaDirac</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#KapitzaDirac" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">KapitzaDirac</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/BecAnalysis/KapitzaDirac.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#KapitzaDirac" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
 <p>OD Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1338,7 +1395,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Od">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Od</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Od" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Od</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/BecAnalysis/Od.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Od" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
 <p>OD Calculate and plot optical depth
 Detailed explanation goes here</p>
@@ -1455,7 +1512,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="ScopeValue">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ScopeValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ScopeValue" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ScopeValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/BecAnalysis/ScopeValue.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ScopeValue" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
 <p>OD Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1504,7 +1561,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Tof">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Tof</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tof" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Tof</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/BecAnalysis/Tof.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Tof" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
 <p>OD Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1591,37 +1648,37 @@ Detailed explanation goes here</p>
 <h2>Apps<a class="headerlink" href="#apps" title="Link to this heading">#</a></h2>
 <dl class="mat application" id="module-src.trial.becExp.app">
 <dt class="sig sig-object mat" id="AdPreviewer">
-<span class="sig-name descname"><span class="pre">AdPreviewer</span></span><a class="headerlink" href="#AdPreviewer" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">AdPreviewer</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/app/AdPreviewer.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#AdPreviewer" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat application">
 <dt class="sig sig-object mat" id="BecBrowser">
-<span class="sig-name descname"><span class="pre">BecBrowser</span></span><a class="headerlink" href="#BecBrowser" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">BecBrowser</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/app/BecBrowser.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BecBrowser" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat application">
 <dt class="sig sig-object mat" id="BecControlPanel">
-<span class="sig-name descname"><span class="pre">BecControlPanel</span></span><a class="headerlink" href="#BecControlPanel" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">BecControlPanel</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/app/BecControlPanel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BecControlPanel" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat application">
 <dt class="sig sig-object mat" id="DensityFitDisplay">
-<span class="sig-name descname"><span class="pre">DensityFitDisplay</span></span><a class="headerlink" href="#DensityFitDisplay" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">DensityFitDisplay</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/app/DensityFitDisplay.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DensityFitDisplay" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat application">
 <dt class="sig sig-object mat" id="FringeRemoval">
-<span class="sig-name descname"><span class="pre">FringeRemoval</span></span><a class="headerlink" href="#FringeRemoval" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">FringeRemoval</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/app/FringeRemoval.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#FringeRemoval" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat application">
 <dt class="sig sig-object mat" id="HardwareAssociation">
-<span class="sig-name descname"><span class="pre">HardwareAssociation</span></span><a class="headerlink" href="#HardwareAssociation" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">HardwareAssociation</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/app/HardwareAssociation.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#HardwareAssociation" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat application">
 <dt class="sig sig-object mat" id="OdPreviewer">
-<span class="sig-name descname"><span class="pre">OdPreviewer</span></span><a class="headerlink" href="#OdPreviewer" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">OdPreviewer</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/app/OdPreviewer.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OdPreviewer" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -1629,13 +1686,13 @@ Detailed explanation goes here</p>
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
 <dl class="mat function" id="module-src.trial.becExp.func">
 <dt class="sig sig-object mat" id="absorption2Od">
-<span class="sig-name descname"><span class="pre">absorption2Od</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">absorp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#absorption2Od" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">absorption2Od</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">absorp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/func/absorption2Od.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#absorption2Od" title="Link to this definition">#</a></dt>
 <dd><p>Convert absorption signal to optical depth (OD).</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="computeAbsorption">
-<span class="sig-name descname"><span class="pre">computeAbsorption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">imageData</span></em>, <em class="sig-param"><span class="pre">absorpMin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#computeAbsorption" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">computeAbsorption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">imageData</span></em>, <em class="sig-param"><span class="pre">absorpMin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/func/computeAbsorption.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#computeAbsorption" title="Link to this definition">#</a></dt>
 <dd><p>CALCULATEABSORPTION calculate absorption signal
 imageData: must be a 4-D array. The first two dimensions store the
 image data. The third dimension is the run index. The last dimension
@@ -1646,28 +1703,28 @@ totally absorbed by atoms.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="deleteBecExp">
-<span class="sig-name descname"><span class="pre">deleteBecExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">serialNumber</span></em>, <em class="sig-param"><span class="pre">isForceDelete</span></em><span class="sig-paren">)</span><a class="headerlink" href="#deleteBecExp" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">deleteBecExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">serialNumber</span></em>, <em class="sig-param"><span class="pre">isForceDelete</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/func/deleteBecExp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deleteBecExp" title="Link to this definition">#</a></dt>
 <dd><p>LOADBECEX Summary of this function goes here
 Detailed explanation goes here</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="loadBecExp">
-<span class="sig-name descname"><span class="pre">loadBecExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">serialNumber</span></em><span class="sig-paren">)</span><a class="headerlink" href="#loadBecExp" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">loadBecExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">serialNumber</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/func/loadBecExp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#loadBecExp" title="Link to this definition">#</a></dt>
 <dd><p>LOADBECEX Summary of this function goes here
 Detailed explanation goes here</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="runLocalTest">
-<span class="sig-name descname"><span class="pre">runLocalTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">testCiceroLogOrigin</span></em>, <em class="sig-param"><span class="pre">samplePath</span></em>, <em class="sig-param"><span class="pre">dataPath</span></em>, <em class="sig-param"><span class="pre">pauseTime</span></em><span class="sig-paren">)</span><a class="headerlink" href="#runLocalTest" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">runLocalTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">testCiceroLogOrigin</span></em>, <em class="sig-param"><span class="pre">samplePath</span></em>, <em class="sig-param"><span class="pre">dataPath</span></em>, <em class="sig-param"><span class="pre">pauseTime</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/func/runLocalTest.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#runLocalTest" title="Link to this definition">#</a></dt>
 <dd><p>RUNLOCALTEST Summary of this function goes here
 Detailed explanation goes here</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="sortBecAnalysis">
-<span class="sig-name descname"><span class="pre">sortBecAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">analysisList</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sortBecAnalysis" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sortBecAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">analysisList</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/func/sortBecAnalysis.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sortBecAnalysis" title="Link to this definition">#</a></dt>
 <dd><p>SORTANALYSIS Summary of this function goes here
 We need to run different analysis in certain order so we have to sort
 the analysis methods</p>

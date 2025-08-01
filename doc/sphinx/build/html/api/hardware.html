@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=e1a75a79"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/hardware';</script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -154,6 +157,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../main/waveform.html">Waveform and WaveformList</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="atom/index.html">Atom</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="atom/Atom.html">Atom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atom/Alkali.html">Alkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atom/Divalent.html">Divalent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atom/TwoAtom.html">TwoAtom</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="atom.html">Atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="field.html">Field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="trial.html">Trial</a></li>
@@ -206,6 +216,53 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/api/hardware.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
 
 
 
@@ -337,7 +394,7 @@ document.write(`
 <h2>Hardware<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Hardware">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Hardware</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">isSaving</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Hardware" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Hardware</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">isSaving</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Hardware.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Hardware" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.SetGetExactNames</span></code></p>
 <p>HARDWARE Class to generalize interaction of MM with remote electronic
 components</p>
@@ -451,7 +508,7 @@ generation.</p>
 <h2>Acquisition<a class="headerlink" href="#acquisition" title="Link to this heading">#</a></h2>
 <dl class="mat class" id="module-src.hardware.Acquisition">
 <dt class="sig sig-object mat" id="Acquisition">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Acquisition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Acquisition" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Acquisition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Acquisition/Acquisition.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Acquisition" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.SetGetExactNames</span></code></p>
 <p>ACQUISITION Acquisition class.
 Class that describes camera properties and enables saving images
@@ -679,7 +736,7 @@ properties.</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Andor">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Andor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Andor" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Andor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Acquisition/Andor.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Andor" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Acquisition" title="Acquisition"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Acquisition</span></code></a></p>
 <div class="members docutils container">
 <dl>
@@ -777,7 +834,7 @@ CheckWarning(ret);</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="AndorIXon888">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">AndorIXon888</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AndorIXon888" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">AndorIXon888</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Acquisition/AndorIXon888.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#AndorIXon888" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Andor" title="Andor"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Andor</span></code></a></p>
 <div class="members docutils container">
 <dl>
@@ -793,7 +850,7 @@ CheckWarning(ret);</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="AndorIXon897">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">AndorIXon897</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AndorIXon897" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">AndorIXon897</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Acquisition/AndorIXon897.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#AndorIXon897" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Andor" title="Andor"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Andor</span></code></a></p>
 <div class="members docutils container">
 <dl>
@@ -809,7 +866,7 @@ CheckWarning(ret);</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Basler">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Basler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Basler" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Basler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Acquisition/Basler.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Basler" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Acquisition" title="Acquisition"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Acquisition</span></code></a></p>
 <div class="members docutils container">
 <dl>
@@ -835,7 +892,7 @@ functions.</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="BaslerAcA1920_25um">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BaslerAcA1920_25um</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BaslerAcA1920_25um" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BaslerAcA1920_25um</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Acquisition/BaslerAcA1920_25um.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BaslerAcA1920_25um" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Basler" title="Basler"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Basler</span></code></a></p>
 <div class="members docutils container">
 <dl>
@@ -851,7 +908,7 @@ functions.</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Pco">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Pco</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Pco" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Pco</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Acquisition/Pco.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Pco" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Acquisition" title="Acquisition"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Acquisition</span></code></a></p>
 <p>PCO Pco class
 Creates a subclass of the Acquisition class with properties specific
@@ -883,7 +940,7 @@ modifies it to predefined settings.</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="PcoEdge5p5">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PcoEdge5p5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PcoEdge5p5" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PcoEdge5p5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Acquisition/PcoEdge5p5.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PcoEdge5p5" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Pco" title="Pco"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Pco</span></code></a></p>
 <p>PCOEDGE5P5 Subclass of the Pco and Acquisition class
 Adds additional parameters corresponding to the PcoEdge 5.5 camera.</p>
@@ -904,7 +961,7 @@ Adds additional parameters corresponding to the PcoEdge 5.5 camera.</p>
 <h2>WaveformGenerator<a class="headerlink" href="#waveformgenerator" title="Link to this heading">#</a></h2>
 <dl class="mat class" id="module-src.hardware.WaveformGenerator">
 <dt class="sig sig-object mat" id="Keysight33500B">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Keysight33500B</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Keysight33500B" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Keysight33500B</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/WaveformGenerator/Keysight33500B.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Keysight33500B" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#KeysightWaveformGenerator" title="KeysightWaveformGenerator"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">KeysightWaveformGenerator</span></code></a></p>
 <p>KEYSIGHT Summary of this class goes here
 Detailed explanation goes here</p>
@@ -924,7 +981,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Keysight33600A">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Keysight33600A</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Keysight33600A" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Keysight33600A</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/WaveformGenerator/Keysight33600A.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Keysight33600A" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#KeysightWaveformGenerator" title="KeysightWaveformGenerator"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">KeysightWaveformGenerator</span></code></a></p>
 <p>KEYSIGHT Summary of this class goes here
 Detailed explanation goes here</p>
@@ -944,7 +1001,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="KeysightWaveformGenerator">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">KeysightWaveformGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#KeysightWaveformGenerator" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">KeysightWaveformGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/WaveformGenerator/KeysightWaveformGenerator.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#KeysightWaveformGenerator" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#WaveformGenerator" title="WaveformGenerator"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">WaveformGenerator</span></code></a></p>
 <p>KEYSIGHT Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1003,7 +1060,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="SpectrumDN2662_02">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SpectrumDN2662_02</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SpectrumDN2662_02" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SpectrumDN2662_02</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/WaveformGenerator/SpectrumDN2662_02.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SpectrumDN2662_02" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#SpectrumWaveformGenerator" title="SpectrumWaveformGenerator"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SpectrumWaveformGenerator</span></code></a></p>
 <p>KEYSIGHT Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1023,7 +1080,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="SpectrumWaveformGenerator">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SpectrumWaveformGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SpectrumWaveformGenerator" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SpectrumWaveformGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/WaveformGenerator/SpectrumWaveformGenerator.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SpectrumWaveformGenerator" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#WaveformGenerator" title="WaveformGenerator"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">WaveformGenerator</span></code></a></p>
 <p>SpectrumWaveformGenerator Device-specifick implementation of the
 WaveformGenerator class for Spectrum AWGs</p>
@@ -1147,7 +1204,7 @@ Set and connect</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="WaveformGenerator">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">WaveformGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WaveformGenerator" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">WaveformGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/WaveformGenerator/WaveformGenerator.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#WaveformGenerator" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Hardware" title="Hardware"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Hardware</span></code></a></p>
 <p>WAVEFORMGENERATOR Subclass of Hardware, includes additional parameters
 involved for operating an AWG</p>
@@ -1250,7 +1307,7 @@ method of notification.</p>
 <h2>RfGenerator<a class="headerlink" href="#rfgenerator" title="Link to this heading">#</a></h2>
 <dl class="mat class" id="module-src.hardware.RfGenerator">
 <dt class="sig sig-object mat" id="RfGenerator">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">RfGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#RfGenerator" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">RfGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/RfGenerator/RfGenerator.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RfGenerator" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Hardware" title="Hardware"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Hardware</span></code></a></p>
 <p>WAVEFORMGENERATOR Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1307,7 +1364,7 @@ Detailed explanation goes here</p>
 <h2>Scope<a class="headerlink" href="#scope" title="Link to this heading">#</a></h2>
 <dl class="mat class" id="module-src.hardware.Scope">
 <dt class="sig sig-object mat" id="PicoScope">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PicoScope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PicoScope" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PicoScope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Scope/PicoScope.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PicoScope" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Scope" title="Scope"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Scope</span></code></a></p>
 <p>TEKTRONIXOSCILLOSCOPE Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1358,7 +1415,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Scope">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Scope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Scope" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Scope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Scope/Scope.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Scope" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Hardware" title="Hardware"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Hardware</span></code></a></p>
 <p>WAVEFORMGENERATOR Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1520,7 +1577,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Tektronix1104">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Tektronix1104</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tektronix1104" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Tektronix1104</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Scope/Tektronix1104.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Tektronix1104" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#TektronixScope" title="TektronixScope"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">TektronixScope</span></code></a></p>
 <p>TEKTRONIX1104 Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1544,7 +1601,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="TektronixScope">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TektronixScope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TektronixScope" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TektronixScope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Scope/TektronixScope.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TektronixScope" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Scope" title="Scope"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Scope</span></code></a></p>
 <p>TEKTRONIXOSCILLOSCOPE Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1598,27 +1655,27 @@ Detailed explanation goes here</p>
 <h2>Apps<a class="headerlink" href="#apps" title="Link to this heading">#</a></h2>
 <dl class="mat application" id="module-src.hardware.app">
 <dt class="sig sig-object mat" id="HardwareControlPanel">
-<span class="sig-name descname"><span class="pre">HardwareControlPanel</span></span><a class="headerlink" href="#HardwareControlPanel" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">HardwareControlPanel</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/app/HardwareControlPanel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#HardwareControlPanel" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat application">
 <dt class="sig sig-object mat" id="ListDialog">
-<span class="sig-name descname"><span class="pre">ListDialog</span></span><a class="headerlink" href="#ListDialog" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">ListDialog</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/app/ListDialog.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ListDialog" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat application">
 <dt class="sig sig-object mat" id="PhaseLockControlPanel">
-<span class="sig-name descname"><span class="pre">PhaseLockControlPanel</span></span><a class="headerlink" href="#PhaseLockControlPanel" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">PhaseLockControlPanel</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/app/PhaseLockControlPanel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PhaseLockControlPanel" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat application">
 <dt class="sig sig-object mat" id="ScopeControlPanel">
-<span class="sig-name descname"><span class="pre">ScopeControlPanel</span></span><a class="headerlink" href="#ScopeControlPanel" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">ScopeControlPanel</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/app/ScopeControlPanel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ScopeControlPanel" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat application">
 <dt class="sig sig-object mat" id="WgControlPanel">
-<span class="sig-name descname"><span class="pre">WgControlPanel</span></span><a class="headerlink" href="#WgControlPanel" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">WgControlPanel</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/app/WgControlPanel.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#WgControlPanel" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -1626,33 +1683,33 @@ Detailed explanation goes here</p>
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
 <dl class="mat function" id="module-src.hardware.func">
 <dt class="sig sig-object mat" id="getAcq">
-<span class="sig-name descname"><span class="pre">getAcq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">isLoadingSetting</span></em><span class="sig-paren">)</span><a class="headerlink" href="#getAcq" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">getAcq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">isLoadingSetting</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/func/getAcq.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#getAcq" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="getPl">
-<span class="sig-name descname"><span class="pre">getPl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">isLoadingSetting</span></em><span class="sig-paren">)</span><a class="headerlink" href="#getPl" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">getPl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">isLoadingSetting</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/func/getPl.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#getPl" title="Link to this definition">#</a></dt>
 <dd><p>GETWG Summary of this function goes here
 Detailed explanation goes here</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="getScope">
-<span class="sig-name descname"><span class="pre">getScope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">isLoadingSetting</span></em><span class="sig-paren">)</span><a class="headerlink" href="#getScope" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">getScope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">isLoadingSetting</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/func/getScope.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#getScope" title="Link to this definition">#</a></dt>
 <dd><p>GETSCOPE Summary of this function goes here
 Detailed explanation goes here</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="getWg">
-<span class="sig-name descname"><span class="pre">getWg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">isLoadingSetting</span></em><span class="sig-paren">)</span><a class="headerlink" href="#getWg" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">getWg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">isLoadingSetting</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/func/getWg.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#getWg" title="Link to this definition">#</a></dt>
 <dd><p>GETWG Summary of this function goes here
 Detailed explanation goes here</p>
 </dd></dl>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="saveBecImageAbsorption">
-<span class="sig-name descname"><span class="pre">saveBecImageAbsorption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">vid</span></em>, <em class="sig-param"><span class="pre">~</span></em>, <em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#saveBecImageAbsorption" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">saveBecImageAbsorption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">vid</span></em>, <em class="sig-param"><span class="pre">~</span></em>, <em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/func/saveBecImageAbsorption.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#saveBecImageAbsorption" title="Link to this definition">#</a></dt>
 <dd><p>saveBecImage saves acquired becExp images to drives and trigger the
 becExp’s “NewRunFinished” event.</p>
 <p>saveImageData is a callback function fired by a videoinput
@@ -1664,7 +1721,7 @@ that, it transfers the data to becExp and triggers the event
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="setBaslerConfig">
-<span class="sig-name descname"><span class="pre">setBaslerConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acq</span></em><span class="sig-paren">)</span><a class="headerlink" href="#setBaslerConfig" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">setBaslerConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acq</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/func/setBaslerConfig.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#setBaslerConfig" title="Link to this definition">#</a></dt>
 <dd><p>SETBASLERCONFIG set Basler camera configuration
 Input must be an “Acquisition” object. The following setup is for
 regular BEC experiment data taking.</p>
@@ -1672,7 +1729,7 @@ regular BEC experiment data taking.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="setIxon888Config">
-<span class="sig-name descname"><span class="pre">setIxon888Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acq</span></em><span class="sig-paren">)</span><a class="headerlink" href="#setIxon888Config" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">setIxon888Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acq</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/func/setIxon888Config.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#setIxon888Config" title="Link to this definition">#</a></dt>
 <dd><p>SETIXON888CONFIG set Andor camera configuration
 Created and edited 2/3/2025 by Eber Nolasco-Martinez</p>
 <blockquote>
@@ -1684,7 +1741,7 @@ videoinput object, so must be generalized.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="setPcoConfig">
-<span class="sig-name descname"><span class="pre">setPcoConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acq</span></em><span class="sig-paren">)</span><a class="headerlink" href="#setPcoConfig" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">setPcoConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acq</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/func/setPcoConfig.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#setPcoConfig" title="Link to this definition">#</a></dt>
 <dd><p>SETPCOCONFIG set PCO camera configuration
 Input must be an “Acquisition” object. The following setup is for
 regular BEC experiment data taking.</p>

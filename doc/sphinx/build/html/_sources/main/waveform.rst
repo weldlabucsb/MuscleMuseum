@@ -9,15 +9,15 @@ The :class:`Waveform` class handles the software generations of waveforms. We de
 .. math::
     \mathrm{Waveform} = f(t),
 
-where :math:`t` represents time. For every concrete subclass of :class:`Waveform`, a :meth:`TimeFunc` method is provided, 
-which determines the waveform. The output of :meth:`TimeFunc` is a 
-`function handle <https://www.mathworks.com/help/matlab/function-handles.html>`_, which takes a one-dimensional array :math:`t` 
-as the input. Once the :meth:`TimeFunc` method is provided, the samples of the waveform are calculated every time the 
-:attr:`Sample` property is called. The waveforms defined by the :class:`Waveform` class are all finite with definite 
-:attr:`StartTime` and :attr:`Duration`. Meanwhile, A :attr:`SamplingRate` must
-be given by users or client apps, from which a dependent property 
-:attr:`TimeStep` is calculated as :math:`\mathrm{TimeStep} =
-1/\mathrm{SamplingRate}`. The figure below demonstrates their 
+where :math:`t` represents time. For every concrete subclass of :class:`Waveform`, a
+:meth:`TimeFunc` method is provided, which determines the waveform. The output of :meth:`TimeFunc`
+is a `function handle <https://www.mathworks.com/help/matlab/function-handles.html>`_ representing
+:math:`f(t)`, which takes a one-dimensional array :math:`t` as the input. Once the :meth:`TimeFunc`
+method is provided, the samples of the waveform are calculated every time the :attr:`Sample`
+property is called. The waveforms defined by the :class:`Waveform` class are all finite with
+definite :attr:`StartTime` and :attr:`Duration`. Meanwhile, A :attr:`SamplingRate` must be given by
+users or client apps, from which a dependent property  :attr:`TimeStep` is calculated as
+:math:`\mathrm{TimeStep} = 1/\mathrm{SamplingRate}`. The figure below demonstrates their
 relationship with :attr:`Sample` and waveform function :math:`f(t)`.
 
 .. image:: waveform_duration.svg
@@ -53,7 +53,7 @@ Alternatively, we can use the built-in dependent property :attr:`Sample` and the
     sample = sw.Sample; %call the dependent property to calculate the samples
     sw.plot %plot the waveform using the plot method
 
-In order to handle different types of waveforms, we include a few abstract subclasses of :class:`waveform`, namely 
+In order to handle different types of waveforms, we include a few abstract subclasses of :class:`Waveform`, namely 
 :class:`PeriodicWaveform`, :class:`PartialPeriodicWaveform`, :class:`ModulatedWaveform`, and :class:`RandomWaveform`. 
 Their inheritance relationship is shown in the following class diagram:
 

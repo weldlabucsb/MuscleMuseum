@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=e1a75a79"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'main/waveform';</script>
@@ -155,6 +158,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Waveform and WaveformList</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/atom/index.html">Atom</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/atom/Atom.html">Atom</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/atom.html">Atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/field.html">Field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/trial.html">Trial</a></li>
@@ -207,6 +214,53 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/main/waveform.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
 
 
 
@@ -340,15 +394,15 @@ document.write(`
 <p>The <a class="reference internal" href="../api/math.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a> class handles the software generations of waveforms. We define a waveform as a function of time:</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{Waveform} = f(t),\]</div>
-<p>where <span class="math notranslate nohighlight">\(t\)</span> represents time. For every concrete subclass of <a class="reference internal" href="../api/math.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a>, a <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code> method is provided,
-which determines the waveform. The output of <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code> is a
-<a class="reference external" href="https://www.mathworks.com/help/matlab/function-handles.html">function handle</a>, which takes a one-dimensional array <span class="math notranslate nohighlight">\(t\)</span>
-as the input. Once the <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code> method is provided, the samples of the waveform are calculated every time the
-<code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Sample</span></code> property is called. The waveforms defined by the <a class="reference internal" href="../api/math.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a> class are all finite with definite
-<code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StartTime</span></code> and <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Duration</span></code>. Meanwhile, A <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">SamplingRate</span></code> must
-be given by users or client apps, from which a dependent property
-<code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TimeStep</span></code> is calculated as <span class="math notranslate nohighlight">\(\mathrm{TimeStep} =
-1/\mathrm{SamplingRate}\)</span>. The figure below demonstrates their
+<p>where <span class="math notranslate nohighlight">\(t\)</span> represents time. For every concrete subclass of <a class="reference internal" href="../api/math.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a>, a
+<code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code> method is provided, which determines the waveform. The output of <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code>
+is a <a class="reference external" href="https://www.mathworks.com/help/matlab/function-handles.html">function handle</a> representing
+<span class="math notranslate nohighlight">\(f(t)\)</span>, which takes a one-dimensional array <span class="math notranslate nohighlight">\(t\)</span> as the input. Once the <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code>
+method is provided, the samples of the waveform are calculated every time the <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Sample</span></code>
+property is called. The waveforms defined by the <a class="reference internal" href="../api/math.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a> class are all finite with
+definite <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StartTime</span></code> and <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Duration</span></code>. Meanwhile, A <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">SamplingRate</span></code> must be given by
+users or client apps, from which a dependent property  <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TimeStep</span></code> is calculated as
+<span class="math notranslate nohighlight">\(\mathrm{TimeStep} = 1/\mathrm{SamplingRate}\)</span>. The figure below demonstrates their
 relationship with <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Sample</span></code> and waveform function <span class="math notranslate nohighlight">\(f(t)\)</span>.</p>
 <img alt="../_images/waveform_duration.svg" src="../_images/waveform_duration.svg" />
 <p>We note that <a class="reference internal" href="../api/math.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a> itself is an abstract class. Therefore, it must be inherited by a concrete subclass then be
@@ -376,7 +430,7 @@ the waveform samples:</p>
 <span class="n">sw</span><span class="p">.</span><span class="n">plot</span><span class="w"> </span><span class="c">%plot the waveform using the plot method</span>
 </pre></div>
 </div>
-<p>In order to handle different types of waveforms, we include a few abstract subclasses of <code class="xref mat mat-class docutils literal notranslate"><span class="pre">waveform</span></code>, namely
+<p>In order to handle different types of waveforms, we include a few abstract subclasses of <a class="reference internal" href="../api/math.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a>, namely
 <a class="reference internal" href="../api/math.html#PeriodicWaveform" title="PeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PeriodicWaveform</span></code></a>, <a class="reference internal" href="../api/math.html#PartialPeriodicWaveform" title="PartialPeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PartialPeriodicWaveform</span></code></a>, <a class="reference internal" href="../api/math.html#ModulatedWaveform" title="ModulatedWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">ModulatedWaveform</span></code></a>, and <a class="reference internal" href="../api/math.html#RandomWaveform" title="RandomWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">RandomWaveform</span></code></a>.
 Their inheritance relationship is shown in the following class diagram:</p>
 <img alt="../_images/waveform.svg" src="../_images/waveform.svg" />

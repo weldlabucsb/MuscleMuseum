@@ -16,7 +16,7 @@ classdef (Abstract) Waveform < handle
     end
 
     properties (Dependent)
-        EndTime % Dependent. on :attr:`StartTime` and :attr:`Duration`
+        EndTime % Dependent on :attr:`StartTime` and :attr:`Duration`
         TimeStep % Dependent on :attr:`SamplingRate`
         NSample % Dependent on :attr:`SamplingRate` and :attr:`Duration`
         Sample % Dependent on :meth:`TimeFunc`, :attr:`StartTime`, :attr:`TimeStep`, and :attr:`EndTime`

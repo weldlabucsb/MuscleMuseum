@@ -30,6 +30,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -39,6 +40,8 @@
     <script src="../_static/documentation_options.js?v=e1a75a79"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/math';</script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -154,6 +157,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../main/waveform.html">Waveform and WaveformList</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="atom/index.html">Atom</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="atom/Atom.html">Atom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atom/Alkali.html">Alkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atom/Divalent.html">Divalent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atom/TwoAtom.html">TwoAtom</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="atom.html">Atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="field.html">Field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="trial.html">Trial</a></li>
@@ -206,6 +216,53 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/api/math.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
 
 
 
@@ -333,7 +390,7 @@ document.write(`
 <h2>FitData<a class="headerlink" href="#fitdata" title="Link to this heading">#</a></h2>
 <dl class="mat class" id="module-src.math.FitData">
 <dt class="sig sig-object mat" id="BosonicBimodalFit1D">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BosonicBimodalFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BosonicBimodalFit1D" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BosonicBimodalFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/FitData/BosonicBimodalFit1D.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BosonicBimodalFit1D" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a></p>
 <p>Thomas-Fermi condensate + thermal Gaussian</p>
 <div class="members docutils container">
@@ -374,7 +431,7 @@ document.write(`
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="BosonicGaussianFit1D">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BosonicGaussianFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BosonicGaussianFit1D" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BosonicGaussianFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/FitData/BosonicGaussianFit1D.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BosonicGaussianFit1D" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a></p>
 <p>GAUSSIANFIT1D Summary of this class goes here
 Detailed explanation goes here</p>
@@ -405,7 +462,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="FitData">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">FitData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#FitData" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">FitData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/FitData/FitData.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#FitData" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
 <p>FIT Summary of this class goes here
 Detailed explanation goes here</p>
@@ -535,7 +592,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="FitData1D">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">FitData1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#FitData1D" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">FitData1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/FitData/FitData1D.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#FitData1D" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#FitData" title="FitData"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData</span></code></a></p>
 <p>FIT1D Summary of this class goes here
 Detailed explanation goes here</p>
@@ -588,12 +645,12 @@ Detailed explanation goes here</p>
 
 <dl class="mat application">
 <dt class="sig sig-object mat" id="FitOverride">
-<span class="sig-name descname"><span class="pre">FitOverride</span></span><a class="headerlink" href="#FitOverride" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">FitOverride</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/FitData/FitOverride.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#FitOverride" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="GaussianFit1D">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">GaussianFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#GaussianFit1D" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">GaussianFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/FitData/GaussianFit1D.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GaussianFit1D" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a></p>
 <p>GAUSSIANFIT1D Summary of this class goes here
 Detailed explanation goes here</p>
@@ -624,7 +681,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="LinearFit1D">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LinearFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LinearFit1D" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LinearFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/FitData/LinearFit1D.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LinearFit1D" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a></p>
 <p>GAUSSIANFIT1D Summary of this class goes here
 Detailed explanation goes here</p>
@@ -655,7 +712,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="ParabolicFit1D">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ParabolicFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ParabolicFit1D" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ParabolicFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/FitData/ParabolicFit1D.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ParabolicFit1D" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a></p>
 <p>GAUSSIANFIT1D Summary of this class goes here
 Detailed explanation goes here</p>
@@ -686,7 +743,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="SineFit1D">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SineFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SineFit1D" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SineFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/FitData/SineFit1D.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SineFit1D" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a></p>
 <p>GAUSSIANFIT1D Summary of this class goes here
 Detailed explanation goes here</p>
@@ -717,7 +774,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="SqrtParabolicFit1D">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SqrtParabolicFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SqrtParabolicFit1D" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SqrtParabolicFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/FitData/SqrtParabolicFit1D.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SqrtParabolicFit1D" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a></p>
 <p>GAUSSIANFIT1D Summary of this class goes here
 Detailed explanation goes here</p>
@@ -748,7 +805,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="TriangleFit1D">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TriangleFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TriangleFit1D" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TriangleFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/FitData/TriangleFit1D.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TriangleFit1D" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a></p>
 <p>GAUSSIANFIT1D Summary of this class goes here
 Detailed explanation goes here</p>
@@ -782,7 +839,7 @@ Detailed explanation goes here</p>
 <h2>Waveform<a class="headerlink" href="#waveform" title="Link to this heading">#</a></h2>
 <dl class="mat class" id="module-src.math.Waveform">
 <dt class="sig sig-object mat" id="ConstantTop">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ConstantTop</span></span><a class="headerlink" href="#ConstantTop" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ConstantTop</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/ConstantTop.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ConstantTop" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
 <p>CONSTANTTOP Summary of this class goes here
 Detailed explanation goes here</p>
@@ -800,7 +857,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="ConstantWave">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ConstantWave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ConstantWave" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ConstantWave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/ConstantWave.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ConstantWave" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PeriodicWaveform" title="PeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PeriodicWaveform</span></code></a>, <a class="reference internal" href="#ConstantTop" title="ConstantTop"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">ConstantTop</span></code></a></p>
 <p>CONSTANTWAVE Summary of this class goes here
 Detailed explanation goes here</p>
@@ -826,7 +883,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="GaussianRandom">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">GaussianRandom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#GaussianRandom" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">GaussianRandom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/GaussianRandom.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GaussianRandom" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#RandomWaveform" title="RandomWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">RandomWaveform</span></code></a></p>
 <p>GAUSSIANRANDOM Summary of this class goes here
 Detailed explanation goes here</p>
@@ -863,7 +920,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="LinearFrequencyRamp">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LinearFrequencyRamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LinearFrequencyRamp" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LinearFrequencyRamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/LinearFrequencyRamp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LinearFrequencyRamp" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a></p>
 <p>LINEARRAMP Summary of this class goes here
 Detailed explanation goes here</p>
@@ -919,7 +976,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="LinearRamp">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LinearRamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LinearRamp" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LinearRamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/LinearRamp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LinearRamp" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#TrapezoidalPulse" title="TrapezoidalPulse"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">TrapezoidalPulse</span></code></a></p>
 <p>LINEARRAMP Summary of this class goes here
 Detailed explanation goes here</p>
@@ -955,7 +1012,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="ModulatedWaveform">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ModulatedWaveform</span></span><a class="headerlink" href="#ModulatedWaveform" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ModulatedWaveform</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/ModulatedWaveform.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ModulatedWaveform" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a></p>
 <p>MODULATIONWAVEFORM Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1021,7 +1078,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="PartialPeriodicWaveform">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PartialPeriodicWaveform</span></span><a class="headerlink" href="#PartialPeriodicWaveform" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PartialPeriodicWaveform</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/PartialPeriodicWaveform.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PartialPeriodicWaveform" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a></p>
 <p>PERIODICWAVEFORM Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1150,7 +1207,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="PchipSinePulse">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PchipSinePulse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PchipSinePulse" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PchipSinePulse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/PchipSinePulse.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PchipSinePulse" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PartialPeriodicWaveform" title="PartialPeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PartialPeriodicWaveform</span></code></a></p>
 <p>SINEWAVE Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1178,7 +1235,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="PeriodicWaveform">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PeriodicWaveform</span></span><a class="headerlink" href="#PeriodicWaveform" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PeriodicWaveform</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/PeriodicWaveform.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PeriodicWaveform" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a></p>
 <p>PERIODICWAVEFORM Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1270,7 +1327,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="RandomWaveform">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">RandomWaveform</span></span><a class="headerlink" href="#RandomWaveform" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">RandomWaveform</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/RandomWaveform.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RandomWaveform" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a></p>
 <p>CONSTANTTOP Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1288,7 +1345,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="SineWave">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SineWave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SineWave" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SineWave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/SineWave.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SineWave" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PeriodicWaveform" title="PeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PeriodicWaveform</span></code></a></p>
 <p>SINEWAVE Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1316,7 +1373,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="SineWaveModulated">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SineWaveModulated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SineWaveModulated" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SineWaveModulated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/SineWaveModulated.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SineWaveModulated" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ModulatedWaveform" title="ModulatedWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">ModulatedWaveform</span></code></a></p>
 <p>SINEWAVE Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1344,7 +1401,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="TanhSinePulse">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TanhSinePulse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TanhSinePulse" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TanhSinePulse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/TanhSinePulse.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TanhSinePulse" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PartialPeriodicWaveform" title="PartialPeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PartialPeriodicWaveform</span></code></a></p>
 <p>SINEWAVE Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1372,7 +1429,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="TrapezoidalPulse">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TrapezoidalPulse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TrapezoidalPulse" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TrapezoidalPulse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/TrapezoidalPulse.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TrapezoidalPulse" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PartialPeriodicWaveform" title="PartialPeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PartialPeriodicWaveform</span></code></a>, <a class="reference internal" href="#ConstantTop" title="ConstantTop"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">ConstantTop</span></code></a></p>
 <p>SINEWAVE Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1400,7 +1457,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="TrapezoidalSinePulse">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TrapezoidalSinePulse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TrapezoidalSinePulse" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TrapezoidalSinePulse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/TrapezoidalSinePulse.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TrapezoidalSinePulse" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PartialPeriodicWaveform" title="PartialPeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PartialPeriodicWaveform</span></code></a></p>
 <p>SINEWAVE Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1428,7 +1485,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="UniformRandom">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">UniformRandom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UniformRandom" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">UniformRandom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/UniformRandom.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UniformRandom" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#RandomWaveform" title="RandomWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">RandomWaveform</span></code></a></p>
 <p>GAUSSIANRANDOM Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1465,7 +1522,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Waveform">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Waveform</span></span><a class="headerlink" href="#Waveform" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Waveform</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/Waveform.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Waveform" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
 <p><a class="reference internal" href="#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a> generates and stores waveforms. By definition, a
 waveform can refer to either a function of time, or a time-sequence of
@@ -1493,7 +1550,7 @@ called, based on the <code class="xref mat mat-meth docutils literal notranslate
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Waveform.EndTime">
 <span class="sig-name descname"><span class="pre">EndTime</span></span><a class="headerlink" href="#Waveform.EndTime" title="Link to this definition">#</a></dt>
-<dd><p>Dependent. on <a class="reference internal" href="#Waveform.StartTime" title="Waveform.StartTime"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StartTime</span></code></a> and <a class="reference internal" href="#Waveform.Duration" title="Waveform.Duration"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Duration</span></code></a></p>
+<dd><p>Dependent on <a class="reference internal" href="#Waveform.StartTime" title="Waveform.StartTime"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StartTime</span></code></a> and <a class="reference internal" href="#Waveform.Duration" title="Waveform.Duration"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Duration</span></code></a></p>
 </dd></dl>
 
 <dl class="mat attribute">
@@ -1546,12 +1603,12 @@ called, based on the <code class="xref mat mat-meth docutils literal notranslate
 
 <dl class="mat application">
 <dt class="sig sig-object mat" id="WaveformEditor">
-<span class="sig-name descname"><span class="pre">WaveformEditor</span></span><a class="headerlink" href="#WaveformEditor" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">WaveformEditor</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/WaveformEditor.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#WaveformEditor" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat class">
 <dt class="sig sig-object mat" id="WaveformList">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">WaveformList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WaveformList" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">WaveformList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/WaveformList.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#WaveformList" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
 <p>WAVEFORMLIST Summary of this class goes here
 Detailed explanation goes here</p>
@@ -1648,7 +1705,7 @@ Detailed explanation goes here</p>
 
 <dl class="mat application">
 <dt class="sig sig-object mat" id="WaveformListEditor">
-<span class="sig-name descname"><span class="pre">WaveformListEditor</span></span><a class="headerlink" href="#WaveformListEditor" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">WaveformListEditor</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/WaveformListEditor.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#WaveformListEditor" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -1656,7 +1713,7 @@ Detailed explanation goes here</p>
 <h2>Roi<a class="headerlink" href="#roi" title="Link to this heading">#</a></h2>
 <dl class="mat class" id="module-src.math.Roi">
 <dt class="sig sig-object mat" id="Roi">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Roi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">roiName</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Roi" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Roi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">roiName</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Roi/Roi.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Roi" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
 <p>ROI Summary of this class goes here
 Detailed explanation goes here</p>

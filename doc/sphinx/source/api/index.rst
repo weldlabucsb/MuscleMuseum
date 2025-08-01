@@ -3,6 +3,7 @@ API
 .. toctree::
    :maxdepth: 4
 
+   atom/index
    atom
    field
    trial

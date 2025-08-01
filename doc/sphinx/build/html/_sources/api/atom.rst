@@ -9,7 +9,6 @@ Atom
     :show-inheritance:
     :undoc-members:
 
-
 Atom Manifold 
 ----------------------------------------
 .. automodule:: src.atom.AtomManifold
