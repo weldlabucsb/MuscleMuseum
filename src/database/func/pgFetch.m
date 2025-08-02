@@ -35,8 +35,7 @@ function [data,metadata] = pgFetch(connect,second_input,varargin)
 %   Optional Arguments:
 %   -----------------
 %   opts             - import options for sql query defined using databaseImportOptions
-%   DataReturnFormat - type of data returned. table (default) | cellarray |
-%                      structure | numeric
+%   DataReturnFormat - type of data returned. table (default) | cellarray | structure | numeric
 %   MaxRows          - Maximum number of rows to return
 %   VariableNamingRule - determine use of arbitrary variable names
 %

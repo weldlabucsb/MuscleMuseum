@@ -1,8 +1,8 @@
 Atom
-==================================================
+====
 
-.. autoclass:: src.atom.Atom.Atom
-    :members:
-    :private-members:
-    :show-inheritance:
-    :undoc-members:
+.. mat:autoclass:: src.atom.Atom.Atom
+   :members:
+   :private-members:
+   :show-inheritance:
+   :undoc-members:

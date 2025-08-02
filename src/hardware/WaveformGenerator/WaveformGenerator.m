@@ -1,9 +1,8 @@
 classdef (Abstract) WaveformGenerator < Hardware
-    %WAVEFORMGENERATOR Subclass of Hardware, includes additional parameters
-    %involved for operating an AWG
-    %   Generalized class for AWGs, with some additional parameters and
-    %   generic functions defined.
-    %   Properties:
+    %Generalized class for AWGs, with some additional parameters and
+    %generic functions defined.
+    %Properties:
+    %
     %       SamplingRate: sample rate of waveform to be uploaded
     %       TriggerSource: String that describes the trigger used for the
     %       waveform, can be 'External', 'Software', or 'Immediate'.
@@ -21,7 +20,9 @@ classdef (Abstract) WaveformGenerator < Hardware
     %       channel
     %       OutputLimit: (1,2) array telling the lower and upper limit
     %       values of the waveform being inputed
-    %   Abstract Methods:
+    %
+    %Abstract Methods:
+    %
     %       connect(obj):
     %           Initializes connection to specific device
     %       set(obj):

@@ -1,11 +1,12 @@
 function setIxon888Config(acq)
 %SETIXON888CONFIG set Andor camera configuration
-% Created and edited 2/3/2025 by Eber Nolasco-Martinez
+%Created and edited 2/3/2025 by Eber Nolasco-Martinez
+%
 %   Input must be an "Acquisition" object. This script modifies the camera
 %   settings to specific information. There is no equivalent Andor
 %   videoinput object, so must be generalized. 
 
-% Needs work to make compatible.
+%Needs work to make compatible.
 
 arguments
     acq Acquisition

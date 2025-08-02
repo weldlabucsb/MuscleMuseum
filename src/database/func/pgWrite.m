@@ -1,6 +1,7 @@
 function pgWrite(conn,tableName,data,varargin)
 %PGWRITE Write a MATLAB table to a postgresql database table
-% pgWrite(conn,tableName,data)
+%pgWrite(conn,tableName,data)
+%   
 %   conn: connection to pg database
 %   tableName: database table name
 %   data: input MATLAB table

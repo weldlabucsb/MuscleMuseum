@@ -1,17 +1,15 @@
-API
-==========================
+API Documentation
+=================
+
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
 
    atom/index
-   atom
-   field
-   trial
-   becexp
-   sim
-   hardware
-   math
-   misc
-
-
-
+   bec/index
+   database/index
+   field/index
+   hardware/index
+   math/index
+   misc/index
+   mmSetting/index
+   trial/index

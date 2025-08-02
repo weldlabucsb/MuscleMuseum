@@ -2,7 +2,9 @@ classdef CenterFit < BecAnalysis
     %CENTERFIT CenterFit object used to handle fitting and plotting of
     %cloud centers over scanned variable in experiment. Currently not
     %written to handle multiple subrois
+    %
     %Properties:
+    %   
     %   FitMethod - String denoting selection of fitting method used
     %   FitDataThermal - Array of FitData1D objects used to generate a fit
     %   of the collected data. Currently consistently of two Fit1D arrays,
@@ -44,6 +46,7 @@ classdef CenterFit < BecAnalysis
     %   Centerfit object shows or not.
     %
     %Methods:
+    %   
     %   CenterFit(becExp)
     %   initialize(obj)
     %   updateData(obj,~)
