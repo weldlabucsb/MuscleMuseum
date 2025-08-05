@@ -10,8 +10,10 @@ import os
 import sys
 sys.path.append('sphinx_extensions')
 from copy_files import copy_files
+from api_doc_generator import generate_doc
 
 copy_files() # Override internal linkcode module to correctly link matlab source.
+generate_doc() # Automatically generate API documentation based on the src folder
 
 project = 'MuscleMuseum'
 copyright = '2025, Weld Lab'
@@ -65,15 +67,18 @@ matlab_short_links = True
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_book_theme'
-html_static_path = ['_static']
+html_copy_source = False
+#html_static_path = ['_static']
 html_theme_options = {
-    "show_navbar_depth": int(4),
+    "show_navbar_depth": int(2),
     "max_navbar_depth": int(4),
     "repository_url": "https://github.com/XiaoCasd/MuscleMuseum",
     "use_source_button": True,
     "use_repository_button": True,
+    "use_issues_button": True,
     "repository_branch": "main",
     "path_to_docs": "doc/sphinx/source",
+    'collapse_navbar': True,
 }
 html_context = {
   'display_github': True,

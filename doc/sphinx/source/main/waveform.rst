@@ -73,3 +73,9 @@ RandomWaveform
 
 WaveformList
 --------------------------------------
+
+Sequential WaveformList
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Simultaneous WaveformList
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -27,13 +27,13 @@ function [data,metadata] = pgFetch(connect,second_input,varargin)
 %   imported data
 %
 %   Input Arguments:
-%   ---------------
+%   -----------------------------
 %   conn      - database.jdbc.connection object.
 %   source    - SQL query or SQLPreparedStatement.
 %
 %
 %   Optional Arguments:
-%   -----------------
+%   -------------------------------
 %   opts             - import options for sql query defined using databaseImportOptions
 %   DataReturnFormat - type of data returned. table (default) | cellarray | structure | numeric
 %   MaxRows          - Maximum number of rows to return

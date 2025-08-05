@@ -5,5 +5,3 @@ mmSetting
    :maxdepth: 2
 
    MmSetting
-   Radset
-   Radset2

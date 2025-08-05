@@ -46,18 +46,15 @@ trial
    acceleration
    angdist
    cgcoefficient
-   cgmatrix
    cmd_rmdir
    computeAbsorption
    computeFloquetHamiltonian
    convertidx
-   ddelta
    decompfactor
    deleteBecExp
    deleteMeSim
    deleteTrial
    diffu
-   fact
    fixPhase
    fixPhase2
    fluxdist
@@ -70,21 +67,16 @@ trial
    hamiltonian_al
    hamiltonian_al_a
    histoplot
-   hyperf
    loadBecExp
    loadMeSim
    loadTrial
-   murelf
    pinky
-   plotSphereIntensity
    rabi
    rabiMatrix
    randpdf
    rhodot
    rhodot_a
    runLocalTest
-   sixj
    so3
    sortBecAnalysis
-   threej
    wignersixj

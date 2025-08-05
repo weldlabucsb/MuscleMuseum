@@ -9,7 +9,7 @@ several key features:
 #. Data Management with `PostgreSQL <https://www.postgresql.org/>`_: MuscleMuseum employs the robust PostgreSQL database system for efficient data management. This ensures reliable storage and retrieval of experimental data.
 #. User-Friendly GUIs: The package offers intuitive Graphical User Interfaces (GUIs) developed using `MATLAB App Designer <https://www.mathworks.com/products/matlab/app-designer.html>`_.
 
-Right now, I have implemented:
+Right now, we have implemented:
 
 #. :class:`.BecExp`: A BEC experimental control and data analysis system integrated with `Cicero <https://akeshet.github.io/Cicero-Word-Generator/>`_  
 #. :app:`.BecControlPanel` & :app:`.BecBrowser`: Apps for controlling and browsing BEC experiments 
@@ -18,12 +18,17 @@ Right now, I have implemented:
 #. :class:`.SeSim1D`: A 1D Time-dependent Schrodinger equation (TDSE) simulation tool 
 #. :class:`.LatticeSeSim1D`: A 1D lattice dynamics simulation tool 
 #. :class:`.OpticalLattice`: Some lattice band structure calculations 
+#. :class:`.FitData`: Automatic curve fitting
+#. :class:`.Waveform`: Software waveform generation
 #. :class:`.KeysightWaveformGenerator`: Keysight function generator control
+#. :class:`.SpectrumWaveformGenerator`: Spectrum function generator control
+#. :class:`.VescentPhaseLock`: Vescent phase locker control
+#. :class:`.TektronixScope`: Tektronix scope control
+#. :class:`.Andor`, :class:`.Pco` & :class:`.Basler`: Camera control
 
 Still under construction:
 
 #. Gross-Pitaevskii equation simulation
-#. Scope talk
 #. RF generator control
 
 Known issues: the database functions I wrote are not compatible with MATLAB 2023b or higher. I

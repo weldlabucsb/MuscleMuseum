@@ -1,7 +1,8 @@
 function b = uncoupledSpinBasis(j1,mj1,j2,mj2)
 %uncoupledSpinBasis Convert coupled spin basis to uncoupled.
-%   j1 and j2 couple to get j3. Get the uncoupled angular
-%   momentum spin eigen-basis |j1,mj1,j2,mj2> under the j3 basis |j3,mj3>
+%   :math:`j_1` and :math:`j_2` couple to get :math:`j_3`. Get the uncoupled angular
+%   momentum spin eigen-basis :math:`|j_1,m_{j,1},j_2,m_{j,2}\rangle` under the
+%   :math:`j_3` basis :math:`|j_3,m_{j,3}\rangle`
 
 j3 = totalAngularMomentum(j1,j2);
 j3List = angularMomentumList(j3);
