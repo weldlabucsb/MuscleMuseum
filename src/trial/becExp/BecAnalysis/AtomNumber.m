@@ -245,6 +245,19 @@ classdef AtomNumber < BecAnalysis
             becExp = obj.BecExp;
             nSub = becExp.Roi.NSub;
             nSub(nSub == 0) = 1;
+            
+            if becExp.Is2DScan
+                % 2D scan - create density plots
+                obj.updateFigure2D(fig, nSub);
+            else
+                % 1D scan - original line plot logic
+                obj.updateFigure1D(fig, nSub);
+            end
+        end
+        
+        function updateFigure1D(obj, fig, nSub)
+            %% Parameters. Use sorted list for plotting
+            becExp = obj.BecExp;
             paraList = becExp.ScannedParameterList;
 
             %% Update raw plots
@@ -300,6 +313,62 @@ classdef AtomNumber < BecAnalysis
                 end
                 if ~isempty(le)
                     [le.LineStyle] = deal("-");
+                end
+            end
+        end
+        
+        function updateFigure2D(obj, fig, nSub)
+            %% 2D density plot logic
+            becExp = obj.BecExp;
+            
+            % Clear existing plots
+            clf(fig);
+            
+            % Get 2D plot data
+            [xData, yData] = obj.get2DPlotData();
+            
+            if isempty(xData) || isempty(yData)
+                % Fallback to 1D plotting if 2D data is not available
+                obj.updateFigure1D(fig, nSub);
+                return;
+            end
+            
+            % Create subplots for each component
+            if nSub == 1
+                % Single subplot - show all components
+                subplotPositions = [1, 3, 1:3];
+                plotTitles = {'Raw', 'Thermal', 'Condensate'};
+                plotData = {obj.Raw, obj.Thermal, obj.Condensate};
+                visibleFlags = {obj.IsShowRaw, obj.IsShowThermal, obj.IsShowCondensate};
+            else
+                % Multiple subplots - one for each sub-ROI
+                subplotPositions = [nSub, 1, 1:nSub];
+                plotTitles = cell(1, nSub);
+                plotData = cell(1, nSub);
+                visibleFlags = cell(1, nSub);
+                for ii = 1:nSub
+                    plotTitles{ii} = sprintf('Sub-ROI %d', ii);
+                    plotData{ii} = obj.Raw(1, :, ii);
+                    visibleFlags{ii} = obj.IsShowRaw;
+                end
+            end
+            
+            % Create plots
+            plotCount = 0;
+            for ii = 1:length(plotData)
+                if visibleFlags{ii}
+                    plotCount = plotCount + 1;
+                    subplot(subplotPositions(1), subplotPositions(2), plotCount);
+                    
+                    % Reshape data to 2D
+                    data2D = obj.reshapeDataTo2D(plotData{ii} / obj.Unit);
+                    
+                    % Create density plot
+                    imagesc(xData, yData, data2D);
+                    colorbar;
+                    xlabel(becExp.XLabel);
+                    ylabel(becExp.YLabel);
+                    title(plotTitles{ii});
                 end
             end
         end

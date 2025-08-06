@@ -6,8 +6,8 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
         Description string = "This is a test trial."
         NCompletedRun int32 = 0
         NRun int32 = 1
-        ScannedParameter string = "dummy"
-        ScannedParameterUnit string = "V"
+        ScannedParameter string = "dummy"  % Can be string or 1x2 string array for 2D scans
+        ScannedParameterUnit string = "V"  % Can be string or 1x2 string array for 2D scans
         Is2dScan logical = false
     end
 
@@ -24,6 +24,7 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
 
     properties (Dependent)
         IsCompeted logical
+        Is2DScan logical  % Computed property based on ScannedParameter dimensions
     end
 
     properties (SetAccess = protected, Hidden)
@@ -187,6 +188,15 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
 
         function isCompeted = get.IsCompeted(obj)
             isCompeted = obj.NRun == obj.NCompletedRun;
+        end
+
+        function is2DScan = get.Is2DScan(obj)
+            % Determine if this is a 2D scan based on ScannedParameter dimensions
+            if isstring(obj.ScannedParameter)
+                is2DScan = size(obj.ScannedParameter, 2) == 2;
+            else
+                is2DScan = false;
+            end
         end
 
         function createWatcher(obj)

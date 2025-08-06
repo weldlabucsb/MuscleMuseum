@@ -45,6 +45,8 @@ classdef BecExp < Trial
         RunListSorted
         ScannedParameterListSorted
         XLabel
+        YLabel                     % Y-axis label for 2D scans
+        ParameterGrid              % 2D parameter grid for 2D scans
     end
 
     properties (Constant,Hidden)
@@ -74,6 +76,13 @@ classdef BecExp < Trial
             load("Config.mat","BecExpParameterUnit","HardwareList")
             obj.ParameterUnitConfig = BecExpParameterUnit;
             obj.HardwareList = HardwareList;
+            obj.ScannedParameter = str2strmat(obj.ScannedParameter);
+            if ~obj.Is2DScan
+                obj.ScannedParameterUnit = obj.ParameterUnitConfig(obj.ParameterUnitConfig.ScannedParameter == obj.ScannedParameter(1),:).ScannedParameterUnit;
+            else
+                obj.ScannedParameterUnit = [obj.ParameterUnitConfig(obj.ParameterUnitConfig.ScannedParameter == obj.ScannedParameter(1),:).ScannedParameterUnit,...
+                    obj.ParameterUnitConfig(obj.ParameterUnitConfig.ScannedParameter == obj.ScannedParameter(2),:).ScannedParameterUnit];
+            end
 
             % Atom setting
             obj.Atom = getAtom(obj.ConfigParameter.AtomName);
@@ -106,30 +115,98 @@ classdef BecExp < Trial
         end
 
         function paraList = get.ScannedParameterList(obj)
-            switch obj.ScannedParameter
-                case "RunIndex"
-                    paraList = double(1:obj.NCompletedRun);
-                case "CiceroLogTime"
-                    if ~isempty(obj.CiceroLogTime)
-                        paraList = obj.CiceroLogTime;
-                        paraList = paraList - paraList(1);
-                        paraList = seconds(paraList);
-                    else
-                        paraList = [];
-                    end
-                otherwise
-                    if isfield(obj.CiceroData,obj.ScannedParameter)
-                        paraList = obj.CiceroData.(obj.ScannedParameter);
-                    elseif isfield(obj.HardwareData,obj.ScannedParameter)
-                        paraList = obj.HardwareData.(obj.ScannedParameter);
-                    else
-                        obj.updateScopeData
-                        if isfield(obj.ScopeData,obj.ScannedParameter)
-                            paraList = obj.ScopeData.(obj.ScannedParameter);
+            if obj.Is2DScan
+                % For 2D scans, return a 2xN matrix with both parameters
+                param1 = obj.ScannedParameter(1);
+                param2 = obj.ScannedParameter(2);
+                
+                % Get first parameter values
+                switch param1
+                    case "RunIndex"
+                        paraList1 = double(1:obj.NCompletedRun);
+                    case "CiceroLogTime"
+                        if ~isempty(obj.CiceroLogTime)
+                            paraList1 = obj.CiceroLogTime;
+                            paraList1 = paraList1 - paraList1(1);
+                            paraList1 = seconds(paraList1);
+                        else
+                            paraList1 = [];
+                        end
+                    otherwise
+                        if isfield(obj.CiceroData,param1)
+                            paraList1 = obj.CiceroData.(param1);
+                        elseif isfield(obj.HardwareData,param1)
+                            paraList1 = obj.HardwareData.(param1);
+                        else
+                            obj.updateScopeData
+                            if isfield(obj.ScopeData,param1)
+                                paraList1 = obj.ScopeData.(param1);
+                            else
+                                paraList1 = [];
+                            end
+                        end
+                end
+                
+                % Get second parameter values
+                switch param2
+                    case "RunIndex"
+                        paraList2 = double(1:obj.NCompletedRun);
+                    case "CiceroLogTime"
+                        if ~isempty(obj.CiceroLogTime)
+                            paraList2 = obj.CiceroLogTime;
+                            paraList2 = paraList2 - paraList2(1);
+                            paraList2 = seconds(paraList2);
+                        else
+                            paraList2 = [];
+                        end
+                    otherwise
+                        if isfield(obj.CiceroData,param2)
+                            paraList2 = obj.CiceroData.(param2);
+                        elseif isfield(obj.HardwareData,param2)
+                            paraList2 = obj.HardwareData.(param2);
+                        else
+                            obj.updateScopeData
+                            if isfield(obj.ScopeData,param2)
+                                paraList2 = obj.ScopeData.(param2);
+                            else
+                                paraList2 = [];
+                            end
+                        end
+                end
+                
+                % Return 2xN matrix
+                if ~isempty(paraList1) && ~isempty(paraList2)
+                    paraList = [paraList1; paraList2];
+                else
+                    paraList = [];
+                end
+            else
+                % 1D scan - original logic
+                switch obj.ScannedParameter
+                    case "RunIndex"
+                        paraList = double(1:obj.NCompletedRun);
+                    case "CiceroLogTime"
+                        if ~isempty(obj.CiceroLogTime)
+                            paraList = obj.CiceroLogTime;
+                            paraList = paraList - paraList(1);
+                            paraList = seconds(paraList);
                         else
                             paraList = [];
                         end
-                    end
+                    otherwise
+                        if isfield(obj.CiceroData,obj.ScannedParameter)
+                            paraList = obj.CiceroData.(obj.ScannedParameter);
+                        elseif isfield(obj.HardwareData,obj.ScannedParameter)
+                            paraList = obj.HardwareData.(obj.ScannedParameter);
+                        else
+                            obj.updateScopeData
+                            if isfield(obj.ScopeData,obj.ScannedParameter)
+                                paraList = obj.ScopeData.(obj.ScannedParameter);
+                            else
+                                paraList = [];
+                            end
+                        end
+                end
             end
         end
 
@@ -143,15 +220,71 @@ classdef BecExp < Trial
             [parameterListSorted,~] =  sort(paraList);
         end
 
+
+
         function xLabel = get.XLabel(obj)
-            sP = obj.ScannedParameter;
-            sP = strrep(sP,'_','\_');
-            if isempty(obj.ScannedParameterUnit) || ismissing(obj.ScannedParameterUnit) ||...
-                    obj.ScannedParameterUnit == ""
-                xLabel = sP;
+            if obj.Is2DScan
+                sP = obj.ScannedParameter(1);
+                sP = strrep(sP,'_','\_');
+                if isempty(obj.ScannedParameterUnit) || size(obj.ScannedParameterUnit, 2) < 1 ||...
+                        ismissing(obj.ScannedParameterUnit(1)) || obj.ScannedParameterUnit(1) == ""
+                    xLabel = sP;
+                else
+                    unit1 = obj.ScannedParameterUnit(1);
+                    xLabel = sP + "~[$\mathrm{" + unit1 + "}$]";
+                end
             else
-                xLabel = sP + "~[$\mathrm{" + obj.ScannedParameterUnit + "}$]";
+                sP = obj.ScannedParameter;
+                sP = strrep(sP,'_','\_');
+                if isempty(obj.ScannedParameterUnit) || ismissing(obj.ScannedParameterUnit) ||...
+                        obj.ScannedParameterUnit == ""
+                    xLabel = sP;
+                else
+                    xLabel = sP + "~[$\mathrm{" + obj.ScannedParameterUnit + "}$]";
+                end
             end
+        end
+
+        function yLabel = get.YLabel(obj)
+            if ~obj.Is2DScan
+                yLabel = "";
+                return
+            end
+            
+            sP = obj.ScannedParameter(2);
+            sP = strrep(sP,'_','\_');
+            if isempty(obj.ScannedParameterUnit) || size(obj.ScannedParameterUnit, 2) < 2 ||...
+                    ismissing(obj.ScannedParameterUnit(2)) || obj.ScannedParameterUnit(2) == ""
+                yLabel = sP;
+            else
+                unit2 = obj.ScannedParameterUnit(2);
+                yLabel = sP + "~[$\mathrm{" + unit2 + "}$]";
+            end
+        end
+
+        function paramGrid = get.ParameterGrid(obj)
+            % Create 2D parameter grid for 2D scans
+            if ~obj.Is2DScan
+                paramGrid = [];
+                return
+            end
+            
+            paraList = obj.ScannedParameterList;
+            if isempty(paraList) || size(paraList, 1) ~= 2
+                paramGrid = [];
+                return
+            end
+            
+            paraList1 = paraList(1, :);
+            paraList2 = paraList(2, :);
+            
+            % Get unique values for each parameter
+            unique1 = unique(paraList1);
+            unique2 = unique(paraList2);
+            
+            % Create meshgrid
+            [X, Y] = meshgrid(unique1, unique2);
+            paramGrid = struct('X', X, 'Y', Y, 'unique1', unique1, 'unique2', unique2);
         end
 
         function drp = get.DeletedRunParameterList(obj)
@@ -275,6 +408,7 @@ classdef BecExp < Trial
                 obj.updateScopeData
 
                 %% Check if the scanned parameter is correct
+                % Check single parameter for 1D scans
                 if isempty(obj.ScannedParameterList)
                     obj.displayLog("Can not find [" + obj.ScannedParameter + "]" + ...
                         " in Cicero or Hardware Variable List or scope data list. Please correct and restart.","error")

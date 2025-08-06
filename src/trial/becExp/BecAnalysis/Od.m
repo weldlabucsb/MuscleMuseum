@@ -168,53 +168,44 @@ classdef Od < BecAnalysis
         end
 
         function plotOdMix(obj)
-            %% Initialize
+            %% Initialize figure
             fig = obj.Chart(1).initialize;
             if ishandle(fig)
                 figure(fig)
             else
                 return
             end
-            ax = gca;
 
-            %% Plot OD Data
-            nRun = obj.BecExp.NCompletedRun;
-            cData = cell(1,nRun);
-            runList = obj.BecExp.RunListSorted;
-            for ii = 1:nRun
-                cData{ii} = obj.OdData(:,:,runList(ii));
-            end
-            mData = horzcat(cData{:});
-            img = imagesc(ax,mData);
-
-            %% Render
-            fz = 20;
-            cb = colorbar(ax);
-            clim(obj.CLim)
-            colormap(ax,obj.Colormap)
-            
-            cb.Label.Interpreter = "Latex";
-            cb.Label.String = "OD";
-            cb.Label.FontSize = fz;
-            roiSize = obj.BecExp.Roi.CenterSize(3:4);
-            yxBoundary = obj.BecExp.Roi.YXBoundary;
-            aspect = double(nRun)*roiSize(2)/roiSize(1);
-            figPos = fig.InnerPosition;
-            targetWidth = figPos(3)*0.85;
-            targetHeight = figPos(4)*0.85;
-            ax.Units = "pixels";
-            if targetWidth > targetHeight * aspect
-                ax.Position(4) = targetHeight;
-                ax.Position(3) = targetHeight * aspect;
+            %% Check if 2D scan and call appropriate plotting method
+            if obj.BecExp.Is2DScan
+                obj.plotOdMix2D(fig);
             else
-                ax.Position(3) = targetWidth;
-                ax.Position(4) = targetWidth / aspect;
+                obj.plotOdMix1D(fig);
             end
-            ax.Position(1:2) = [figPos(3)/2 - ax.Position(3)/2,...
-                figPos(4)/2 - ax.Position(4)/2];
-            pbaspect(ax,[aspect,1,1])
+        end
+        
+        function plotOdMix1D(obj, fig)
+            %% 1D plotting logic (original implementation)
+            %% BecExp parameters
+            becExp = obj.BecExp;
+            roi = becExp.Roi;
+            yxBoundary = roi.YXBoundary;
+            roiSize = roi.CenterSize(3:4);
+            nRun = becExp.NCompletedRun;
+            runList = obj.BecExp.RunListSorted;
+            paraName = becExp.ScannedParameter;
+            paraListSorted = becExp.ScannedParameterListSorted;
+            paraUnit = becExp.ScannedParameterUnit;
 
-            ax.Units = "normalized";
+            %% Initialize plots
+            roiAspect = roiSize(2)/roiSize(1);
+            figPos = fig.InnerPosition;
+            gap = 15;
+            fz = 12;
+            ax = axes(fig);
+            img = imagesc(ax,zeros(roiSize));
+            ax.Colormap = obj.Colormap;
+            ax.CLim = obj.CLim;
             ax.XLabel.String = obj.BecExp.XLabel;
             ax.XLabel.Interpreter = "latex";
             ax.XLabel.FontSize = fz;
@@ -237,7 +228,54 @@ classdef Od < BecAnalysis
             outerpos = ax.OuterPosition;
             fig.Position(4) = fig.Position(3) * outerpos(4)/outerpos(3)*1.05;
             ax.OuterPosition(2) = 0;
+        end
+        
+        function plotOdMix2D(obj, fig)
+            %% 2D plotting logic
+            becExp = obj.BecExp;
+            roi = becExp.Roi;
+            roiSize = roi.CenterSize(3:4);
             
+            % Get 2D plot data
+            [xData, yData] = obj.get2DPlotData();
+            
+            if isempty(xData) || isempty(yData)
+                % Fallback to 1D plotting if 2D data is not available
+                obj.plotOdMix1D(fig);
+                return;
+            end
+            
+            % Clear figure and create new axes
+            clf(fig);
+            ax = axes(fig);
+            
+            % Create 2D density plot for a representative slice (middle of ROI)
+            midSlice = round(roiSize(1)/2);
+            odSlice = squeeze(obj.OdData(midSlice, :, :));
+            
+            % Reshape to 2D grid
+            od2D = obj.reshapeDataTo2D(odSlice);
+            
+            % Create density plot
+            imagesc(ax, xData, yData, od2D);
+            ax.Colormap = obj.Colormap;
+            ax.CLim = obj.CLim;
+            
+            % Add labels and title
+            ax.XLabel.String = becExp.XLabel;
+            ax.XLabel.Interpreter = "latex";
+            ax.XLabel.FontSize = 12;
+            ax.YLabel.String = becExp.YLabel;
+            ax.YLabel.Interpreter = "latex";
+            ax.YLabel.FontSize = 12;
+            ax.Title.String = "TrialName: " + obj.BecExp.Name + ...
+                ", Trial \#" + num2str(obj.BecExp.SerialNumber) + ...
+                " (OD at y=" + num2str(midSlice) + ")";
+            ax.Title.Interpreter = "latex";
+            ax.Title.FontSize = 12;
+            
+            % Add colorbar
+            colorbar(ax);
         end
 
         function plotOdAnimation(obj)

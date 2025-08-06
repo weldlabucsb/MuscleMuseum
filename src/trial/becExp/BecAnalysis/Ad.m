@@ -234,6 +234,17 @@ classdef Ad < BecAnalysis
             else
                 return
             end
+
+            %% Check if 2D scan and call appropriate plotting method
+            if obj.BecExp.Is2DScan
+                obj.plotAdMix2D(fig, adData);
+            else
+                obj.plotAdMix1D(fig, adData);
+            end
+        end
+        
+        function plotAdMix1D(obj, fig, adData)
+            %% 1D plotting logic (original implementation)
             ax = gca;
 
             %% Plot AD Data
@@ -299,7 +310,62 @@ classdef Ad < BecAnalysis
             outerpos = ax.OuterPosition;
             fig.Position(4) = fig.Position(3) * outerpos(4)/outerpos(3)*1.05;
             ax.OuterPosition(2) = 0;
-
+        end
+        
+        function plotAdMix2D(obj, fig, adData)
+            %% 2D plotting logic
+            becExp = obj.BecExp;
+            roi = becExp.Roi;
+            roiSize = roi.CenterSize(3:4);
+            
+            % Get 2D plot data
+            [xData, yData] = obj.get2DPlotData();
+            
+            if isempty(xData) || isempty(yData)
+                % Fallback to 1D plotting if 2D data is not available
+                obj.plotAdMix1D(fig, adData);
+                return;
+            end
+            
+            % Clear figure and create new axes
+            clf(fig);
+            ax = axes(fig);
+            
+            % Use provided adData or default to obj.AdData
+            if isempty(adData)
+                adData = obj.AdData;
+            end
+            
+            % Create 2D density plot for a representative slice (middle of ROI)
+            midSlice = round(roiSize(1)/2);
+            adSlice = squeeze(adData(midSlice, :, :));
+            
+            % Reshape to 2D grid
+            ad2D = obj.reshapeDataTo2D(adSlice / obj.Unit);
+            
+            % Create density plot
+            imagesc(ax, xData, yData, ad2D);
+            ax.Colormap = obj.Colormap;
+            ax.CLim = obj.CLim;
+            
+            % Add labels and title
+            ax.XLabel.String = becExp.XLabel;
+            ax.XLabel.Interpreter = "latex";
+            ax.XLabel.FontSize = 12;
+            ax.YLabel.String = becExp.YLabel;
+            ax.YLabel.Interpreter = "latex";
+            ax.YLabel.FontSize = 12;
+            ax.Title.String = "TrialName: " + obj.BecExp.Name + ...
+                ", Trial \#" + num2str(obj.BecExp.SerialNumber) + ...
+                " (AD at y=" + num2str(midSlice) + ")";
+            ax.Title.Interpreter = "latex";
+            ax.Title.FontSize = 12;
+            
+            % Add colorbar
+            cb = colorbar(ax);
+            cb.Label.Interpreter = "Latex";
+            cb.Label.String = "AD [$\times 10^{" + string(log(obj.Unit)/log(10))+"} ~ \mathrm{m}^{-2}$]";
+            cb.Label.FontSize = 12;
         end
 
         function plotAdAnimation(obj)

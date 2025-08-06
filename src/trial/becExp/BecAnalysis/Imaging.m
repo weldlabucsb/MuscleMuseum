@@ -125,6 +125,16 @@ classdef Imaging < BecAnalysis
                 return
             end
 
+            % Check if 2D scan and call appropriate plotting method
+            if obj.BecExp.Is2DScan
+                obj.updateFigure2D(fig);
+            else
+                obj.updateFigure1D(fig);
+            end
+        end
+        
+        function updateFigure1D(obj, fig)
+            % 1D plotting logic (original implementation)
             % Parameters
             paraList = obj.BecExp.ScannedParameterList;
             ax = findobj(fig,'Type','Axes');
@@ -153,6 +163,65 @@ classdef Imaging < BecAnalysis
             l(1).YPositiveDelta = stdSat;
 
             title(ax(2),obj.ImagingStage + " " + obj.ImagingMethod + ...
+                ". First run $t_{\mathrm{image}}=" + num2str(obj.ImagingTime(1)) + "~\mathrm{" + ...
+                obj.ImagingTimeUnit + "}.~\bar{s} = " + num2str(obj.SaturationParameterMeanOverall) + "$",...
+                Interpreter="latex")
+        end
+        
+        function updateFigure2D(obj, fig)
+            % 2D plotting logic
+            becExp = obj.BecExp;
+            
+            % Get 2D plot data
+            [xData, yData] = obj.get2DPlotData();
+            
+            if isempty(xData) || isempty(yData)
+                % Fallback to 1D plotting if 2D data is not available
+                obj.updateFigure1D(fig);
+                return;
+            end
+            
+            % Clear figure and create new subplots
+            clf(fig);
+            
+            % Create subplot for saturation parameter
+            ax1 = subplot(2,1,1);
+            
+            % Reshape saturation parameter to 2D
+            sat2D = obj.reshapeDataTo2D(obj.SaturationParameterMean);
+            
+            % Create density plot for saturation parameter
+            imagesc(ax1, xData, yData, sat2D);
+            ax1.Colormap = jet;
+            colorbar(ax1);
+            ax1.XLabel.String = becExp.XLabel;
+            ax1.XLabel.Interpreter = "latex";
+            ax1.YLabel.String = becExp.YLabel;
+            ax1.YLabel.Interpreter = "latex";
+            ax1.Title.String = "Saturation Parameter";
+            ax1.Title.Interpreter = "latex";
+            
+            % Create subplot for light/dark comparison
+            ax2 = subplot(2,1,2);
+            
+            % Reshape light and dark data to 2D
+            light2D = obj.reshapeDataTo2D(obj.LightMean);
+            dark2D = obj.reshapeDataTo2D(obj.DarkMean);
+            
+            % Create combined plot (light - dark)
+            combined2D = light2D - dark2D;
+            imagesc(ax2, xData, yData, combined2D);
+            ax2.Colormap = jet;
+            colorbar(ax2);
+            ax2.XLabel.String = becExp.XLabel;
+            ax2.XLabel.Interpreter = "latex";
+            ax2.YLabel.String = becExp.YLabel;
+            ax2.YLabel.Interpreter = "latex";
+            ax2.Title.String = "Light - Dark";
+            ax2.Title.Interpreter = "latex";
+            
+            % Add overall title
+            sgtitle(fig, obj.ImagingStage + " " + obj.ImagingMethod + ...
                 ". First run $t_{\mathrm{image}}=" + num2str(obj.ImagingTime(1)) + "~\mathrm{" + ...
                 obj.ImagingTimeUnit + "}.~\bar{s} = " + num2str(obj.SaturationParameterMeanOverall) + "$",...
                 Interpreter="latex")
