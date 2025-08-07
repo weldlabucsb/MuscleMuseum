@@ -152,6 +152,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro/introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../intro/quick.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../main/waveform.html">Waveform and WaveformList</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="atom.html">Atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="field.html">Field</a></li>
@@ -452,8 +453,9 @@ generation.</p>
 <dt class="sig sig-object mat" id="Acquisition">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Acquisition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Acquisition" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.SetGetExactNames</span></code></p>
-<p>Acquisition Acquisition class.
-Detailed explanation goes here</p>
+<p>ACQUISITION Acquisition class.
+Class that describes camera properties and enables saving images
+taken from the camera of interest.</p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
@@ -463,14 +465,16 @@ Detailed explanation goes here</p>
 Acquisition handles mainly the camera parameters and the
 data acquisition process. Given “cameraName”, the
 constructor load the configuration and set the acquisition
-parameters properly.</p>
+parameters properly from the MMUser config folder. 
+acqName is a string that identifies the camera in the
+config file Config.mat.</p>
 </dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.AdaptorName">
 <span class="sig-name descname"><span class="pre">AdaptorName</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#Acquisition.AdaptorName" title="Link to this definition">#</a></dt>
-<dd><p>MATLAB camera adaptor</p>
+<dd><p>MATLAB camera adaptor used to connect to camera.</p>
 </dd></dl>
 
 <dl class="mat attribute">
@@ -506,7 +510,7 @@ parameters properly.</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.ConfigFun">
 <span class="sig-name descname"><span class="pre">ConfigFun</span></span><em class="property"> <span class="pre">function_handle</span></em><a class="headerlink" href="#Acquisition.ConfigFun" title="Link to this definition">#</a></dt>
-<dd><p>Configure the camera parameters. Must be pre-defined.</p>
+<dd><p>Function handle that configures the camera parameters. Must be pre-defined.</p>
 </dd></dl>
 
 <dl class="mat attribute">
@@ -536,30 +540,31 @@ parameters properly.</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.ImagePath">
 <span class="sig-name descname"><span class="pre">ImagePath</span></span><em class="property"> <span class="pre">{mustBeFolder}</span> <span class="pre">=</span> <span class="pre">&quot;.&quot;</span></em><a class="headerlink" href="#Acquisition.ImagePath" title="Link to this definition">#</a></dt>
-<dd><p>Where to save the generated images</p>
+<dd><p>Folder location where to save the generated images</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.ImagePrefix">
 <span class="sig-name descname"><span class="pre">ImagePrefix</span></span><em class="property"> <span class="pre">string</span> <span class="pre">=</span> <span class="pre">&quot;run&quot;</span></em><a class="headerlink" href="#Acquisition.ImagePrefix" title="Link to this definition">#</a></dt>
-<dd><p>How to name the images</p>
+<dd><p>String prefix that describes how to name the images</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.ImageSize">
 <span class="sig-name descname"><span class="pre">ImageSize</span></span><em class="property"> <span class="pre">uint32</span></em><a class="headerlink" href="#Acquisition.ImageSize" title="Link to this definition">#</a></dt>
-<dd><p>size y * size x</p>
+<dd><p>size y (int)* size x (int)</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.IsExternalTriggered">
 <span class="sig-name descname"><span class="pre">IsExternalTriggered</span></span><em class="property"> <span class="pre">logical</span></em><a class="headerlink" href="#Acquisition.IsExternalTriggered" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Tells whether camera is externally triggered or not.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.Magnification">
 <span class="sig-name descname"><span class="pre">Magnification</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Acquisition.Magnification" title="Link to this definition">#</a></dt>
-<dd><p>Manification of the optical system</p>
+<dd><p>Magnification of the optical system, determined by lens setup.</p>
 </dd></dl>
 
 <dl class="mat attribute">
@@ -577,7 +582,8 @@ parameters properly.</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.PixelSizeReal">
 <span class="sig-name descname"><span class="pre">PixelSizeReal</span></span><a class="headerlink" href="#Acquisition.PixelSizeReal" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Calculated size of the pixels in the plane of the atoms.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.QuantumEfficiencyData">
@@ -600,14 +606,16 @@ parameters properly.</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.VideoInput">
 <span class="sig-name descname"><span class="pre">VideoInput</span></span><a class="headerlink" href="#Acquisition.VideoInput" title="Link to this definition">#</a></dt>
-<dd><p>MATLAB camera connection</p>
+<dd><p>MATLAB camera connection object, class videoinput</p>
 </dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Acquisition.QuantumEfficiency">
 <span class="sig-name descname"><span class="pre">QuantumEfficiency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">lambda</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Acquisition.QuantumEfficiency" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Calculates and saves QuantumEfficiency for given wavelength
+lambda (in m) from data table</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Acquisition.connectCamera">
@@ -618,7 +626,9 @@ parameters properly.</p>
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Acquisition.killBadPixel">
 <span class="sig-name descname"><span class="pre">killBadPixel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">imageData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Acquisition.killBadPixel" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Takes an average of rows/collumns surrounding bad pixels and
+replaces them.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Acquisition.pauseCamera">
@@ -629,7 +639,8 @@ parameters properly.</p>
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Acquisition.setCallback">
 <span class="sig-name descname"><span class="pre">setCallback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">callbackFunc</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Acquisition.setCallback" title="Link to this definition">#</a></dt>
-<dd><p>Set camera callback function.</p>
+<dd><p>Set camera callback function to be called when sufficient
+images have been taken.</p>
 </dd></dl>
 
 <dl class="mat method">
@@ -645,7 +656,8 @@ functions.</p>
 <dd><p>This method compares the properties of the handle object ‘obj’ with
 the fields of a structure ‘struct’. Then it sets the properties to the
 values of the fields. The obj must inherit the set method from
-matlab.mixin.SetGetExactNames</p>
+matlab.mixin.SetGetExactNames. Used to extract config
+properties.</p>
 </dd></dl>
 
 <dl class="mat method">
@@ -657,7 +669,7 @@ matlab.mixin.SetGetExactNames</p>
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Acquisition.stopCamera">
 <span class="sig-name descname"><span class="pre">stopCamera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Acquisition.stopCamera" title="Link to this definition">#</a></dt>
-<dd><p>Stop camera recording</p>
+<dd><p>Stop camera recording, deletes videoinput object.</p>
 </dd></dl>
 
 </dd>
@@ -841,13 +853,18 @@ functions.</p>
 <dt class="sig sig-object mat" id="Pco">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Pco</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Pco" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Acquisition" title="Acquisition"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Acquisition</span></code></a></p>
+<p>PCO Pco class
+Creates a subclass of the Acquisition class with properties specific
+to our PCO camera as well as explicit code to connect to and control
+this camera.</p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Pco.Pco">
 <span class="sig-name descname"><span class="pre">Pco</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Pco.Pco" title="Link to this definition">#</a></dt>
-<dd><p>KEYSIGHT Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>PCO Construct an instance of this class
+Creates an Acquisition object and saves the CameraType and
+AdaptorName used to connect to the camera.</p>
 </dd></dl>
 
 </dd>
@@ -855,7 +872,8 @@ Detailed explanation goes here</p>
 <dt class="sig sig-object mat" id="Pco.setCameraParameterAbsorption">
 <span class="sig-name descname"><span class="pre">setCameraParameterAbsorption</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Pco.setCameraParameterAbsorption" title="Link to this definition">#</a></dt>
 <dd><p>Set camera parameters using the predefined configuration
-functions.</p>
+functions. Assumes videoinput object has been created and
+modifies it to predefined settings.</p>
 </dd></dl>
 
 </dd>
@@ -867,6 +885,8 @@ functions.</p>
 <dt class="sig sig-object mat" id="PcoEdge5p5">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PcoEdge5p5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PcoEdge5p5" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Pco" title="Pco"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Pco</span></code></a></p>
+<p>PCOEDGE5P5 Subclass of the Pco and Acquisition class
+Adds additional parameters corresponding to the PcoEdge 5.5 camera.</p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
@@ -1005,9 +1025,43 @@ Detailed explanation goes here</p>
 <dt class="sig sig-object mat" id="SpectrumWaveformGenerator">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SpectrumWaveformGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SpectrumWaveformGenerator" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#WaveformGenerator" title="WaveformGenerator"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">WaveformGenerator</span></code></a></p>
-<p>SpectrumWaveformGenerator Summary of this class goes here
-Please download the Spectrum AWG MATLAB driver:
-<a class="reference external" href="https://spectrum-instrumentation.com/products/drivers_examples/matlab_support.php">https://spectrum-instrumentation.com/products/drivers_examples/matlab_support.php</a></p>
+<p>SpectrumWaveformGenerator Device-specifick implementation of the
+WaveformGenerator class for Spectrum AWGs</p>
+<blockquote>
+<div><p>Please download the Spectrum AWG MATLAB driver:
+<a class="reference external" href="https://spectrum-instrumentation.com/products/drivers_examples/matlab_support.php">https://spectrum-instrumentation.com/products/drivers_examples/matlab_support.php</a>
+Properties:
+Device: Stores device obj generated by Spectrum library to
+interact with AWG
+RegMap: Library of registry values corresponding to different commands
+in the Spectrum library, generated by Spectrum Matlab library.
+ErrorMap: Library of registry values corresponding to error codes
+in Spectrum library, generated by Spectrum Matlab library.
+Methods:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>SpectrumWaveformGenerator(resourceName, name):</dt><dd><p>Generalized creation method setting resourceName, name, and
+Manufacturer of the AWG</p>
+</dd>
+<dt>connect(obj): </dt><dd><p>Not in use, connection is created everytime we upload a
+waveform for preparation. Uses connectSpec instead</p>
+</dd>
+<dt>connectSpec(obj):</dt><dd><p>Spectrum specific command to generate RegMap and ErrorMap.
+Also initiates the device connection.</p>
+</dd>
+<dt>set(obj):</dt><dd><p>Undefined class for defining settings. Unused since the initialization is done for every run.</p>
+</dd>
+<dt>setSpec(obj): </dt><dd><p>Sets sampling rate, trigger settings, enables the selected
+output AnalogChannels</p>
+</dd>
+<dt>upload(obj):</dt><dd><p>Connects and sends settings to AWG. Gathers minimum segment
+size. Gathers waveforms arrays from WaveformList. Checks
+number of waveforms from each list to make sure they have
+the same number.</p>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
@@ -1111,7 +1165,8 @@ options are ‘Rise’ and ‘Fall’, default ‘Rise’
 OutputMode: Tells whether the AWG outputs the full waveform or
 turns off when the trigger is off, option is ‘Normal’ and
 ‘Gated’, default ‘Normal
-IsOutput: A logical variable that describes 
+IsOutput: A logical array that tells which of the NChannels are
+enabled or not.
 OutputLoad: Tells whether the output load is infinite or 50ohm.
 Options are ‘50’ and ‘Infinity’, default ‘50’.
 WaveformList: Cell that stores the waveformlist object for each
@@ -1704,7 +1759,7 @@ regular BEC experiment data taking.</p>
   <div class="footer-item">
     
 <p class="component-author">
-By Xiao Chai
+By Weld Lab
 </p>
 
   </div>
@@ -1714,7 +1769,7 @@ By Xiao Chai
 
   <p class="copyright">
     
-      © Copyright 2024, Xiao Chai.
+      © Copyright 2025, Weld Lab.
       <br/>
     
   </p>

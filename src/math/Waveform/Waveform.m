@@ -1,26 +1,30 @@
 classdef (Abstract) Waveform < handle
-    %WAVEFORM Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`Waveform` generates and stores waveforms. By definition, a
+    %waveform can refer to either a function of time, or a time-sequence of
+    %samples. The definition of a :class:`Waveform` is given by the output
+    %of the :meth:`TimeFunc`, as a function handle, which takes a time
+    %array as the argument. Every concrete subclass of :class:`Waveform`
+    %must define a :meth:`TimeFunc` method. The samples of the
+    %:class:`Waveform` is then calculated whenever :attr:`Sample` is
+    %called, based on the :meth:`TimeFunc` and the other paramters.
     
     properties
-        SamplingRate double {mustBePositive} = 1 % In Hz
-        StartTime double = 0 % Start time, in s
-        Duration double {mustBeNonnegative} = 0.1 % How long of the waveform, in s
-        Scan table = table(string.empty,string.empty, 'VariableNames',{'ParameterName','VariableName'}) % For scanning in Hardware control
+        SamplingRate double {mustBePositive} = 1 % In Hertz
+        StartTime double = 0 % In seconds
+        Duration double {mustBeNonnegative} = 0.1 % In seconds
+        Scan table = table(string.empty,string.empty, 'VariableNames',{'ParameterName','VariableName'}) % For scanning parameters in Hardware control panel
     end
 
     properties (Dependent)
-        EndTime
-        TimeStep
-        NSample
-        Sample
+        EndTime % Dependent. on :attr:`StartTime` and :attr:`Duration`
+        TimeStep % Dependent on :attr:`SamplingRate`
+        NSample % Dependent on :attr:`SamplingRate` and :attr:`Duration`
+        Sample % Dependent on :meth:`TimeFunc`, :attr:`StartTime`, :attr:`TimeStep`, and :attr:`EndTime`
     end
     
     methods
         function obj = Waveform()
-            %WAVEFORM Construct an instance of this class
-            %   Detailed explanation goes here
-            
+            %Construct an instance of this class
         end
 
         function te = get.EndTime(obj)
@@ -42,6 +46,8 @@ classdef (Abstract) Waveform < handle
         end
         
         function plot(obj)
+            %Plot and render the waveform using the given sampling rate
+
             t = obj.StartTime : obj.TimeStep : obj.EndTime;
             s = obj.Sample;
             plot(t,s)
