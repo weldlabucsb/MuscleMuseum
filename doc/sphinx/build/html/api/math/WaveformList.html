@@ -186,6 +186,7 @@
 <li class="toctree-l3"><a class="reference internal" href="SineWave.html">SineWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SineWaveModulated.html">SineWaveModulated</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SqrtParabolicFit1D.html">SqrtParabolicFit1D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SquareWave.html">SquareWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TanhSinePulse.html">TanhSinePulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalPulse.html">TrapezoidalPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalSinePulse.html">TrapezoidalSinePulse</a></li>
@@ -426,93 +427,163 @@ document.write(`
 <dt class="sig sig-object mat" id="WaveformList">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">WaveformList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/WaveformList.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#WaveformList" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
-<p>WAVEFORMLIST Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#WaveformList" title="WaveformList"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">WaveformList</span></code></a> manages a collection of waveforms for complex sequences.</p>
+<p>Combines multiple <a class="reference internal" href="Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a> objects into a single sequence using either
+sequential concatenation or simultaneous superposition. Supports periodic
+waveforms with repeat counts and trigger-advance modes for hardware control.</p>
+<p><strong>Example1:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Create a sequence of different waveforms</span>
+<span class="n">sine</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="n">const</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ConstantWave</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.005</span><span class="p">);</span>
+<span class="n">list</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">WaveformList</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;mySequence&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">waveformOrigin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="n">sine</span><span class="p">,</span><span class="w"> </span><span class="n">const</span><span class="p">});</span>
+<span class="n">list</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Example2:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Simultaneous waveforms</span>
+<span class="n">list</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">WaveformList</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;simultaneous&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">concatMethod</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;Simultaneous&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                    </span><span class="n">waveformOrigin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="n">sine</span><span class="p">,</span><span class="w"> </span><span class="n">const</span><span class="p">});</span>
+</pre></div>
+</div>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="WaveformList.WaveformList">
 <span class="sig-name descname"><span class="pre">WaveformList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WaveformList.WaveformList" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Construct a WaveformList object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Name of the waveform list</p></li>
+<li><p><strong>samplingRate</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Sampling rate in Hz (default: 1000)</p></li>
+<li><p><strong>concatMethod</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – Concatenation method (default: ‘Sequential’)</p></li>
+<li><p><strong>patchMethod</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – Gap filling method (default: ‘Continue’)</p></li>
+<li><p><strong>patchConstant</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Constant for gap filling (default: 0)</p></li>
+<li><p><strong>isTriggerAdvance</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">logical,</span> <span class="pre">optional</span></code></span>) – Use trigger advance mode (default: false)</p></li>
+<li><p><strong>waveformOrigin</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">cell,</span> <span class="pre">optional</span></code></span>) – Cell array of waveform objects (default: {})</p></li>
+<li><p><strong>nCycle</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Number of cycles for periodic waveforms (default: 10)</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">sine</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">);</span>
+<span class="n">list</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">WaveformList</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;myList&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">waveformOrigin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="n">sine</span><span class="p">},</span><span class="w"> </span><span class="n">samplingRate</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10000</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="WaveformList.ConcatMethod">
 <span class="sig-name descname"><span class="pre">ConcatMethod</span></span><em class="property"> <span class="pre">string</span> <span class="pre">{mustBeMember(ConcatMethod,{'Sequential','Simultaneous'})}</span> <span class="pre">=</span> <span class="pre">&quot;Sequential&quot;</span></em><a class="headerlink" href="#WaveformList.ConcatMethod" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Method for combining waveforms: ‘Sequential’ or ‘Simultaneous’.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="WaveformList.IsTriggerAdvance">
 <span class="sig-name descname"><span class="pre">IsTriggerAdvance</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">false</span></em><a class="headerlink" href="#WaveformList.IsTriggerAdvance" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Whether to use trigger-advance mode for hardware control.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="WaveformList.NCycle">
 <span class="sig-name descname"><span class="pre">NCycle</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">10</span></em><a class="headerlink" href="#WaveformList.NCycle" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Number of cycles for periodic waveforms.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="WaveformList.NSample">
 <span class="sig-name descname"><span class="pre">NSample</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#WaveformList.NSample" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Total number of samples in the combined waveform.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="WaveformList.Name">
 <span class="sig-name descname"><span class="pre">Name</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#WaveformList.Name" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Name of the waveform list.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="WaveformList.PatchConstant">
 <span class="sig-name descname"><span class="pre">PatchConstant</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#WaveformList.PatchConstant" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Constant value used when PatchMethod is ‘Constant’.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="WaveformList.PatchMethod">
 <span class="sig-name descname"><span class="pre">PatchMethod</span></span><em class="property"> <span class="pre">string</span> <span class="pre">{mustBeMember(PatchMethod,{'Continue','Constant'})}</span> <span class="pre">=</span> <span class="pre">&quot;Continue&quot;</span></em><a class="headerlink" href="#WaveformList.PatchMethod" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Method for filling gaps between waveforms: ‘Continue’ or ‘Constant’.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="WaveformList.RepeatMode">
 <span class="sig-name descname"><span class="pre">RepeatMode</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#WaveformList.RepeatMode" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Repeat mode for hardware control (‘Repeat’ or ‘RepeatTilTrigger’).</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="WaveformList.Sample">
 <span class="sig-name descname"><span class="pre">Sample</span></span><a class="headerlink" href="#WaveformList.Sample" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Combined waveform samples as a vector.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="WaveformList.SamplingRate">
 <span class="sig-name descname"><span class="pre">SamplingRate</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#WaveformList.SamplingRate" title="Link to this definition">#</a></dt>
-<dd><p>In Hz</p>
+<dd><p>In Hz - Sampling rate for all waveforms in the list.</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="WaveformList.TimeStep">
 <span class="sig-name descname"><span class="pre">TimeStep</span></span><a class="headerlink" href="#WaveformList.TimeStep" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Time step between samples (1/SamplingRate).</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="WaveformList.WaveformOrigin">
 <span class="sig-name descname"><span class="pre">WaveformOrigin</span></span><em class="property"> <span class="pre">cell</span></em><a class="headerlink" href="#WaveformList.WaveformOrigin" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Cell array of waveform objects to be combined.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="WaveformList.WaveformPrepared">
 <span class="sig-name descname"><span class="pre">WaveformPrepared</span></span><em class="property"> <span class="pre">Table</span></em><a class="headerlink" href="#WaveformList.WaveformPrepared" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Table containing prepared waveform segments with play modes and repeat counts.</p>
+</dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="WaveformList.TimeFunc">
 <span class="sig-name descname"><span class="pre">TimeFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WaveformList.TimeFunc" title="Link to this definition">#</a></dt>
-<dd><p>Check waveform origin</p>
+<dd><p>Get the time function for the combined waveform.</p>
+<p>Creates a function handle that evaluates the combined waveform
+at any time point, handling the concatenation method and timing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Function that takes time array and returns combined waveform values</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>function_handle</p>
+</dd>
+</dl>
+<p>Check waveform origin</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="WaveformList.plot">
 <span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">ax</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WaveformList.plot" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Plot the combined waveform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ax</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">axes,</span> <span class="pre">optional</span></code></span>) – Target axes for plotting (default: new figure)</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">list</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">WaveformList</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;myList&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">waveformOrigin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="n">sine</span><span class="p">,</span><span class="w"> </span><span class="n">const</span><span class="p">});</span>
+<span class="n">list</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</dd></dl>
 
 </dd>
 </dl>

@@ -186,6 +186,7 @@
 <li class="toctree-l3"><a class="reference internal" href="SineWave.html">SineWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SineWaveModulated.html">SineWaveModulated</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SqrtParabolicFit1D.html">SqrtParabolicFit1D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SquareWave.html">SquareWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TanhSinePulse.html">TanhSinePulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalPulse.html">TrapezoidalPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalSinePulse.html">TrapezoidalSinePulse</a></li>
@@ -426,14 +427,31 @@ document.write(`
 <dt class="sig sig-object mat" id="ConstantTop">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ConstantTop</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/ConstantTop.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ConstantTop" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
-<p>CONSTANTTOP Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#ConstantTop" title="ConstantTop"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">ConstantTop</span></code></a> abstract base class for constant-top waveform generation.</p>
+<p>Provides common functionality for waveforms that maintain a constant
+amplitude level during their active period. Used as a base class for
+pulse-like signals with flat tops. Inherits from <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code>.</p>
+<p><strong>Example1:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Create a constant-top pulse</span>
+<span class="n">pulse</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">TrapezoidalPulse</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="n">pulse</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Example2:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Create a constant-top sine pulse</span>
+<span class="n">pulse</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SinePulse</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="n">pulse</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="ConstantTop.ConstantTop">
 <span class="sig-name descname"><span class="pre">ConstantTop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ConstantTop.ConstantTop" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Construct a ConstantTop object.</p>
+<p>Abstract base class constructor. Subclasses should implement
+their own constructors with appropriate parameters.</p>
+</dd></dl>
 
 </dd>
 </dl>

@@ -186,6 +186,7 @@
 <li class="toctree-l3"><a class="reference internal" href="SineWave.html">SineWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SineWaveModulated.html">SineWaveModulated</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SqrtParabolicFit1D.html">SqrtParabolicFit1D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SquareWave.html">SquareWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TanhSinePulse.html">TanhSinePulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalPulse.html">TrapezoidalPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalSinePulse.html">TrapezoidalSinePulse</a></li>
@@ -426,15 +427,32 @@ document.write(`
 <dt class="sig sig-object mat" id="ModulatedWaveform">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ModulatedWaveform</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/ModulatedWaveform.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ModulatedWaveform" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a></p>
-<p>MODULATIONWAVEFORM Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#ModulatedWaveform" title="ModulatedWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">ModulatedWaveform</span></code></a> abstract base class for modulated waveform generation.</p>
+<p>Provides common functionality for waveforms with amplitude, frequency,
+and phase modulation. Subclasses implement specific modulation schemes
+for advanced signal generation applications. Inherits from <a class="reference internal" href="Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a>.</p>
+<p><strong>Example1:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Create amplitude modulation</span>
+<span class="n">ampMod</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">);</span>
+<span class="n">modulated</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWaveModulated</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                              </span><span class="n">amplitudeModulation</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ampMod</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Example2:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Create frequency modulation</span>
+<span class="n">freqMod</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+<span class="n">modulated</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWaveModulated</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                              </span><span class="n">frequencyModulation</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">freqMod</span><span class="p">);</span>
+</pre></div>
+</div>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="ModulatedWaveform.ModulatedWaveform">
 <span class="sig-name descname"><span class="pre">ModulatedWaveform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ModulatedWaveform.ModulatedWaveform" title="Link to this definition">#</a></dt>
-<dd><p>MODULATIONWAVE Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct a ModulatedWaveform object.</p>
+<p>Abstract base class constructor. Subclasses should implement
+their own constructors with appropriate parameters.</p>
 </dd></dl>
 
 </dd>
@@ -447,7 +465,8 @@ Detailed explanation goes here</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="ModulatedWaveform.AmplitudeModulation">
 <span class="sig-name descname"><span class="pre">AmplitudeModulation</span></span><em class="property"> <span class="pre">WaveformList</span></em><a class="headerlink" href="#ModulatedWaveform.AmplitudeModulation" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Waveform for amplitude modulation.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="ModulatedWaveform.Frequency">
@@ -458,7 +477,8 @@ Detailed explanation goes here</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="ModulatedWaveform.FrequencyModulation">
 <span class="sig-name descname"><span class="pre">FrequencyModulation</span></span><em class="property"> <span class="pre">WaveformList</span></em><a class="headerlink" href="#ModulatedWaveform.FrequencyModulation" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Waveform for frequency modulation.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="ModulatedWaveform.Offset">
@@ -475,13 +495,39 @@ Detailed explanation goes here</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="ModulatedWaveform.PhaseModulation">
 <span class="sig-name descname"><span class="pre">PhaseModulation</span></span><em class="property"> <span class="pre">WaveformList</span></em><a class="headerlink" href="#ModulatedWaveform.PhaseModulation" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Waveform for phase modulation.</p>
+</dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="ModulatedWaveform.getModulation">
 <span class="sig-name descname"><span class="pre">getModulation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ModulatedWaveform.getModulation" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get the modulation function handles.</p>
+<p>Returns function handles for amplitude, frequency, and phase
+modulation. Returns zero functions if no modulation is configured.
+Uses the <a class="reference internal" href="#ModulatedWaveform.AmplitudeModulation" title="ModulatedWaveform.AmplitudeModulation"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">AmplitudeModulation</span></code></a>, <a class="reference internal" href="#ModulatedWaveform.FrequencyModulation" title="ModulatedWaveform.FrequencyModulation"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">FrequencyModulation</span></code></a>,
+and <a class="reference internal" href="#ModulatedWaveform.PhaseModulation" title="ModulatedWaveform.PhaseModulation"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">PhaseModulation</span></code></a> properties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Amplitude modulation function handle</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>function_handle</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Frequency modulation function handle</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>function_handle</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Phase modulation function handle</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>function_handle</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd>
 </dl>

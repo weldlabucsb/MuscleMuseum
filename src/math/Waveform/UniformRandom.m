@@ -1,14 +1,51 @@
 classdef UniformRandom < RandomWaveform
-    %GAUSSIANRANDOM Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`UniformRandom` generates uniform random waveform signals.
+    %
+    % Creates random signals with values uniformly distributed between
+    % specified lower and upper bounds. Uses MATLAB's rand() function
+    % for pseudo-random number generation. Inherits from :class:`RandomWaveform`.
+    %
+    % **Example1:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Create uniform random between 0 and 1
+    %     uniform = UniformRandom(duration = 0.01);
+    %     uniform.plot();
+    %
+    % **Example2:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Create uniform random between -2 and 2
+    %     uniform = UniformRandom(lowerBound = -2, upperBound = 2, duration = 0.01);
+    %     uniform.plot();
     
     properties
-        LowerBound double = 0 %mu
-        UpperBound double = 1 %sigma
+        LowerBound double = 0 % Lower bound of the uniform distribution.
+        UpperBound double = 1 % Upper bound of the uniform distribution.
     end
     
     methods
         function obj = UniformRandom(options)
+            %Construct a UniformRandom object.
+            %
+            % :param samplingRate: Sampling rate in Hz (default: inherited)
+            % :type samplingRate: double, optional
+            % :param startTime: Start time in seconds (default: 0)
+            % :type startTime: double, optional
+            % :param duration: Duration in seconds (default: inherited)
+            % :type duration: double, optional
+            % :param lowerBound: Lower bound of uniform distribution (default: 0)
+            % :type lowerBound: double, optional
+            % :param upperBound: Upper bound of uniform distribution (default: 1)
+            % :type upperBound: double, optional
+            %
+            % **Example:**
+            %
+            % .. code-block:: matlab
+            %
+            %     uniform = UniformRandom(lowerBound = -1, upperBound = 1, duration = 0.01);
             arguments
                 options.samplingRate double = [];
                 options.startTime double = 0;
@@ -25,6 +62,14 @@ classdef UniformRandom < RandomWaveform
         end
         
         function func = TimeFunc(obj)
+            %Get the time function for the uniform random waveform.
+            %
+            % Creates a function handle that generates uniform random values
+            % between the configured lower and upper bounds. Implements the
+            % abstract :meth:`TimeFunc` method from :class:`Waveform`.
+            %
+            % :return: Function that takes time array and returns uniform random values
+            % :rtype: function_handle
             lb = obj.LowerBound;
             ub = obj.UpperBound;
             td = obj.Duration;

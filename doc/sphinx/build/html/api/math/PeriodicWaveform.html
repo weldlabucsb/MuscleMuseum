@@ -186,6 +186,7 @@
 <li class="toctree-l3"><a class="reference internal" href="SineWave.html">SineWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SineWaveModulated.html">SineWaveModulated</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SqrtParabolicFit1D.html">SqrtParabolicFit1D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SquareWave.html">SquareWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TanhSinePulse.html">TanhSinePulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalPulse.html">TrapezoidalPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalSinePulse.html">TrapezoidalSinePulse</a></li>
@@ -426,15 +427,30 @@ document.write(`
 <dt class="sig sig-object mat" id="PeriodicWaveform">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PeriodicWaveform</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/PeriodicWaveform.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PeriodicWaveform" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a></p>
-<p>PERIODICWAVEFORM Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#PeriodicWaveform" title="PeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PeriodicWaveform</span></code></a> abstract base class for periodic waveform generation.</p>
+<p>Provides common functionality for waveforms that repeat with a defined
+frequency, period, and phase. Supports cycle-based repetition and
+hardware-optimized sample generation for efficient waveform output.</p>
+<p><strong>Example1:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Create a periodic sine wave</span>
+<span class="n">sine</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="n">sine</span><span class="p">.</span><span class="n">plotOneCycle</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Example2:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Check repetition properties</span>
+<span class="nb">disp</span><span class="p">([</span><span class="s">&#39;Period: &#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">num2str</span><span class="p">(</span><span class="n">sine</span><span class="p">.</span><span class="n">Period</span><span class="p">),</span><span class="w"> </span><span class="s">&#39; s&#39;</span><span class="p">]);</span>
+<span class="nb">disp</span><span class="p">([</span><span class="s">&#39;Number of repeats: &#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">num2str</span><span class="p">(</span><span class="n">sine</span><span class="p">.</span><span class="n">NRepeat</span><span class="p">)]);</span>
+</pre></div>
+</div>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="PeriodicWaveform.PeriodicWaveform">
 <span class="sig-name descname"><span class="pre">PeriodicWaveform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PeriodicWaveform.PeriodicWaveform" title="Link to this definition">#</a></dt>
-<dd><p>PERIODICWAVEFORM Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct a PeriodicWaveform object.</p>
+<p>Abstract base class constructor. Subclasses should implement
+their own constructors with appropriate parameters.</p>
 </dd></dl>
 
 </dd>
@@ -447,12 +463,14 @@ Detailed explanation goes here</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="PeriodicWaveform.DurationOneCycle">
 <span class="sig-name descname"><span class="pre">DurationOneCycle</span></span><a class="headerlink" href="#PeriodicWaveform.DurationOneCycle" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Duration of one complete cycle segment.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="PeriodicWaveform.EndTimeAllCycle">
 <span class="sig-name descname"><span class="pre">EndTimeAllCycle</span></span><a class="headerlink" href="#PeriodicWaveform.EndTimeAllCycle" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>End time of all complete cycles.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="PeriodicWaveform.Frequency">
@@ -463,12 +481,14 @@ Detailed explanation goes here</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="PeriodicWaveform.NPeriod">
 <span class="sig-name descname"><span class="pre">NPeriod</span></span><a class="headerlink" href="#PeriodicWaveform.NPeriod" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Number of complete periods in the waveform duration.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="PeriodicWaveform.NRepeat">
 <span class="sig-name descname"><span class="pre">NRepeat</span></span><a class="headerlink" href="#PeriodicWaveform.NRepeat" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Number of times the cycle segment repeats.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="PeriodicWaveform.Offset">
@@ -479,7 +499,7 @@ Detailed explanation goes here</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="PeriodicWaveform.Period">
 <span class="sig-name descname"><span class="pre">Period</span></span><a class="headerlink" href="#PeriodicWaveform.Period" title="Link to this definition">#</a></dt>
-<dd><p>In s</p>
+<dd><p>In s - Time period of one complete cycle.</p>
 </dd></dl>
 
 <dl class="mat attribute">
@@ -491,23 +511,37 @@ Detailed explanation goes here</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="PeriodicWaveform.SampleExtra">
 <span class="sig-name descname"><span class="pre">SampleExtra</span></span><a class="headerlink" href="#PeriodicWaveform.SampleExtra" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Extra samples beyond complete cycles.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="PeriodicWaveform.SampleOneCycle">
 <span class="sig-name descname"><span class="pre">SampleOneCycle</span></span><a class="headerlink" href="#PeriodicWaveform.SampleOneCycle" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Sample values for one complete cycle.</p>
+</dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="PeriodicWaveform.plotExtra">
 <span class="sig-name descname"><span class="pre">plotExtra</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PeriodicWaveform.plotExtra" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Plot extra samples beyond complete cycles.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">sine</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.015</span><span class="p">);</span>
+<span class="n">sine</span><span class="p">.</span><span class="n">plotExtra</span><span class="p">();</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="PeriodicWaveform.plotOneCycle">
 <span class="sig-name descname"><span class="pre">plotOneCycle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PeriodicWaveform.plotOneCycle" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Plot one complete cycle of the periodic waveform.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">sine</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">);</span>
+<span class="n">sine</span><span class="p">.</span><span class="n">plotOneCycle</span><span class="p">();</span>
+</pre></div>
+</div>
+</dd></dl>
 
 </dd>
 </dl>

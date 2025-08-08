@@ -27,6 +27,7 @@ math
    SineWave
    SineWaveModulated
    SqrtParabolicFit1D
+   SquareWave
    TanhSinePulse
    TrapezoidalPulse
    TrapezoidalSinePulse

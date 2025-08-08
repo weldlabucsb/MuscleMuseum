@@ -186,6 +186,7 @@
 <li class="toctree-l3"><a class="reference internal" href="SineWave.html">SineWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SineWaveModulated.html">SineWaveModulated</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SqrtParabolicFit1D.html">SqrtParabolicFit1D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SquareWave.html">SquareWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TanhSinePulse.html">TanhSinePulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalPulse.html">TrapezoidalPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalSinePulse.html">TrapezoidalSinePulse</a></li>
@@ -426,14 +427,43 @@ document.write(`
 <dt class="sig sig-object mat" id="FitData">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">FitData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/FitData/FitData.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#FitData" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
-<p>FIT Summary of this class goes here
-Detailed explanation goes here</p>
+<p>Abstract base class for data fitting operations.</p>
+<p>Provides a framework for fitting mathematical functions to experimental data
+using MATLAB’s curve fitting toolbox. Supports customizable fit parameters,
+bounds, and optimization settings.</p>
+<p><strong>Example1:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Create a Gaussian fit object</span>
+<span class="n">data</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">];</span><span class="w"> </span><span class="c">% n x 2 array of x,y coordinates</span>
+<span class="n">gaussianFit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">GaussianFit1D</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="n">gaussianFit</span><span class="p">.</span><span class="n">do</span><span class="p">();</span>
+<span class="n">gaussianFit</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Example2:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Customize fit parameters</span>
+<span class="n">fitObj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">LinearFit1D</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="n">fitObj</span><span class="p">.</span><span class="n">IsOverride</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="n">fitObj</span><span class="p">.</span><span class="n">StartPointOverride</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">];</span>
+<span class="n">fitObj</span><span class="p">.</span><span class="n">do</span><span class="p">();</span>
+</pre></div>
+</div>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="FitData.FitData">
 <span class="sig-name descname"><span class="pre">FitData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#FitData.FitData" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Constructor for FitData class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rawData</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span> <span class="pre">array</span></code></span>) – Input data for fitting</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="nb">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)].</span><span class="o">&#39;</span><span class="p">;</span>
+<span class="n">fitObj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">GaussianFit1D</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
@@ -445,12 +475,14 @@ Detailed explanation goes here</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="FitData.CoefficientName">
 <span class="sig-name descname"><span class="pre">CoefficientName</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#FitData.CoefficientName" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Names of fit coefficients</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="FitData.FitFormula">
 <span class="sig-name descname"><span class="pre">FitFormula</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#FitData.FitFormula" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Mathematical formula for the fit function</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="FitData.Func">
@@ -467,39 +499,44 @@ Detailed explanation goes here</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="FitData.IsOverride">
 <span class="sig-name descname"><span class="pre">IsOverride</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">false</span></em><a class="headerlink" href="#FitData.IsOverride" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Whether to use override parameters</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="FitData.Lower">
 <span class="sig-name descname"><span class="pre">Lower</span></span><em class="property"> <span class="pre">(1,:)</span> <span class="pre">double</span></em><a class="headerlink" href="#FitData.Lower" title="Link to this definition">#</a></dt>
-<dd><p>Fit coefficient lower bound.</p>
+<dd><p>Fit coefficient lower bound</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="FitData.LowerOverride">
 <span class="sig-name descname"><span class="pre">LowerOverride</span></span><em class="property"> <span class="pre">(1,:)</span> <span class="pre">double</span></em><a class="headerlink" href="#FitData.LowerOverride" title="Link to this definition">#</a></dt>
-<dd><p>Fit coefficient lower bound.</p>
+<dd><p>Fit coefficient lower bound override</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="FitData.MaxFunEvals">
 <span class="sig-name descname"><span class="pre">MaxFunEvals</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">2000</span></em><a class="headerlink" href="#FitData.MaxFunEvals" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Maximum function evaluations</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="FitData.MaxIter">
 <span class="sig-name descname"><span class="pre">MaxIter</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">2000</span></em><a class="headerlink" href="#FitData.MaxIter" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Maximum iterations for optimization</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="FitData.MinimumDataSize">
 <span class="sig-name descname"><span class="pre">MinimumDataSize</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#FitData.MinimumDataSize" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Minimum number of data points required</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="FitData.RawData">
 <span class="sig-name descname"><span class="pre">RawData</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#FitData.RawData" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Input data for fitting</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="FitData.Result">
@@ -510,42 +547,53 @@ Detailed explanation goes here</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="FitData.StartPoint">
 <span class="sig-name descname"><span class="pre">StartPoint</span></span><em class="property"> <span class="pre">(1,:)</span> <span class="pre">double</span></em><a class="headerlink" href="#FitData.StartPoint" title="Link to this definition">#</a></dt>
-<dd><p>Fit coefficient start point. Check the documentso of [fitoptions]</p>
+<dd><p>Fit coefficient start point</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="FitData.StartPointOverride">
 <span class="sig-name descname"><span class="pre">StartPointOverride</span></span><em class="property"> <span class="pre">(1,:)</span> <span class="pre">double</span></em><a class="headerlink" href="#FitData.StartPointOverride" title="Link to this definition">#</a></dt>
-<dd><p>Fit coefficient start point. Check the documentso of [fitoptions]</p>
+<dd><p>Fit coefficient start point override</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="FitData.TolFun">
 <span class="sig-name descname"><span class="pre">TolFun</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">1E-16</span></em><a class="headerlink" href="#FitData.TolFun" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Function tolerance for optimization</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="FitData.Upper">
 <span class="sig-name descname"><span class="pre">Upper</span></span><em class="property"> <span class="pre">(1,:)</span> <span class="pre">double</span></em><a class="headerlink" href="#FitData.Upper" title="Link to this definition">#</a></dt>
-<dd><p>Fit coefficient upper bound.</p>
+<dd><p>Fit coefficient upper bound</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="FitData.UpperOverride">
 <span class="sig-name descname"><span class="pre">UpperOverride</span></span><em class="property"> <span class="pre">(1,:)</span> <span class="pre">double</span></em><a class="headerlink" href="#FitData.UpperOverride" title="Link to this definition">#</a></dt>
-<dd><p>Fit coefficient upper bound.</p>
+<dd><p>Fit coefficient upper bound override</p>
 </dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="FitData.clearOverride">
 <span class="sig-name descname"><span class="pre">clearOverride</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#FitData.clearOverride" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Clear all override parameters.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">fitObj</span><span class="p">.</span><span class="n">clearOverride</span><span class="p">();</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="FitData.setDefaultOverride">
 <span class="sig-name descname"><span class="pre">setDefaultOverride</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#FitData.setDefaultOverride" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Set override parameters to default values.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">fitObj</span><span class="p">.</span><span class="n">setDefaultOverride</span><span class="p">();</span>
+</pre></div>
+</div>
+</dd></dl>
 
 </dd>
 </dl>

@@ -186,6 +186,7 @@
 <li class="toctree-l3"><a class="reference internal" href="SineWave.html">SineWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SineWaveModulated.html">SineWaveModulated</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SqrtParabolicFit1D.html">SqrtParabolicFit1D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SquareWave.html">SquareWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TanhSinePulse.html">TanhSinePulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalPulse.html">TrapezoidalPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalSinePulse.html">TrapezoidalSinePulse</a></li>
@@ -426,32 +427,64 @@ document.write(`
 <dt class="sig sig-object mat" id="LinearRamp">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LinearRamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/LinearRamp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LinearRamp" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="TrapezoidalPulse.html#TrapezoidalPulse" title="TrapezoidalPulse"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">TrapezoidalPulse</span></code></a></p>
-<p>LINEARRAMP Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#LinearRamp" title="LinearRamp"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">LinearRamp</span></code></a> generates a linear ramp waveform.</p>
+<p>Creates a waveform that linearly transitions from a start value to a stop
+value over a specified ramp time. Inherits from <a class="reference internal" href="TrapezoidalPulse.html#TrapezoidalPulse" title="TrapezoidalPulse"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">TrapezoidalPulse</span></code></a>
+with zero fall time to create a pure ramp.</p>
+<p><strong>Example1:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Basic linear ramp</span>
+<span class="n">ramp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">LinearRamp</span><span class="p">(</span><span class="n">startValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">stopValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">rampTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="n">ramp</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Example2:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Negative ramp</span>
+<span class="n">ramp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">LinearRamp</span><span class="p">(</span><span class="n">startValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">stopValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">rampTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.005</span><span class="p">);</span>
+<span class="n">ramp</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="LinearRamp.LinearRamp">
 <span class="sig-name descname"><span class="pre">LinearRamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LinearRamp.LinearRamp" title="Link to this definition">#</a></dt>
-<dd><p>LINEARRAMP Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct a LinearRamp object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>samplingRate</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Sampling rate in Hz (default: inherited)</p></li>
+<li><p><strong>startTime</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Start time in seconds (default: 0)</p></li>
+<li><p><strong>duration</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Total duration in seconds (default: inherited)</p></li>
+<li><p><strong>startValue</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Initial ramp value (default: 0)</p></li>
+<li><p><strong>stopValue</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Final ramp value (default: 0)</p></li>
+<li><p><strong>rampTime</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Ramp duration in seconds (default: 0)</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ramp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">LinearRamp</span><span class="p">(</span><span class="n">startValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">stopValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">rampTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="LinearRamp.RampTime">
 <span class="sig-name descname"><span class="pre">RampTime</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#LinearRamp.RampTime" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Duration of the ramp transition in seconds.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="LinearRamp.StartValue">
 <span class="sig-name descname"><span class="pre">StartValue</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#LinearRamp.StartValue" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Initial value of the ramp.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="LinearRamp.StopValue">
 <span class="sig-name descname"><span class="pre">StopValue</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#LinearRamp.StopValue" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Final value of the ramp.</p>
+</dd></dl>
 
 </dd>
 </dl>

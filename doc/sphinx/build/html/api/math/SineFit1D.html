@@ -186,6 +186,7 @@
 <li class="toctree-l3"><a class="reference internal" href="SineWave.html">SineWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SineWaveModulated.html">SineWaveModulated</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SqrtParabolicFit1D.html">SqrtParabolicFit1D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SquareWave.html">SquareWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TanhSinePulse.html">TanhSinePulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalPulse.html">TrapezoidalPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalSinePulse.html">TrapezoidalSinePulse</a></li>
@@ -426,27 +427,64 @@ document.write(`
 <dt class="sig sig-object mat" id="SineFit1D">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SineFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/FitData/SineFit1D.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SineFit1D" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="FitData1D.html#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a></p>
-<p>GAUSSIANFIT1D Summary of this class goes here
-Detailed explanation goes here</p>
+<p>Sine function fit for one-dimensional data.</p>
+<p>Fits a sine function of the form A*sin(2*pi*f*x + phi) + C to experimental data.
+Automatically estimates amplitude, frequency, phase, and offset from the data
+using Fourier transform analysis.</p>
+<p><strong>Example1:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Fit sine function to experimental data</span>
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">);</span>
+<span class="n">y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="nb">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nb">pi</span><span class="o">*</span><span class="mf">0.5</span><span class="o">*</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.1</span><span class="o">*</span><span class="nb">randn</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">x</span><span class="p">));</span>
+<span class="n">data</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">x</span><span class="o">&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">&#39;</span><span class="p">];</span>
+<span class="n">sineFit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineFit1D</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="n">sineFit</span><span class="p">.</span><span class="n">do</span><span class="p">();</span>
+<span class="n">sineFit</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Example2:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Access fit parameters</span>
+<span class="n">sineFit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineFit1D</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="n">sineFit</span><span class="p">.</span><span class="n">do</span><span class="p">();</span>
+<span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sineFit</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sineFit</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">phase</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sineFit</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">offset</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sineFit</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+</pre></div>
+</div>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="SineFit1D.SineFit1D">
 <span class="sig-name descname"><span class="pre">SineFit1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SineFit1D.SineFit1D" title="Link to this definition">#</a></dt>
-<dd><p>GAUSSIANFIT1D Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Constructor for SineFit1D class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rawData</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span> <span class="pre">array</span></code></span>) – Input data as n x 2 matrix [x, y]</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="nb">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)].</span><span class="o">&#39;</span><span class="p">;</span>
+<span class="n">sineFit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineFit1D</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="SineFit1D.guessCoefficient">
 <span class="sig-name descname"><span class="pre">guessCoefficient</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SineFit1D.guessCoefficient" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Automatically estimate initial fit parameters from data.</p>
+<p>Estimates amplitude, frequency, phase, and offset using Fourier
+transform analysis and data characteristics.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="SineFit1D.setFormula">
 <span class="sig-name descname"><span class="pre">setFormula</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SineFit1D.setFormula" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Set the sine fit formula.</p>
+<p>Formula: A*sin(2*pi*f*x + phi) + C
+Parameters: A (amplitude), f (frequency), phi (phase), C (offset)</p>
+</dd></dl>
 
 </dd>
 </dl>

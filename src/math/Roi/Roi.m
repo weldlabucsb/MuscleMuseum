@@ -1,35 +1,83 @@
 classdef Roi < handle
-    %ROI Summary of this class goes here
-    %   Detailed explanation goes here
+    % Region of Interest (ROI) management for image processing.
+    %
+    % Provides functionality for defining, manipulating, and applying regions of
+    % interest to image data. Supports rotation, sub-ROI creation, and coordinate
+    % transformations between different coordinate systems.
+    %
+    % **Example1:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Create ROI from configuration
+    %     roi = Roi("CenterRegion", imageSize=[1024, 1024]);
+    %     roiData = roi.select(imageData);
+    %
+    % **Example2:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Create custom ROI with rotation
+    %     roi = Roi(yxBoundary=[100, 500, 200, 600], angle=45);
+    %     roi.rotate(30);
+    %     subRoiData = roi.selectSub(imageData);
+    %
     
     properties
-        Name string
-        ImageSize (1,2) double
-        ImageSizeRotated (1,2) double %Image size after rotation. By default we use the "loose" bounding box option of the imrotate function
-        YXBoundary (1,4) double = [1,1024,1,1024] %[Y1,Y2,X1,X2]
-        Angle (1,1) double = 0 % In degrees
-        CenterSize (1,4) double = [512.5,512.5,1024,1024] %[centerY,centerX,sizeY,sizeX]
-        SubRoiCenterSize double % N * 4 array or 1 * 4 array. In the full image basis.
-        SubRoiNRowColumn (1,2) double = [1,1]
-        SubRoiSeparation (1,2) double = [100,100] 
+        Name string % ROI name identifier
+        ImageSize (1,2) double % Original image dimensions [height, width]
+        ImageSizeRotated (1,2) double % Image size after rotation
+        YXBoundary (1,4) double = [1,1024,1,1024] % ROI boundaries [Y1,Y2,X1,X2]
+        Angle (1,1) double = 0 % Rotation angle in degrees
+        CenterSize (1,4) double = [512.5,512.5,1024,1024] % [centerY,centerX,sizeY,sizeX]
+        SubRoiCenterSize double % Sub-ROI center and size specifications
+        SubRoiNRowColumn (1,2) double = [1,1] % Number of sub-ROI rows and columns
+        SubRoiSeparation (1,2) double = [100,100] % Separation between sub-ROIs
     end
 
     properties (Dependent)
-        XList
-        YList
-        CornerList
-        NSub
+        XList % List of x-coordinates within ROI
+        YList % List of y-coordinates within ROI
+        CornerList % Corner coordinates of ROI
+        NSub % Number of sub-ROIs
     end
 
     properties (SetAccess = protected)
-        IsSubRoi logical = false
-        SubRoi Roi
+        IsSubRoi logical = false % Whether this is a sub-ROI
+        SubRoi Roi % Array of sub-ROI objects
     end
     
     methods
         function obj = Roi(roiName,options)
-            %ROI Construct an instance of the Roi class
-            %   Detailed explanation goes here
+            % Constructor for Roi class.
+            %
+            % :param roiName: Name of ROI configuration to load (optional)
+            % :type roiName: string
+            % :param options.yxBoundary: ROI boundaries [Y1,Y2,X1,X2] (optional)
+            % :type options.yxBoundary: uint32 array
+            % :param options.angle: Rotation angle in degrees (optional)
+            % :type options.angle: double
+            % :param options.centerSize: ROI center and size [centerY,centerX,sizeY,sizeX] (optional)
+            % :type options.centerSize: double array
+            % :param options.imageSize: Image dimensions [height,width] (optional)
+            % :type options.imageSize: uint32 array
+            % :param options.subRoiCenterSize: Sub-ROI specifications (optional)
+            % :type options.subRoiCenterSize: double array
+            % :param options.subRoiNRowColumn: Sub-ROI grid dimensions (optional)
+            % :type options.subRoiNRowColumn: double array
+            % :param options.subRoiSeparation: Sub-ROI separation distances (optional)
+            % :type options.subRoiSeparation: double array
+            % :param options.isSubRoi: Whether this is a sub-ROI (optional)
+            % :type options.isSubRoi: logical
+            %
+            % **Example:**
+            %
+            % .. code-block:: matlab
+            %
+            %     roi = Roi("CenterRegion");
+            %     roi = Roi(yxBoundary=[100, 500, 200, 600], angle=45);
+            %     roi = Roi(centerSize=[256, 256, 100, 100], imageSize=[512, 512]);
+            %
             arguments
                 roiName string = []
                 options.yxBoundary uint32 = []
@@ -109,6 +157,11 @@ classdef Roi < handle
         end
 
         function set.YXBoundary(obj,val)
+            % Set ROI boundaries with validation.
+            %
+            % :param val: ROI boundaries [Y1,Y2,X1,X2]
+            % :type val: double array
+            %
             if numel(val) == 4 && sum(abs(val - obj.YXBoundary))>eps
                 val = round(val(:).');
                 if any(val<1)
@@ -147,6 +200,11 @@ classdef Roi < handle
         end
 
         function set.CenterSize(obj,val)
+            % Set ROI center and size with validation.
+            %
+            % :param val: ROI center and size [centerY,centerX,sizeY,sizeX]
+            % :type val: double array
+            %
             if numel(val) == 4 && sum(abs(val - obj.CenterSize)) > eps
                 center = round(val(1:2));
                 a = val(3);
@@ -199,6 +257,11 @@ classdef Roi < handle
         end
 
         function set.Angle(obj,val)
+            % Set rotation angle with image size adjustment.
+            %
+            % :param val: Rotation angle in degrees
+            % :type val: double
+            %
             if obj.IsSubRoi
                 obj.Angle = 0;
                 obj.ImageSizeRotated = obj.ImageSize;
@@ -234,21 +297,38 @@ classdef Roi < handle
         end
         
         function set.SubRoiCenterSize(obj,val)
+            % Set sub-ROI center and size specifications.
+            %
+            % :param val: Sub-ROI specifications
+            % :type val: double array
+            %
             obj.SubRoiCenterSize = val;
             obj.setSub;
         end
 
         function set.SubRoiNRowColumn(obj,val)
+            % Set sub-ROI grid dimensions.
+            %
+            % :param val: Number of rows and columns
+            % :type val: double array
+            %
             obj.SubRoiNRowColumn = val;
             obj.setSub;
         end
 
         function set.SubRoiSeparation(obj,val)
+            % Set sub-ROI separation distances.
+            %
+            % :param val: Separation in y and x directions
+            % :type val: double array
+            %
             obj.SubRoiSeparation = val;
             obj.setSub;
         end
 
         function setSub(obj)
+            % Create sub-ROI objects based on current settings.
+            %
             obj.SubRoi = Roi.empty;
             if isempty(obj.SubRoiCenterSize)
                 return
@@ -294,6 +374,13 @@ classdef Roi < handle
         end
         
         function roiData = select(obj,mData)
+            % Extract ROI data from input image.
+            %
+            % :param mData: Input image data
+            % :type mData: double array
+            % :return: ROI data
+            % :rtype: double array
+            %
             mDataSize = size(mData,1,2);
             if ~isempty(obj.ImageSize)
                 if any(mDataSize ~= obj.ImageSize)
@@ -311,6 +398,13 @@ classdef Roi < handle
         end
 
         function subRoiData = selectSub(obj,mData)
+            % Extract data from all sub-ROIs.
+            %
+            % :param mData: Input image data
+            % :type mData: double array
+            % :return: Cell array of sub-ROI data
+            % :rtype: cell array
+            %
             mDataSize = size(mData,1,2);
             if all(mDataSize == obj.CenterSize(3:4))
                 mainRoiData = mData;
@@ -329,6 +423,13 @@ classdef Roi < handle
         end
         
         function grid(obj,nRow,nColumn)
+            % Create a grid of sub-ROIs.
+            %
+            % :param nRow: Number of rows
+            % :type nRow: double
+            % :param nColumn: Number of columns
+            % :type nColumn: double
+            %
             roiSize = obj.CenterSize(3:4);
             if roiSize(1) < 3 * nRow || roiSize(2) < 3 * nColumn
                 error("ROI size is to small to be grided.")
@@ -352,6 +453,13 @@ classdef Roi < handle
         end
         
         function roiCoord = full2Roi(obj,fullCoord)
+            % Convert full image coordinates to ROI coordinates.
+            %
+            % :param fullCoord: Full image coordinates
+            % :type fullCoord: double array
+            % :return: ROI coordinates
+            % :rtype: double array
+            %
             yxBoundary = obj.YXBoundary;
             roiSize = obj.CenterSize(3:4);
             roiUpperLeft = [yxBoundary(1),yxBoundary(3)];
@@ -367,6 +475,13 @@ classdef Roi < handle
         end
 
         function fullCoord = roi2Full(obj,roiCoord)
+            % Convert ROI coordinates to full image coordinates.
+            %
+            % :param roiCoord: ROI coordinates
+            % :type roiCoord: double array
+            % :return: Full image coordinates
+            % :rtype: double array
+            %
             yxBoundary = obj.YXBoundary;
             roiUpperLeft = [yxBoundary(1),yxBoundary(3)];
             roiUpperLeft = reshape(roiUpperLeft,size(roiCoord));
@@ -374,6 +489,13 @@ classdef Roi < handle
         end
 
         function roiCoord = noRotationFull2Roi(obj,noRotFullCoord)
+            % Convert non-rotated full coordinates to ROI coordinates.
+            %
+            % :param noRotFullCoord: Non-rotated full coordinates
+            % :type noRotFullCoord: double array
+            % :return: ROI coordinates
+            % :rtype: double array
+            %
             imageCenter = (1 + obj.ImageSizeRotated)/2;
             imageCenterNoRotation = (1 + obj.ImageSize)/2;
             fullCoordRelative = noRotFullCoord - imageCenterNoRotation;
@@ -385,6 +507,13 @@ classdef Roi < handle
         end
 
         function noRotFullCoord = roi2NoRotationFull(obj,roiCoord)
+            % Convert ROI coordinates to non-rotated full coordinates.
+            %
+            % :param roiCoord: ROI coordinates
+            % :type roiCoord: double array
+            % :return: Non-rotated full coordinates
+            % :rtype: double array
+            %
             noRotFullCoord = obj.roi2Full(roiCoord);
             imageCenter = (1 + obj.ImageSizeRotated)/2;
             imageCenterNoRotation = (1 + obj.ImageSize)/2;
@@ -396,14 +525,35 @@ classdef Roi < handle
         end
 
         function fullCoord = noRotationFull2Full(obj,noRotFullCoord)
+            % Convert non-rotated full coordinates to rotated full coordinates.
+            %
+            % :param noRotFullCoord: Non-rotated full coordinates
+            % :type noRotFullCoord: double array
+            % :return: Rotated full coordinates
+            % :rtype: double array
+            %
             fullCoord = obj.roi2Full(obj.noRotationFull2Roi(noRotFullCoord));
         end
 
         function noRotFullCoord = full2NoRotationFull(obj,fullCoord)
+            % Convert rotated full coordinates to non-rotated full coordinates.
+            %
+            % :param fullCoord: Rotated full coordinates
+            % :type fullCoord: double array
+            % :return: Non-rotated full coordinates
+            % :rtype: double array
+            %
             noRotFullCoord = obj.roi2NoRotationFull(obj.full2Roi(fullCoord));
         end
 
         function mask = createMask(obj,maskPoints)
+            % Create a mask from polygon points.
+            %
+            % :param maskPoints: Polygon points in full image coordinates
+            % :type maskPoints: double array
+            % :return: Binary mask
+            % :rtype: logical array
+            %
             roiSize = obj.CenterSize(3:4);
             roiMaskPoints = zeros(size(maskPoints));
             for ii = 1:size(maskPoints,1)
@@ -413,12 +563,26 @@ classdef Roi < handle
         end
 
         function logi = isInRoi(obj,fullCoord)
+            % Check if coordinates are within ROI boundaries.
+            %
+            % :param fullCoord: Full image coordinates
+            % :type fullCoord: double array
+            % :return: Whether coordinates are in ROI
+            % :rtype: logical
+            %
             yxBoundary = obj.YXBoundary;
             logi = fullCoord(1) >= yxBoundary(1) && fullCoord(1) <= yxBoundary(2) &&...
                 fullCoord(2) >= yxBoundary(3) && fullCoord(2) <= yxBoundary(4);
         end
 
         function logi = isNoRotationFullInRoi(obj,noRotFullCoord)
+            % Check if non-rotated coordinates are within ROI.
+            %
+            % :param noRotFullCoord: Non-rotated full coordinates
+            % :type noRotFullCoord: double array
+            % :return: Whether coordinates are in ROI
+            % :rtype: logical
+            %
             imageCenterNoRotation = (1 + obj.ImageSize)/2;
             imageCenter = (1 + obj.ImageSizeRotated)/2;
             fullCoordRelative = noRotFullCoord - imageCenterNoRotation;
@@ -430,6 +594,11 @@ classdef Roi < handle
         end
 
         function rotate(obj,rotateAngle)
+            % Rotate ROI about its center.
+            %
+            % :param rotateAngle: Additional rotation angle in degrees
+            % :type rotateAngle: double
+            %
             if obj.IsSubRoi
                 warning("Can not rotate sub-ROI.")
                 return
@@ -467,24 +636,49 @@ classdef Roi < handle
         end
     
         function xList = get.XList(obj)
+            % Get list of x-coordinates within ROI.
+            %
+            % :return: x-coordinate list
+            % :rtype: double array
+            %
             xList = (obj.YXBoundary(3):obj.YXBoundary(4)).';
         end
 
         function yList = get.YList(obj)
+            % Get list of y-coordinates within ROI.
+            %
+            % :return: y-coordinate list
+            % :rtype: double array
+            %
             yList = (obj.YXBoundary(1):obj.YXBoundary(2)).';
         end
     
         function cList = get.CornerList(obj)
+            % Get corner coordinates of ROI.
+            %
+            % :return: Corner coordinates
+            % :rtype: double array
+            %
             yxBound = obj.YXBoundary;
             cList = [yxBound(1),yxBound(3);yxBound(2),yxBound(3);...
                 yxBound(2),yxBound(4);yxBound(1),yxBound(4)];
         end
 
         function val = get.NSub(obj)
+            % Get number of sub-ROIs.
+            %
+            % :return: Number of sub-ROIs
+            % :rtype: double
+            %
             val = numel(obj.SubRoi);
         end
 
         function s = saveobj(obj)
+            % Save ROI object to structure.
+            %
+            % :return: Structure containing ROI data
+            % :rtype: struct
+            %
             s = struct();
             s.Name = obj.Name;
             s.ImageSize = obj.ImageSize;
@@ -500,6 +694,13 @@ classdef Roi < handle
     
     methods (Static)
         function obj = loadobj(s)
+            % Load ROI object from structure.
+            %
+            % :param s: Structure containing ROI data
+            % :type s: struct
+            % :return: ROI object
+            % :rtype: Roi
+            %
             if isstruct(s)
                 newObj = Roi(...
                 yxBoundary = s.YXBoundary,...

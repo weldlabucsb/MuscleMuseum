@@ -186,6 +186,7 @@
 <li class="toctree-l3"><a class="reference internal" href="SineWave.html">SineWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SineWaveModulated.html">SineWaveModulated</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SqrtParabolicFit1D.html">SqrtParabolicFit1D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SquareWave.html">SquareWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TanhSinePulse.html">TanhSinePulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalPulse.html">TrapezoidalPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalSinePulse.html">TrapezoidalSinePulse</a></li>
@@ -426,22 +427,68 @@ document.write(`
 <dt class="sig sig-object mat" id="ConstantWave">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ConstantWave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/ConstantWave.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ConstantWave" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="PeriodicWaveform.html#PeriodicWaveform" title="PeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PeriodicWaveform</span></code></a>, <a class="reference internal" href="ConstantTop.html#ConstantTop" title="ConstantTop"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">ConstantTop</span></code></a></p>
-<p>CONSTANTWAVE Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#ConstantWave" title="ConstantWave"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">ConstantWave</span></code></a> generates a constant (DC) waveform.</p>
+<p>Creates a waveform with a constant amplitude value over the specified duration.
+Inherits from <a class="reference internal" href="PeriodicWaveform.html#PeriodicWaveform" title="PeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PeriodicWaveform</span></code></a> and <a class="reference internal" href="ConstantTop.html#ConstantTop" title="ConstantTop"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">ConstantTop</span></code></a> for periodic
+behavior and constant amplitude properties.</p>
+<p><strong>Example1:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Basic constant waveform</span>
+<span class="n">const</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ConstantWave</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">5.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="n">const</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Example2:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Constant waveform with offset</span>
+<span class="n">const</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ConstantWave</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.005</span><span class="p">);</span>
+<span class="n">const</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="ConstantWave.ConstantWave">
 <span class="sig-name descname"><span class="pre">ConstantWave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ConstantWave.ConstantWave" title="Link to this definition">#</a></dt>
-<dd><p>CONSTANTWAVE Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct a ConstantWave object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>samplingRate</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Sampling rate in Hz (default: inherited)</p></li>
+<li><p><strong>startTime</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Start time in seconds (default: 0)</p></li>
+<li><p><strong>duration</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Duration in seconds (default: inherited)</p></li>
+<li><p><strong>offset</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – DC offset value (default: 0)</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">const</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ConstantWave</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">3.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">,</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">);</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="ConstantWave.TimeFunc">
 <span class="sig-name descname"><span class="pre">TimeFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ConstantWave.TimeFunc" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get the time function for the constant waveform.</p>
+<p>Returns a function handle that generates a constant value over
+the specified duration, zero outside the duration. Implements the
+abstract <a class="reference internal" href="#ConstantWave.TimeFunc" title="ConstantWave.TimeFunc"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code></a> method from <a class="reference internal" href="Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Function that takes time array and returns constant values</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>function_handle</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">const</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ConstantWave</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="n">func</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">const</span><span class="p">.</span><span class="n">TimeFunc</span><span class="p">();</span>
+<span class="n">t</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span><span class="mf">0.001</span><span class="p">:</span><span class="mf">0.02</span><span class="p">;</span>
+<span class="n">y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">func</span><span class="p">(</span><span class="n">t</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
 
 </dd>
 </dl>

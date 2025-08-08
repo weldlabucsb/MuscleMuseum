@@ -46,7 +46,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/mmSetting/MmSetting';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="trial" href="../trial/index.html" />
+    <link rel="next" title="UserPreferences" href="UserPreferences.html" />
     <link rel="prev" title="mmSetting" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -166,6 +166,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">mmSetting</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">MmSetting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UserPreferences.html">UserPreferences</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
@@ -392,8 +393,11 @@ document.write(`
 <dt class="sig sig-object mat" id="MmSetting">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">MmSetting</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/mmSetting/MmSetting.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MmSetting" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
-<p>MMSETTING This class handles MuscleMuseum settings.
-Detailed explanation goes here</p>
+<p>MMSETTING Enhanced MmSetting with efficient schema validation
+This class uses SQLite’s built-in features for schema validation:
+- Metadata table for multi-table schema tracking
+- Schema hashing for change detection
+- PRAGMA table_info for schema introspection</p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
@@ -429,6 +433,18 @@ Detailed explanation goes here</p>
 </dd></dl>
 
 <dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmSetting.MetadataTableName">
+<span class="sig-name descname"><span class="pre">MetadataTableName</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;SchemaMetadata&quot;</span></em><a class="headerlink" href="#MmSetting.MetadataTableName" title="Link to this definition">#</a></dt>
+<dd><p>Table to store schema information for all tables</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmSetting.SchemaHash">
+<span class="sig-name descname"><span class="pre">SchemaHash</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">string</span></em><a class="headerlink" href="#MmSetting.SchemaHash" title="Link to this definition">#</a></dt>
+<dd><p>Hash of current schema definition including default entries</p>
+</dd></dl>
+
+<dl class="mat attribute">
 <dt class="sig sig-object mat" id="MmSetting.TableColumn">
 <span class="sig-name descname"><span class="pre">TableColumn</span></span><em class="property"> <span class="pre">dictionary</span> <span class="pre">=</span> <span class="pre">dictionary(&quot;Name&quot;,&quot;string&quot;)</span></em><a class="headerlink" href="#MmSetting.TableColumn" title="Link to this definition">#</a></dt>
 <dd><p>Stores column name and type. Should be defined in subclass’s construtor</p>
@@ -458,15 +474,40 @@ Detailed explanation goes here</p>
 <dd></dd></dl>
 
 <dl class="mat method">
+<dt class="sig sig-object mat" id="MmSetting.createTable">
+<span class="sig-name descname"><span class="pre">createTable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmSetting.createTable" title="Link to this definition">#</a></dt>
+<dd><p>Create the table with current schema</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmSetting.getCommonColumns">
+<span class="sig-name descname"><span class="pre">getCommonColumns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">otherTableName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmSetting.getCommonColumns" title="Link to this definition">#</a></dt>
+<dd><p>Get columns that exist in both tables</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmSetting.insertDefaultEntry">
+<span class="sig-name descname"><span class="pre">insertDefaultEntry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmSetting.insertDefaultEntry" title="Link to this definition">#</a></dt>
+<dd><p>Insert default entries if provided and not empty</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmSetting.isSchemaCurrent">
+<span class="sig-name descname"><span class="pre">isSchemaCurrent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmSetting.isSchemaCurrent" title="Link to this definition">#</a></dt>
+<dd><p>Check if the current schema matches the stored schema</p>
+</dd></dl>
+
+<dl class="mat method">
 <dt class="sig sig-object mat" id="MmSetting.prepareInput">
 <span class="sig-name descname"><span class="pre">prepareInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmSetting.prepareInput" title="Link to this definition">#</a></dt>
 <dd><p>Check input type, convert to table</p>
 </dd></dl>
 
 <dl class="mat method">
-<dt class="sig sig-object mat" id="MmSetting.readRow">
-<span class="sig-name descname"><span class="pre">readRow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">cond</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmSetting.readRow" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object mat" id="MmSetting.readEntry">
+<span class="sig-name descname"><span class="pre">readEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">keyColumnName</span></em>, <em class="sig-param"><span class="pre">keyColumnValue</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmSetting.readEntry" title="Link to this definition">#</a></dt>
+<dd><p>Read entries from the database table using key and values.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="MmSetting.readTable">
@@ -474,8 +515,35 @@ Detailed explanation goes here</p>
 <dd></dd></dl>
 
 <dl class="mat method">
-<dt class="sig sig-object mat" id="MmSetting.writeRow">
-<span class="sig-name descname"><span class="pre">writeRow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmSetting.writeRow" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object mat" id="MmSetting.recreateTable">
+<span class="sig-name descname"><span class="pre">recreateTable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmSetting.recreateTable" title="Link to this definition">#</a></dt>
+<dd><p>Recreate table with current schema (for removing columns or changing types)</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmSetting.updateEntry">
+<span class="sig-name descname"><span class="pre">updateEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">t</span></em>, <em class="sig-param"><span class="pre">keyColumnName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmSetting.updateEntry" title="Link to this definition">#</a></dt>
+<dd><p>Update the database table using the input table t and the key
+column name. If t contains entries that do not exist in the
+database table, write the extra entries.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmSetting.updateSchemaMetadata">
+<span class="sig-name descname"><span class="pre">updateSchemaMetadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmSetting.updateSchemaMetadata" title="Link to this definition">#</a></dt>
+<dd><p>Insert or update schema metadata for this table
+Uses INSERT OR REPLACE to handle both new entries and updates</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmSetting.updateTableSchema">
+<span class="sig-name descname"><span class="pre">updateTableSchema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmSetting.updateTableSchema" title="Link to this definition">#</a></dt>
+<dd><p>Update table schema to match current definition</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmSetting.writeEntry">
+<span class="sig-name descname"><span class="pre">writeEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmSetting.writeEntry" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd>
@@ -506,11 +574,11 @@ Detailed explanation goes here</p>
       </div>
     </a>
     <a class="right-next"
-       href="../trial/index.html"
+       href="UserPreferences.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">trial</p>
+        <p class="prev-next-title">UserPreferences</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

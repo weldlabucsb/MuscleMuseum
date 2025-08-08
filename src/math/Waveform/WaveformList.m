@@ -1,31 +1,77 @@
 classdef WaveformList < handle
-    %WAVEFORMLIST Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`WaveformList` manages a collection of waveforms for complex sequences.
+    %
+    % Combines multiple :class:`Waveform` objects into a single sequence using either
+    % sequential concatenation or simultaneous superposition. Supports periodic
+    % waveforms with repeat counts and trigger-advance modes for hardware control.
+    %
+    % **Example1:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Create a sequence of different waveforms
+    %     sine = SineWave(frequency = 1000, amplitude = 1.0, duration = 0.01);
+    %     const = ConstantWave(amplitude = 2.0, duration = 0.005);
+    %     list = WaveformList(name = 'mySequence', waveformOrigin = {sine, const});
+    %     list.plot();
+    %
+    % **Example2:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Simultaneous waveforms
+    %     list = WaveformList(name = 'simultaneous', concatMethod = 'Simultaneous', ...
+    %                         waveformOrigin = {sine, const});
 
     properties
-        ConcatMethod string {mustBeMember(ConcatMethod,{'Sequential','Simultaneous'})} = "Sequential"
-        PatchMethod string {mustBeMember(PatchMethod,{'Continue','Constant'})} = "Continue"
-        PatchConstant double = 0
-        IsTriggerAdvance logical = false
-        WaveformOrigin cell
-        SamplingRate double % In Hz
-        NCycle double = 10
+        ConcatMethod string {mustBeMember(ConcatMethod,{'Sequential','Simultaneous'})} = "Sequential" % Method for combining waveforms: 'Sequential' or 'Simultaneous'.
+        PatchMethod string {mustBeMember(PatchMethod,{'Continue','Constant'})} = "Continue" % Method for filling gaps between waveforms: 'Continue' or 'Constant'.
+        PatchConstant double = 0 % Constant value used when PatchMethod is 'Constant'.
+        IsTriggerAdvance logical = false % Whether to use trigger-advance mode for hardware control.
+        WaveformOrigin cell % Cell array of waveform objects to be combined.
+        SamplingRate double % In Hz - Sampling rate for all waveforms in the list.
+        NCycle double = 10 % Number of cycles for periodic waveforms.
     end
 
     properties (Dependent)
-        Sample
-        TimeStep
-        RepeatMode string
-        WaveformPrepared Table
+        Sample % Combined waveform samples as a vector.
+        TimeStep % Time step between samples (1/SamplingRate).
+        RepeatMode string % Repeat mode for hardware control ('Repeat' or 'RepeatTilTrigger').
+        WaveformPrepared Table % Table containing prepared waveform segments with play modes and repeat counts.
     end
 
     properties (SetAccess = protected)
-        Name string
-        NSample double
+        Name string % Name of the waveform list.
+        NSample double % Total number of samples in the combined waveform.
     end
 
     methods
         function obj = WaveformList(name,options)
+            %Construct a WaveformList object.
+            %
+            % :param name: Name of the waveform list
+            % :type name: string
+            % :param samplingRate: Sampling rate in Hz (default: 1000)
+            % :type samplingRate: double, optional
+            % :param concatMethod: Concatenation method (default: 'Sequential')
+            % :type concatMethod: string, optional
+            % :param patchMethod: Gap filling method (default: 'Continue')
+            % :type patchMethod: string, optional
+            % :param patchConstant: Constant for gap filling (default: 0)
+            % :type patchConstant: double, optional
+            % :param isTriggerAdvance: Use trigger advance mode (default: false)
+            % :type isTriggerAdvance: logical, optional
+            % :param waveformOrigin: Cell array of waveform objects (default: {})
+            % :type waveformOrigin: cell, optional
+            % :param nCycle: Number of cycles for periodic waveforms (default: 10)
+            % :type nCycle: double, optional
+            %
+            % **Example:**
+            %
+            % .. code-block:: matlab
+            %
+            %     sine = SineWave(frequency = 1000, amplitude = 1.0);
+            %     list = WaveformList(name = 'myList', waveformOrigin = {sine}, samplingRate = 10000);
             arguments
                 name string
                 options.samplingRate double = 1e3
@@ -46,10 +92,18 @@ classdef WaveformList < handle
         end
 
         function dt = get.TimeStep(obj)
+            %Get the time step between samples.
+            %
+            % :return: Time step in seconds
+            % :rtype: double
             dt = 1/obj.SamplingRate;
         end
 
         function rM = get.RepeatMode(obj)
+            %Get the repeat mode for hardware control.
+            %
+            % :return: 'Repeat' or 'RepeatTilTrigger'
+            % :rtype: string
             if obj.IsTriggerAdvance
                 rM = "RepeatTilTrigger";
             else
@@ -58,6 +112,13 @@ classdef WaveformList < handle
         end
 
         function t = get.WaveformPrepared(obj)
+            %Prepare waveform segments for hardware output.
+            %
+            % Combines individual waveforms according to the concatenation method
+            % and returns a table with segments, play modes, and repeat counts.
+            %
+            % :return: Table with columns: Sample, PlayMode, NRepeat
+            % :rtype: table
             %% Check waveform origin
             if isempty(obj.WaveformOrigin)
                 return
@@ -158,8 +219,8 @@ classdef WaveformList < handle
                             sample = sample + tFunc(t);
                         end
                         Sample{sampleIdx} = sample;
-                        NRepeat(sampleIdx) = 1;
-                        PlayMode(sampleIdx) = obj.RepeatMode;
+                        NRepeat{sampleIdx} = 1;
+                        PlayMode{sampleIdx} = obj.RepeatMode;
                         sampleIdx = sampleIdx + 1;
                         if jj ~= nUnion
                             if unionLimit(jj,2) ~= unionLimit(jj+1,1)
@@ -171,8 +232,8 @@ classdef WaveformList < handle
                                 end
                                 tPatch = patchLimit(jj,2) - patchLimit(jj,1);
                                 Sample{sampleIdx} = repmat(patchConstant,1,32);
-                                NRepeat(sampleIdx) = floor(tPatch / dt / 32);
-                                PlayMode(sampleIdx) = obj.RepeatMode;
+                                NRepeat{sampleIdx} = floor(tPatch / dt / 32);
+                                PlayMode{sampleIdx} = obj.RepeatMode;
                                 sampleIdx = sampleIdx + 1;
                             end
                         end
@@ -186,6 +247,12 @@ classdef WaveformList < handle
         end
 
         function sample = get.Sample(obj)
+            %Get the combined waveform samples.
+            %
+            % Concatenates all waveform segments according to their repeat counts.
+            %
+            % :return: Vector of combined waveform samples
+            % :rtype: double
             t = obj.WaveformPrepared;
             sample = [];
             for ii = 1:size(t,1)
@@ -194,6 +261,13 @@ classdef WaveformList < handle
         end
 
         function func = TimeFunc(obj)
+            %Get the time function for the combined waveform.
+            %
+            % Creates a function handle that evaluates the combined waveform
+            % at any time point, handling the concatenation method and timing.
+            %
+            % :return: Function that takes time array and returns combined waveform values
+            % :rtype: function_handle
             %% Check waveform origin
             if isempty(obj.WaveformOrigin)
                 return
@@ -229,6 +303,17 @@ classdef WaveformList < handle
         end
 
         function plot(obj,ax)
+            %Plot the combined waveform.
+            %
+            % :param ax: Target axes for plotting (default: new figure)
+            % :type ax: axes, optional
+            %
+            % **Example:**
+            %
+            % .. code-block:: matlab
+            %
+            %     list = WaveformList(name = 'myList', waveformOrigin = {sine, const});
+            %     list.plot();
             arguments
                 obj WaveformList
                 ax = []
@@ -258,6 +343,10 @@ classdef WaveformList < handle
         end
 
         function set.SamplingRate(obj,val)
+            %Set the sampling rate for all waveforms in the list.
+            %
+            % :param val: New sampling rate in Hz
+            % :type val: double
             obj.SamplingRate = round(val);
             nWave = numel(obj.WaveformOrigin);
             for ii = 1:nWave
@@ -266,6 +355,10 @@ classdef WaveformList < handle
         end
 
         function set.NCycle(obj,val)
+            %Set the number of cycles for periodic waveforms.
+            %
+            % :param val: New number of cycles
+            % :type val: double
             obj.NCycle = round(val);
             nWave = numel(obj.WaveformOrigin);
             for ii = 1:nWave

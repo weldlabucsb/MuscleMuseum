@@ -5,3 +5,4 @@ mmSetting
    :maxdepth: 2
 
    MmSetting
+   UserPreferences

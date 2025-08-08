@@ -186,6 +186,7 @@
 <li class="toctree-l3"><a class="reference internal" href="SineWave.html">SineWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SineWaveModulated.html">SineWaveModulated</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SqrtParabolicFit1D.html">SqrtParabolicFit1D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SquareWave.html">SquareWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TanhSinePulse.html">TanhSinePulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalPulse.html">TrapezoidalPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalSinePulse.html">TrapezoidalSinePulse</a></li>
@@ -425,7 +426,24 @@ document.write(`
 <dl class="mat function">
 <dt class="sig sig-object mat" id="getAllWaveform">
 <span class="sig-name descname"><span class="pre">getAllWaveform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/func/getAllWaveform.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#getAllWaveform" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get all Waveform class names in the current path.</p>
+<p>Searches for all MATLAB class files that inherit from <a class="reference internal" href="Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a>
+and returns their names as a string array. This includes direct subclasses
+and deeper inheritance levels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of Waveform class names</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>string array</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">waveformClasses</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">getAllWaveform</span><span class="p">();</span>
+<span class="nb">disp</span><span class="p">(</span><span class="n">waveformClasses</span><span class="p">);</span>
+</pre></div>
+</div>
+</dd></dl>
 
 </section>
 

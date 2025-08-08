@@ -186,6 +186,7 @@
 <li class="toctree-l3"><a class="reference internal" href="SineWave.html">SineWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SineWaveModulated.html">SineWaveModulated</a></li>
 <li class="toctree-l3"><a class="reference internal" href="SqrtParabolicFit1D.html">SqrtParabolicFit1D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SquareWave.html">SquareWave</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TanhSinePulse.html">TanhSinePulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalPulse.html">TrapezoidalPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="TrapezoidalSinePulse.html">TrapezoidalSinePulse</a></li>
@@ -426,15 +427,49 @@ document.write(`
 <dt class="sig sig-object mat" id="LinearFrequencyRamp">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LinearFrequencyRamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/Waveform/LinearFrequencyRamp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LinearFrequencyRamp" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a></p>
-<p>LINEARRAMP Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#LinearFrequencyRamp" title="LinearFrequencyRamp"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">LinearFrequencyRamp</span></code></a> generates sine waves with linearly varying frequency.</p>
+<p>Creates sine wave signals where the frequency changes linearly from a start
+frequency to a stop frequency over the duration. Useful for frequency sweep
+applications and chirp signals. Inherits from <a class="reference internal" href="Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a>.</p>
+<p><strong>Example1:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Create a frequency sweep from 100 Hz to 1000 Hz</span>
+<span class="n">ramp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">LinearFrequencyRamp</span><span class="p">(</span><span class="n">startFrequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="n">stopFrequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                           </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="n">ramp</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Example2:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Create a downward frequency sweep</span>
+<span class="n">ramp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">LinearFrequencyRamp</span><span class="p">(</span><span class="n">startFrequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">stopFrequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                           </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="n">ramp</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="LinearFrequencyRamp.LinearFrequencyRamp">
 <span class="sig-name descname"><span class="pre">LinearFrequencyRamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#LinearFrequencyRamp.LinearFrequencyRamp" title="Link to this definition">#</a></dt>
-<dd><p>LINEARRAMP Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct a LinearFrequencyRamp object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>samplingRate</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Sampling rate in Hz (default: inherited)</p></li>
+<li><p><strong>startTime</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Start time in seconds (default: 0)</p></li>
+<li><p><strong>duration</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Duration in seconds (default: inherited)</p></li>
+<li><p><strong>offset</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – DC offset (default: 0)</p></li>
+<li><p><strong>amplitude</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Peak-to-peak amplitude (default: 0)</p></li>
+<li><p><strong>phase</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Initial phase in radians (default: 0)</p></li>
+<li><p><strong>startFrequency</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Starting frequency in Hz (default: 1)</p></li>
+<li><p><strong>stopFrequency</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Ending frequency in Hz (default: 2)</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ramp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">LinearFrequencyRamp</span><span class="p">(</span><span class="n">startFrequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="n">stopFrequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                           </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd>
@@ -453,25 +488,38 @@ Detailed explanation goes here</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="LinearFrequencyRamp.Phase">
 <span class="sig-name descname"><span class="pre">Phase</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#LinearFrequencyRamp.Phase" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Initial phase in radians.</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="LinearFrequencyRamp.StartFrequency">
 <span class="sig-name descname"><span class="pre">StartFrequency</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBePositive}</span> <span class="pre">=</span> <span class="pre">10</span></em><a class="headerlink" href="#LinearFrequencyRamp.StartFrequency" title="Link to this definition">#</a></dt>
-<dd><p>Linear frequency in Hz</p>
+<dd><p>Linear frequency in Hz - Starting frequency.</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="LinearFrequencyRamp.StopFrequency">
 <span class="sig-name descname"><span class="pre">StopFrequency</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBePositive}</span> <span class="pre">=</span> <span class="pre">100</span></em><a class="headerlink" href="#LinearFrequencyRamp.StopFrequency" title="Link to this definition">#</a></dt>
-<dd><p>Linear frequency in Hz</p>
+<dd><p>Linear frequency in Hz - Ending frequency.</p>
 </dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="LinearFrequencyRamp.TimeFunc">
 <span class="sig-name descname"><span class="pre">TimeFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#LinearFrequencyRamp.TimeFunc" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Get the time function for the linear frequency ramp.</p>
+<p>Creates a function handle that generates sine wave values with
+linearly varying frequency from <a class="reference internal" href="#LinearFrequencyRamp.StartFrequency" title="LinearFrequencyRamp.StartFrequency"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StartFrequency</span></code></a> to <a class="reference internal" href="#LinearFrequencyRamp.StopFrequency" title="LinearFrequencyRamp.StopFrequency"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StopFrequency</span></code></a>.
+Implements the abstract <a class="reference internal" href="#LinearFrequencyRamp.TimeFunc" title="LinearFrequencyRamp.TimeFunc"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code></a> method from <a class="reference internal" href="Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Function that takes time array and returns frequency ramp values</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>function_handle</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd>
 </dl>

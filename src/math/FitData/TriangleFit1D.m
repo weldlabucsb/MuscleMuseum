@@ -1,6 +1,35 @@
 classdef TriangleFit1D < FitData1D
-    %GAUSSIANFIT1D Summary of this class goes here
-    %   Detailed explanation goes here
+    % Triangle wave function fit for one-dimensional data.
+    %
+    % Fits a triangle wave function with customizable rise and fall times to
+    % experimental data. The function consists of linear rise and fall segments
+    % with specified period and phase.
+    %
+    % **Example1:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Fit triangle wave to experimental data
+    %     x = linspace(0, 20, 200);
+    %     y = sawtooth(2*pi*0.2*x, 0.5) + 0.1*randn(size(x));
+    %     data = [x', y'];
+    %     triangleFit = TriangleFit1D(data);
+    %     triangleFit.do();
+    %     triangleFit.plot();
+    %
+    % **Example2:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Access fit parameters
+    %     triangleFit = TriangleFit1D(data);
+    %     triangleFit.do();
+    %     amax = triangleFit.Coefficient(1); % maximum amplitude
+    %     amin = triangleFit.Coefficient(2); % minimum amplitude
+    %     phi = triangleFit.Coefficient(3);  % phase
+    %     T = triangleFit.Coefficient(4);    % period
+    %     Tr = triangleFit.Coefficient(5);   % rise time
+    %
 
     properties
 
@@ -8,18 +37,39 @@ classdef TriangleFit1D < FitData1D
 
     methods
         function obj = TriangleFit1D(rawData)
-            %GAUSSIANFIT1D Construct an instance of this class
-            %   Detailed explanation goes here
+            % Constructor for TriangleFit1D class.
+            %
+            % :param rawData: Input data as n x 2 matrix [x, y]
+            % :type rawData: double array
+            %
+            % **Example:**
+            %
+            % .. code-block:: matlab
+            %
+            %     data = [1:10; randn(1,10)].';
+            %     triangleFit = TriangleFit1D(data);
+            %
             obj@FitData1D(rawData)
         end
 
         function setFormula(obj)
+            % Set the triangle wave fit formula.
+            %
+            % Formula: Piecewise linear function with rise and fall segments
+            % Parameters: Amax (max amplitude), Amin (min amplitude), phi (phase),
+            % T (period), Tr (rise time)
+            %
             obj.Func = fittype(['(mod((x + phi), T) < Tr) .* (Amin + (Amax - Amin) .* mod((x + phi), T) / Tr) +' ...
                 '(mod((x + phi), T) >= Tr) .* (Amax -  (Amax - Amin) .* (mod((x + phi), T) - Tr) / (T - Tr))'],'independent', {'x'},...
                 'coefficients', {'Amax','Amin','phi', 'T','Tr'});
         end
 
         function guessCoefficient(obj)
+            % Automatically estimate initial fit parameters from data.
+            %
+            % Estimates maximum/minimum amplitudes, period, rise time, and phase
+            % based on data characteristics and zero-crossing analysis.
+            %
             if isempty(obj.DataSize) || obj.DataSize < obj.MinimumDataSize
                 return
             end
