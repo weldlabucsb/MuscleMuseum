@@ -34,6 +34,8 @@ classdef MmSetting < handle
     properties (Dependent)
         TableName (1,1) string %Table name is consistent with the subclass name
         SchemaHash (1,1) string %Hash of current schema definition including default entries
+        IsSchemaCurrent (1,1) logical %Check whether the stored schema hash matches the current schema.
+        DefaultKey (1,1) string %The default key string will be the name of the first column
     end
 
     methods
@@ -52,36 +54,66 @@ classdef MmSetting < handle
             % Generate a fast hash of the current schema definition
             % This includes table name, column names, types, default values, and default entries
             schemaStr = "";
-            
+
             % Add table name for uniqueness across multiple tables
             schemaStr = schemaStr + "TABLE:" + obj.TableName + ";";
-            
+
             % Add column definitions (optimized string concatenation)
             columnNames = obj.TableColumn.keys;
             columnTypes = obj.TableColumn.values;
             schemaStr = schemaStr + join(columnNames + ":" + columnTypes, ";") + ";";
-            
+
             % Add default values
             defaultNames = obj.DefaultValue.keys;
             defaultValues = obj.DefaultValue.values;
             schemaStr = schemaStr + "DEFAULTS:" + join(defaultNames + "=" + string(defaultValues), ";") + ";";
-            
+
             % Add default entries hash (if any)
             if ~isempty(obj.DefaultEntry) && height(obj.DefaultEntry) > 0
                 % Convert table to string representation for hashing
                 entryStr = "";
-                for i = 1:height(obj.DefaultEntry)
-                    row = obj.DefaultEntry(i, :);
+                t = obj.prepareInputTable(obj.DefaultEntry);
+                for ii = 1:size(t,1)
+                    row = t(ii, :);
                     rowStr = join(string(table2cell(row)), ",");
                     entryStr = entryStr + rowStr + ";";
                 end
                 schemaStr = schemaStr + "ENTRIES:" + entryStr;
             end
-            
+
             % Generate hash for change detection
             schemaHash = dataHash(schemaStr);
         end
 
+        function isCurrent = get.IsSchemaCurrent(obj)
+            % Check whether the stored schema hash matches the current schema.
+            %
+            % :return: True if the schema hash in the metadata table equals :attr:`SchemaHash`.
+            % :rtype: logical
+
+            % Check if the current schema matches the stored schema
+            obj.checkDataBase
+            conn = sqlite(which(obj.DataBaseName),"connect");
+            sqlquery = "SELECT SchemaHash FROM " + obj.MetadataTableName + ...
+                " WHERE TableName = '" + obj.TableName + "';";
+            result = fetch(conn, sqlquery);
+
+            if isempty(result) || isempty(result.SchemaHash) || ismissing(result.SchemaHash)
+                isCurrent = false;
+                close(conn);
+                return;
+            end
+
+            % Check hash
+            isCurrent = obj.SchemaHash == string(result.SchemaHash);
+            close(conn);
+        end
+
+        function defaultKey = get.DefaultKey(obj)
+            columnName = obj.TableColumn.keys;
+            defaultKey = columnName(1);
+        end
+        
         function checkDataBase(obj)
             % Ensure the SQLite database file and metadata table exist.
             %
@@ -104,24 +136,52 @@ classdef MmSetting < handle
             % If the table does not exist, it is created. If the schema hash differs
             % from the stored one, an automatic schema migration is performed.
             obj.checkDataBase
-            
+            obj.checkDefault
+
             % Check if our table exists
             conn = sqlite(which(obj.DataBaseName),"connect");
             sqlquery = "SELECT name FROM sqlite_master" + ...
                 " WHERE type='table' AND name='" + obj.TableName + "';";
             fetchResult = fetch(conn,sqlquery);
             close(conn);
-            
+
             if isempty(fetchResult)
                 % Table doesn't exist, create it
                 obj.createTable;
             else
                 % Table exists, check if schema is current
-                if ~obj.isSchemaCurrent
+                if ~obj.IsSchemaCurrent
                     % Schema is outdated, update it
                     obj.updateTableSchema;
+                else
+                    % Update default entries anyway in case they were
+                    % modified accidentaly,
+                    obj.insertDefaultEntry;
                 end
             end
+        end
+
+        function checkDefault(obj)
+            % Check if default values/entries are set correctly
+            
+            if ~isempty(obj.DefaultEntry)
+                try 
+                    obj.prepareInputTable(obj.DefaultEntry);
+                catch
+                    error("Default entries are not set correctly.")
+                end
+            end
+
+            if isempty(obj.DefaultValue)
+                error("Default values must be set.")
+            else
+                columnName = obj.TableColumn.keys;
+                defaulValueColumnName = obj.DefaultValue.keys;
+                if ~isempty(setdiff(columnName,defaulValueColumnName))
+                    error("Default values must be set for all columnes.")
+                end
+            end
+
         end
 
         function updateSchemaMetadata(obj)
@@ -158,29 +218,6 @@ classdef MmSetting < handle
             obj.updateSchemaMetadata;
         end
 
-        function isCurrent = isSchemaCurrent(obj)
-            % Check whether the stored schema hash matches the current schema.
-            %
-            % :return: True if the schema hash in the metadata table equals :attr:`SchemaHash`.
-            % :rtype: logical
-
-            % Check if the current schema matches the stored schema
-            conn = sqlite(which(obj.DataBaseName),"connect");
-            sqlquery = "SELECT SchemaHash FROM " + obj.MetadataTableName + ...
-                " WHERE TableName = '" + obj.TableName + "';";
-            result = fetch(conn, sqlquery);
-            
-            if isempty(result) || isempty(result.SchemaHash) || ismissing(result.SchemaHash)
-                isCurrent = false;
-                close(conn);
-                return;
-            end
-            
-            % Check hash
-            isCurrent = obj.SchemaHash == string(result.SchemaHash);
-            close(conn);
-        end
-
         function insertDefaultEntry(obj)
             % Insert default entries into the table if present.
             %
@@ -189,8 +226,7 @@ classdef MmSetting < handle
             % Insert default entries if provided and not empty
             if ~isempty(obj.DefaultEntry) && height(obj.DefaultEntry) > 0
                 % Write default entries directly using the existing connection
-                columnName = obj.TableColumn.keys;
-                obj.updateEntry(obj.DefaultEntry,columnName(1))
+                obj.updateEntry(obj.DefaultKey,obj.DefaultEntry)
             end
         end
 
@@ -201,38 +237,46 @@ classdef MmSetting < handle
             % if extra columns or type mismatches are detected. Updates metadata afterward.
             % Update table schema to match current definition
             conn = sqlite(which(obj.DataBaseName),"connect");
-            
+
             % Get current table info
             sqlquery = 'SELECT name, type FROM pragma_table_info(''' + obj.TableName +  ''')';
             currentColumns = fetch(conn, sqlquery);
-            
+
             % Get target column names and types
             targetColumnNames = obj.TableColumn.keys;
             targetColumnTypes = obj.DataTypeMapping(obj.TableColumn.values);
-            
+
             % Find missing columns
             missingColumns = setdiff(targetColumnNames, currentColumns.name);
-            
+
             % Add missing columns
-            for i = 1:length(missingColumns)
-                colName = missingColumns(i);
+            for ii = 1:length(missingColumns)
+                colName = missingColumns(ii);
                 colType = targetColumnTypes(strcmp(targetColumnNames, colName));
                 defaultValue = obj.DefaultValue(colName);
-                
+
                 sqlquery = "ALTER TABLE " + obj.TableName + ...
                     " ADD " + colName + " " + colType + ";";
                 execute(conn, sqlquery);
-                
+
                 % Set default value for existing rows
                 if ~isempty(defaultValue)
                     sqlquery = "UPDATE " + obj.TableName + " SET " + colName + " = '" + string(defaultValue) + "';";
                     execute(conn, sqlquery);
                 end
             end
-            
+
             % Check for type mismatches or extra columns
             extraColumns = setdiff(currentColumns.name, targetColumnNames);
-            if ~isempty(extraColumns)
+            [existingColumn,dbIdx] = intersect(currentColumns.name,targetColumnNames);
+            if ~isempty(existingColumn)
+                    existingColumnTypeTarget = obj.DataTypeMapping(obj.TableColumn(existingColumn));
+                    existingDbColumnType = currentColumns.type(dbIdx);
+                    mismatchedColumnIdx = existingDbColumnType ~= existingColumnTypeTarget;
+            else
+                    mismatchedColumnIdx = false;
+            end
+            if ~isempty(extraColumns) || any(mismatchedColumnIdx)
                 % Recreate table to remove extra columns
                 close(conn);
                 obj.recreateTable();
@@ -249,50 +293,39 @@ classdef MmSetting < handle
             % Backs up the current table, creates a new table with the target schema,
             % copies compatible columns, and then drops the backup.
             % Recreate table with current schema (for removing columns or changing types)
-            fprintf('Recreating table %s with new schema\n', obj.TableName);
-            
+
             conn = sqlite(which(obj.DataBaseName),"connect");
-            
+
+            % Delete default entries
+            if ~isempty(obj.DefaultEntry) && height(obj.DefaultEntry) > 0
+                obj.deleteEntry(obj.DefaultKey,obj.DefaultEntry.(obj.DefaultKey))
+            end
+
             % Backup existing data
             tempTableName = obj.TableName + "_backup";
             sqlquery = "ALTER TABLE " + obj.TableName + " RENAME TO " + tempTableName + ";";
             execute(conn, sqlquery);
-            
+
             % Create new table
             obj.createTable();
-            
+
             % Copy compatible data
-            commonColumns = obj.getCommonColumns(tempTableName);
+            sqlquery1 = 'SELECT name FROM pragma_table_info(''' + obj.TableName +  ''')';
+            sqlquery2 = 'SELECT name FROM pragma_table_info(''' + tempTableName +  ''')';
+            table1Columns = fetch(conn, sqlquery1);
+            table2Columns = fetch(conn, sqlquery2);
+            commonColumns = intersect(table1Columns.name, table2Columns.name);
             if ~isempty(commonColumns)
                 columnStr = join(commonColumns, ", ");
                 sqlquery = "INSERT INTO " + obj.TableName + " (" + columnStr + ") " + ...
                     "SELECT " + columnStr + " FROM " + tempTableName + ";";
                 execute(conn, sqlquery);
             end
-            
+
             % Drop backup table
             sqlquery = "DROP TABLE " + tempTableName + ";";
             execute(conn, sqlquery);
-            
-            close(conn);
-        end
 
-        function commonColumns = getCommonColumns(obj, otherTableName)
-            % Get a list of columns common to this table and another table.
-            %
-            % :param otherTableName: The name of the other table to compare against.
-            % :type otherTableName: string
-            % :return: Column names that exist in both tables.
-            % :rtype: string array
-            % Get columns that exist in both tables
-            conn = sqlite(which(obj.DataBaseName),"connect");
-            sqlquery1 = 'SELECT name FROM pragma_table_info(''' + obj.TableName +  ''')';
-            sqlquery2 = 'SELECT name FROM pragma_table_info(''' + otherTableName +  ''')';
-            
-            table1Columns = fetch(conn, sqlquery1);
-            table2Columns = fetch(conn, sqlquery2);
-            
-            commonColumns = intersect(table1Columns.name, table2Columns.name);
             close(conn);
         end
 
@@ -304,13 +337,42 @@ classdef MmSetting < handle
             if isempty(t)
                 return
             end
-            t = obj.prepareInput(t);
+            t = obj.prepareInputTable(t);
             conn = sqlite(which(obj.DataBaseName),"connect");
             sqlwrite(conn,obj.TableName,t)
             close(conn)
         end
 
-        function updateEntry(obj,t,keyColumnName)
+        function updateTable(obj,t)
+            %Overwrite the entire database table
+            arguments
+                obj
+                t table % Input table
+            end
+            if isempty(t)
+                return
+            end
+
+            % Check if the input table is formated correctly
+            obj.prepareInputTable(t);
+
+            % Delete the existing one
+            conn = sqlite(which(obj.DataBaseName),"connect");
+            sqlquery = "DROP TABLE " + obj.TableName + ";";
+            execute(conn, sqlquery);
+            close(conn)
+
+            % Recreate
+            obj.createTable
+
+            % Insert t into the database table
+            obj.updateEntry(obj.DefaultKey,t)
+
+            % Insert default entry
+            obj.insertDefaultEntry
+        end
+        
+        function updateEntry(obj,keyColumnName,t)
             % Upsert rows based on a key column.
             %
             % For each row in ``t``, update the existing row matching ``keyColumnName``;
@@ -322,16 +384,21 @@ classdef MmSetting < handle
             % :type keyColumnName: string
             arguments
                 obj
-                t %Input entry table
                 keyColumnName (1,1) string %Key column name.
+                t %Input entry table
             end
-            if ~ismember(keyColumnName,obj.TableColumn.keys)
+            if isempty(t) 
                 return
+            elseif ~ismember(keyColumnName,obj.TableColumn.keys)
+                error("The keyColumnName does not match any database table column name.")
+            elseif ~ismember(keyColumnName,t.Properties.VariableNames)
+                error("The keyColumnName does not match any input table column name.")
             end
             conn = sqlite(which(obj.DataBaseName),"connect");
 
             % rewrite entries if they match the key
-            t = prepareInput(obj,t);
+            tOrigin = t;
+            t = prepareInputTable(obj,t);
             columnValue = t.(keyColumnName);
             rf = rowfilter(keyColumnName);
             rfList = arrayfun(@(x) rf.(keyColumnName) == x,columnValue,UniformOutput=false);
@@ -341,15 +408,89 @@ classdef MmSetting < handle
             sqlquery = "SELECT " + keyColumnName + " FROM " + obj.TableName;
             columnValueDb = fetch(conn,sqlquery);
             columnValueDb = columnValueDb.(keyColumnName);
-            extraEntry = setdiff(columnValue,columnValueDb);
+            if ~isempty(columnValueDb)
+                extraEntry = setdiff(columnValue,columnValueDb);
+            else
+                extraEntry = columnValue;
+            end
             close(conn)
             if ~isempty(extraEntry)
-                t = t(t.(keyColumnName) == extraEntry,:);
+                t = tOrigin(tOrigin.(keyColumnName) == extraEntry,:);
                 obj.writeEntry(t);
             end
         end
 
-        function t = prepareInput(obj,t)
+        function updateValue(obj,keyColumnName,keyColumnValue,updateColumnName,val)
+            arguments
+                obj
+                keyColumnName (1,1) string %Key column name
+                keyColumnValue {mustBeVector(keyColumnValue)} %Key column values
+                updateColumnName (1,1) string %Column you want to update
+                val {mustBeVector(val)}
+            end
+            if ~ismember(keyColumnName,obj.TableColumn.keys) || ...
+                    ~ismember(updateColumnName,obj.TableColumn.keys)
+                error("The keyColumnName or updateColumnName does not match any database table column name.")
+            end
+            if numel(keyColumnValue) ~= numel(val)
+                error("The size of key column values must match the size of val.")
+            end
+
+            % Prepare the input value
+            updateColumnType = obj.TableColumn(updateColumnName);
+            if ~contains(updateColumnType,"Matrix")
+                if string(class(val)) ~= updateColumnType
+                    error("Input value type is not correct.")
+                end
+            else
+                if ~iscell(val)
+                    error("For matrix columns, the input value mut be a cell array.")
+                elseif string(class(val{1})) ~= strrep(updateColumnType,"Matrix","")
+                    error("Input value type is not correct.")
+                end
+            end
+            switch updateColumnType
+                case "stringMatrix"
+                    val = cellfun(@(x) strmat2str(x),val);
+                otherwise
+                    val = cellfun(@(x) string(mat2str(x)),val);
+            end
+
+            % Update the values
+            conn = sqlite(which(obj.DataBaseName),"connect");
+            sqlquery = "UPDATE " + obj.TableName + " SET " + updateColumnName + " = '" + val + "'" + ...
+                " WHERE " + keyColumnName + "="""  + keyColumnValue + ...
+                    """; ";
+            for ii = 1:numel(sqlquery)
+                execute(conn, sqlquery(ii));
+            end
+            close(conn)
+        end
+
+        function deleteEntry(obj,keyColumnName,keyColumnValue)
+            arguments
+                obj
+                keyColumnName (1,1) string %Key column name.
+                keyColumnValue {mustBeVector(keyColumnValue)} %Key column value. Can be an array
+            end
+            if ~ismember(keyColumnName,obj.TableColumn.keys)
+                error("The keyColumnName does not match any database table column name.")
+            end
+
+            conn = sqlite(which(obj.DataBaseName),"connect");
+            if obj.TableColumn(keyColumnName) == "string"
+                whereStr = obj.TableName + "." + keyColumnName + "="""  + keyColumnValue + ...
+                    """";
+            else
+                whereStr = obj.TableName + "." + keyColumnName + "="  + keyColumnValue;
+            end
+
+            sqlquery = "DELETE FROM " + obj.TableName + " WHERE " + join(whereStr, " OR ") + ";";
+            execute(conn,sqlquery);
+            close(conn)            
+        end
+
+        function t = prepareInputTable(obj,t)
             % Validate and normalize input rows against the schema.
             %
             % Ensures column names and MATLAB types match :attr:`TableColumn`. Handles
@@ -451,16 +592,45 @@ classdef MmSetting < handle
             end
             conn = sqlite(which(obj.DataBaseName),"readonly");
             if obj.TableColumn(keyColumnName) == "string"
-                whereStr = obj.TableName + "." + keyColumnName + "=\"\""  + keyColumnValue + ...
-                    "\"\"";
+                whereStr = obj.TableName + "." + keyColumnName + "="""  + keyColumnValue + ...
+                    """";
             else
                 whereStr = obj.TableName + "." + keyColumnName + "="  + keyColumnValue;
             end
-            
+
             sqlquery = "SELECT * FROM " + obj.TableName + " WHERE " + join(whereStr, " OR ") + ";";
             t = fetch(conn,sqlquery);
             t = obj.convertOutput(t);
             close(conn)
+        end
+
+        function t = readValue(obj,keyColumnName,keyColumnValue,readColumnName)
+            arguments
+                obj
+                keyColumnName (1,1) string %Key column name
+                keyColumnValue {mustBeVector(keyColumnValue)} %Key column values
+                readColumnName string {mustBeVector(readColumnName)} %Columns you want to read
+            end
+            if ~ismember(keyColumnName,obj.TableColumn.keys) || ...
+                    any(~ismember(readColumnName,obj.TableColumn.keys))
+                t = [];
+                return
+            end
+            conn = sqlite(which(obj.DataBaseName),"readonly");
+            if obj.TableColumn(keyColumnName) == "string"
+                whereStr = obj.TableName + "." + keyColumnName + "="""  + keyColumnValue + ...
+                    """";
+            else
+                whereStr = obj.TableName + "." + keyColumnName + "="  + keyColumnValue;
+            end
+            columnStr = join(readColumnName,",");
+
+            sqlquery = "SELECT " + columnStr + " FROM " + obj.TableName + " WHERE " + join(whereStr, " OR ") + ";";
+            t = fetch(conn,sqlquery);
+            t = obj.convertOutput(t);
+            if isscalar(readColumnName)
+                t = t.(readColumnName);
+            end
         end
 
         function t = convertOutput(obj,t)
@@ -473,6 +643,12 @@ classdef MmSetting < handle
             % :type t: table
             % :return: Table with converted MATLAB types.
             % :rtype: table
+
+            if isempty(t)
+                t = table.empty;
+                return
+            end
+
             columnName = obj.TableColumn.keys.';
             columnType = obj.TableColumn.values.';
 
