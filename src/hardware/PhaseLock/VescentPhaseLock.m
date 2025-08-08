@@ -1,6 +1,8 @@
 classdef (Abstract) VescentPhaseLock < PhaseLock
-    %UNTITLED Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`VescentPhaseLock` base for Vescent phase-lock modules.
+    %
+    % Manages a serial connection (:attr:`Serialport`) and provides methods to
+    % :meth:`connect`, :meth:`check`, :meth:`lock`, and :meth:`unlock`.
     
     properties
         Serialport internal.Serialport
@@ -8,6 +10,12 @@ classdef (Abstract) VescentPhaseLock < PhaseLock
     
     methods
         function obj = VescentPhaseLock(resourceName,name)
+            % Construct a :class:`VescentPhaseLock`.
+            %
+            % :param resourceName: Serial resource (e.g., "COM3")
+            % :type resourceName: string
+            % :param name: Device nickname
+            % :type name: string, optional
             arguments
                 resourceName string
                 name string = string.empty
@@ -17,8 +25,7 @@ classdef (Abstract) VescentPhaseLock < PhaseLock
         end
         
         function connect(obj)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
+            % Open serial connection using :attr:`ResourceName`.
             if ~isempty(obj.Serialport)
                 if isvalid(obj.Serialport)
                     warning("PhaseLock box was already connected")
@@ -30,10 +37,12 @@ classdef (Abstract) VescentPhaseLock < PhaseLock
         end
 
         function close(obj)
+            % Close the serial session.
             delete(obj.Serialport);
         end
 
         function check(obj)
+            % Query lock status and current frequency; update :attr:`Status` and :attr:`CurrentFrequency`.
             if isempty(obj.Serialport)
                 error("PhaseLock box is not connected")
             elseif ~isvalid(obj.Serialport)
@@ -52,6 +61,7 @@ classdef (Abstract) VescentPhaseLock < PhaseLock
         end
 
         function lock(obj)
+            % Lock to the requested :attr:`Frequency`.
             if isempty(obj.Frequency)
                 error("Must specify the lock frequency")
             end
@@ -64,6 +74,7 @@ classdef (Abstract) VescentPhaseLock < PhaseLock
         end
 
         function unlock(obj)
+            % Unlock the phase lock (servo off) if currently locked.
             obj.check;
             if obj.Status
                 writeline(obj.Serialport,"SERVO OFF");

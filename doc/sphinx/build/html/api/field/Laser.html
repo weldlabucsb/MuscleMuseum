@@ -43,6 +43,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/field/Laser';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -402,127 +403,212 @@ document.write(`
 <dt class="sig sig-object mat" id="Laser">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Laser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/field/Laser/Laser.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Laser" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.Heterogeneous</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
-<p>Specify the laser parameters.</p>
+<p><a class="reference internal" href="#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a> specifies monochromatic laser parameters and derived quantities.</p>
+<p>Stores wavelength/frequency, polarization, direction/angles, phase, intensity
+and power. Provides dependent properties (e.g., <a class="reference internal" href="#Laser.Wavevector" title="Laser.Wavevector"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Wavevector</span></code></a>, <a class="reference internal" href="#Laser.AngularFrequency" title="Laser.AngularFrequency"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">AngularFrequency</span></code></a>)
+and helpers (<a class="reference internal" href="#Laser.spacePhaseFunc" title="Laser.spacePhaseFunc"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">spacePhaseFunc()</span></code></a>, <a class="reference internal" href="#Laser.timePhaseFunc" title="Laser.timePhaseFunc"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">timePhaseFunc()</span></code></a>, <a class="reference internal" href="#Laser.spaceTimePhaseFunc" title="Laser.spaceTimePhaseFunc"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">spaceTimePhaseFunc()</span></code></a>,
+<a class="reference internal" href="#Laser.rotate" title="Laser.rotate"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">rotate()</span></code></a>, <a class="reference internal" href="#Laser.rotateToAngle" title="Laser.rotateToAngle"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">rotateToAngle()</span></code></a>).</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">l</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Laser</span><span class="p">(</span><span class="n">frequency</span><span class="p">=</span><span class="mf">3.84e14</span><span class="p">,</span><span class="w"> </span><span class="n">polarization</span><span class="p">=[</span><span class="mi">1</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">direction</span><span class="p">=[</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="mi">1</span><span class="p">]);</span>
+<span class="n">k</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">AngularWavevector</span><span class="p">;</span><span class="w">  </span><span class="c">% [rad/m]</span>
+<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">timePhaseFunc</span><span class="p">();</span><span class="w">    </span><span class="c">% function_handle for :math:`e^{i \omega t}`</span>
+</pre></div>
+</div>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Laser.Laser">
 <span class="sig-name descname"><span class="pre">Laser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Laser.Laser" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Construct a <a class="reference internal" href="#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Linear frequency <span class="math notranslate nohighlight">\(f\)</span> in [Hz] (sets <span class="math notranslate nohighlight">\(\lambda\)</span>)</p></li>
+<li><p><strong>wavelength</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Wavelength <span class="math notranslate nohighlight">\(\lambda\)</span> in [m] (sets <span class="math notranslate nohighlight">\(f\)</span>)</p></li>
+<li><p><strong>polarization</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double(3,1),</span> <span class="pre">optional</span></code></span>) – Jones vector <span class="math notranslate nohighlight">\((E_x,E_y,E_z)\)</span></p></li>
+<li><p><strong>phase</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Optical phase <span class="math notranslate nohighlight">\(\phi\)</span> in [rad]</p></li>
+<li><p><strong>direction</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double(3,1),</span> <span class="pre">optional</span></code></span>) – Propagation direction unit vector <span class="math notranslate nohighlight">\((x,y,z)\)</span></p></li>
+<li><p><strong>angle</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double(1,2),</span> <span class="pre">optional</span></code></span>) – Spherical angles <span class="math notranslate nohighlight">\((\theta,\phi)\)</span> in [rad]</p></li>
+<li><p><strong>intensity</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Intensity <span class="math notranslate nohighlight">\(I\)</span> in [W/m^2]</p></li>
+<li><p><strong>power</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Power <span class="math notranslate nohighlight">\(P\)</span> in [W]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="Laser.Angle">
 <span class="sig-name descname"><span class="pre">Angle</span></span><em class="property"> <span class="pre">(1,2)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[NaN,NaN]</span></em><a class="headerlink" href="#Laser.Angle" title="Link to this definition">#</a></dt>
-<dd><p>[Polar angle theta, Azimth angle phi] in radians</p>
+<dd><p>Spherical angles <span class="math notranslate nohighlight">\((\theta,\phi)\)</span> in [rad]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Laser.AngularFrequency">
 <span class="sig-name descname"><span class="pre">AngularFrequency</span></span><a class="headerlink" href="#Laser.AngularFrequency" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p><span class="math notranslate nohighlight">\(\omega = 2\pi f\)</span> [rad/s]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Laser.AngularWavenumber">
 <span class="sig-name descname"><span class="pre">AngularWavenumber</span></span><a class="headerlink" href="#Laser.AngularWavenumber" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p><span class="math notranslate nohighlight">\(k = 2\pi/\lambda\)</span> [rad/m]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Laser.AngularWavevector">
 <span class="sig-name descname"><span class="pre">AngularWavevector</span></span><a class="headerlink" href="#Laser.AngularWavevector" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p><span class="math notranslate nohighlight">\(\mathbf{k} = k\, \hat{\mathbf{k}}\)</span> [rad/m]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Laser.Direction">
 <span class="sig-name descname"><span class="pre">Direction</span></span><em class="property"> <span class="pre">(3,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[NaN;NaN;NaN]</span></em><a class="headerlink" href="#Laser.Direction" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Propagation unit vector <span class="math notranslate nohighlight">\(\hat{\mathbf{k}} = (x,y,z)\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Laser.ElectricFieldAmplitude">
 <span class="sig-name descname"><span class="pre">ElectricFieldAmplitude</span></span><a class="headerlink" href="#Laser.ElectricFieldAmplitude" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Field amplitude <span class="math notranslate nohighlight">\(|E| = \sqrt{2 Z_0 I}\)</span> in [V/m]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Laser.Frequency">
 <span class="sig-name descname"><span class="pre">Frequency</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">NaN</span></em><a class="headerlink" href="#Laser.Frequency" title="Link to this definition">#</a></dt>
-<dd><p>Absolute frequency in Hz. Linear frequency</p>
+<dd><p>Linear frequency <span class="math notranslate nohighlight">\(f\)</span> in [Hz]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Laser.Intensity">
 <span class="sig-name descname"><span class="pre">Intensity</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">NaN</span></em><a class="headerlink" href="#Laser.Intensity" title="Link to this definition">#</a></dt>
-<dd><p>In W/m^2</p>
+<dd><p>Intensity <span class="math notranslate nohighlight">\(I\)</span> in [W/m^2]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Laser.IntensityLu">
 <span class="sig-name descname"><span class="pre">IntensityLu</span></span><a class="headerlink" href="#Laser.IntensityLu" title="Link to this definition">#</a></dt>
-<dd><p>Intensity in mW/cm^2</p>
+<dd><p>Intensity in [mW/cm^2]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Laser.Phase">
 <span class="sig-name descname"><span class="pre">Phase</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#Laser.Phase" title="Link to this definition">#</a></dt>
-<dd><p>In radians</p>
+<dd><p>Optical phase <span class="math notranslate nohighlight">\(\phi\)</span> in [rad]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Laser.Polarization">
 <span class="sig-name descname"><span class="pre">Polarization</span></span><em class="property"> <span class="pre">(3,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[NaN;NaN;NaN]</span></em><a class="headerlink" href="#Laser.Polarization" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Jones polarization vector <span class="math notranslate nohighlight">\((E_x,E_y,E_z)\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Laser.Power">
 <span class="sig-name descname"><span class="pre">Power</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">NaN</span></em><a class="headerlink" href="#Laser.Power" title="Link to this definition">#</a></dt>
-<dd><p>In Watts</p>
+<dd><p>Optical power <span class="math notranslate nohighlight">\(P\)</span> in [W]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Laser.Wavelength">
 <span class="sig-name descname"><span class="pre">Wavelength</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">NaN</span></em><a class="headerlink" href="#Laser.Wavelength" title="Link to this definition">#</a></dt>
-<dd><p>In meter</p>
+<dd><p>Wavelength <span class="math notranslate nohighlight">\(\lambda\)</span> in [m]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Laser.WavelengthInAir">
 <span class="sig-name descname"><span class="pre">WavelengthInAir</span></span><a class="headerlink" href="#Laser.WavelengthInAir" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p><span class="math notranslate nohighlight">\(\lambda_{\mathrm{air}}\)</span> in [m]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Laser.Wavenumber">
 <span class="sig-name descname"><span class="pre">Wavenumber</span></span><a class="headerlink" href="#Laser.Wavenumber" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p><span class="math notranslate nohighlight">\(k_0 = 1/\lambda\)</span> [1/m]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Laser.Wavevector">
 <span class="sig-name descname"><span class="pre">Wavevector</span></span><a class="headerlink" href="#Laser.Wavevector" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p><span class="math notranslate nohighlight">\(\mathbf{k}_0 = k_0\, \hat{\mathbf{k}}\)</span> [1/m]</p>
+</dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Laser.rotate">
 <span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">eul</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Laser.rotate" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Rotate direction and polarization by ZYZ Euler angles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>eul</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double(1,3)</span></code></span>) – Euler angles <span class="math notranslate nohighlight">\([\alpha,\beta,\gamma]\)</span> (ZYZ) in radians</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Self-reference</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Laser.rotateToAngle">
 <span class="sig-name descname"><span class="pre">rotateToAngle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">angle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Laser.rotateToAngle" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Rotate to target spherical angles <span class="math notranslate nohighlight">\([\theta,\phi]\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>angle</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double(1,2)</span></code></span>) – <span class="math notranslate nohighlight">\([\theta,\phi]\)</span> in radians</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Self-reference</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Laser.spacePhaseFunc">
 <span class="sig-name descname"><span class="pre">spacePhaseFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Laser.spacePhaseFunc" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Build <span class="math notranslate nohighlight">\(e^{i(\phi - \mathbf{k}\cdot \mathbf{r})}\)</span> phase function of space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function handle mapping position <span class="math notranslate nohighlight">\(\mathbf{r}\)</span> to phase factor</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>function_handle</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Laser.spaceTimePhaseFunc">
 <span class="sig-name descname"><span class="pre">spaceTimePhaseFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Laser.spaceTimePhaseFunc" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Build <span class="math notranslate nohighlight">\(e^{i(\omega t + \phi - \mathbf{k}\cdot \mathbf{r})}\)</span> phase function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function handle mapping (<span class="math notranslate nohighlight">\(\mathbf{r},t\)</span>) to phase factor</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>function_handle</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Laser.timePhaseFunc">
 <span class="sig-name descname"><span class="pre">timePhaseFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Laser.timePhaseFunc" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Build <span class="math notranslate nohighlight">\(e^{i \omega t}\)</span> phase function of time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function handle mapping <span class="math notranslate nohighlight">\(t\)</span> to phase factor</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>function_handle</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd>
 </dl>

@@ -467,21 +467,24 @@ document.write(`
 <dt class="sig sig-object mat" id="SpaceSimRun">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SpaceSimRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">spaceSim</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/sim/SimRun/SpaceSimRun.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SpaceSimRun" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="SimRun.html#SimRun" title="SimRun"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SimRun</span></code></a></p>
-<p>SPACESIMRUN Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#SpaceSimRun" title="SpaceSimRun"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SpaceSimRun</span></code></a> abstract base for a space-discretized simulation run.</p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="SpaceSimRun.SpaceSimRun">
 <span class="sig-name descname"><span class="pre">SpaceSimRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">spaceSim</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SpaceSimRun.SpaceSimRun" title="Link to this definition">#</a></dt>
-<dd><p>SPACESIMRUN Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct a <a class="reference internal" href="#SpaceSimRun" title="SpaceSimRun"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SpaceSimRun</span></code></a> using <a class="reference internal" href="SpaceSim.html#SpaceSim" title="SpaceSim"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SpaceSim</span></code></a> metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spaceSim</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">any,</span> <span class="pre">optional</span></code></span>) – Parent <a class="reference internal" href="SpaceSim.html#SpaceSim" title="SpaceSim"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SpaceSim</span></code></a> or <a class="reference internal" href="SpaceTimeSim.html#SpaceTimeSim" title="SpaceTimeSim"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SpaceTimeSim</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="SpaceSimRun.BoundaryCondition">
-<span class="sig-name descname"><span class="pre">BoundaryCondition</span></span><em class="property"> <span class="pre">string</span> <span class="pre">{mustBeMember(BoundaryCondition,{'Periodic','Dirichlet','Neumann'})}</span> <span class="pre">=</span> <span class="pre">&quot;Periodic&quot;</span></em><a class="headerlink" href="#SpaceSimRun.BoundaryCondition" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">BoundaryCondition</span></span><em class="property"> <span class="pre">string</span> <span class="pre">{mustBeMember(BoundaryCondition,{&quot;Periodic&quot;,&quot;Dirichlet&quot;,&quot;Neumann&quot;})}</span> <span class="pre">=</span> <span class="pre">&quot;Periodic&quot;</span></em><a class="headerlink" href="#SpaceSimRun.BoundaryCondition" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat attribute">

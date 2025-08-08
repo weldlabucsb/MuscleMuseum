@@ -427,15 +427,24 @@ document.write(`
 <dt class="sig sig-object mat" id="KeysightWaveformGenerator">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">KeysightWaveformGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/WaveformGenerator/KeysightWaveformGenerator.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#KeysightWaveformGenerator" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="WaveformGenerator.html#WaveformGenerator" title="WaveformGenerator"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">WaveformGenerator</span></code></a></p>
-<p>KEYSIGHT Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#KeysightWaveformGenerator" title="KeysightWaveformGenerator"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">KeysightWaveformGenerator</span></code></a> base for Keysight AWGs with VISA control.</p>
+<p>Provides setup, upload, triggering, and connection management for Keysight
+arbitrary waveform generators using <a class="reference internal" href="#KeysightWaveformGenerator.connect" title="KeysightWaveformGenerator.connect"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">connect()</span></code></a>, <a class="reference internal" href="#KeysightWaveformGenerator.set" title="KeysightWaveformGenerator.set"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">set()</span></code></a>, <a class="reference internal" href="#KeysightWaveformGenerator.upload" title="KeysightWaveformGenerator.upload"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">upload()</span></code></a>,
+<a class="reference internal" href="#KeysightWaveformGenerator.trigger" title="KeysightWaveformGenerator.trigger"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">trigger()</span></code></a>, <a class="reference internal" href="#KeysightWaveformGenerator.close" title="KeysightWaveformGenerator.close"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">close()</span></code></a>, and <a class="reference internal" href="#KeysightWaveformGenerator.check" title="KeysightWaveformGenerator.check"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">check()</span></code></a>.</p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="KeysightWaveformGenerator.KeysightWaveformGenerator">
 <span class="sig-name descname"><span class="pre">KeysightWaveformGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#KeysightWaveformGenerator.KeysightWaveformGenerator" title="Link to this definition">#</a></dt>
-<dd><p>KEYSIGHT Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct a <a class="reference internal" href="#KeysightWaveformGenerator" title="KeysightWaveformGenerator"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">KeysightWaveformGenerator</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resourceName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – VISA resource name, e.g., “TCPIP0::…::inst0::INSTR”</p></li>
+<li><p><strong>name</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – Device nickname</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>
@@ -448,33 +457,39 @@ Detailed explanation goes here</p>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="KeysightWaveformGenerator.check">
 <span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#KeysightWaveformGenerator.check" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Query device error status.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="KeysightWaveformGenerator.close">
 <span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#KeysightWaveformGenerator.close" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Close the VISA session, ensuring device is idle.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="KeysightWaveformGenerator.connect">
 <span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#KeysightWaveformGenerator.connect" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Open VISA connection using <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">ResourceName</span></code>.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="KeysightWaveformGenerator.set">
 <span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#KeysightWaveformGenerator.set" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Configure channels (sample rate, voltage levels, trigger, mode, load).</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="KeysightWaveformGenerator.trigger">
 <span class="sig-name descname"><span class="pre">trigger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#KeysightWaveformGenerator.trigger" title="Link to this definition">#</a></dt>
-<dd><p>Check connection to the device</p>
+<dd><p>Issue a software trigger on channels configured for BUS trigger.
+Check connection to the device</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="KeysightWaveformGenerator.upload">
 <span class="sig-name descname"><span class="pre">upload</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#KeysightWaveformGenerator.upload" title="Link to this definition">#</a></dt>
-<dd><p>Check connection to the device</p>
+<dd><p>Upload prepared waveforms to the device and start output if enabled.
+Check connection to the device</p>
 </dd></dl>
 
 </dd>

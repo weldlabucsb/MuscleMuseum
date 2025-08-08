@@ -1,7 +1,21 @@
 classdef (Abstract) Hardware < handle & matlab.mixin.SetGetExactNames
-    %This class provides generalized parameter and functions for
-    %hardware components that may be interfaced with MM. Most of these
-    %properties are specific to AWG controls.
+    %:class:`Hardware` provides a common abstraction for controllable instruments.
+    %
+    % Encapsulates identity, resource naming, data type for uploads, and logging
+    % of instrument objects via :meth:`saveObject`. Concrete subclasses implement model-specific control
+    % (e.g., AWGs, scopes, cameras, phase locks).
+    %
+    % **Example:**
+    %
+    % .. code-block:: matlab
+    %
+    %    awg = KeysightWaveformGenerator("TCPIP0::192.168.0.2::inst0::INSTR", name="AWG1");
+    %    % use awg-specific APIs here
+    %
+    % **Notes:**
+    %
+    %     The default logging location is derived from ``Config.mat`` → ``ComputerConfig.HardwareLogOrigin``.
+    %     Set ``isSaving=false`` to disable object logging.
     %Properties:
     %
     %   Name: Nickname of device
@@ -44,6 +58,14 @@ classdef (Abstract) Hardware < handle & matlab.mixin.SetGetExactNames
 
     methods
         function obj = Hardware(resourceName,name,isSaving)
+            % Construct a :class:`Hardware` object.
+            %
+            % :param resourceName: VISA/ethernet/COM resource identifier for the device.
+            % :type resourceName: string
+            % :param name: Short device nickname used for logging folder names.
+            % :type name: string, optional
+            % :param isSaving: Whether to save device snapshots to disk (default true).
+            % :type isSaving: logical, optional
             arguments
                 resourceName string
                 name string = string.empty
@@ -68,6 +90,7 @@ classdef (Abstract) Hardware < handle & matlab.mixin.SetGetExactNames
 
     methods (Access = protected)
         function saveObject(obj)
+            % Save a timestamped snapshot of the hardware object to :attr:`DataPath`.
             if isfolder(obj.DataPath)
                 t = string(datetime('now','Format','yyyyMMddHHmmss'));
                 save(fullfile(obj.DataPath,obj.Name + "_" + t),'obj')

@@ -1,6 +1,5 @@
 classdef Keysight33600A < KeysightWaveformGenerator
-    %KEYSIGHT Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`Keysight33600A` model configuration for a 2-ch high-speed AWG.
     
     properties
         
@@ -8,8 +7,12 @@ classdef Keysight33600A < KeysightWaveformGenerator
     
     methods
         function obj = Keysight33600A(resourceName,name)
-            %KEYSIGHT Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`Keysight33600A`.
+            %
+            % :param resourceName: VISA resource name
+            % :type resourceName: string
+            % :param name: Device nickname
+            % :type name: string, optional
             arguments
                 resourceName string
                 name string = string.empty

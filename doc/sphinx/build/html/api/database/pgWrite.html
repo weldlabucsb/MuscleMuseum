@@ -404,7 +404,44 @@ document.write(`
 <dl class="mat function">
 <dt class="sig sig-object mat" id="pgWrite">
 <span class="sig-name descname"><span class="pre">pgWrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">conn</span></em>, <em class="sig-param"><span class="pre">tableName</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/database/func/pgWrite.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pgWrite" title="Link to this definition">#</a></dt>
-<dd><p>PGWRITE Write a MATLAB table to a postgresql database table
+<dd><p>Write a MATLAB table to a PostgreSQL database table, adding columns if needed.</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param conn<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Open database connection</p>
+</dd>
+<dt class="field-even">type conn<span class="colon">:</span></dt>
+<dd class="field-even"><p>database.relational.connection</p>
+</dd>
+<dt class="field-odd">param tableName<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Target table name</p>
+</dd>
+<dt class="field-even">type tableName<span class="colon">:</span></dt>
+<dd class="field-even"><p>string | char</p>
+</dd>
+<dt class="field-odd">param data<span class="colon">:</span></dt>
+<dd class="field-odd"><p>MATLAB table to write</p>
+</dd>
+<dt class="field-even">type data<span class="colon">:</span></dt>
+<dd class="field-even"><p>table</p>
+</dd>
+<dt class="field-odd">param isForceArray<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Force new columns to be arrays when adding</p>
+</dd>
+<dt class="field-even">type isForceArray<span class="colon">:</span></dt>
+<dd class="field-even"><p>logical, optional</p>
+</dd>
+</dl>
+<p><strong>Notes:</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Extra variables in <code class="docutils literal notranslate"><span class="pre">data</span></code> that do not exist in the DB table are added with inferred types.</p></li>
+<li><p>Vector-valued cells can be mapped to array column types (numeric[]/int[]/text[]).</p></li>
+<li><p>This function is adapted from MATLAB’s <code class="docutils literal notranslate"><span class="pre">sqlwrite</span></code> to handle vector columns.</p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<p>PGWRITE Write a MATLAB table to a postgresql database table
 pgWrite(conn,tableName,data)</p>
 <blockquote>
 <div><p>conn: connection to pg database

@@ -1,13 +1,13 @@
 classdef Pco < Acquisition
-    % PCO Pco class
-    % Creates a subclass of the Acquisition class with properties specific
-    % to our PCO camera as well as explicit code to connect to and control
-    % this camera.
+    %:class:`Pco` acquisition using the PCO camera adaptor.
+    %
+    % Provides an absorption-imaging configuration via :meth:`setCameraParameterAbsorption`.
     methods
         function obj = Pco(acqName)
-            %PCO Construct an instance of this class
-            %   Creates an Acquisition object and saves the CameraType and
-            %   AdaptorName used to connect to the camera.
+            % Construct a :class:`Pco` acquisition instance.
+            %
+            % :param acqName: Camera config name
+            % :type acqName: string
             arguments
                 acqName string
             end
@@ -17,9 +17,10 @@ classdef Pco < Acquisition
         end
 
         function setCameraParameterAbsorption(obj)
-            %Set camera parameters using the predefined configuration
-            %functions. Assumes videoinput object has been created and
-            %modifies it to predefined settings.
+            % Configure absorption-imaging parameters for PCO adaptor.
+            %
+            % Requires connected :attr:`VideoInput`. Sets hardware trigger (ExternExposureStart),
+            % rising polarity, and exposure time from :attr:`ExposureTime`.
             if isempty(obj.VideoInput)
                 error('Camera not connected. Try the "connectCamera" method first.')
             end

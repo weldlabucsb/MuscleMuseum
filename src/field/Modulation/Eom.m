@@ -1,21 +1,35 @@
 classdef Eom < handle
-    %AOM Summary of this class goes here
-    %   Detailed explanation goes here
-    
+    %:class:`Eom` models an electro-optic modulator RF-induced frequency shift.
+    %
+    % Provides sideband frequency offsets proportional to the RF frequency.
+    %
+    % **Example:**
+    %
+    % .. code-block:: matlab
+    %
+    %    e = Eom(40);  % 40 MHz
+    %    df = e.shift(+1);  % +40 MHz first-order
+    %
     properties
-        RfFrequency %RF circular frequency in MHz
+        RfFrequency %RF frequency in MHz
     end
     
     methods
         function obj = Eom(omegaRf)
-            %AOM Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct an :class:`Eom`.
+            %
+            % :param omegaRf: RF frequency in MHz
+            % :type omegaRf: double
             obj.RfFrequency = omegaRf;
         end
         
         function shift = shift(obj,order)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
+            % EOM sideband frequency shift.
+            %
+            % :param order: Sideband order (+/-1, ...)
+            % :type order: double
+            % :return: Frequency shift in MHz
+            % :rtype: double
             shift = order*obj.RfFrequency;
         end
     end

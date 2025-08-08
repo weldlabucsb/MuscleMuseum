@@ -427,14 +427,24 @@ document.write(`
 <dt class="sig sig-object mat" id="VescentPhaseLock">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">VescentPhaseLock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/PhaseLock/VescentPhaseLock.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#VescentPhaseLock" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="PhaseLock.html#PhaseLock" title="PhaseLock"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PhaseLock</span></code></a></p>
-<p>UNTITLED Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#VescentPhaseLock" title="VescentPhaseLock"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">VescentPhaseLock</span></code></a> base for Vescent phase-lock modules.</p>
+<p>Manages a serial connection (<a class="reference internal" href="#VescentPhaseLock.Serialport" title="VescentPhaseLock.Serialport"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Serialport</span></code></a>) and provides methods to
+<a class="reference internal" href="#VescentPhaseLock.connect" title="VescentPhaseLock.connect"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">connect()</span></code></a>, <a class="reference internal" href="#VescentPhaseLock.check" title="VescentPhaseLock.check"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">check()</span></code></a>, <a class="reference internal" href="#VescentPhaseLock.lock" title="VescentPhaseLock.lock"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">lock()</span></code></a>, and <a class="reference internal" href="#VescentPhaseLock.unlock" title="VescentPhaseLock.unlock"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">unlock()</span></code></a>.</p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="VescentPhaseLock.VescentPhaseLock">
 <span class="sig-name descname"><span class="pre">VescentPhaseLock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#VescentPhaseLock.VescentPhaseLock" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Construct a <a class="reference internal" href="#VescentPhaseLock" title="VescentPhaseLock"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">VescentPhaseLock</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resourceName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Serial resource (e.g., “COM3”)</p></li>
+<li><p><strong>name</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – Device nickname</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
@@ -446,29 +456,32 @@ Detailed explanation goes here</p>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="VescentPhaseLock.check">
 <span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#VescentPhaseLock.check" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Query lock status and current frequency; update <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Status</span></code> and <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">CurrentFrequency</span></code>.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="VescentPhaseLock.close">
 <span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#VescentPhaseLock.close" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Close the serial session.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="VescentPhaseLock.connect">
 <span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#VescentPhaseLock.connect" title="Link to this definition">#</a></dt>
-<dd><p>METHOD1 Summary of this method goes here
-Detailed explanation goes here</p>
+<dd><p>Open serial connection using <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">ResourceName</span></code>.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="VescentPhaseLock.lock">
 <span class="sig-name descname"><span class="pre">lock</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#VescentPhaseLock.lock" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Lock to the requested <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Frequency</span></code>.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="VescentPhaseLock.unlock">
 <span class="sig-name descname"><span class="pre">unlock</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#VescentPhaseLock.unlock" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Unlock the phase lock (servo off) if currently locked.</p>
+</dd></dl>
 
 </dd>
 </dl>

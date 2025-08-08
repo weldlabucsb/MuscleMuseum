@@ -1,22 +1,28 @@
 classdef (Abstract) PhaseLock < Hardware
-    %PHASELOCK Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`PhaseLock` abstract base for frequency/phase-lock modules.
+    %
+    % Defines the lock :attr:`Frequency` [Hz], status, current frequency readback,
+    % and basic control API (:meth:`connect`, :meth:`lock`, :meth:`unlock`).
     
     properties
-        Frequency double {mustBePositive} % in Hz
+        Frequency double {mustBePositive} % in [Hz]
         VariableName string
     end
 
     properties (SetAccess = protected)
-        FrequencyLimit (1,2) double % in Hz [lower,upper]
-        CurrentFrequency double % in Hz
+        FrequencyLimit (1,2) double % in [Hz] [lower,upper]
+        CurrentFrequency double % in [Hz]
         Status logical
     end
     
     methods
         function obj = PhaseLock(resourceName,name)
-            %PHASELOCK Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`PhaseLock`.
+            %
+            % :param resourceName: Connection resource (e.g., serial port)
+            % :type resourceName: string
+            % :param name: Device nickname
+            % :type name: string, optional
             arguments
                 resourceName string
                 name string = string.empty
@@ -25,6 +31,7 @@ classdef (Abstract) PhaseLock < Hardware
         end
 
         function set.Frequency(obj,val)
+            % Validate requested :attr:`Frequency` lies within :attr:`FrequencyLimit`.
             if isempty(obj.FrequencyLimit)
                 obj.Frequency = val;
             elseif val<obj.FrequencyLimit(1) || val>obj.FrequencyLimit(2)

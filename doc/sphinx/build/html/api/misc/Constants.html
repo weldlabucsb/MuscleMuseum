@@ -393,13 +393,15 @@ document.write(`
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Constants">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Constants</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/misc/Constants.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constants" title="Link to this definition">#</a></dt>
-<dd><p>Constants Physical constants.
-The values are taken from Daniel Steck’s notes. The default values
-are in SI units. Calling Constant.### can load the constants into the
-caller workspace (### stands for SI, Micro). Calling Constant.###(name)
-can return the value of the constant in that units. Here name is the
-varialbe name string of the corresponding constant, which is listed
-bellow.</p>
+<dd><p><a class="reference internal" href="#Constants" title="Constants"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Constants</span></code></a> provides a subset of physical constants and unit helpers.</p>
+<p>Values are SI by default and accessible via <a class="reference internal" href="#Constants.SI" title="Constants.SI"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">SI()</span></code></a>. For convenience,
+<a class="reference internal" href="#Constants.Micro" title="Constants.Micro"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">Micro()</span></code></a> loads a scaled set useful for micron-microsecond-kilogram units.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">hbar</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Constants</span><span class="p">.</span><span class="n">SI</span><span class="p">(</span><span class="s">&quot;hbar&quot;</span><span class="p">);</span>
+<span class="n">Constants</span><span class="p">.</span><span class="n">SI</span><span class="p">();</span><span class="w">    </span><span class="c">% load named constants into caller</span>
+<span class="n">Constants</span><span class="p">.</span><span class="n">Micro</span><span class="p">();</span><span class="w"> </span><span class="c">% load scaled constants into caller</span>
+</pre></div>
+</div>
 <div class="members docutils container">
 <dl>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
@@ -482,13 +484,35 @@ bellow.</p>
 <dt>Method Summary</dt><dd><dl class="mat staticmethod">
 <dt class="sig sig-object mat" id="Constants.Micro">
 <em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">Micro</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">constantName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Constants.Micro" title="Link to this definition">#</a></dt>
-<dd><p>Load constants in micron - micro-second - kilogram units into the caller workspace</p>
+<dd><p>Load constants in micron–microsecond–kilogram units into caller.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>constantName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – If provided, return the named constant value instead</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Constant value when <code class="docutils literal notranslate"><span class="pre">constantName</span></code> is provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double, optional</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat staticmethod">
 <dt class="sig sig-object mat" id="Constants.SI">
 <em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">SI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">constantName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Constants.SI" title="Link to this definition">#</a></dt>
-<dd><p>Load constants in SI units into the caller workspace</p>
+<dd><p>Load constants in SI units into the caller workspace.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>constantName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – If provided, return the named constant value instead</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Constant value when <code class="docutils literal notranslate"><span class="pre">constantName</span></code> is provided</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double, optional</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>

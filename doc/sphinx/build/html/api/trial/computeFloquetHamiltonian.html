@@ -43,6 +43,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/trial/computeFloquetHamiltonian';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -466,8 +467,29 @@ document.write(`
 <dl class="mat function">
 <dt class="sig sig-object mat" id="computeFloquetHamiltonian">
 <span class="sig-name descname"><span class="pre">computeFloquetHamiltonian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">H</span></em>, <em class="sig-param"><span class="pre">T</span></em>, <em class="sig-param"><span class="pre">nt</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/sim/func/computeFloquetHamiltonian.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#computeFloquetHamiltonian" title="Link to this definition">#</a></dt>
-<dd><p>UNTITLED Summary of this function goes here
-Detailed explanation goes here</p>
+<dd><p>Compute the (effective) Floquet Hamiltonian from a time-periodic Hamiltonian.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>H</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">function_handle</span></code></span>) – Matrix-valued Hamiltonian function handle <span class="math notranslate nohighlight">\(H(t)\)</span></p></li>
+<li><p><strong>T</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Modulation period <span class="math notranslate nohighlight">\(T\)</span> in [s]</p></li>
+<li><p><strong>nt</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Number of time samples over one period (uniform grid)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Effective Floquet Hamiltonian <span class="math notranslate nohighlight">\(H_F\)</span> in [Hz]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double matrix</p>
+</dd>
+</dl>
+<p><strong>Notes:</strong></p>
+<blockquote>
+<div><p>The evolution operator over one period is approximated by a product
+<span class="math notranslate nohighlight">\(U(T) \approx \prod_k \exp\{-i\,2\pi\, H(t_k)\, \Delta t\}\)</span>, and
+the effective Hamiltonian is extracted as
+<span class="math notranslate nohighlight">\(H_F = \frac{i}{2\pi T}\,\log U(T)\)</span>.</p>
+</div></blockquote>
 </dd></dl>
 
 </section>

@@ -43,6 +43,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/field/GaussianBeam';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -402,38 +403,60 @@ document.write(`
 <dt class="sig sig-object mat" id="GaussianBeam">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">GaussianBeam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options1</span></em>, <em class="sig-param"><span class="pre">options2</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/field/Laser/GaussianBeam.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#GaussianBeam" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="Laser.html#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a></p>
-<p>PLANEWAVE Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#GaussianBeam" title="GaussianBeam"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">GaussianBeam</span></code></a> represents a TEM00 Gaussian laser beam.</p>
+<p>Adds beam waist and center position to <a class="reference internal" href="Laser.html#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a> and provides
+Rayleigh range and average intensity for convenience.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">g</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">GaussianBeam</span><span class="p">(</span><span class="n">waist</span><span class="p">=[</span><span class="mf">50e-6</span><span class="p">;</span><span class="w"> </span><span class="mf">60e-6</span><span class="p">],</span><span class="w"> </span><span class="n">center</span><span class="p">=[</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">wavelength</span><span class="p">=</span><span class="mf">1064e-9</span><span class="p">,</span><span class="w"> </span><span class="n">power</span><span class="p">=</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">zR</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">g</span><span class="p">.</span><span class="n">RayleighRange</span><span class="p">;</span>
+</pre></div>
+</div>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="GaussianBeam.GaussianBeam">
 <span class="sig-name descname"><span class="pre">GaussianBeam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options1</span></em>, <em class="sig-param"><span class="pre">options2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#GaussianBeam.GaussianBeam" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Construct a <a class="reference internal" href="#GaussianBeam" title="GaussianBeam"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">GaussianBeam</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>waist</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double(2,1),</span> <span class="pre">optional</span></code></span>) – Beam waist <span class="math notranslate nohighlight">\((w_x, w_y)\)</span> in [m] (default: [NaN;NaN])</p></li>
+<li><p><strong>center</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double(3,1),</span> <span class="pre">optional</span></code></span>) – Beam center <span class="math notranslate nohighlight">\((x,y,z)\)</span> in [m] (default: (0,0,0))</p></li>
+<li><p><strong>frequency</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Laser frequency <span class="math notranslate nohighlight">\(f\)</span> in [Hz]</p></li>
+<li><p><strong>wavelength</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Laser wavelength <span class="math notranslate nohighlight">\(\lambda\)</span> in [m]</p></li>
+<li><p><strong>polarization</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double(3,1),</span> <span class="pre">optional</span></code></span>) – Jones vector <span class="math notranslate nohighlight">\((E_x,E_y,E_z)\)</span></p></li>
+<li><p><strong>phase</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Phase <span class="math notranslate nohighlight">\(\phi\)</span> in [rad]</p></li>
+<li><p><strong>direction</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double(3,1),</span> <span class="pre">optional</span></code></span>) – Direction unit vector <span class="math notranslate nohighlight">\((x,y,z)\)</span></p></li>
+<li><p><strong>intensity</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Intensity <span class="math notranslate nohighlight">\(I\)</span> in [W/m^2]</p></li>
+<li><p><strong>power</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Power <span class="math notranslate nohighlight">\(P\)</span> in [W]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="GaussianBeam.Center">
 <span class="sig-name descname"><span class="pre">Center</span></span><em class="property"> <span class="pre">(3,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[0;0;0]</span></em><a class="headerlink" href="#GaussianBeam.Center" title="Link to this definition">#</a></dt>
-<dd><p>In meters</p>
+<dd><p>Beam center <span class="math notranslate nohighlight">\((x,y,z)\)</span> in [m]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="GaussianBeam.IntensityAveraged">
 <span class="sig-name descname"><span class="pre">IntensityAveraged</span></span><a class="headerlink" href="#GaussianBeam.IntensityAveraged" title="Link to this definition">#</a></dt>
-<dd><p>In W/m^2</p>
+<dd><p>Average intensity <span class="math notranslate nohighlight">\(I = P/(\pi w_x w_y)\)</span> in [W/m^2]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="GaussianBeam.RayleighRange">
 <span class="sig-name descname"><span class="pre">RayleighRange</span></span><a class="headerlink" href="#GaussianBeam.RayleighRange" title="Link to this definition">#</a></dt>
-<dd><p>In meters</p>
+<dd><p>Rayleigh range <span class="math notranslate nohighlight">\(z_R = \pi w_x w_y / \lambda\)</span> in [m]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="GaussianBeam.Waist">
 <span class="sig-name descname"><span class="pre">Waist</span></span><em class="property"> <span class="pre">(2,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[NaN;NaN]</span></em><a class="headerlink" href="#GaussianBeam.Waist" title="Link to this definition">#</a></dt>
-<dd><p>In meters</p>
+<dd><p>1/e^2 radii <span class="math notranslate nohighlight">\((w_x, w_y)\)</span> in [m]</p>
 </dd></dl>
 
 </dd>

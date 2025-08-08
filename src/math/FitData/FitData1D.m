@@ -1,9 +1,9 @@
 classdef (Abstract) FitData1D < FitData
-    % Abstract base class for one-dimensional data fitting.
+    %:class:`FitData1D` abstract base for one-dimensional data fitting.
     %
     % Extends :class:`FitData` to provide specialized functionality for fitting
     % functions to 1D data (x,y coordinate pairs). Includes plotting capabilities
-    % and fit evaluation methods.
+    % and fit evaluation methods (:meth:`evaluateFit`).
     %
     % **Example1:**
     %
@@ -35,7 +35,7 @@ classdef (Abstract) FitData1D < FitData
     
     methods
         function obj = FitData1D(rawData)
-            % Constructor for FitData1D class.
+            % Construct a :class:`FitData1D`.
             %
             % :param rawData: Input data as n x 2 matrix [x, y]
             % :type rawData: double array

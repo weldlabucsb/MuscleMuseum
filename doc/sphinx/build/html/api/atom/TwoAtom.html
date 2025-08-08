@@ -43,6 +43,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/atom/TwoAtom';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -410,15 +411,23 @@ document.write(`
 <dl class="mat class">
 <dt class="sig sig-object mat" id="TwoAtom">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TwoAtom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atomName1</span></em>, <em class="sig-param"><span class="pre">atomName2</span></em>, <em class="sig-param"><span class="pre">manifoldName1</span></em>, <em class="sig-param"><span class="pre">manifoldName2</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/Atom/TwoAtom.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TwoAtom" title="Link to this definition">#</a></dt>
-<dd><p>TWOATOM Summary of this class goes here
-Detailed explanation goes here</p>
+<dd><p><a class="reference internal" href="#TwoAtom" title="TwoAtom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">TwoAtom</span></code></a> coupled two-atom helper with separate manifolds.</p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="TwoAtom.TwoAtom">
 <span class="sig-name descname"><span class="pre">TwoAtom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atomName1</span></em>, <em class="sig-param"><span class="pre">atomName2</span></em>, <em class="sig-param"><span class="pre">manifoldName1</span></em>, <em class="sig-param"><span class="pre">manifoldName2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoAtom.TwoAtom" title="Link to this definition">#</a></dt>
-<dd><p>TWOATOM Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct a <a class="reference internal" href="#TwoAtom" title="TwoAtom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">TwoAtom</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atomName1</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – First atom name (ARC-known)</p></li>
+<li><p><strong>atomName2</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Second atom name</p></li>
+<li><p><strong>manifoldName1</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – Optional manifold property name for atom1</p></li>
+<li><p><strong>manifoldName2</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – Optional manifold property name for atom2</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>
@@ -446,7 +455,22 @@ Detailed explanation goes here</p>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="TwoAtom.HamiltonianAtom">
 <span class="sig-name descname"><span class="pre">HamiltonianAtom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fRot</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoAtom.HamiltonianAtom" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Build two-atom Hamiltonian (sum) at rotation frequency <span class="math notranslate nohighlight">\(f_\mathrm{rot}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fRot</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Rotation frequency [Hz]</p></li>
+<li><p><strong>U</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span> <span class="pre">matrix,</span> <span class="pre">optional</span></code></span>) – Optional basis transform</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Block-sum Hamiltonian <span class="math notranslate nohighlight">\(H_1 \oplus H_2\)</span></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double matrix</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd>
 </dl>

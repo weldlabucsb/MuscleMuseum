@@ -43,6 +43,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/math/SineWave';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -448,17 +449,17 @@ Inherits from <a class="reference internal" href="PeriodicWaveform.html#Periodic
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="SineWave.SineWave">
 <span class="sig-name descname"><span class="pre">SineWave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SineWave.SineWave" title="Link to this definition">#</a></dt>
-<dd><p>Construct a SineWave object.</p>
+<dd><p>Construct a <a class="reference internal" href="#SineWave" title="SineWave"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SineWave</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>samplingRate</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Sampling rate in Hz (default: inherited)</p></li>
-<li><p><strong>startTime</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Start time in seconds (default: 0)</p></li>
-<li><p><strong>duration</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Duration in seconds (default: inherited)</p></li>
+<li><p><strong>samplingRate</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Sampling rate [Hz] (default: inherited)</p></li>
+<li><p><strong>startTime</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Start time <span class="math notranslate nohighlight">\(t_0\)</span> [s] (default: 0)</p></li>
+<li><p><strong>duration</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Duration <span class="math notranslate nohighlight">\(T\)</span> [s] (default: inherited)</p></li>
 <li><p><strong>amplitude</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Waveform amplitude (default: inherited)</p></li>
 <li><p><strong>offset</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – DC offset (default: 0)</p></li>
-<li><p><strong>frequency</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Frequency in Hz (default: inherited)</p></li>
-<li><p><strong>phase</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Phase offset in radians (default: 0)</p></li>
+<li><p><strong>frequency</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Frequency <span class="math notranslate nohighlight">\(f\)</span> [Hz] (default: inherited)</p></li>
+<li><p><strong>phase</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Phase <span class="math notranslate nohighlight">\(\phi\)</span> [rad] (default: 0)</p></li>
 </ul>
 </dd>
 </dl>
@@ -473,10 +474,8 @@ Inherits from <a class="reference internal" href="PeriodicWaveform.html#Periodic
 <dt class="sig sig-object mat" id="SineWave.TimeFunc">
 <span class="sig-name descname"><span class="pre">TimeFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SineWave.TimeFunc" title="Link to this definition">#</a></dt>
 <dd><p>Get the time function for the sine wave.</p>
-<p>Returns a function handle that generates a sine wave with the
-specified amplitude, frequency, phase, and timing parameters.
-The waveform is zero outside the specified duration. Implements the
-abstract <a class="reference internal" href="#SineWave.TimeFunc" title="SineWave.TimeFunc"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code></a> method from <a class="reference internal" href="Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a>.</p>
+<p>Implements the abstract <a class="reference internal" href="#SineWave.TimeFunc" title="SineWave.TimeFunc"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code></a> from <a class="reference internal" href="Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a> by
+returning <span class="math notranslate nohighlight">\(f(t) = \mathbb{1}_{[t_0,t_0+T]}(t)\,(A/2\,\sin(2\pi f (t-t_0)+\phi)+\mathrm{offset})\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Function that takes time array and returns sine wave values</p>

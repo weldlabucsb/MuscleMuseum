@@ -467,14 +467,50 @@ document.write(`
 <dt class="sig sig-object mat" id="Trial">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Trial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/Trial.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Trial" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.SetGetExactNames</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">dynamicprops</span></code></p>
-<p>Trial Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#Trial" title="Trial"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Trial</span></code></a> is an abstract base class for orchestrating experiments/simulations.</p>
+<p>Provides lifecycle management for a single run series: configuration loading,
+data folder setup, database logging (writer/reader), serial numbering, optional
+GUI integration, and file system watching to trigger analysis.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Constructing a concrete trial</span>
+<span class="n">t</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">MyConcreteTrial</span><span class="p">(</span><span class="s">&quot;Test&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;MyConfigName&quot;</span><span class="p">);</span>
+<span class="n">t</span><span class="p">.</span><span class="n">update</span><span class="p">();</span><span class="w">  </span><span class="c">% persist object and DB</span>
+</pre></div>
+</div>
+<p><strong>Events:</strong></p>
+<blockquote>
+<div><dl class="simple">
+<dt>NewRunFinished<span class="classifier">event</span></dt><dd><p>Emitted when a new data file group has been detected and completed.</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>Notes:</strong></p>
+<blockquote>
+<div><p>Subclasses must implement <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">writeDatabase()</span></code>, <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">updateDatabase()</span></code>,
+<code class="xref mat mat-meth docutils literal notranslate"><span class="pre">setFolder()</span></code>, and <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">setConfigProperty()</span></code>.</p>
+</div></blockquote>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Trial.Trial">
 <span class="sig-name descname"><span class="pre">Trial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Trial.Trial" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Construct a <a class="reference internal" href="#Trial" title="Trial"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Trial</span></code></a> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trialName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Alphanumeric name for the trial type.</p></li>
+<li><p><strong>config</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span> <span class="pre">|</span> <span class="pre">table</span> <span class="pre">|</span> <span class="pre">struct</span></code></span>) – Configuration identifier or data. If string, loads from <code class="docutils literal notranslate"><span class="pre">Config.mat</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Raises:</strong></p>
+<blockquote>
+<div><dl class="simple">
+<dt><code class="xref mat mat-class docutils literal notranslate"><span class="pre">error</span></code></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">trialName</span></code> is not alphanumeric or configuration cannot be found.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
@@ -550,32 +586,66 @@ Detailed explanation goes here</p>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Trial.createWatcher">
 <span class="sig-name descname"><span class="pre">createWatcher</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Trial.createWatcher" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Create a file system watcher that emits <a href="#id1"><span class="problematic" id="id2">:event:`NewRunFinished`</span></a> per group.</p>
+<p>Watches <a class="reference internal" href="#Trial.DataPath" title="Trial.DataPath"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DataPath</span></code></a> for created files matching <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DataFormat</span></code> and
+accumulates until <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DataGroupSize</span></code> files are seen, then notifies.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Trial.displayLog">
 <span class="sig-name descname"><span class="pre">displayLog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">str</span></em>, <em class="sig-param"><span class="pre">logType</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Trial.displayLog" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Display a log message, routed to GUI if available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>str</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Message text.</p></li>
+<li><p><strong>logType</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – One of “normal”, “warning”, or “error”.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat staticmethod">
 <dt class="sig sig-object mat" id="Trial.loadobj">
 <em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">loadobj</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Trial.loadobj" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Reconnect DB writer and GUI handle when the object is loaded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Loaded object with transient handles restored when possible.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#Trial" title="Trial"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Trial</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Trial.struct">
 <span class="sig-name descname"><span class="pre">struct</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Trial.struct" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Create a plain struct snapshot of public properties for logging/DB.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Public, serializable properties with heavy objects mapped to names.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>struct</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Trial.update">
 <span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Trial.update" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Persist object changes and synchronize the database record.</p>
+<p>Calls <a class="reference internal" href="#Trial.updateObject" title="Trial.updateObject"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">updateObject()</span></code></a> and <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">updateDatabase()</span></code>, and writes a
+short description file into <a class="reference internal" href="#Trial.DataPath" title="Trial.DataPath"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DataPath</span></code></a>.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Trial.updateObject">
 <span class="sig-name descname"><span class="pre">updateObject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Trial.updateObject" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Save the current object to <a class="reference internal" href="#Trial.ObjectPath" title="Trial.ObjectPath"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">ObjectPath</span></code></a>.</p>
+</dd></dl>
 
 </dd>
 </dl>

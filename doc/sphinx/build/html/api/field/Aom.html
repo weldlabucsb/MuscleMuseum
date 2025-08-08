@@ -402,37 +402,68 @@ document.write(`
 <dt class="sig sig-object mat" id="Aom">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Aom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">omegaRf</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/field/Modulation/Aom.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Aom" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
-<p>AOM Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#Aom" title="Aom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Aom</span></code></a> models an acousto-optic modulator RF shift.</p>
+<p>Provides frequency shifts for single-pass (SP) and double-pass (DP) setups.
+The RF frequency is specified in MHz (linear frequency).</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Aom</span><span class="p">(</span><span class="mi">80</span><span class="p">);</span><span class="w">   </span><span class="c">% 80 MHz</span>
+<span class="n">df</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">shiftSP</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w">   </span><span class="c">% +80 MHz</span>
+<span class="n">df2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">shiftDP</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c">% -160 MHz</span>
+</pre></div>
+</div>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Aom.Aom">
 <span class="sig-name descname"><span class="pre">Aom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">omegaRf</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Aom.Aom" title="Link to this definition">#</a></dt>
-<dd><p>AOM Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct an <a class="reference internal" href="#Aom" title="Aom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Aom</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>omegaRf</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – RF frequency in MHz</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="Aom.RfFrequency">
 <span class="sig-name descname"><span class="pre">RfFrequency</span></span><a class="headerlink" href="#Aom.RfFrequency" title="Link to this definition">#</a></dt>
-<dd><p>RF circular frequency in MHz</p>
+<dd><p>RF frequency in MHz</p>
 </dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Aom.shiftDP">
 <span class="sig-name descname"><span class="pre">shiftDP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">order</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Aom.shiftDP" title="Link to this definition">#</a></dt>
-<dd><p>METHOD1 Summary of this method goes here
-Detailed explanation goes here</p>
+<dd><p>Double-pass AOM frequency shift.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>order</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Diffraction order (+/-1, …)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Frequency shift in MHz</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Aom.shiftSP">
 <span class="sig-name descname"><span class="pre">shiftSP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">order</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Aom.shiftSP" title="Link to this definition">#</a></dt>
-<dd><p>METHOD1 Summary of this method goes here
-Detailed explanation goes here</p>
+<dd><p>Single-pass AOM frequency shift.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>order</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Diffraction order (+/-1, …)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Frequency shift in MHz</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>

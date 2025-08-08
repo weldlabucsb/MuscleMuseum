@@ -2,13 +2,12 @@ classdef (Abstract) Waveform < handle
     %:class:`Waveform` generates and stores waveforms for experimental control.
     %
     % A waveform can represent either a continuous function of time or a discrete
-    % time-sequence of samples. The waveform definition is given by the output
-    % of the :meth:`TimeFunc` method, which returns a function handle that takes
-    % a time array as input. Every concrete subclass must implement the
-    % :meth:`TimeFunc` method.
+    % time-sequence of samples. The definition is given by :meth:`TimeFunc`, which
+    % returns a function handle mapping time :math:`t` to the waveform value.
     %
-    % The waveform samples are calculated automatically when the :attr:`Sample`
-    % property is accessed, based on the :meth:`TimeFunc` and timing parameters.
+    % The waveform samples are calculated lazily when :attr:`Sample` is accessed,
+    % based on :meth:`TimeFunc` and timing parameters (:attr:`StartTime`,
+    % :attr:`Duration`, :attr:`SamplingRate`).
     %
     % **Example1:**
     %
@@ -28,34 +27,34 @@ classdef (Abstract) Waveform < handle
     %     const.plot();
     
     properties
-        SamplingRate double {mustBePositive} = 1 % Sampling rate in Hz. Must be positive.
-        StartTime double = 0 % Start time of the waveform in seconds.
-        Duration double {mustBeNonnegative} = 0.1 % Duration of the waveform in seconds. Must be non-negative.
-        Scan table = table(string.empty,string.empty, 'VariableNames',{'ParameterName','VariableName'}) % Table for scanning parameters in hardware control panel. Contains parameter names and their corresponding variable names.
+        SamplingRate double {mustBePositive} = 1 % Sampling rate [Hz]
+        StartTime double = 0 % Start time :math:`t_0` [s]
+        Duration double {mustBeNonnegative} = 0.1 % Duration :math:`T` [s]
+        Scan table = table(string.empty,string.empty, 'VariableNames',{'ParameterName','VariableName'}) % Parameter scan table for control panels
     end
 
     properties (Dependent)
-        EndTime % End time of the waveform in seconds. Calculated as :attr:`StartTime` + :attr:`Duration`.
-        TimeStep % Time step between samples in seconds. Calculated as 1/:attr:`SamplingRate`.
-        NSample % Number of samples in the waveform. Calculated based on :attr:`SamplingRate` and :attr:`Duration`.
-        Sample % Waveform samples as a vector. Calculated by evaluating :meth:`TimeFunc` at time points from :attr:`StartTime` to :attr:`EndTime` with :attr:`TimeStep` spacing.
+        EndTime % :math:`t_\mathrm{end} =` :attr:`StartTime` + :attr:`Duration` [s]
+        TimeStep % :math:`\Delta t = 1/` :attr:`SamplingRate` [s]
+        NSample % Number of samples derived from :attr:`SamplingRate` and :attr:`Duration`
+        Sample % Samples constructed by evaluating :meth:`TimeFunc` on [StartTime, EndTime]
     end
     
     methods
         function obj = Waveform()
-            %Construct an instance of the Waveform class.
+            % Construct an instance of :class:`Waveform`.
         end
 
         function te = get.EndTime(obj)
-            %Get the end time of the waveform.
+            % Get the end time of the waveform.
             %
-            % :return: End time in seconds
+            % :return: End time [s]
             % :rtype: double
             te = obj.StartTime + obj.Duration;
         end
 
         function nS = get.NSample(obj)
-            %Get the number of samples in the waveform.
+            % Get the number of samples in the waveform.
             %
             % :return: Number of samples
             % :rtype: double
@@ -63,15 +62,15 @@ classdef (Abstract) Waveform < handle
         end
 
         function dt = get.TimeStep(obj)
-            %Get the time step between samples.
+            % Get the time step between samples.
             %
-            % :return: Time step in seconds
+            % :return: :math:`\Delta t` [s]
             % :rtype: double
             dt = 1/obj.SamplingRate;
         end
 
         function s = get.Sample(obj)
-            %Get the waveform samples by evaluating the time function.
+            % Get the waveform samples by evaluating the time function.
             %
             % :return: Vector of waveform samples
             % :rtype: double
@@ -81,12 +80,11 @@ classdef (Abstract) Waveform < handle
         end
         
         function plot(obj)
-            %Creates a plot of the waveform samples versus time with
-            %LaTeX-formatted axis labels.
+            % Plot waveform samples versus time with LaTeX-formatted labels.
             %
-            %**Example:**
+            % **Example:**
             %
-            %.. code-block:: matlab
+            % .. code-block:: matlab
             %
             %    sine = SineWave(frequency = 1000, amplitude = 1.0);
             %    sine.plot();
@@ -101,14 +99,14 @@ classdef (Abstract) Waveform < handle
 
     methods (Abstract)
         TimeFunc(obj)
-        %Abstract method that must be implemented by subclasses.
+        % Abstract method that must be implemented by subclasses.
         %
-        %:return: Function that takes time array and returns waveform values
-        %:rtype: function_handle
+        % :return: Function :math:`f(t)` mapping time array to waveform values
+        % :rtype: function_handle
         %
-        %**Example:**
+        % **Example:**
         %
-        %.. code-block:: matlab
+        % .. code-block:: matlab
         %
         %    function func = TimeFunc(obj)
         %        func = @(t) obj.Amplitude * sin(2*pi*obj.Frequency*t + obj.Phase);

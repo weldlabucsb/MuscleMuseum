@@ -1,7 +1,27 @@
 classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprops
-    %Trial Summary of this class goes here
-    %   Detailed explanation goes here
-
+    %:class:`Trial` is an abstract base class for orchestrating experiments/simulations.
+    %
+    % Provides lifecycle management for a single run series: configuration loading,
+    % data folder setup, database logging (writer/reader), serial numbering, optional
+    % GUI integration, and file system watching to trigger analysis.
+    %
+    % **Example:**
+    %
+    % .. code-block:: matlab
+    %
+    %    % Constructing a concrete trial
+    %    t = MyConcreteTrial("Test", "MyConfigName");
+    %    t.update();  % persist object and DB
+    %
+    % **Events:**
+    %
+    %     NewRunFinished : event
+    %         Emitted when a new data file group has been detected and completed.
+    %
+    % **Notes:**
+    %
+    %     Subclasses must implement :meth:`writeDatabase`, :meth:`updateDatabase`,
+    %     :meth:`setFolder`, and :meth:`setConfigProperty`.
     properties
         Description string = "This is a test trial."
         NCompletedRun int32 = 0
@@ -62,6 +82,17 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
 
     methods
         function obj = Trial(trialName,config)
+            % Construct a :class:`Trial` object.
+            %
+            % :param trialName: Alphanumeric name for the trial type.
+            % :type trialName: string
+            % :param config: Configuration identifier or data. If string, loads from ``Config.mat``.
+            % :type config: string | table | struct
+            %
+            % **Raises:**
+            %
+            %     :class:`error`
+            %         If ``trialName`` is not alphanumeric or configuration cannot be found.
             arguments
                 trialName string
                 config
@@ -125,11 +156,16 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
         end
 
         function updateObject(obj)
+            % Save the current object to :attr:`ObjectPath`.
             obj.displayLog("Updating the object file.")
             save(obj.ObjectPath,'obj')
         end
 
         function update(obj)
+            % Persist object changes and synchronize the database record.
+            %
+            % Calls :meth:`updateObject` and :meth:`updateDatabase`, and writes a
+            % short description file into :attr:`DataPath`.
             obj.updateObject
             obj.updateDatabase
 
@@ -139,6 +175,12 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
         end
 
         function displayLog(obj,str,logType)
+            % Display a log message, routed to GUI if available.
+            %
+            % :param str: Message text.
+            % :type str: string
+            % :param logType: One of "normal", "warning", or "error".
+            % :type logType: string, optional
             arguments
                 obj 
                 str string
@@ -162,13 +204,24 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
 
     methods (Abstract)
         writeDatabase(obj)
+        % Write the initial database entry for the trial.
+        %
+        % Implemented by subclasses. Should create the DB row used to derive
+        % :attr:`SerialNumber`.
         updateDatabase(obj)
+        % Update the database entry to reflect current object state.
         setFolder(obj)
+        % Create and assign data/object/analysis folder paths.
         setConfigProperty(obj,struct)
+        % Assign configuration-dependent properties from structure/table.
     end
 
     methods
         function s = struct(obj)
+            % Create a plain struct snapshot of public properties for logging/DB.
+            %
+            % :return: Public, serializable properties with heavy objects mapped to names.
+            % :rtype: struct
             publicProperties = properties(obj);
             s = struct();
             for fi = 1:numel(publicProperties)
@@ -187,10 +240,18 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
         end
 
         function isCompeted = get.IsCompeted(obj)
+            % Whether all runs have completed.
+            %
+            % :return: True if :attr:`NRun` equals :attr:`NCompletedRun`.
+            % :rtype: logical
             isCompeted = obj.NRun == obj.NCompletedRun;
         end
 
         function is2DScan = get.Is2DScan(obj)
+            % Whether this trial configures a 2D parameter scan.
+            %
+            % :return: True if :attr:`ScannedParameter` is a 1x2 string array.
+            % :rtype: logical
             % Determine if this is a 2D scan based on ScannedParameter dimensions
             if isstring(obj.ScannedParameter)
                 is2DScan = size(obj.ScannedParameter, 2) == 2;
@@ -200,6 +261,10 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
         end
 
         function createWatcher(obj)
+            % Create a file system watcher that emits :event:`NewRunFinished` per group.
+            %
+            % Watches :attr:`DataPath` for created files matching :attr:`DataFormat` and
+            % accumulates until :attr:`DataGroupSize` files are seen, then notifies.
             obj.FileSystemWatcher = System.IO.FileSystemWatcher(obj.DataPath);
             obj.FileSystemWatcher.Filter = "*"+obj.DataFormat;
             obj.FileSystemWatcher.EnableRaisingEvents = true;
@@ -218,6 +283,10 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
 
     methods (Static)
         function obj = loadobj(obj)
+            % Reconnect DB writer and GUI handle when the object is loaded.
+            %
+            % :return: Loaded object with transient handles restored when possible.
+            % :rtype: :class:`Trial`
             try
                 obj.Writer = createWriter(obj.DatabaseName); %Create writer type database connection
             catch

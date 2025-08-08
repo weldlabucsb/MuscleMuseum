@@ -1,5 +1,29 @@
 function [data,metadata] = pgFetch(connect,second_input,varargin)
-%FETCH Import data for a SQL query or SQLPreparedStatement into MATLAB .
+% Fetch data and metadata from PostgreSQL using a connection or prepared statement.
+%
+% :param connect: Open database connection
+% :type connect: database.relational.connection
+% :param second_input: SQL query string or prepared statement
+% :type second_input: char | string | database.preparedstatement.SQLPreparedStatement
+% :param varargin: Optional arguments
+% :type varargin: any
+% :return: Fetched data
+% :rtype: table | cell | struct | numeric
+% :return: Metadata describing returned data
+% :rtype: struct
+%
+% **Options (name-value):**
+%
+%     - ``MaxRows``: Maximum number of rows to return (default 0 = unlimited)
+%     - ``VariableNamingRule``: "preserve" or "modify" (table output only)
+%     - ``DataReturnFormat``: one of "table" (default) | "cellarray" | "structure" | "numeric"
+%     - ``RowFilter``: :class:`matlab.io.RowFilter` to push down to SQL
+%     - ``rowlimit_or_opts``: Either a row-limit scalar or a SQLImportOptions object
+%
+% **Notes:**
+%
+%     When a prepared statement is provided, certain options are mutually exclusive
+%     (e.g., ``RowFilter`` and import options). See MATLAB Database Toolbox behavior.
 %   DATA = FETCH(CONN,SQLSTRING)
 %   imports database data into MATLAB given the connection handle, CONN,
 %   and the SQL string, SQLSTRING.

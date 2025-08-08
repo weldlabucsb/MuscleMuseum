@@ -1,8 +1,13 @@
 classdef PcoEdge5p5 < Pco
-    % PCOEDGE5P5 Subclass of the Pco and Acquisition class
-    % Adds additional parameters corresponding to the PcoEdge 5.5 camera.
+    %:class:`PcoEdge5p5` model configuration for PCO Edge 5.5 cameras.
+    % Adds sensor-specific parameters including :attr:`CameraModel`, :attr:`PixelSize` [m],
+    % :attr:`ImageSize` [pix], and :attr:`BitsPerSample`.
     methods
         function obj = PcoEdge5p5(acqName)
+            % Construct a :class:`PcoEdge5p5`.
+            %
+            % :param acqName: Camera config name
+            % :type acqName: string
             arguments
                 acqName string
             end

@@ -43,6 +43,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/math/Waveform';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -429,12 +430,11 @@ document.write(`
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
 <p><a class="reference internal" href="#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a> generates and stores waveforms for experimental control.</p>
 <p>A waveform can represent either a continuous function of time or a discrete
-time-sequence of samples. The waveform definition is given by the output
-of the <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code> method, which returns a function handle that takes
-a time array as input. Every concrete subclass must implement the
-<code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code> method.</p>
-<p>The waveform samples are calculated automatically when the <a class="reference internal" href="#Waveform.Sample" title="Waveform.Sample"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Sample</span></code></a>
-property is accessed, based on the <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code> and timing parameters.</p>
+time-sequence of samples. The definition is given by <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code>, which
+returns a function handle mapping time <span class="math notranslate nohighlight">\(t\)</span> to the waveform value.</p>
+<p>The waveform samples are calculated lazily when <a class="reference internal" href="#Waveform.Sample" title="Waveform.Sample"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Sample</span></code></a> is accessed,
+based on <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code> and timing parameters (<a class="reference internal" href="#Waveform.StartTime" title="Waveform.StartTime"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StartTime</span></code></a>,
+<a class="reference internal" href="#Waveform.Duration" title="Waveform.Duration"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Duration</span></code></a>, <a class="reference internal" href="#Waveform.SamplingRate" title="Waveform.SamplingRate"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">SamplingRate</span></code></a>).</p>
 <p><strong>Example1:</strong></p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Create a sine wave</span>
 <span class="n">sine</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
@@ -453,64 +453,63 @@ property is accessed, based on the <code class="xref mat mat-meth docutils liter
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Waveform.Waveform">
 <span class="sig-name descname"><span class="pre">Waveform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Waveform.Waveform" title="Link to this definition">#</a></dt>
-<dd><p>Construct an instance of the Waveform class.</p>
+<dd><p>Construct an instance of <a class="reference internal" href="#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a>.</p>
 </dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="Waveform.Duration">
 <span class="sig-name descname"><span class="pre">Duration</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBeNonnegative}</span> <span class="pre">=</span> <span class="pre">0.1</span></em><a class="headerlink" href="#Waveform.Duration" title="Link to this definition">#</a></dt>
-<dd><p>Duration of the waveform in seconds. Must be non-negative.</p>
+<dd><p>Duration <span class="math notranslate nohighlight">\(T\)</span> [s]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Waveform.EndTime">
 <span class="sig-name descname"><span class="pre">EndTime</span></span><a class="headerlink" href="#Waveform.EndTime" title="Link to this definition">#</a></dt>
-<dd><p>End time of the waveform in seconds. Calculated as <a class="reference internal" href="#Waveform.StartTime" title="Waveform.StartTime"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StartTime</span></code></a> + <a class="reference internal" href="#Waveform.Duration" title="Waveform.Duration"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Duration</span></code></a>.</p>
+<dd><p><span class="math notranslate nohighlight">\(t_\mathrm{end} =\)</span> <a class="reference internal" href="#Waveform.StartTime" title="Waveform.StartTime"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StartTime</span></code></a> + <a class="reference internal" href="#Waveform.Duration" title="Waveform.Duration"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Duration</span></code></a> [s]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Waveform.NSample">
 <span class="sig-name descname"><span class="pre">NSample</span></span><a class="headerlink" href="#Waveform.NSample" title="Link to this definition">#</a></dt>
-<dd><p>Number of samples in the waveform. Calculated based on <a class="reference internal" href="#Waveform.SamplingRate" title="Waveform.SamplingRate"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">SamplingRate</span></code></a> and <a class="reference internal" href="#Waveform.Duration" title="Waveform.Duration"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Duration</span></code></a>.</p>
+<dd><p>Number of samples derived from <a class="reference internal" href="#Waveform.SamplingRate" title="Waveform.SamplingRate"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">SamplingRate</span></code></a> and <a class="reference internal" href="#Waveform.Duration" title="Waveform.Duration"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Duration</span></code></a></p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Waveform.Sample">
 <span class="sig-name descname"><span class="pre">Sample</span></span><a class="headerlink" href="#Waveform.Sample" title="Link to this definition">#</a></dt>
-<dd><p>Waveform samples as a vector. Calculated by evaluating <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code> at time points from <a class="reference internal" href="#Waveform.StartTime" title="Waveform.StartTime"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StartTime</span></code></a> to <a class="reference internal" href="#Waveform.EndTime" title="Waveform.EndTime"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">EndTime</span></code></a> with <a class="reference internal" href="#Waveform.TimeStep" title="Waveform.TimeStep"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TimeStep</span></code></a> spacing.</p>
+<dd><p>Samples constructed by evaluating <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">TimeFunc()</span></code> on [StartTime, EndTime]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Waveform.SamplingRate">
 <span class="sig-name descname"><span class="pre">SamplingRate</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBePositive}</span> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#Waveform.SamplingRate" title="Link to this definition">#</a></dt>
-<dd><p>Sampling rate in Hz. Must be positive.</p>
+<dd><p>Sampling rate [Hz]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Waveform.Scan">
 <span class="sig-name descname"><span class="pre">Scan</span></span><em class="property"> <span class="pre">table</span> <span class="pre">=</span> <span class="pre">table(string.empty,string.empty,'VariableNames',{'ParameterName','VariableName'})</span></em><a class="headerlink" href="#Waveform.Scan" title="Link to this definition">#</a></dt>
-<dd><p>Table for scanning parameters in hardware control panel. Contains parameter names and their corresponding variable names.</p>
+<dd><p>Parameter scan table for control panels</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Waveform.StartTime">
 <span class="sig-name descname"><span class="pre">StartTime</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#Waveform.StartTime" title="Link to this definition">#</a></dt>
-<dd><p>Start time of the waveform in seconds.</p>
+<dd><p>Start time <span class="math notranslate nohighlight">\(t_0\)</span> [s]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Waveform.TimeStep">
 <span class="sig-name descname"><span class="pre">TimeStep</span></span><a class="headerlink" href="#Waveform.TimeStep" title="Link to this definition">#</a></dt>
-<dd><p>Time step between samples in seconds. Calculated as 1/<a class="reference internal" href="#Waveform.SamplingRate" title="Waveform.SamplingRate"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">SamplingRate</span></code></a>.</p>
+<dd><p><span class="math notranslate nohighlight">\(\Delta t = 1/\)</span> <a class="reference internal" href="#Waveform.SamplingRate" title="Waveform.SamplingRate"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">SamplingRate</span></code></a> [s]</p>
 </dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Waveform.plot">
 <span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Waveform.plot" title="Link to this definition">#</a></dt>
-<dd><p>Creates a plot of the waveform samples versus time with
-LaTeX-formatted axis labels.</p>
+<dd><p>Plot waveform samples versus time with LaTeX-formatted labels.</p>
 <p><strong>Example:</strong></p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">sine</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">);</span>
 <span class="n">sine</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>

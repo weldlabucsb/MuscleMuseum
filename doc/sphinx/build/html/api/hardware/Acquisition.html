@@ -43,6 +43,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/hardware/Acquisition';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -427,21 +428,28 @@ document.write(`
 <dt class="sig sig-object mat" id="Acquisition">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Acquisition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Acquisition/Acquisition.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Acquisition" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.SetGetExactNames</span></code></p>
-<p>ACQUISITION Acquisition class.
-Class that describes camera properties and enables saving images
-taken from the camera of interest.</p>
+<p><a class="reference internal" href="#Acquisition" title="Acquisition"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Acquisition</span></code></a> camera acquisition base class.</p>
+<p>Describes camera properties and saving images from a camera of interest.
+Implements helpers for connect/configure/callback/start/stop and image
+utilities. Subclasses (e.g., <a class="reference internal" href="Andor.html#Andor" title="Andor"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Andor</span></code></a>) override specifics.</p>
+<p><strong>Notes:</strong></p>
+<blockquote>
+<div><p>Configuration is loaded from <code class="docutils literal notranslate"><span class="pre">Config.mat</span></code> by <a class="reference internal" href="#Acquisition" title="Acquisition"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">Acquisition()</span></code></a> and applied
+via an internal setter. Quantum efficiency can be interpolated by <a class="reference internal" href="#Acquisition.QuantumEfficiency" title="Acquisition.QuantumEfficiency"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">QuantumEfficiency()</span></code></a>.</p>
+</div></blockquote>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Acquisition.Acquisition">
 <span class="sig-name descname"><span class="pre">Acquisition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Acquisition.Acquisition" title="Link to this definition">#</a></dt>
-<dd><p>Acquisition Construct an instance of the Acquisition class
-Acquisition handles mainly the camera parameters and the
-data acquisition process. Given “cameraName”, the
-constructor load the configuration and set the acquisition
-parameters properly from the MMUser config folder. 
-acqName is a string that identifies the camera in the
-config file Config.mat.</p>
+<dd><p>Construct an <a class="reference internal" href="#Acquisition" title="Acquisition"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Acquisition</span></code></a> and load camera config.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>acqName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Camera name key used in configuration</p>
+</dd>
+</dl>
+<p>Loads <code class="docutils literal notranslate"><span class="pre">AcquisitionConfig</span></code> from <code class="docutils literal notranslate"><span class="pre">Config.mat</span></code> and applies with
+a protected configuration setter.</p>
 </dd></dl>
 
 </dd>
@@ -466,7 +474,7 @@ config file Config.mat.</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.BitsPerSample">
 <span class="sig-name descname"><span class="pre">BitsPerSample</span></span><em class="property"> <span class="pre">int16</span></em><a class="headerlink" href="#Acquisition.BitsPerSample" title="Link to this definition">#</a></dt>
-<dd><p>How many bits per pixel</p>
+<dd><p>Bits per pixel</p>
 </dd></dl>
 
 <dl class="mat attribute">
@@ -484,19 +492,19 @@ config file Config.mat.</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.ConfigFun">
 <span class="sig-name descname"><span class="pre">ConfigFun</span></span><em class="property"> <span class="pre">function_handle</span></em><a class="headerlink" href="#Acquisition.ConfigFun" title="Link to this definition">#</a></dt>
-<dd><p>Function handle that configures the camera parameters. Must be pre-defined.</p>
+<dd><p>Function handle to configure camera parameters</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.DeviceID">
 <span class="sig-name descname"><span class="pre">DeviceID</span></span><em class="property"> <span class="pre">int32</span></em><a class="headerlink" href="#Acquisition.DeviceID" title="Link to this definition">#</a></dt>
-<dd><p>To distinguish devices if multiple devices are connected through the same adaptor</p>
+<dd><p>ID if multiple devices share the same adaptor</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.ExposureTime">
 <span class="sig-name descname"><span class="pre">ExposureTime</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Acquisition.ExposureTime" title="Link to this definition">#</a></dt>
-<dd><p>In micro-seconds</p>
+<dd><p>Exposure time [us]</p>
 </dd></dl>
 
 <dl class="mat attribute">
@@ -508,37 +516,37 @@ config file Config.mat.</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.ImageGroupSize">
 <span class="sig-name descname"><span class="pre">ImageGroupSize</span></span><em class="property"> <span class="pre">int32</span></em><a class="headerlink" href="#Acquisition.ImageGroupSize" title="Link to this definition">#</a></dt>
-<dd><p>Specify the number of frames that must be acquired before we save the images</p>
+<dd><p>Number of frames before saving</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.ImagePath">
 <span class="sig-name descname"><span class="pre">ImagePath</span></span><em class="property"> <span class="pre">{mustBeFolder}</span> <span class="pre">=</span> <span class="pre">&quot;.&quot;</span></em><a class="headerlink" href="#Acquisition.ImagePath" title="Link to this definition">#</a></dt>
-<dd><p>Folder location where to save the generated images</p>
+<dd><p>Save folder</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.ImagePrefix">
 <span class="sig-name descname"><span class="pre">ImagePrefix</span></span><em class="property"> <span class="pre">string</span> <span class="pre">=</span> <span class="pre">&quot;run&quot;</span></em><a class="headerlink" href="#Acquisition.ImagePrefix" title="Link to this definition">#</a></dt>
-<dd><p>String prefix that describes how to name the images</p>
+<dd><p>Image filename prefix</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.ImageSize">
 <span class="sig-name descname"><span class="pre">ImageSize</span></span><em class="property"> <span class="pre">uint32</span></em><a class="headerlink" href="#Acquisition.ImageSize" title="Link to this definition">#</a></dt>
-<dd><p>size y (int)* size x (int)</p>
+<dd><p>[size y, size x]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.IsExternalTriggered">
 <span class="sig-name descname"><span class="pre">IsExternalTriggered</span></span><em class="property"> <span class="pre">logical</span></em><a class="headerlink" href="#Acquisition.IsExternalTriggered" title="Link to this definition">#</a></dt>
-<dd><p>Tells whether camera is externally triggered or not.</p>
+<dd><p>Whether camera is externally triggered</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.Magnification">
 <span class="sig-name descname"><span class="pre">Magnification</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Acquisition.Magnification" title="Link to this definition">#</a></dt>
-<dd><p>Magnification of the optical system, determined by lens setup.</p>
+<dd><p>Optical magnification</p>
 </dd></dl>
 
 <dl class="mat attribute">
@@ -550,19 +558,19 @@ config file Config.mat.</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.PixelSize">
 <span class="sig-name descname"><span class="pre">PixelSize</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Acquisition.PixelSize" title="Link to this definition">#</a></dt>
-<dd><p>In microns</p>
+<dd><p>Pixel size [micron]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.PixelSizeReal">
 <span class="sig-name descname"><span class="pre">PixelSizeReal</span></span><a class="headerlink" href="#Acquisition.PixelSizeReal" title="Link to this definition">#</a></dt>
-<dd><p>Calculated size of the pixels in the plane of the atoms.</p>
+<dd><p>Pixel size in object plane</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.QuantumEfficiencyData">
 <span class="sig-name descname"><span class="pre">QuantumEfficiencyData</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#Acquisition.QuantumEfficiencyData" title="Link to this definition">#</a></dt>
-<dd><p>Quantum efficiency data from the company. First column: wavelength. Second column: quantum efficiency.</p>
+<dd><p>Columns: wavelength [m], quantum efficiency</p>
 </dd></dl>
 
 <dl class="mat attribute">
@@ -574,76 +582,97 @@ config file Config.mat.</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.Transmission">
 <span class="sig-name descname"><span class="pre">Transmission</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#Acquisition.Transmission" title="Link to this definition">#</a></dt>
-<dd><p>Transmission of the optical system</p>
+<dd><p>Optical system transmission</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Acquisition.VideoInput">
 <span class="sig-name descname"><span class="pre">VideoInput</span></span><a class="headerlink" href="#Acquisition.VideoInput" title="Link to this definition">#</a></dt>
-<dd><p>MATLAB camera connection object, class videoinput</p>
+<dd><p>videoinput handle</p>
 </dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Acquisition.QuantumEfficiency">
 <span class="sig-name descname"><span class="pre">QuantumEfficiency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">lambda</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Acquisition.QuantumEfficiency" title="Link to this definition">#</a></dt>
-<dd><p>Calculates and saves QuantumEfficiency for given wavelength
-lambda (in m) from data table</p>
+<dd><p>Interpolate quantum efficiency at wavelength <span class="math notranslate nohighlight">\(\lambda\)</span> [m].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>lambda</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Wavelength [m]</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Quantum efficiency (0-1)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Acquisition.connectCamera">
 <span class="sig-name descname"><span class="pre">connectCamera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Acquisition.connectCamera" title="Link to this definition">#</a></dt>
-<dd><p>Connect to the camera. Return the VideoInput object.</p>
+<dd><p>Connect to the camera and create <a class="reference internal" href="#Acquisition.VideoInput" title="Acquisition.VideoInput"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">VideoInput</span></code></a>.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Acquisition.killBadPixel">
 <span class="sig-name descname"><span class="pre">killBadPixel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">imageData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Acquisition.killBadPixel" title="Link to this definition">#</a></dt>
-<dd><p>Takes an average of rows/collumns surrounding bad pixels and
-replaces them.</p>
+<dd><p>Replace bad pixel rows/columns by neighbor averages.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>imageData</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span> <span class="pre">array</span> <span class="pre">|</span> <span class="pre">uint*</span></code></span>) – Image data array</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Corrected image data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>same as input</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Acquisition.pauseCamera">
 <span class="sig-name descname"><span class="pre">pauseCamera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Acquisition.pauseCamera" title="Link to this definition">#</a></dt>
-<dd><p>Pause camera recording</p>
+<dd><p>Pause camera recording.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Acquisition.setCallback">
 <span class="sig-name descname"><span class="pre">setCallback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">callbackFunc</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Acquisition.setCallback" title="Link to this definition">#</a></dt>
-<dd><p>Set camera callback function to be called when sufficient
-images have been taken.</p>
+<dd><p>Register callback called when enough images are taken.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>callbackFunc</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">function_handle</span></code></span>) – Function handle accepting (data, event)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Acquisition.setCameraParameter">
 <span class="sig-name descname"><span class="pre">setCameraParameter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Acquisition.setCameraParameter" title="Link to this definition">#</a></dt>
-<dd><p>Set camera parameters using the predefined configuration
-functions.</p>
+<dd><p>Set camera parameters via the predefined configuration <a class="reference internal" href="#Acquisition.ConfigFun" title="Acquisition.ConfigFun"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">ConfigFun</span></code></a>.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Acquisition.setConfigProperty">
 <span class="sig-name descname"><span class="pre">setConfigProperty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">struct</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Acquisition.setConfigProperty" title="Link to this definition">#</a></dt>
-<dd><p>This method compares the properties of the handle object ‘obj’ with
-the fields of a structure ‘struct’. Then it sets the properties to the
-values of the fields. The obj must inherit the set method from
-matlab.mixin.SetGetExactNames. Used to extract config
-properties.</p>
+<dd><p>Compare properties of <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">obj</span></code> with fields of <code class="docutils literal notranslate"><span class="pre">struct</span></code> and set matches.</p>
+<p>The object must inherit the set method from
+<code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.SetGetExactNames</span></code>.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Acquisition.startCamera">
 <span class="sig-name descname"><span class="pre">startCamera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Acquisition.startCamera" title="Link to this definition">#</a></dt>
-<dd><p>Start camera recording</p>
+<dd><p>Start camera recording.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Acquisition.stopCamera">
 <span class="sig-name descname"><span class="pre">stopCamera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Acquisition.stopCamera" title="Link to this definition">#</a></dt>
-<dd><p>Stop camera recording, deletes videoinput object.</p>
+<dd><p>Stop camera and delete <a class="reference internal" href="#Acquisition.VideoInput" title="Acquisition.VideoInput"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">VideoInput</span></code></a>.</p>
 </dd></dl>
 
 </dd>

@@ -467,15 +467,18 @@ document.write(`
 <dt class="sig sig-object mat" id="SimRun">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SimRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">sim</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/sim/SimRun/SimRun.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SimRun" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
-<p>UNTITLED Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#SimRun" title="SimRun"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SimRun</span></code></a> abstract base for a single simulation run.</p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="SimRun.SimRun">
 <span class="sig-name descname"><span class="pre">SimRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">sim</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SimRun.SimRun" title="Link to this definition">#</a></dt>
-<dd><p>UNTITLED Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct a <a class="reference internal" href="#SimRun" title="SimRun"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SimRun</span></code></a> using metadata from a <a class="reference internal" href="Sim.html#Sim" title="Sim"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Sim</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sim</strong> (<a class="reference internal" href="Sim.html#Sim" title="Sim"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Sim</span></code></a>, optional) – Parent simulation</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>
@@ -528,7 +531,19 @@ Detailed explanation goes here</p>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="SimRun.readRun">
 <span class="sig-name descname"><span class="pre">readRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SimRun.readRun" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Read a variable from this run file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>varName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span> <span class="pre">|</span> <span class="pre">char</span></code></span>) – Variable name</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Variable value loaded from MAT file</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>any</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd>
 </dl>

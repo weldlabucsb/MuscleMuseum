@@ -1,11 +1,9 @@
 classdef Andor < Acquisition
 
-    %Acquisition_Andor Acquisition class.
-    %   Child Class of the Acquisition class to allow for connection to
-    %   Andor.
-    %   Requires modification of code since there is a proprietary SDK for
-    %   Andor in contrast to the other cameras that can be accessed through
-    %   the VideoInput class.
+    %:class:`Andor` acquisition class using Andor's proprietary SDK via a worker.
+    %
+    % Uses a parallel worker loop (:meth:`andorLoop`) to manage camera acquisition
+    % asynchronously and communicates via :class:`parallel.pool.DataQueue`.
     properties (SetAccess=protected,Transient)
         CallbackFunc function_handle
         Future parallel.FevalFuture
@@ -17,8 +15,10 @@ classdef Andor < Acquisition
 
     methods
         function obj = Andor(acqName)
-            %KEYSIGHT Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct an :class:`Andor` acquisition instance.
+            %
+            % :param acqName: Camera config name
+            % :type acqName: string
             arguments
                 acqName string
             end
@@ -27,7 +27,7 @@ classdef Andor < Acquisition
         end
 
         function connectCamera(obj)
-            %Connect to the camera using parpool
+            % Connect to the camera by launching a worker loop and queues.
 
             % Create client queue
             obj.ClientQueue = parallel.pool.PollableDataQueue;
@@ -49,6 +49,7 @@ classdef Andor < Acquisition
         end
 
         function setCameraParameterAbsorption(obj)
+            % Set absorption-imaging camera parameters on the worker.
             data.Message = "SetParameter";
             data.AcquisitionMode = "Absorption";
             data.ExposureTime = obj.ExposureTime;
@@ -58,25 +59,25 @@ classdef Andor < Acquisition
         end
 
         function setCallback(obj,callbackFunc)
-            %Set camera callback function.
+            % Set camera callback function.
             obj.ClientListener = afterEach(obj.ClientDataQueue,@(x) callbackFunc(x,[]));
         end
 
         function startCamera(obj)
-            %Start camera recording
+            % Start acquisition on the worker.
             data.Message = "Start";
             send(obj.WorkerQueue,data);
             obj.checkError;
         end
 
         function pauseCamera(obj)
-            %Pause camera recording
+            % Pause camera recording (not implemented; Andor SDK example).
             % [ret] = AbortAcquisition();
             % CheckWarning(ret);
         end
 
         function stopCamera(obj)
-            %Stop camera recording
+            % Stop camera recording and tear down worker-side state.
             data.Message = "Stop";
             send(obj.WorkerQueue,data);
             obj.checkError;
@@ -85,6 +86,7 @@ classdef Andor < Acquisition
         end
 
         function checkError(obj)
+            % Throw worker errors on the client if present.
             if ~isempty(obj.Future.Error)
                 obj.Future.Error.throw
             end
@@ -93,6 +95,11 @@ classdef Andor < Acquisition
 
     methods (Static)
         function andorLoop(cq,cdq)
+            % Worker loop managing Andor SDK calls.
+            %
+            % Sends a worker queue back to the client, initializes SDK, and handles
+            % messages for parameter setup, Start, data transfer, and Stop.
+            % Uses :class:`parallel.pool.PollableDataQueue` for communication.
             % Send the worker queue to the client
             wq = parallel.pool.PollableDataQueue;
             send(cq,wq);

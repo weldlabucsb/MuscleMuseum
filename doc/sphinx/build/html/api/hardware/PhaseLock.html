@@ -427,34 +427,42 @@ document.write(`
 <dt class="sig sig-object mat" id="PhaseLock">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PhaseLock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/PhaseLock/PhaseLock.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PhaseLock" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="Hardware.html#Hardware" title="Hardware"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Hardware</span></code></a></p>
-<p>PHASELOCK Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#PhaseLock" title="PhaseLock"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PhaseLock</span></code></a> abstract base for frequency/phase-lock modules.</p>
+<p>Defines the lock <a class="reference internal" href="#PhaseLock.Frequency" title="PhaseLock.Frequency"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Frequency</span></code></a> [Hz], status, current frequency readback,
+and basic control API (<code class="xref mat mat-meth docutils literal notranslate"><span class="pre">connect()</span></code>, <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">lock()</span></code>, <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">unlock()</span></code>).</p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="PhaseLock.PhaseLock">
 <span class="sig-name descname"><span class="pre">PhaseLock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PhaseLock.PhaseLock" title="Link to this definition">#</a></dt>
-<dd><p>PHASELOCK Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct a <a class="reference internal" href="#PhaseLock" title="PhaseLock"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PhaseLock</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resourceName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Connection resource (e.g., serial port)</p></li>
+<li><p><strong>name</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – Device nickname</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="PhaseLock.CurrentFrequency">
 <span class="sig-name descname"><span class="pre">CurrentFrequency</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#PhaseLock.CurrentFrequency" title="Link to this definition">#</a></dt>
-<dd><p>in Hz</p>
+<dd><p>in [Hz]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="PhaseLock.Frequency">
 <span class="sig-name descname"><span class="pre">Frequency</span></span><em class="property"> <span class="pre">double</span> <span class="pre">{mustBePositive}</span></em><a class="headerlink" href="#PhaseLock.Frequency" title="Link to this definition">#</a></dt>
-<dd><p>in Hz</p>
+<dd><p>in [Hz]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="PhaseLock.FrequencyLimit">
 <span class="sig-name descname"><span class="pre">FrequencyLimit</span></span><em class="property"> <span class="pre">(1,2)</span> <span class="pre">double</span></em><a class="headerlink" href="#PhaseLock.FrequencyLimit" title="Link to this definition">#</a></dt>
-<dd><p>in Hz [lower,upper]</p>
+<dd><p>in [Hz] [lower,upper]</p>
 </dd></dl>
 
 <dl class="mat attribute">

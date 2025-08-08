@@ -466,12 +466,43 @@ document.write(`
 <dl class="mat function">
 <dt class="sig sig-object mat" id="deleteTrial">
 <span class="sig-name descname"><span class="pre">deleteTrial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">conn</span></em>, <em class="sig-param"><span class="pre">databaseTableName</span></em>, <em class="sig-param"><span class="pre">serialNumber</span></em>, <em class="sig-param"><span class="pre">isForceDelete</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/func/deleteTrial.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#deleteTrial" title="Link to this definition">#</a></dt>
-<dd><p>DELETETRIAL delete folders and database rows for trials with serialNumber
-conn: database connection
+<dd><p>Delete trial folders and database rows for given serial numbers.</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param conn<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Open database connection</p>
+</dd>
+<dt class="field-even">type conn<span class="colon">:</span></dt>
+<dd class="field-even"><p>any</p>
+</dd>
+<dt class="field-odd">param databaseTableName<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Table name containing trials</p>
+</dd>
+<dt class="field-even">type databaseTableName<span class="colon">:</span></dt>
+<dd class="field-even"><p>string | char</p>
+</dd>
+<dt class="field-odd">param serialNumber<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Serial numbers to delete</p>
+</dd>
+<dt class="field-even">type serialNumber<span class="colon">:</span></dt>
+<dd class="field-even"><p>double array | int array</p>
+</dd>
+<dt class="field-odd">param isForceDelete<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If true, skip interactive confirmation</p>
+</dd>
+<dt class="field-even">type isForceDelete<span class="colon">:</span></dt>
+<dd class="field-even"><p>logical, optional</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>DELETETRIAL delete folders and database rows for trials with serialNumber</dt><dd><p>conn: database connection
 databaseTableName: databas table name
 serialNumber: serial number of the trails to be deleted. can be a
 vector
 isForceDelete: boolean. Force to delete or not.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

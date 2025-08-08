@@ -432,8 +432,12 @@ document.write(`
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Andor.Andor">
 <span class="sig-name descname"><span class="pre">Andor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Andor.Andor" title="Link to this definition">#</a></dt>
-<dd><p>KEYSIGHT Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct an <a class="reference internal" href="#Andor" title="Andor"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Andor</span></code></a> acquisition instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>acqName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Camera config name</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>
@@ -471,24 +475,29 @@ Detailed explanation goes here</p>
 <dt>Method Summary</dt><dd><dl class="mat staticmethod">
 <dt class="sig sig-object mat" id="Andor.andorLoop">
 <em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">andorLoop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">cq</span></em>, <em class="sig-param"><span class="pre">cdq</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Andor.andorLoop" title="Link to this definition">#</a></dt>
-<dd><p>Send the worker queue to the client</p>
+<dd><p>Worker loop managing Andor SDK calls.</p>
+<p>Sends a worker queue back to the client, initializes SDK, and handles
+messages for parameter setup, Start, data transfer, and Stop.
+Uses <code class="xref mat mat-class docutils literal notranslate"><span class="pre">parallel.pool.PollableDataQueue</span></code> for communication.
+Send the worker queue to the client</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Andor.checkError">
 <span class="sig-name descname"><span class="pre">checkError</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Andor.checkError" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Throw worker errors on the client if present.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Andor.connectCamera">
 <span class="sig-name descname"><span class="pre">connectCamera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Andor.connectCamera" title="Link to this definition">#</a></dt>
-<dd><p>Connect to the camera using parpool</p>
+<dd><p>Connect to the camera by launching a worker loop and queues.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Andor.pauseCamera">
 <span class="sig-name descname"><span class="pre">pauseCamera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Andor.pauseCamera" title="Link to this definition">#</a></dt>
-<dd><p>Pause camera recording
+<dd><p>Pause camera recording (not implemented; Andor SDK example).
 [ret] = AbortAcquisition();
 CheckWarning(ret);</p>
 </dd></dl>
@@ -502,18 +511,19 @@ CheckWarning(ret);</p>
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Andor.setCameraParameterAbsorption">
 <span class="sig-name descname"><span class="pre">setCameraParameterAbsorption</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Andor.setCameraParameterAbsorption" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Set absorption-imaging camera parameters on the worker.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Andor.startCamera">
 <span class="sig-name descname"><span class="pre">startCamera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Andor.startCamera" title="Link to this definition">#</a></dt>
-<dd><p>Start camera recording</p>
+<dd><p>Start acquisition on the worker.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Andor.stopCamera">
 <span class="sig-name descname"><span class="pre">stopCamera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Andor.stopCamera" title="Link to this definition">#</a></dt>
-<dd><p>Stop camera recording</p>
+<dd><p>Stop camera recording and tear down worker-side state.</p>
 </dd></dl>
 
 </dd>

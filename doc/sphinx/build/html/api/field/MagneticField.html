@@ -43,6 +43,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/field/MagneticField';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -401,62 +402,93 @@ document.write(`
 <dl class="mat class">
 <dt class="sig sig-object mat" id="MagneticField">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">MagneticField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/field/MagneticField/MagneticField.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MagneticField" title="Link to this definition">#</a></dt>
-<dd><p>MAGFIELD Summary of this class goes here
-Detailed explanation goes here</p>
+<dd><p><a class="reference internal" href="#MagneticField" title="MagneticField"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">MagneticField</span></code></a> defines static or spatially varying magnetic fields.</p>
+<p>Supports uniform bias, gradients, and quadratic terms, or a fully custom
+spatial distribution via <a class="reference internal" href="#MagneticField.spaceFunc" title="MagneticField.spaceFunc"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">spaceFunc()</span></code></a>. Provides derived-unit views
+and the field zero <a class="reference internal" href="#MagneticField.FieldZero" title="MagneticField.FieldZero"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">FieldZero</span></code></a> (for diagonal gradient).</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">B</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">MagneticField</span><span class="p">(</span><span class="n">bias</span><span class="p">=[</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="mf">5e-4</span><span class="p">],</span><span class="w"> </span><span class="nb">gradient</span><span class="p">=</span><span class="nb">diag</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">30</span><span class="p">])</span><span class="o">*</span><span class="mf">1e-2</span><span class="p">);</span>
+<span class="n">Bz</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">B</span><span class="p">.</span><span class="n">spaceFunc</span><span class="p">();</span>
+<span class="n">B0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">B</span><span class="p">.</span><span class="n">FieldZero</span><span class="p">;</span>
+</pre></div>
+</div>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="MagneticField.MagneticField">
 <span class="sig-name descname"><span class="pre">MagneticField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MagneticField.MagneticField" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Construct a <a class="reference internal" href="#MagneticField" title="MagneticField"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">MagneticField</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bias</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double(3,1),</span> <span class="pre">optional</span></code></span>) – Uniform bias <span class="math notranslate nohighlight">\(\mathbf{B}_0=(B_x,B_y,B_z)\)</span> in [T]</p></li>
+<li><p><strong>gradient</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double(3,3),</span> <span class="pre">optional</span></code></span>) – Gradient matrix <span class="math notranslate nohighlight">\(\partial B_i/\partial x_j\)</span> in [T/m]</p></li>
+<li><p><strong>quadratic</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double(3,3,3),</span> <span class="pre">optional</span></code></span>) – Quadratic tensor (not yet implemented)</p></li>
+<li><p><strong>distribution</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">function_handle,</span> <span class="pre">optional</span></code></span>) – Custom spatial distribution <span class="math notranslate nohighlight">\(\mathbf{B}(\mathbf{r})\)</span></p></li>
+</ul>
+</dd>
+</dl>
+<p>If <code class="docutils literal notranslate"><span class="pre">distribution</span></code> is provided, sets <a class="reference internal" href="#MagneticField.ArbitraryDistribution" title="MagneticField.ArbitraryDistribution"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">ArbitraryDistribution</span></code></a> and bypasses
+<a class="reference internal" href="#MagneticField.Bias" title="MagneticField.Bias"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Bias</span></code></a>, <a class="reference internal" href="#MagneticField.Gradient" title="MagneticField.Gradient"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Gradient</span></code></a>, and <a class="reference internal" href="#MagneticField.Quadratic" title="MagneticField.Quadratic"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Quadratic</span></code></a>.</p>
+</dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="MagneticField.ArbitraryDistribution">
 <span class="sig-name descname"><span class="pre">ArbitraryDistribution</span></span><em class="property"> <span class="pre">function_handle</span></em><a class="headerlink" href="#MagneticField.ArbitraryDistribution" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Custom <span class="math notranslate nohighlight">\(\mathbf{B}(\mathbf{r})\)</span> overriding components</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="MagneticField.Bias">
 <span class="sig-name descname"><span class="pre">Bias</span></span><em class="property"> <span class="pre">(3,1)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">zeros(3,1)</span></em><a class="headerlink" href="#MagneticField.Bias" title="Link to this definition">#</a></dt>
-<dd><p>In Tesla.</p>
+<dd><p>Uniform bias field <span class="math notranslate nohighlight">\(\mathbf{B}_0=(B_x,B_y,B_z)\)</span> in [T]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="MagneticField.BiasLu">
 <span class="sig-name descname"><span class="pre">BiasLu</span></span><a class="headerlink" href="#MagneticField.BiasLu" title="Link to this definition">#</a></dt>
-<dd><p>In Gauss</p>
+<dd><p>Bias in [G]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="MagneticField.FieldZero">
 <span class="sig-name descname"><span class="pre">FieldZero</span></span><a class="headerlink" href="#MagneticField.FieldZero" title="Link to this definition">#</a></dt>
-<dd><p>In meter</p>
+<dd><p>Field-zero position <span class="math notranslate nohighlight">\(\mathbf{r}_0\)</span> in [m] (diagonal gradient)</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="MagneticField.Gradient">
 <span class="sig-name descname"><span class="pre">Gradient</span></span><em class="property"> <span class="pre">(3,3)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">zeros(3,3)</span></em><a class="headerlink" href="#MagneticField.Gradient" title="Link to this definition">#</a></dt>
-<dd><p>[dBx/dx,dBx/dy,dBx/dz;dBy/dx,dBy/dy,dBy/dz;dBz/dx,dBz/dy,dBz/dz]. %In Tesla/meter</p>
+<dd><p>Gradient matrix <span class="math notranslate nohighlight">\(\partial B_i/\partial x_j\)</span> in [T/m]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="MagneticField.GradientLu">
 <span class="sig-name descname"><span class="pre">GradientLu</span></span><a class="headerlink" href="#MagneticField.GradientLu" title="Link to this definition">#</a></dt>
-<dd><p>In Gauss/cm</p>
+<dd><p>Gradient in [G/cm]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="MagneticField.Quadratic">
 <span class="sig-name descname"><span class="pre">Quadratic</span></span><em class="property"> <span class="pre">(3,3,3)</span> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">zeros(3,3,3)</span></em><a class="headerlink" href="#MagneticField.Quadratic" title="Link to this definition">#</a></dt>
-<dd><p>not implemented.</p>
+<dd><p>Quadratic tensor (not implemented)</p>
 </dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="MagneticField.spaceFunc">
 <span class="sig-name descname"><span class="pre">spaceFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MagneticField.spaceFunc" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Build spatial magnetic field function <span class="math notranslate nohighlight">\(\mathbf{B}(\mathbf{r})\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function handle mapping <span class="math notranslate nohighlight">\(\mathbf{r}\)</span> to <span class="math notranslate nohighlight">\(\mathbf{B}(\mathbf{r})\)</span></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>function_handle</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd>
 </dl>

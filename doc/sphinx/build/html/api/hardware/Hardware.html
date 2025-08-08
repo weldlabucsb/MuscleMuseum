@@ -427,10 +427,23 @@ document.write(`
 <dt class="sig sig-object mat" id="Hardware">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Hardware</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">isSaving</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Hardware.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Hardware" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.SetGetExactNames</span></code></p>
-<p>This class provides generalized parameter and functions for
-hardware components that may be interfaced with MM. Most of these
-properties are specific to AWG controls.
-Properties:</p>
+<p><a class="reference internal" href="#Hardware" title="Hardware"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Hardware</span></code></a> provides a common abstraction for controllable instruments.</p>
+<blockquote>
+<div><p>Encapsulates identity, resource naming, data type for uploads, and logging
+of instrument objects via <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">saveObject()</span></code>. Concrete subclasses implement model-specific control
+(e.g., AWGs, scopes, cameras, phase locks).</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">awg</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">KeysightWaveformGenerator</span><span class="p">(</span><span class="s">&quot;TCPIP0::192.168.0.2::inst0::INSTR&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">=</span><span class="s">&quot;AWG1&quot;</span><span class="p">);</span>
+<span class="c">% use awg-specific APIs here</span>
+</pre></div>
+</div>
+<p><strong>Notes:</strong></p>
+<blockquote>
+<div><p>The default logging location is derived from <code class="docutils literal notranslate"><span class="pre">Config.mat</span></code> → <code class="docutils literal notranslate"><span class="pre">ComputerConfig.HardwareLogOrigin</span></code>.
+Set <code class="docutils literal notranslate"><span class="pre">isSaving=false</span></code> to disable object logging.</p>
+</div></blockquote>
+</div></blockquote>
+<p>Properties:</p>
 <blockquote>
 <div><p>Name: Nickname of device
 Manufacturer: Manufacturer of device
@@ -464,7 +477,17 @@ generation.</p>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Hardware.Hardware">
 <span class="sig-name descname"><span class="pre">Hardware</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">isSaving</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Hardware.Hardware" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Construct a <a class="reference internal" href="#Hardware" title="Hardware"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Hardware</span></code></a> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resourceName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – VISA/ethernet/COM resource identifier for the device.</p></li>
+<li><p><strong>name</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – Short device nickname used for logging folder names.</p></li>
+<li><p><strong>isSaving</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">logical,</span> <span class="pre">optional</span></code></span>) – Whether to save device snapshots to disk (default true).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">

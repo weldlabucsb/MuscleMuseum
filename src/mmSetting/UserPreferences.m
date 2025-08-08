@@ -1,11 +1,30 @@
 classdef UserPreferences < MmSetting
-    %USERPREFERENCES User preferences settings stored in SQLite database
-    %   This class demonstrates how to create a MmSetting subclass for
-    %   storing user preferences like theme, language, auto-save settings, etc.
-    
+    %:class:`UserPreferences` stores user preferences using the :class:`MmSetting` SQLite backend.
+    %
+    % Defines a schema for user-configurable preferences (e.g., theme, language,
+    % auto-save) and provides helper APIs to set, get, list, and reset values.
+    %
+    % **Example:**
+    %
+    % .. code-block:: matlab
+    %
+    %    prefs = :class:`UserPreferences`();
+    %    prefs.checkTable();
+    %    prefs.setPreference("Theme","Dark","UI","Application theme");
+    %    theme = prefs.getPreference("Theme","Light");
+    %
+    % **Notes:**
+    %
+    %     This class is a concrete :class:`MmSetting` schema; call :meth:`checkTable` after
+    %     construction to ensure the SQLite table exists and is up to date.
+    %
     methods
         function obj = UserPreferences()
-            % Define the table structure - column names and their MATLAB types
+            % Construct :class:`UserPreferences` and define the table schema.
+            %
+            % The schema includes name, value, type, category, description,
+            % last modified time string, and a boolean indicating default entries.
+            % Define the table structure - column names and their MATLAB types (see :attr:`TableColumn`)
             obj.TableColumn = dictionary(...
                 "PreferenceName", "string", ...      % Name of the preference
                 "PreferenceValue", "string", ...     % Value of the preference
@@ -16,7 +35,7 @@ classdef UserPreferences < MmSetting
                 "IsDefault", "logical" ...           % Whether this is a default value
             );
             
-            % Define default values for each column (used when adding new columns)
+            % Define default values for each column (used when adding new columns) via :attr:`DefaultValue`
             obj.DefaultValue = dictionary(...
                 "PreferenceName", "default", ...
                 "PreferenceValue", "default_value", ...
@@ -27,7 +46,7 @@ classdef UserPreferences < MmSetting
                 "IsDefault", true ...
             );
             
-            % Define default entries for initial table setup
+            % Define default entries for initial table setup in :attr:`DefaultEntry`
             obj.DefaultEntry = table(...
                 ["Theme"; "Language"; "AutoSave"; "DefaultROI"; "AnalysisMethod"], ...
                 ["Dark"; "English"; "true"; "Full"; "Standard"], ...
@@ -41,12 +60,16 @@ classdef UserPreferences < MmSetting
         end
         
         function setPreference(obj, name, value, category, description)
-            % Set a user preference
-            % Inputs:
-            %   name - preference name
-            %   value - preference value (will be converted to string)
-            %   category - category of the preference
-            %   description - description of the preference
+            % Set a user preference, creating or updating an entry.
+            %
+            % :param name: Preference name (unique key)
+            % :type name: string
+            % :param value: Preference value (converted to string for storage)
+            % :type value: string | logical | double | char
+            % :param category: Category label, e.g., "UI", "General", "Analysis"
+            % :type category: string
+            % :param description: Human-readable description
+            % :type description: string
             
             % Determine the type
             if islogical(value)
@@ -97,12 +120,14 @@ classdef UserPreferences < MmSetting
         end
         
         function value = getPreference(obj, name, defaultValue)
-            % Get a user preference
-            % Inputs:
-            %   name - preference name
-            %   defaultValue - default value if preference doesn't exist
-            % Output:
-            %   value - preference value (converted to appropriate type)
+            % Get a preference value with optional default fallback.
+            %
+            % :param name: Preference name
+            % :type name: string
+            % :param defaultValue: Default value returned if preference not found
+            % :type defaultValue: any
+            % :return: Preference value converted to its declared type
+            % :rtype: string | double | logical
             
             if nargin < 3
                 defaultValue = [];
@@ -141,9 +166,10 @@ classdef UserPreferences < MmSetting
         end
         
         function deletePreference(obj, name)
-            % Delete a user preference
-            % Inputs:
-            %   name - preference name to delete
+            % Delete a preference by name.
+            %
+            % :param name: Preference name to delete
+            % :type name: string
             
             conn = sqlite(which(obj.DataBaseName), "connect");
             sqlquery = "DELETE FROM " + obj.TableName + " WHERE PreferenceName = '" + name + "';";
@@ -152,11 +178,12 @@ classdef UserPreferences < MmSetting
         end
         
         function preferences = getPreferencesByCategory(obj, category)
-            % Get all preferences in a specific category
-            % Inputs:
-            %   category - category name
-            % Output:
-            %   preferences - table of preferences in that category
+            % Get all preferences within a given category.
+            %
+            % :param category: Category name to filter by
+            % :type category: string
+            % :return: Table of matching preferences
+            % :rtype: table
             
             conn = sqlite(which(obj.DataBaseName), "readonly");
             sqlquery = "SELECT * FROM " + obj.TableName + " WHERE Category = '" + category + "';";
@@ -166,7 +193,9 @@ classdef UserPreferences < MmSetting
         end
         
         function resetToDefaults(obj)
-            % Reset all preferences to their default values
+            % Reset all user preferences to default values.
+            %
+            % Deletes non-default entries and re-inserts default rows from :attr:`DefaultEntry`.
             
             % Delete all non-default preferences
             conn = sqlite(which(obj.DataBaseName), "connect");

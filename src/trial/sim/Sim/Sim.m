@@ -1,6 +1,7 @@
 classdef (Abstract) Sim < Trial
-    %SIMULATION Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`Sim` abstract base for simulation trials.
+    %
+    % Holds output, wall-time budget, and a vector of :class:`SimRun` objects.
 
     properties
         Output
@@ -14,16 +15,22 @@ classdef (Abstract) Sim < Trial
 
     methods
         function obj = Sim(trialName,config)
-            %SIMULATION Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`Sim`.
+            %
+            % :param trialName: Simulation name
+            % :type trialName: string
+            % :param config: Config table/struct or name
+            % :type config: string | table | struct
             obj@Trial(trialName,config);
         end
 
         function uRunIdx = get.UncompletedRunIndex(obj)
+            % Indices of runs not yet completed.
             uRunIdx = find(~[obj.SimRun.IsCompleted]);
         end
 
         function check(obj,isWarning)
+            % Check all runs, update :attr:`NCompletedRun`, and persist.
             arguments
                 obj Sim
                 isWarning logical = true
@@ -36,6 +43,7 @@ classdef (Abstract) Sim < Trial
         end
 
         function start(obj)
+            % Launch incomplete runs in parallel where possible, then re-check.
             obj.check(false)
             uRunIdx = obj.UncompletedRunIndex;
             if numel(uRunIdx)>1
@@ -60,12 +68,8 @@ classdef (Abstract) Sim < Trial
 
     methods (Hidden)
         function setFolder(obj)
-            %SETFOLDER This method creates data storage folders and sets up data
-            %analysis paths.
-            %   The data are stored in the folder:
-            %   [ParentPath]\Name\datafolder
-            %   [datafolder] is named as "yyyymmdd_idx1" where idx1 indicates
-            %   it is the idx1-th data taken this day
+            % Create data storage folders and set analysis paths for the trial.
+            %   The data are stored under :attr:`TrialPath` with a date-index naming scheme.
 
             %% Look at the watch
             t = obj.DateTime;

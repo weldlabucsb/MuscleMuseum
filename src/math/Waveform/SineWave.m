@@ -27,21 +27,21 @@ classdef SineWave < PeriodicWaveform
     
     methods
         function obj = SineWave(options)
-            %Construct a SineWave object.
+            % Construct a :class:`SineWave`.
             %
-            % :param samplingRate: Sampling rate in Hz (default: inherited)
+            % :param samplingRate: Sampling rate [Hz] (default: inherited)
             % :type samplingRate: double, optional
-            % :param startTime: Start time in seconds (default: 0)
+            % :param startTime: Start time :math:`t_0` [s] (default: 0)
             % :type startTime: double, optional
-            % :param duration: Duration in seconds (default: inherited)
+            % :param duration: Duration :math:`T` [s] (default: inherited)
             % :type duration: double, optional
             % :param amplitude: Waveform amplitude (default: inherited)
             % :type amplitude: double, optional
             % :param offset: DC offset (default: 0)
             % :type offset: double, optional
-            % :param frequency: Frequency in Hz (default: inherited)
+            % :param frequency: Frequency :math:`f` [Hz] (default: inherited)
             % :type frequency: double, optional
-            % :param phase: Phase offset in radians (default: 0)
+            % :param phase: Phase :math:`\phi` [rad] (default: 0)
             % :type phase: double, optional
             %
             % **Example:**
@@ -68,12 +68,10 @@ classdef SineWave < PeriodicWaveform
         end
         
         function func = TimeFunc(obj)
-            %Get the time function for the sine wave.
+            % Get the time function for the sine wave.
             %
-            % Returns a function handle that generates a sine wave with the
-            % specified amplitude, frequency, phase, and timing parameters.
-            % The waveform is zero outside the specified duration. Implements the
-            % abstract :meth:`TimeFunc` method from :class:`Waveform`.
+            % Implements the abstract :meth:`TimeFunc` from :class:`Waveform` by
+            % returning :math:`f(t) = \mathbb{1}_{[t_0,t_0+T]}(t)\,(A/2\,\sin(2\pi f (t-t_0)+\phi)+\mathrm{offset})`.
             %
             % :return: Function that takes time array and returns sine wave values
             % :rtype: function_handle

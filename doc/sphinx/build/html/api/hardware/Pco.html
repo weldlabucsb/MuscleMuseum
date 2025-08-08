@@ -427,27 +427,28 @@ document.write(`
 <dt class="sig sig-object mat" id="Pco">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Pco</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Acquisition/Pco.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Pco" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="Acquisition.html#Acquisition" title="Acquisition"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Acquisition</span></code></a></p>
-<p>PCO Pco class
-Creates a subclass of the Acquisition class with properties specific
-to our PCO camera as well as explicit code to connect to and control
-this camera.</p>
+<p><a class="reference internal" href="#Pco" title="Pco"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Pco</span></code></a> acquisition using the PCO camera adaptor.</p>
+<p>Provides an absorption-imaging configuration via <a class="reference internal" href="#Pco.setCameraParameterAbsorption" title="Pco.setCameraParameterAbsorption"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">setCameraParameterAbsorption()</span></code></a>.</p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Pco.Pco">
 <span class="sig-name descname"><span class="pre">Pco</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Pco.Pco" title="Link to this definition">#</a></dt>
-<dd><p>PCO Construct an instance of this class
-Creates an Acquisition object and saves the CameraType and
-AdaptorName used to connect to the camera.</p>
+<dd><p>Construct a <a class="reference internal" href="#Pco" title="Pco"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Pco</span></code></a> acquisition instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>acqName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Camera config name</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Pco.setCameraParameterAbsorption">
 <span class="sig-name descname"><span class="pre">setCameraParameterAbsorption</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Pco.setCameraParameterAbsorption" title="Link to this definition">#</a></dt>
-<dd><p>Set camera parameters using the predefined configuration
-functions. Assumes videoinput object has been created and
-modifies it to predefined settings.</p>
+<dd><p>Configure absorption-imaging parameters for PCO adaptor.</p>
+<p>Requires connected <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">VideoInput</span></code>. Sets hardware trigger (ExternExposureStart),
+rising polarity, and exposure time from <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">ExposureTime</span></code>.</p>
 </dd></dl>
 
 </dd>

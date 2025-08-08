@@ -404,8 +404,45 @@ document.write(`
 <dl class="mat function">
 <dt class="sig sig-object mat" id="pgFetch">
 <span class="sig-name descname"><span class="pre">pgFetch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">connect</span></em>, <em class="sig-param"><span class="pre">second_input</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/database/func/pgFetch.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pgFetch" title="Link to this definition">#</a></dt>
-<dd><p>FETCH Import data for a SQL query or SQLPreparedStatement into MATLAB .
-DATA = FETCH(CONN,SQLSTRING)
+<dd><p>Fetch data and metadata from PostgreSQL using a connection or prepared statement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>connect</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">database.relational.connection</span></code></span>) – Open database connection</p></li>
+<li><p><strong>second_input</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">char</span> <span class="pre">|</span> <span class="pre">string</span> <span class="pre">|</span> <span class="pre">database.preparedstatement.SQLPreparedStatement</span></code></span>) – SQL query string or prepared statement</p></li>
+<li><p><strong>varargin</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">any</span></code></span>) – Optional arguments</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Fetched data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>table | cell | struct | numeric</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Metadata describing returned data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>struct</p>
+</dd>
+</dl>
+<p><strong>Options (name-value):</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">MaxRows</span></code>: Maximum number of rows to return (default 0 = unlimited)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VariableNamingRule</span></code>: “preserve” or “modify” (table output only)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DataReturnFormat</span></code>: one of “table” (default) | “cellarray” | “structure” | “numeric”</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RowFilter</span></code>: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.io.RowFilter</span></code> to push down to SQL</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rowlimit_or_opts</span></code>: Either a row-limit scalar or a SQLImportOptions object</p></li>
+</ul>
+</div></blockquote>
+<p><strong>Notes:</strong></p>
+<blockquote>
+<div><blockquote>
+<div><p>When a prepared statement is provided, certain options are mutually exclusive
+(e.g., <code class="docutils literal notranslate"><span class="pre">RowFilter</span></code> and import options). See MATLAB Database Toolbox behavior.</p>
+</div></blockquote>
+<p>DATA = FETCH(CONN,SQLSTRING)
 imports database data into MATLAB given the connection handle, CONN,
 and the SQL string, SQLSTRING.</p>
 <p>DATA = FETCH(CONN,SQLSTRING,OPTS)
@@ -425,13 +462,8 @@ DataReturnFormat or MaxRows name-value argument.</p>
 <p>[data,metadata] = FETCH(_____)
 imports database data into MATLAB and metadata information for
 imported data</p>
-<section id="input-arguments">
-<h2>Input Arguments:<a class="headerlink" href="#input-arguments" title="Link to this heading">#</a></h2>
 <p>conn      - database.jdbc.connection object.
 source    - SQL query or SQLPreparedStatement.</p>
-</section>
-<section id="optional-arguments">
-<h2>Optional Arguments:<a class="headerlink" href="#optional-arguments" title="Link to this heading">#</a></h2>
 <p>opts             - import options for sql query defined using databaseImportOptions
 DataReturnFormat - type of data returned. table (default) | cellarray | structure | numeric
 MaxRows          - Maximum number of rows to return
@@ -443,8 +475,8 @@ will return the data as a table by default.</p>
 will return the data as a cell array.</p>
 <p>data = fetch(conn,’select * from tablename’,opts)
 will return the data using import options specified using opts.</p>
+</div></blockquote>
 <p>See also <code class="docutils literal notranslate"><span class="pre">connection/sqlread</span></code>, <code class="docutils literal notranslate"><span class="pre">databaseImportOptions</span></code></p>
-</section>
 </dd></dl>
 
 </section>

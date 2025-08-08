@@ -427,10 +427,10 @@ document.write(`
 <dt class="sig sig-object mat" id="FitData1D">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">FitData1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/math/FitData/FitData1D.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#FitData1D" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="FitData.html#FitData" title="FitData"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData</span></code></a></p>
-<p>Abstract base class for one-dimensional data fitting.</p>
+<p><a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a> abstract base for one-dimensional data fitting.</p>
 <p>Extends <a class="reference internal" href="FitData.html#FitData" title="FitData"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData</span></code></a> to provide specialized functionality for fitting
 functions to 1D data (x,y coordinate pairs). Includes plotting capabilities
-and fit evaluation methods.</p>
+and fit evaluation methods (<a class="reference internal" href="#FitData1D.evaluateFit" title="FitData1D.evaluateFit"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">evaluateFit()</span></code></a>).</p>
 <p><strong>Example1:</strong></p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Create and perform a 1D fit</span>
 <span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
@@ -454,7 +454,7 @@ and fit evaluation methods.</p>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="FitData1D.FitData1D">
 <span class="sig-name descname"><span class="pre">FitData1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">rawData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#FitData1D.FitData1D" title="Link to this definition">#</a></dt>
-<dd><p>Constructor for FitData1D class.</p>
+<dd><p>Construct a <a class="reference internal" href="#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>rawData</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span> <span class="pre">array</span></code></span>) – Input data as n x 2 matrix [x, y]</p>

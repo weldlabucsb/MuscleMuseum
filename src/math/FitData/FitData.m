@@ -1,5 +1,5 @@
 classdef (Abstract) FitData < handle
-    % Abstract base class for data fitting operations.
+    %:class:`FitData` abstract base for data fitting operations.
     %
     % Provides a framework for fitting mathematical functions to experimental data
     % using MATLAB's curve fitting toolbox. Supports customizable fit parameters,
@@ -58,7 +58,7 @@ classdef (Abstract) FitData < handle
 
     methods
         function obj = FitData(rawData)
-            % Constructor for FitData class.
+            % Construct a :class:`FitData`.
             %
             % :param rawData: Input data for fitting
             % :type rawData: double array
@@ -75,7 +75,7 @@ classdef (Abstract) FitData < handle
         end
 
         function option = get.Option(obj)
-            % Get MATLAB fitoptions object with current settings.
+            % Build MATLAB fitoptions object with current settings.
             %
             % :return: Configured fitoptions object
             % :rtype: fitoptions
@@ -131,7 +131,7 @@ classdef (Abstract) FitData < handle
         function cName = get.CoefficientName(obj)
             % Get names of fit coefficients.
             %
-            % :return: Coefficient names as string array
+            % :return: Coefficient names
             % :rtype: string array
             %
             if isempty(obj.Func)

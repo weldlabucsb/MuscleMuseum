@@ -1,4 +1,13 @@
 classdef (Abstract) WaveformGenerator < Hardware
+    %:class:`WaveformGenerator` abstract base for arbitrary waveform generators.
+    %
+    % Defines common properties (:attr:`SamplingRate`, :attr:`TriggerSource`,
+    % :attr:`TriggerSlope`, :attr:`OutputMode`, :attr:`IsOutput`, :attr:`OutputLoad`,
+    % :attr:`WaveformList`, :attr:`OutputLimit`) and abstract methods for device
+    % control (:meth:`connect`, :meth:`set`, :meth:`upload`, :meth:`close`, :meth:`check`).
+    %
+    % Concrete subclasses (e.g., :class:`KeysightWaveformGenerator`) implement the
+    % hardware-specific logic.
     %Generalized class for AWGs, with some additional parameters and
     %generic functions defined.
     %Properties:

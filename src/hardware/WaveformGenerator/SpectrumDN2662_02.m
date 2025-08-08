@@ -1,6 +1,5 @@
 classdef SpectrumDN2662_02 < SpectrumWaveformGenerator
-    %KEYSIGHT Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`SpectrumDN2662_02` model configuration for a 2-ch Spectrum AWG.
     
     properties
         
@@ -8,8 +7,12 @@ classdef SpectrumDN2662_02 < SpectrumWaveformGenerator
     
     methods
         function obj = SpectrumDN2662_02(resourceName,name)
-            %KEYSIGHT Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`SpectrumDN2662_02`.
+            %
+            % :param resourceName: Resource string for Spectrum card
+            % :type resourceName: string
+            % :param name: Device nickname
+            % :type name: string, optional
             arguments
                 resourceName string
                 name string = string.empty

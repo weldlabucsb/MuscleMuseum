@@ -393,39 +393,60 @@ document.write(`
 <dt class="sig sig-object mat" id="UserPreferences">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">UserPreferences</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/mmSetting/UserPreferences.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserPreferences" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="MmSetting.html#MmSetting" title="MmSetting"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">MmSetting</span></code></a></p>
-<p>USERPREFERENCES User preferences settings stored in SQLite database
-This class demonstrates how to create a MmSetting subclass for
-storing user preferences like theme, language, auto-save settings, etc.</p>
+<p><a class="reference internal" href="#UserPreferences" title="UserPreferences"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">UserPreferences</span></code></a> stores user preferences using the <a class="reference internal" href="MmSetting.html#MmSetting" title="MmSetting"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">MmSetting</span></code></a> SQLite backend.</p>
+<p>Defines a schema for user-configurable preferences (e.g., theme, language,
+auto-save) and provides helper APIs to set, get, list, and reset values.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">prefs</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">:</span><span class="nb">class</span><span class="p">:</span>`<span class="n">UserPreferences</span>`<span class="p">();</span>
+<span class="n">prefs</span><span class="p">.</span><span class="n">checkTable</span><span class="p">();</span>
+<span class="n">prefs</span><span class="p">.</span><span class="n">setPreference</span><span class="p">(</span><span class="s">&quot;Theme&quot;</span><span class="p">,</span><span class="s">&quot;Dark&quot;</span><span class="p">,</span><span class="s">&quot;UI&quot;</span><span class="p">,</span><span class="s">&quot;Application theme&quot;</span><span class="p">);</span>
+<span class="n">theme</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">prefs</span><span class="p">.</span><span class="n">getPreference</span><span class="p">(</span><span class="s">&quot;Theme&quot;</span><span class="p">,</span><span class="s">&quot;Light&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Notes:</strong></p>
+<blockquote>
+<div><p>This class is a concrete <a class="reference internal" href="MmSetting.html#MmSetting" title="MmSetting"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">MmSetting</span></code></a> schema; call <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">checkTable()</span></code> after
+construction to ensure the SQLite table exists and is up to date.</p>
+</div></blockquote>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="UserPreferences.UserPreferences">
 <span class="sig-name descname"><span class="pre">UserPreferences</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserPreferences.UserPreferences" title="Link to this definition">#</a></dt>
-<dd><p>Define the table structure - column names and their MATLAB types</p>
+<dd><p>Construct <a class="reference internal" href="#UserPreferences" title="UserPreferences"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">UserPreferences</span></code></a> and define the table schema.</p>
+<p>The schema includes name, value, type, category, description,
+last modified time string, and a boolean indicating default entries.
+Define the table structure - column names and their MATLAB types (see <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TableColumn</span></code>)</p>
 </dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="UserPreferences.deletePreference">
 <span class="sig-name descname"><span class="pre">deletePreference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserPreferences.deletePreference" title="Link to this definition">#</a></dt>
-<dd><p>Delete a user preference
-Inputs:</p>
-<blockquote>
-<div><p>name - preference name to delete</p>
-</div></blockquote>
+<dd><p>Delete a preference by name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Preference name to delete</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="UserPreferences.getPreference">
 <span class="sig-name descname"><span class="pre">getPreference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">defaultValue</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserPreferences.getPreference" title="Link to this definition">#</a></dt>
-<dd><p>Get a user preference
-Inputs:</p>
-<blockquote>
-<div><p>name - preference name
-defaultValue - default value if preference doesn’t exist</p>
-</div></blockquote>
-<dl class="simple">
-<dt>Output:</dt><dd><p>value - preference value (converted to appropriate type)</p>
+<dd><p>Get a preference value with optional default fallback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Preference name</p></li>
+<li><p><strong>defaultValue</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">any</span></code></span>) – Default value returned if preference not found</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Preference value converted to its declared type</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string | double | logical</p>
 </dd>
 </dl>
 </dd></dl>
@@ -433,13 +454,16 @@ defaultValue - default value if preference doesn’t exist</p>
 <dl class="mat method">
 <dt class="sig sig-object mat" id="UserPreferences.getPreferencesByCategory">
 <span class="sig-name descname"><span class="pre">getPreferencesByCategory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">category</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserPreferences.getPreferencesByCategory" title="Link to this definition">#</a></dt>
-<dd><p>Get all preferences in a specific category
-Inputs:</p>
-<blockquote>
-<div><p>category - category name</p>
-</div></blockquote>
-<dl class="simple">
-<dt>Output:</dt><dd><p>preferences - table of preferences in that category</p>
+<dd><p>Get all preferences within a given category.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>category</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Category name to filter by</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Table of matching preferences</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>table</p>
 </dd>
 </dl>
 </dd></dl>
@@ -447,20 +471,24 @@ Inputs:</p>
 <dl class="mat method">
 <dt class="sig sig-object mat" id="UserPreferences.resetToDefaults">
 <span class="sig-name descname"><span class="pre">resetToDefaults</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#UserPreferences.resetToDefaults" title="Link to this definition">#</a></dt>
-<dd><p>Reset all preferences to their default values</p>
+<dd><p>Reset all user preferences to default values.</p>
+<p>Deletes non-default entries and re-inserts default rows from <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DefaultEntry</span></code>.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="UserPreferences.setPreference">
 <span class="sig-name descname"><span class="pre">setPreference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">value</span></em>, <em class="sig-param"><span class="pre">category</span></em>, <em class="sig-param"><span class="pre">description</span></em><span class="sig-paren">)</span><a class="headerlink" href="#UserPreferences.setPreference" title="Link to this definition">#</a></dt>
-<dd><p>Set a user preference
-Inputs:</p>
-<blockquote>
-<div><p>name - preference name
-value - preference value (will be converted to string)
-category - category of the preference
-description - description of the preference</p>
-</div></blockquote>
+<dd><p>Set a user preference, creating or updating an entry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Preference name (unique key)</p></li>
+<li><p><strong>value</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span> <span class="pre">|</span> <span class="pre">logical</span> <span class="pre">|</span> <span class="pre">double</span> <span class="pre">|</span> <span class="pre">char</span></code></span>) – Preference value (converted to string for storage)</p></li>
+<li><p><strong>category</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Category label, e.g., “UI”, “General”, “Analysis”</p></li>
+<li><p><strong>description</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Human-readable description</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>

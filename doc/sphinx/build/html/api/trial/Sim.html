@@ -467,15 +467,22 @@ document.write(`
 <dt class="sig sig-object mat" id="Sim">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Sim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/sim/Sim/Sim.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Sim" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="Trial.html#Trial" title="Trial"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Trial</span></code></a></p>
-<p>SIMULATION Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#Sim" title="Sim"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Sim</span></code></a> abstract base for simulation trials.</p>
+<p>Holds output, wall-time budget, and a vector of <a class="reference internal" href="SimRun.html#SimRun" title="SimRun"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SimRun</span></code></a> objects.</p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Sim.Sim">
 <span class="sig-name descname"><span class="pre">Sim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Sim.Sim" title="Link to this definition">#</a></dt>
-<dd><p>SIMULATION Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct a <a class="reference internal" href="#Sim" title="Sim"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Sim</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trialName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Simulation name</p></li>
+<li><p><strong>config</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span> <span class="pre">|</span> <span class="pre">table</span> <span class="pre">|</span> <span class="pre">struct</span></code></span>) – Config table/struct or name</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>
@@ -498,12 +505,14 @@ Detailed explanation goes here</p>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Sim.check">
 <span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">isWarning</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Sim.check" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Check all runs, update <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">NCompletedRun</span></code>, and persist.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Sim.start">
 <span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Sim.start" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Launch incomplete runs in parallel where possible, then re-check.</p>
+</dd></dl>
 
 </dd>
 </dl>
