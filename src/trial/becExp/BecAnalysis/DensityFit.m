@@ -68,6 +68,9 @@ classdef DensityFit < BecAnalysis
                     obj.FitData = GaussianFit1D([1,1]);
                 case "BosonicGaussianFit1D"
                     obj.FitData = BosonicGaussianFit1D([1,1]);
+                % added this
+                case "BosonicBimodalFit1D"
+                    obj.FitData = BosonicBimodalFit1D([1,1]);
             end
             obj.FitData = repmat(obj.FitData,2,1,nSub);
 
@@ -93,7 +96,7 @@ classdef DensityFit < BecAnalysis
             hold(ax2,'on')
             % Initialize thermal and condensate plots
                 switch obj.FitMethod
-                    case {"GaussianFit1D","BosonicGaussianFit1D"}
+                    case {"GaussianFit1D","BosonicGaussianFit1D","BosonicBimodalFit1D"}  % added this
                         for ii = 1:nSub
                             obj.ThermalXLine(ii) = errorbar(ax1,1,1,[]);
                             obj.ThermalXLine(ii).Marker = mOrder(ii);
@@ -164,6 +167,9 @@ classdef DensityFit < BecAnalysis
                     fitData = GaussianFit1D([1,1]);
                 case "BosonicGaussianFit1D"
                     fitData = BosonicGaussianFit1D([1,1]);
+                % added this
+                case "BosonicBimodalFit1D"
+                    fitData = BosonicBimodalFit1D([1,1]);
             end
             fitData = repmat(fitData,2,nRun,nSub);
 
@@ -193,6 +199,10 @@ classdef DensityFit < BecAnalysis
                         case "BosonicGaussianFit1D"
                             fitData(1,ii,jj) = BosonicGaussianFit1D([xList,xRaw]);
                             fitData(2,ii,jj) = BosonicGaussianFit1D([yList,yRaw]);
+                        % added this
+                        case "BosonicBimodalFit1D"
+                            fitData(1,ii,jj) = BosonicBimodalFit1D([xList,xRaw]);
+                            fitData(2,ii,jj) = BosonicBimodalFit1D([yList,yRaw]);
                     end
                     if min(xRaw)<obj.DensityLimX(1)
                         obj.DensityLimX(1) = min(xRaw);
@@ -260,6 +270,27 @@ classdef DensityFit < BecAnalysis
                                 [obj.FitData(1,ii,jj).Coefficient(3);obj.FitData(2,ii,jj).Coefficient(3)];
                             obj.ThermalCloudCentralDensity(1,ii,jj) = ...
                                 mean(amp*boseFunction(1,2)/sqrt(pi)./flip(obj.ThermalCloudSize(:,ii,jj)));
+                        % added this
+                        case "BosonicBimodalFit1D"
+                            % Thermal
+                            ampT = [obj.FitData(1,ii,jj).Coefficient(4); obj.FitData(2,ii,jj).Coefficient(4)];
+                            xg   = [obj.FitData(1,ii,jj).Coefficient(5); obj.FitData(2,ii,jj).Coefficient(5)];
+                            sg   = [obj.FitData(1,ii,jj).Coefficient(6); obj.FitData(2,ii,jj).Coefficient(6)];
+                    
+                            obj.ThermalCloudCenter(:,ii,jj) = px * xg;
+                            obj.ThermalCloudSize(:,ii,jj)   = sqrt(2) * px * sg;
+                            obj.ThermalCloudCentralDensity(1,ii,jj) = mean(ampT./(sqrt(2*pi).*flip(obj.ThermalCloudSize(:,ii,jj))));
+                    
+                            % Condensate
+                            A_tf = [obj.FitData(1,ii,jj).Coefficient(1); obj.FitData(2,ii,jj).Coefficient(1)];
+                            x0   = [obj.FitData(1,ii,jj).Coefficient(2); obj.FitData(2,ii,jj).Coefficient(2)];
+                            R_tf = [obj.FitData(1,ii,jj).Coefficient(3); obj.FitData(2,ii,jj).Coefficient(3)];
+                            C_bg = [obj.FitData(1,ii,jj).Coefficient(7); obj.FitData(2,ii,jj).Coefficient(7)];
+                    
+                            obj.CondensateCenter(:,ii,jj)        = px * x0;
+                            obj.CondensateSize(:,ii,jj)          = px * R_tf;
+                            obj.CondensateCentralDensity(1,ii,jj)= mean(A_tf);
+                            obj.BackGroundDensity(1,ii,jj)       = mean(C_bg);
                     end
                 end
             end
@@ -278,7 +309,7 @@ classdef DensityFit < BecAnalysis
             paraList = becExp.ScannedParameterList;
 
             switch obj.FitMethod
-                case {"GaussianFit1D","BosonicGaussianFit1D"}
+                case {"GaussianFit1D","BosonicGaussianFit1D","BosonicBimodalFit1D"}  % added this
                     for ii = 1:nSub
                         [xThermalX,yThermalX,stdThermalX] = computeStd(paraList,obj.ThermalCloudSize(1,:,ii) * 1e6, becExp.AveragingMethod);
                         [xThermalY,yThermalY,stdThermalY] = computeStd(paraList,obj.ThermalCloudSize(2,:,ii) * 1e6, becExp.AveragingMethod);
