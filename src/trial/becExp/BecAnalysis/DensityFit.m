@@ -17,6 +17,7 @@ classdef DensityFit < BecAnalysis
         CondensateSize % [wc_x;wc_y] in m
         CondensateCentralDensity % m^-2
         BackGroundDensity % m^-2
+        LineIntegrationLength % [Lx; Ly] in m
     end
 
     properties (Hidden, Transient)
@@ -61,6 +62,7 @@ classdef DensityFit < BecAnalysis
             obj.CondensateSize = zeros(2,1,nSub);
             obj.CondensateCentralDensity = zeros(1,1,nSub);
             obj.BackGroundDensity = zeros(1,1,nSub);
+            obj.LineIntegrationLength = zeros(2,1, nSub); % added this
 
             %% Initialize fit objects
             switch obj.FitMethod
@@ -96,7 +98,7 @@ classdef DensityFit < BecAnalysis
             hold(ax2,'on')
             % Initialize thermal and condensate plots
                 switch obj.FitMethod
-                    case {"GaussianFit1D","BosonicGaussianFit1D","BosonicBimodalFit1D"}  % added this
+                    case {"GaussianFit1D","BosonicGaussianFit1D"}
                         for ii = 1:nSub
                             obj.ThermalXLine(ii) = errorbar(ax1,1,1,[]);
                             obj.ThermalXLine(ii).Marker = mOrder(ii);
@@ -123,6 +125,64 @@ classdef DensityFit < BecAnalysis
                         end
                         lg1 = legend(ax1,legendStr(:));
                         lg2 = legend(ax2,legendStr(:));
+
+                    case "BosonicBimodalFit1D"
+                        for ii = 1:nSub
+                            % Thermal lines
+                            obj.ThermalXLine(ii) = errorbar(ax1,1,1,[]);
+                            obj.ThermalXLine(ii).Marker = mOrder(ii);
+                            obj.ThermalXLine(ii).MarkerFaceColor = co(ii,:);
+                            obj.ThermalXLine(ii).MarkerEdgeColor = co(ii,:)*.5;
+                            obj.ThermalXLine(ii).MarkerSize = 8;
+                            obj.ThermalXLine(ii).LineWidth = 2;
+                            obj.ThermalXLine(ii).Color = co(ii,:);
+                            obj.ThermalXLine(ii).CapSize = 0;
+                
+                            obj.ThermalYLine(ii) = errorbar(ax2,1,1,[]);
+                            obj.ThermalYLine(ii).Marker = mOrder(ii);
+                            obj.ThermalYLine(ii).MarkerFaceColor = co(ii,:);
+                            obj.ThermalYLine(ii).MarkerEdgeColor = co(ii,:)*.5;
+                            obj.ThermalYLine(ii).MarkerSize = 8;
+                            obj.ThermalYLine(ii).LineWidth = 2;
+                            obj.ThermalYLine(ii).Color = co(ii,:);
+                            obj.ThermalYLine(ii).CapSize = 0;
+                
+                            % Condensate lines
+                            obj.CondensateXLine(ii) = errorbar(ax1,1,1,[]);
+                            obj.CondensateXLine(ii).Marker = mOrder(ii);
+                            obj.CondensateXLine(ii).MarkerFaceColor = 'none';
+                            obj.CondensateXLine(ii).MarkerEdgeColor = co(ii,:)*.5;
+                            obj.CondensateXLine(ii).MarkerSize = 8;
+                            obj.CondensateXLine(ii).LineWidth = 2;
+                            obj.CondensateXLine(ii).LineStyle = '--';
+                            obj.CondensateXLine(ii).Color = co(ii,:)*.7;
+                            obj.CondensateXLine(ii).CapSize = 0;
+                
+                            obj.CondensateYLine(ii) = errorbar(ax2,1,1,[]);
+                            obj.CondensateYLine(ii).Marker = mOrder(ii);
+                            obj.CondensateYLine(ii).MarkerFaceColor = 'none';
+                            obj.CondensateYLine(ii).MarkerEdgeColor = co(ii,:)*.5;
+                            obj.CondensateYLine(ii).MarkerSize = 8;
+                            obj.CondensateYLine(ii).LineWidth = 2;
+                            obj.CondensateYLine(ii).LineStyle = '--';
+                            obj.CondensateYLine(ii).Color = co(ii,:)*.7;
+                            obj.CondensateYLine(ii).CapSize = 0;
+                        end
+                
+                        
+                        if isempty(becExp.Roi.SubRoi)
+                            legendStr = ["Thermal","Condensate"];
+                        else
+                            legendStr = strings(1,2*nSub);
+                            k = 1;
+                            for ii = 1:nSub
+                                legendStr(k)   = "Thermal "    + ii; k = k+1;
+                                legendStr(k)   = "Condensate " + ii; k = k+1;
+                            end
+                        end
+                        lg1 = legend(ax1,legendStr(:));
+                        lg2 = legend(ax2,legendStr(:));
+
                 end
             hold(ax1,'off')
             hold(ax2,'off')
@@ -192,6 +252,11 @@ classdef DensityFit < BecAnalysis
                         xRaw = sum(adData{jj},1).'*px;
                         yRaw = sum(adData{jj},2)*px;
                     end
+                    % added this
+                    Lx = numel(xList)*px;
+                    Ly = numel(yList)*px;
+                    obj.LineIntegrationLength(:,ii,jj) = [Lx; Ly];
+
                     switch obj.FitMethod
                         case "GaussianFit1D"
                             fitData(1,ii,jj) = GaussianFit1D([xList,xRaw]);
@@ -289,8 +354,17 @@ classdef DensityFit < BecAnalysis
                     
                             obj.CondensateCenter(:,ii,jj)        = px * x0;
                             obj.CondensateSize(:,ii,jj)          = px * R_tf;
-                            obj.CondensateCentralDensity(1,ii,jj)= mean(A_tf);
-                            obj.BackGroundDensity(1,ii,jj)       = mean(C_bg);
+
+                            TFconst = (3*pi/8);
+                            n0_x = A_tf(1) / (TFconst * obj.CondensateSize(2,ii,jj));
+                            n0_y = A_tf(2) / (TFconst * obj.CondensateSize(1,ii,jj));
+                            obj.CondensateCentralDensity(1,ii,jj) = mean([n0_x, n0_y]);
+
+                            LxLy = obj.LineIntegrationLength(:,ii,jj);
+                            nbg_x = C_bg(1) / LxLy(2);
+                            nbg_y = C_bg(2) / LxLy(1);
+                            obj.BackGroundDensity(1,ii,jj) = mean([nbg_x, nbg_y]);
+                            
                     end
                 end
             end
@@ -309,7 +383,7 @@ classdef DensityFit < BecAnalysis
             paraList = becExp.ScannedParameterList;
 
             switch obj.FitMethod
-                case {"GaussianFit1D","BosonicGaussianFit1D","BosonicBimodalFit1D"}  % added this
+                case {"GaussianFit1D","BosonicGaussianFit1D"}
                     for ii = 1:nSub
                         [xThermalX,yThermalX,stdThermalX] = computeStd(paraList,obj.ThermalCloudSize(1,:,ii) * 1e6, becExp.AveragingMethod);
                         [xThermalY,yThermalY,stdThermalY] = computeStd(paraList,obj.ThermalCloudSize(2,:,ii) * 1e6, becExp.AveragingMethod);
@@ -322,6 +396,39 @@ classdef DensityFit < BecAnalysis
                         obj.ThermalYLine(ii).YNegativeDelta = stdThermalY;
                         obj.ThermalYLine(ii).YPositiveDelta = stdThermalY;
                     end
+
+                case "BosonicBimodalFit1D"
+                    for ii = 1:nSub
+                        % Thermal
+                        [xThX,yThX,stdThX] = computeStd(paraList,obj.ThermalCloudSize(1,:,ii) * 1e6, becExp.AveragingMethod);
+                        [xThY,yThY,stdThY] = computeStd(paraList,obj.ThermalCloudSize(2,:,ii) * 1e6, becExp.AveragingMethod);
+            
+                        obj.ThermalXLine(ii).XData = xThX;
+                        obj.ThermalXLine(ii).YData = yThX;
+                        obj.ThermalXLine(ii).YNegativeDelta = stdThX;
+                        obj.ThermalXLine(ii).YPositiveDelta = stdThX;
+            
+                        obj.ThermalYLine(ii).XData = xThY;
+                        obj.ThermalYLine(ii).YData = yThY;
+                        obj.ThermalYLine(ii).YNegativeDelta = stdThY;
+                        obj.ThermalYLine(ii).YPositiveDelta = stdThY;
+            
+                        % Condensate
+                        [xCx,yCx,stdCx] = computeStd(paraList,obj.CondensateSize(1,:,ii) * 1e6, becExp.AveragingMethod);
+                        [xCy,yCy,stdCy] = computeStd(paraList,obj.CondensateSize(2,:,ii) * 1e6, becExp.AveragingMethod);
+            
+                        obj.CondensateXLine(ii).XData = xCx;
+                        obj.CondensateXLine(ii).YData = yCx;
+                        obj.CondensateXLine(ii).YNegativeDelta = stdCx;
+                        obj.CondensateXLine(ii).YPositiveDelta = stdCx;
+            
+                        obj.CondensateYLine(ii).XData = xCy;
+                        obj.CondensateYLine(ii).YData = yCy;
+                        obj.CondensateYLine(ii).YNegativeDelta = stdCy;
+                        obj.CondensateYLine(ii).YPositiveDelta = stdCy;
+                    end
+
+
             end
             lg = findobj(fig,"Type","Legend");
             [lg.Location] = deal("best");
