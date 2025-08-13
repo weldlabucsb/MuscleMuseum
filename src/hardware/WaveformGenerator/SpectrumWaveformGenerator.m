@@ -33,7 +33,10 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
         end
 
         function connect(obj)
-            % Spectrum requires a fresh connection per upload; no persistent connect.
+            % Spectrum requires us to close the card handle every time we
+            % upload a waveform. So it's not possible to establish a
+            % constant connection. Every time we need to upload a new
+            % waveform, we need to connect to the card again.
         end
         
         function connectSpec(obj)
@@ -130,8 +133,8 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             t = cell(1,nEnabledChannel);
             for ii = 1:nEnabledChannel
                 obj.WaveformList{enabledChannel(ii)}.SamplingRate = obj.SamplingRate(1);
-                obj.WaveformList{enabledChannel(ii)}.NCycle = NaN; % avoid periodic splitting
-                t{ii} = obj.WaveformList{enabledChannel(ii)}.WaveformPrepared; % prepared waveforms
+                obj.WaveformList{enabledChannel(ii)}.NCycle = NaN; % For spectrum AWG, we don't want to split a periodic waveform into parts and upload
+                t{ii} = obj.WaveformList{enabledChannel(ii)}.WaveformPrepared; % Load the prepared waveforms
             end
 
             %% Check numbers of waveforms of each channel
@@ -201,18 +204,12 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                         sample{jj,ii} = t{ii}.Sample{jj};
                     end
                     if numel(sample{jj,ii}) < segmentSizeMinimum
-                        % Pad to minimum segment size by linear extrapolation of the tail
-                        nPad = segmentSizeMinimum - numel(sample{jj,ii});
-                        padIdx = (numel(sample{jj,ii})+1):(numel(sample{jj,ii})+nPad);
-                        % Note: keep original behavior; this is a syntax-only correction to avoid linter parse error
-                        sample{jj,ii} = [sample{jj,ii}, interp1(1:numel(sample{jj,ii}), sample{jj,ii}, padIdx, 'linear', 'extrap')]; %#ok<AGROW>
+                        sample{jj,ii} = [sample{jj,ii},interp1(sample{jj,ii},(numel(sample{jj,ii})+1):segmentSizeMinimum,'linear','extrap')];
                     end
                     remainder=32-mod(numel(sample{jj,ii}), 32);
                     segSize(ii) = ceil(numel(sample{jj,ii})/32)*32;
                     if mod(numel(sample{jj,ii}), 32)
-                        padIdx2 = 11:(remainder+10);
-                        tail = sample{jj,ii}(max(end-9,1):end);
-                        sample{jj,ii} = [sample{jj,ii}, interp1(1:numel(tail), tail, padIdx2, 'linear', 'extrap')]; %#ok<AGROW>
+                        sample{jj,ii} = [sample{jj,ii},interp1(sample{jj,ii}(end-9:end),11:(remainder+10),'linear','extrap')];
                     end
                     sample{jj,ii} = sample{jj,ii} * scale / amp(ii);
                 end
@@ -220,9 +217,9 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                     obj.closeSpec
                     error("The segment sizes of each channel have to be the same for each uploaded segment.")
                 end
-                errorCode = spcm_dwSetParam_i32(obj.Device.hDrv, obj.RegMap('SPC_SEQMODE_WRITESEGMENT'),jj-1); % explicit write
+                errorCode = spcm_dwSetParam_i32(obj.Device.hDrv, obj.RegMap('SPC_SEQMODE_WRITESEGMENT'),jj-1); % somehow we have to write the output explicitly if we call spcm_dwSetParam_i32
                 errorCode = spcm_dwSetParam_i32(obj.Device.hDrv, obj.RegMap('SPC_SEQMODE_SEGMENTSIZE'), segSize(1));
-                errorCode = spcm_dwSetData(obj.Device.hDrv, 0, segSize(1), nEnabledChannel, 0, sample{jj,:}); %#ok<NASGU>
+                errorCode = spcm_dwSetData(obj.Device.hDrv, 0, segSize(1), nEnabledChannel, 0, sample{jj,:});
             end
 
             %% Determine the order (sequence)
@@ -235,7 +232,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                             [~,obj.Device] = spcMSetupSequenceStep(obj.Device,ii-1,ii,ii-1,1,1);
                     end
                 else
-                    [~,obj.Device] = spcMSetupSequenceStep(obj.Device,ii-1,0,ii-1,1,1); % loop zero output until trigger
+                    [~,obj.Device] = spcMSetupSequenceStep(obj.Device,ii-1,0,ii-1,1,1); %loop the zero output until trigger
                 end
             end
 

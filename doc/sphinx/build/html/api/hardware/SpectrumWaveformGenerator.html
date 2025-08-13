@@ -493,7 +493,10 @@ is on MATLAB’s path. Provides <a class="reference internal" href="#SpectrumWav
 <dl class="mat method">
 <dt class="sig sig-object mat" id="SpectrumWaveformGenerator.connect">
 <span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SpectrumWaveformGenerator.connect" title="Link to this definition">#</a></dt>
-<dd><p>Spectrum requires a fresh connection per upload; no persistent connect.</p>
+<dd><p>Spectrum requires us to close the card handle every time we
+upload a waveform. So it’s not possible to establish a
+constant connection. Every time we need to upload a new
+waveform, we need to connect to the card again.</p>
 </dd></dl>
 
 <dl class="mat method">

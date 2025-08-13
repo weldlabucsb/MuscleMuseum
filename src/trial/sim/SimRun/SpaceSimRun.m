@@ -5,7 +5,7 @@ classdef (Abstract) SpaceSimRun < SimRun
         SpaceOrigin double = [0;0;0] % in meters
         SpaceRange double {mustBePositive} % in meters
         SpaceStep double {mustBePositive} % in meters
-        BoundaryCondition string {mustBeMember(BoundaryCondition,{"Periodic","Dirichlet","Neumann"})} = "Periodic"
+        BoundaryCondition string {mustBeMember(BoundaryCondition,{'Periodic','Dirichlet','Neumann'})} = "Periodic"
     end
 
     properties (SetAccess = protected)

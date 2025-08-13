@@ -1062,6 +1062,7 @@ classdef OpticalLattice < OpticalPotential
             sz = size(X);
             nBand = sz(1);
             nq = sz(3);
+            dq = q(2) - q(1);
             dx = x(2) - x(1);
             lambda = obj.Laser.Wavelength;
             cellIdx = x < lambda/4 & x >= -lambda/4;

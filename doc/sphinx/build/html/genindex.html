@@ -656,6 +656,8 @@ document.write(`
         <li><a href="api/hardware/VescentPhaseLock.html#VescentPhaseLock.check">(VescentPhaseLock method)</a>
 </li>
       </ul></li>
+      <li><a href="api/mmSetting/MmSetting.html#MmSetting.checkConstructor">checkConstructor() (MmSetting method)</a>
+</li>
       <li><a href="api/math/FitData1D.html#FitData1D.checkData">checkData() (FitData1D method)</a>
 </li>
       <li><a href="api/mmSetting/MmSetting.html#MmSetting.checkDataBase">checkDataBase() (MmSetting method)</a>
@@ -728,10 +730,10 @@ document.write(`
 </li>
       <li><a href="api/field/OpticalLattice.html#OpticalLattice.computeBandPopulation1D">computeBandPopulation1D() (OpticalLattice method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/field/OpticalLattice.html#OpticalLattice.computeBandPopulationFourier1D">computeBandPopulationFourier1D() (OpticalLattice method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/field/OpticalLattice.html#OpticalLattice.computeBerryConnection1D">computeBerryConnection1D() (OpticalLattice method)</a>
 </li>
       <li><a href="api/field/OpticalLattice.html#OpticalLattice.computeFloquetAmpMod1D">computeFloquetAmpMod1D() (OpticalLattice method)</a>
@@ -790,6 +792,10 @@ document.write(`
         <li><a href="api/hardware/Andor.html#Andor.connectCamera">(Andor method)</a>
 </li>
       </ul></li>
+      <li><a href="api/mmSetting/MmSetting.html#MmSetting.connectDatabase">connectDatabase() (MmSetting method)</a>
+</li>
+      <li><a href="api/mmSetting/MmSetting.html#MmSetting.connectDatabaseRead">connectDatabaseRead() (MmSetting method)</a>
+</li>
       <li><a href="api/database/connectPsqlDatabase.html#connectPsqlDatabase">connectPsqlDatabase() (built-in function)</a>
 </li>
       <li><a href="api/hardware/SpectrumWaveformGenerator.html#SpectrumWaveformGenerator.connectSpec">connectSpec() (SpectrumWaveformGenerator method)</a>
@@ -892,13 +898,15 @@ document.write(`
 </li>
       <li><a href="api/mmSetting/MmSetting.html#MmSetting.DefaultEntry">DefaultEntry (MmSetting attribute)</a>
 </li>
+      <li><a href="api/mmSetting/MmSetting.html#MmSetting.DefaultKey">DefaultKey (MmSetting attribute)</a>
+</li>
       <li><a href="api/mmSetting/MmSetting.html#MmSetting.DefaultValue">DefaultValue (MmSetting attribute)</a>
 </li>
       <li><a href="api/trial/deleteBecExp.html#deleteBecExp">deleteBecExp() (built-in function)</a>
 </li>
-      <li><a href="api/trial/deleteMeSim.html#deleteMeSim">deleteMeSim() (built-in function)</a>
+      <li><a href="api/mmSetting/MmSetting.html#MmSetting.deleteEntry">deleteEntry() (MmSetting method)</a>
 </li>
-      <li><a href="api/mmSetting/UserPreferences.html#UserPreferences.deletePreference">deletePreference() (UserPreferences method)</a>
+      <li><a href="api/trial/deleteMeSim.html#deleteMeSim">deleteMeSim() (built-in function)</a>
 </li>
       <li><a href="api/trial/BecExp.html#BecExp.deleteRun">deleteRun() (BecExp method)</a>
 </li>
@@ -928,10 +936,10 @@ document.write(`
 </li>
       <li><a href="api/field/OpticalLattice.html#OpticalLattice.DepthLaser">DepthLaser (OpticalLattice attribute)</a>
 </li>
-      <li><a href="api/field/OpticalLattice.html#OpticalLattice.DepthLu">DepthLu (OpticalLattice attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/field/OpticalLattice.html#OpticalLattice.DepthLu">DepthLu (OpticalLattice attribute)</a>
+</li>
       <li><a href="api/field/OpticalLattice.html#OpticalLattice.DepthSpec">DepthSpec (OpticalLattice attribute)</a>
 </li>
       <li><a href="api/trial/Trial.html#Trial.Description">Description (Trial attribute)</a>
@@ -1278,6 +1286,8 @@ document.write(`
 </li>
       <li><a href="api/trial/gaussiantr.html#gaussiantr">gaussiantr() (built-in function)</a>
 </li>
+      <li><a href="api/mmSetting/generateSetting.html#generateSetting">generateSetting() (built-in function)</a>
+</li>
       <li><a href="api/hardware/getAcq.html#getAcq">getAcq() (built-in function)</a>
 </li>
       <li><a href="api/math/getAllFitData.html#getAllFitData">getAllFitData() (built-in function)</a>
@@ -1287,8 +1297,6 @@ document.write(`
       <li><a href="api/math/getAllWaveform.html#getAllWaveform">getAllWaveform() (built-in function)</a>
 </li>
       <li><a href="api/atom/getAtom.html#getAtom">getAtom() (built-in function)</a>
-</li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.getCommonColumns">getCommonColumns() (MmSetting method)</a>
 </li>
       <li><a href="api/trial/FokkerPlanck.html#FokkerPlanck.getFWHM">getFWHM() (FokkerPlanck method)</a>
 </li>
@@ -1302,13 +1310,9 @@ document.write(`
       </ul></li>
       <li><a href="api/math/ModulatedWaveform.html#ModulatedWaveform.getModulation">getModulation() (ModulatedWaveform method)</a>
 </li>
-      <li><a href="api/hardware/getPl.html#getPl">getPl() (built-in function)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/mmSetting/UserPreferences.html#UserPreferences.getPreference">getPreference() (UserPreferences method)</a>
-</li>
-      <li><a href="api/mmSetting/UserPreferences.html#UserPreferences.getPreferencesByCategory">getPreferencesByCategory() (UserPreferences method)</a>
+      <li><a href="api/hardware/getPl.html#getPl">getPl() (built-in function)</a>
 </li>
       <li><a href="api/hardware/getScope.html#getScope">getScope() (built-in function)</a>
 </li>
@@ -1562,7 +1566,7 @@ document.write(`
 </li>
       <li><a href="api/trial/CenterFit.html#CenterFit.IsSaveCenter">IsSaveCenter (CenterFit attribute)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.isSchemaCurrent">isSchemaCurrent() (MmSetting method)</a>
+      <li><a href="api/mmSetting/MmSetting.html#MmSetting.IsSchemaCurrent">IsSchemaCurrent (MmSetting attribute)</a>
 </li>
       <li><a href="api/trial/AtomNumber.html#AtomNumber.IsShowCondensate">IsShowCondensate (AtomNumber attribute)</a>
 </li>
@@ -2222,15 +2226,19 @@ document.write(`
         <li><a href="api/math/PeriodicWaveform.html#PeriodicWaveform.Phase">(PeriodicWaveform attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/hardware/PhaseLock.html#PhaseLock">PhaseLock (built-in class)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/hardware/PhaseLock.html#PhaseLock.PhaseLock">PhaseLock() (PhaseLock method)</a>
 </li>
       <li><a href="api/trial/BecExp.html#BecExp.PhaseLockAssociation">PhaseLockAssociation (BecExp attribute)</a>
 </li>
       <li><a href="api/hardware/PhaseLockControlPanel.html#PhaseLockControlPanel">PhaseLockControlPanel (built-in application)</a>
+</li>
+      <li><a href="api/mmSetting/PhaseLockSetting.html#PhaseLockSetting">PhaseLockSetting (built-in class)</a>
+</li>
+      <li><a href="api/mmSetting/PhaseLockSetting.html#PhaseLockSetting.PhaseLockSetting">PhaseLockSetting() (PhaseLockSetting method)</a>
 </li>
       <li><a href="api/math/ModulatedWaveform.html#ModulatedWaveform.PhaseModulation">PhaseModulation (ModulatedWaveform attribute)</a>
 </li>
@@ -2310,7 +2318,7 @@ document.write(`
 </li>
       <li><a href="api/field/Laser.html#Laser.Power">Power (Laser attribute)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.prepareInput">prepareInput() (MmSetting method)</a>
+      <li><a href="api/mmSetting/MmSetting.html#MmSetting.prepareInputTable">prepareInputTable() (MmSetting method)</a>
 </li>
       <li><a href="api/trial/GPE.html#GPE.Property1">Property1 (GPE attribute)</a>
 </li>
@@ -2404,6 +2412,8 @@ document.write(`
 </li>
       <li><a href="api/mmSetting/MmSetting.html#MmSetting.readTable">readTable() (MmSetting method)</a>
 </li>
+      <li><a href="api/mmSetting/MmSetting.html#MmSetting.readValue">readValue() (MmSetting method)</a>
+</li>
       <li><a href="api/atom/AtomManifold.html#AtomManifold.RecoilEnergy">RecoilEnergy (AtomManifold attribute)</a>
 
       <ul>
@@ -2495,8 +2505,6 @@ document.write(`
       <li><a href="api/atom/Alkali.html#Alkali.RepumperSaturationIntensity">RepumperSaturationIntensity (Alkali attribute)</a>
 </li>
       <li><a href="api/atom/Alkali.html#Alkali.RepumperSaturationIntensityLu">RepumperSaturationIntensityLu (Alkali attribute)</a>
-</li>
-      <li><a href="api/mmSetting/UserPreferences.html#UserPreferences.resetToDefaults">resetToDefaults() (UserPreferences method)</a>
 </li>
       <li><a href="api/hardware/Hardware.html#Hardware.ResourceName">ResourceName (Hardware attribute)</a>
 </li>
@@ -2676,6 +2684,10 @@ document.write(`
 </li>
       <li><a href="api/trial/BecExp.html#BecExp.ScopeData">ScopeData (BecExp attribute)</a>
 </li>
+      <li><a href="api/mmSetting/ScopeSetting.html#ScopeSetting">ScopeSetting (built-in class)</a>
+</li>
+      <li><a href="api/mmSetting/ScopeSetting.html#ScopeSetting.ScopeSetting">ScopeSetting() (ScopeSetting method)</a>
+</li>
       <li><a href="api/trial/ScopeValue.html#ScopeValue">ScopeValue (built-in class)</a>
 </li>
       <li><a href="api/trial/ScopeValue.html#ScopeValue.ScopeValue">ScopeValue() (ScopeValue method)</a>
@@ -2770,8 +2782,6 @@ document.write(`
 </li>
       <li><a href="api/hardware/setPcoConfig.html#setPcoConfig">setPcoConfig() (built-in function)</a>
 </li>
-      <li><a href="api/mmSetting/UserPreferences.html#UserPreferences.setPreference">setPreference() (UserPreferences method)</a>
-</li>
       <li><a href="api/trial/InitialCondition.html#InitialCondition.setProperties">setProperties() (InitialCondition method)</a>
 </li>
       <li><a href="api/hardware/SpectrumWaveformGenerator.html#SpectrumWaveformGenerator.setSpec">setSpec() (SpectrumWaveformGenerator method)</a>
@@ -2814,10 +2824,10 @@ document.write(`
         <li><a href="api/trial/ForceProfile.html#ForceProfile.Show2">(ForceProfile method)</a>
 </li>
       </ul></li>
-      <li><a href="api/trial/MeSim.html#MeSim.showCrossSection">showCrossSection() (MeSim method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/trial/MeSim.html#MeSim.showCrossSection">showCrossSection() (MeSim method)</a>
+</li>
       <li><a href="api/misc/Chart.html#Chart.showGif">showGif() (Chart method)</a>
 </li>
       <li><a href="api/trial/SeSim1DRun.html#SeSim1DRun.showPeak">showPeak() (SeSim1DRun method)</a>
@@ -3376,7 +3386,11 @@ document.write(`
 </li>
       <li><a href="api/trial/BecExp.html#BecExp.updateScopeData">updateScopeData() (BecExp method)</a>
 </li>
+      <li><a href="api/mmSetting/MmSetting.html#MmSetting.updateTable">updateTable() (MmSetting method)</a>
+</li>
       <li><a href="api/mmSetting/MmSetting.html#MmSetting.updateTableSchema">updateTableSchema() (MmSetting method)</a>
+</li>
+      <li><a href="api/mmSetting/MmSetting.html#MmSetting.updateValue">updateValue() (MmSetting method)</a>
 </li>
       <li><a href="api/hardware/KeysightWaveformGenerator.html#KeysightWaveformGenerator.upload">upload() (KeysightWaveformGenerator method)</a>
 
@@ -3389,10 +3403,6 @@ document.write(`
       <li><a href="api/math/UniformRandom.html#UniformRandom.UpperBound">UpperBound (UniformRandom attribute)</a>
 </li>
       <li><a href="api/math/FitData.html#FitData.UpperOverride">UpperOverride (FitData attribute)</a>
-</li>
-      <li><a href="api/mmSetting/UserPreferences.html#UserPreferences">UserPreferences (built-in class)</a>
-</li>
-      <li><a href="api/mmSetting/UserPreferences.html#UserPreferences.UserPreferences">UserPreferences() (UserPreferences method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -3476,6 +3486,10 @@ document.write(`
 </li>
       <li><a href="api/hardware/WaveformGenerator.html#WaveformGenerator.WaveformGenerator">WaveformGenerator() (WaveformGenerator method)</a>
 </li>
+      <li><a href="api/mmSetting/WaveformGeneratorSetting.html#WaveformGeneratorSetting">WaveformGeneratorSetting (built-in class)</a>
+</li>
+      <li><a href="api/mmSetting/WaveformGeneratorSetting.html#WaveformGeneratorSetting.WaveformGeneratorSetting">WaveformGeneratorSetting() (WaveformGeneratorSetting method)</a>
+</li>
       <li><a href="api/math/WaveformList.html#WaveformList">WaveformList (built-in class)</a>
 
       <ul>
@@ -3488,10 +3502,10 @@ document.write(`
 </li>
       <li><a href="api/math/WaveformListEditor.html#WaveformListEditor">WaveformListEditor (built-in application)</a>
 </li>
-      <li><a href="api/math/WaveformList.html#WaveformList.WaveformOrigin">WaveformOrigin (WaveformList attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/math/WaveformList.html#WaveformList.WaveformOrigin">WaveformOrigin (WaveformList attribute)</a>
+</li>
       <li><a href="api/math/WaveformList.html#WaveformList.WaveformPrepared">WaveformPrepared (WaveformList attribute)</a>
 </li>
       <li><a href="api/atom/AtomManifold.html#AtomManifold.Wavelength">Wavelength (AtomManifold attribute)</a>

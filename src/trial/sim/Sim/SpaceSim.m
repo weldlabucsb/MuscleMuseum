@@ -8,7 +8,7 @@ classdef (Abstract) SpaceSim < Sim
         SpaceRange double {mustBePositive} % in meters
         SpaceStep double {mustBePositive}
         Dimension (1,1) double {mustBeInteger,mustBeInRange(Dimension,1,3)} = 1
-        BoundaryCondition string {mustBeMember(BoundaryCondition,{"Periodic","Dirichlet","Neumann"})} = "Periodic"
+        BoundaryCondition string {mustBeMember(BoundaryCondition,{'Periodic','Dirichlet','Neumann'})} = "Periodic"
     end
     
     methods

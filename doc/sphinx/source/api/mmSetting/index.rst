@@ -5,4 +5,7 @@ mmSetting
    :maxdepth: 2
 
    MmSetting
-   UserPreferences
+   PhaseLockSetting
+   ScopeSetting
+   WaveformGeneratorSetting
+   generateSetting
