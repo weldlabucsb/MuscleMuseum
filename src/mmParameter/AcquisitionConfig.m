@@ -1,9 +1,15 @@
 classdef AcquisitionConfig < MmParameter
-    %:class:`PhaseLockSetting` stores phase lock device parameters.
+    %:class:`AcquisitionConfig` stores per-camera acquisition configuration.
     %
-    % Columns include a logical name, the device model, drive frequency, and an
-    % associated variable name. Defaults and a single default entry are provided
-    % to initialize the table.
+    % Defines camera identity and acquisition-related parameters such as
+    % :attr:`DeviceModel`, :attr:`DeviceID`, :attr:`SerialNumber`,
+    % :attr:`ExposureTime`, bad rows, optical :attr:`Magnification`,
+    % :attr:`Transmission`, and :attr:`QuantumEfficiencyData`.
+    %
+    % The schema is declared in :meth:`defineSchema` using
+    % :attr:`TableColumn` and :attr:`DefaultValue`. Use
+    % :meth:`MmParameter.checkTable` to create/migrate the table and
+    % :meth:`MmParameter.readTable`/:meth:`MmParameter.updateTable` to load/save.
 
     properties
 

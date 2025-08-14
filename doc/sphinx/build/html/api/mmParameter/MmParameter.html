@@ -47,7 +47,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="PhaseLockSetting" href="PhaseLockSetting.html" />
-    <link rel="prev" title="mmParameter" href="index.html" />
+    <link rel="prev" title="ListList" href="ListList.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -165,14 +165,25 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">mmParameter</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="AcquisitionConfig.html">AcquisitionConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BecExpConfig.html">BecExpConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BecExpParameterUnit.html">BecExpParameterUnit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ComputerConfig.html">ComputerConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DatabaseConfig.html">DatabaseConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DatabaseServerConfig.html">DatabaseServerConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HardwareList.html">HardwareList</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ListList.html">ListList</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">MmParameter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="PhaseLockSetting.html">PhaseLockSetting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RoiConfig.html">RoiConfig</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ScopeSetting.html">ScopeSetting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VariableList.html">VariableList</a></li>
 <li class="toctree-l3"><a class="reference internal" href="WaveformGeneratorConfig.html">WaveformGeneratorConfig</a></li>
 <li class="toctree-l3"><a class="reference internal" href="WaveformGeneratorSetting.html">WaveformGeneratorSetting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generateParameter.html">generateParameter</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -401,10 +412,12 @@ document.write(`
 <p>Provides schema definition, validation, and automatic migration via a metadata
 table and a schema hash. Supports default entries, typed columns, and
 conversion between MATLAB types and SQLite storage formats.</p>
-<p>Key features:
-- Metadata table for multi-table schema tracking
-- Schema hashing for change detection
-- PRAGMA table_info for schema introspection</p>
+<p><strong>Key features:</strong></p>
+<ul class="simple">
+<li><p>Metadata table for multi-table schema tracking</p></li>
+<li><p>Schema hashing for change detection</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PRAGMA</span> <span class="pre">table_info</span></code> for schema introspection</p></li>
+</ul>
 <p><strong>Example:</strong></p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">YourParameterSubclass</span><span class="p">();</span>
 <span class="n">s</span><span class="p">.</span><span class="n">checkTable</span><span class="p">();</span><span class="w"> </span><span class="c">% ensure schema exists and is current</span>
@@ -431,13 +444,13 @@ named according to <a class="reference internal" href="#MmParameter.DataBaseName
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="MmParameter.ColumnNameAll">
 <span class="sig-name descname"><span class="pre">ColumnNameAll</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#MmParameter.ColumnNameAll" title="Link to this definition">#</a></dt>
-<dd><p>Including the SerialNumber column</p>
+<dd><p>Including the ID column</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="MmParameter.ColumnTypeAll">
 <span class="sig-name descname"><span class="pre">ColumnTypeAll</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#MmParameter.ColumnTypeAll" title="Link to this definition">#</a></dt>
-<dd><p>Including the SerialNumber column’s type</p>
+<dd><p>Including the ID column’s type</p>
 </dd></dl>
 
 <dl class="mat attribute">
@@ -461,7 +474,7 @@ named according to <a class="reference internal" href="#MmParameter.DataBaseName
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="MmParameter.DefaultKey">
 <span class="sig-name descname"><span class="pre">DefaultKey</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">string</span></em><a class="headerlink" href="#MmParameter.DefaultKey" title="Link to this definition">#</a></dt>
-<dd><p>The default key string will be the name of the first column after SerialNumber</p>
+<dd><p>The default key string will be the name of the first column after ID</p>
 </dd></dl>
 
 <dl class="mat attribute">
@@ -474,6 +487,12 @@ named according to <a class="reference internal" href="#MmParameter.DataBaseName
 <dt class="sig sig-object mat" id="MmParameter.ExtraColumnFromJoin">
 <span class="sig-name descname"><span class="pre">ExtraColumnFromJoin</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#MmParameter.ExtraColumnFromJoin" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.IsIncludeDefaultEntry">
+<span class="sig-name descname"><span class="pre">IsIncludeDefaultEntry</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">false</span></em><a class="headerlink" href="#MmParameter.IsIncludeDefaultEntry" title="Link to this definition">#</a></dt>
+<dd><p>Determine if we want to automatically include the default entries into the table</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="MmParameter.IsSchemaCurrent">
@@ -635,15 +654,6 @@ Create the table with current schema</p>
 </dd></dl>
 
 <dl class="mat method">
-<dt class="sig sig-object mat" id="MmParameter.insertDefaultEntry">
-<span class="sig-name descname"><span class="pre">insertDefaultEntry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.insertDefaultEntry" title="Link to this definition">#</a></dt>
-<dd><p>Insert default entries into the table if present.</p>
-<p>Uses <a class="reference internal" href="#MmParameter.DefaultEntry" title="MmParameter.DefaultEntry"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DefaultEntry</span></code></a> and the first key in <a class="reference internal" href="#MmParameter.TableColumn" title="MmParameter.TableColumn"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TableColumn</span></code></a> to write
-initial rows. No action if <a class="reference internal" href="#MmParameter.DefaultEntry" title="MmParameter.DefaultEntry"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DefaultEntry</span></code></a> is empty.
-Insert default entries if provided and not empty</p>
-</dd></dl>
-
-<dl class="mat method">
 <dt class="sig sig-object mat" id="MmParameter.prepareInputTable">
 <span class="sig-name descname"><span class="pre">prepareInputTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">t</span></em>, <em class="sig-param"><span class="pre">isAllColumnsRequired</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.prepareInputTable" title="Link to this definition">#</a></dt>
 <dd><p>Validate and normalize input rows against the schema.</p>
@@ -738,6 +748,15 @@ Recreate table with current schema (for removing columns or changing types)</p>
 <dd></dd></dl>
 
 <dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.updateDefaultEntry">
+<span class="sig-name descname"><span class="pre">updateDefaultEntry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.updateDefaultEntry" title="Link to this definition">#</a></dt>
+<dd><p>Insert default entries into the table if present.</p>
+<p>Uses <a class="reference internal" href="#MmParameter.DefaultEntry" title="MmParameter.DefaultEntry"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DefaultEntry</span></code></a> and the first key in <a class="reference internal" href="#MmParameter.TableColumn" title="MmParameter.TableColumn"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TableColumn</span></code></a> to write
+initial rows. No action if <a class="reference internal" href="#MmParameter.DefaultEntry" title="MmParameter.DefaultEntry"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DefaultEntry</span></code></a> is empty.
+Insert default entries if provided and not empty</p>
+</dd></dl>
+
+<dl class="mat method">
 <dt class="sig sig-object mat" id="MmParameter.updateEntry">
 <span class="sig-name descname"><span class="pre">updateEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">t</span></em>, <em class="sig-param"><span class="pre">keyColumnName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.updateEntry" title="Link to this definition">#</a></dt>
 <dd><p>Upsert rows using <code class="docutils literal notranslate"><span class="pre">sqlupdate</span></code> for matching keys and <code class="docutils literal notranslate"><span class="pre">sqlwrite</span></code> for new rows.</p>
@@ -745,7 +764,7 @@ Recreate table with current schema (for removing columns or changing types)</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>t</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">table</span> <span class="pre">or</span> <span class="pre">struct</span></code></span>) – Input rows to write (all schema columns, any order)</p></li>
-<li><p><strong>keyColumnName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – Conflict key when <code class="docutils literal notranslate"><span class="pre">SerialNumber</span></code> is absent; default “SerialNumber”</p></li>
+<li><p><strong>keyColumnName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – Conflict key when <code class="docutils literal notranslate"><span class="pre">ID</span></code> is absent; default “ID”</p></li>
 </ul>
 </dd>
 </dl>
@@ -842,12 +861,12 @@ Update table schema to match current definition</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="index.html"
+       href="ListList.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">mmParameter</p>
+        <p class="prev-next-title">ListList</p>
       </div>
     </a>
     <a class="right-next"

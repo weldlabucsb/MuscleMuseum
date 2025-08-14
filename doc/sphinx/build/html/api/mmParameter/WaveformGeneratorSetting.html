@@ -165,14 +165,25 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">mmParameter</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="AcquisitionConfig.html">AcquisitionConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BecExpConfig.html">BecExpConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BecExpParameterUnit.html">BecExpParameterUnit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ComputerConfig.html">ComputerConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DatabaseConfig.html">DatabaseConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DatabaseServerConfig.html">DatabaseServerConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HardwareList.html">HardwareList</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ListList.html">ListList</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MmParameter.html">MmParameter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="PhaseLockSetting.html">PhaseLockSetting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RoiConfig.html">RoiConfig</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ScopeSetting.html">ScopeSetting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VariableList.html">VariableList</a></li>
 <li class="toctree-l3"><a class="reference internal" href="WaveformGeneratorConfig.html">WaveformGeneratorConfig</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">WaveformGeneratorSetting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generateParameter.html">generateParameter</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -402,8 +413,9 @@ configuration and per-channel settings.</p>
 <p>Columns in <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TableColumn</span></code> include device identity, sampling rates,
 trigger configuration, output modes/loads, per-channel enable flags, and
 waveform list names. Default values are provided via <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DefaultValue</span></code>.</p>
-<p>This table can join with <code class="docutils literal notranslate"><span class="pre">WaveformGeneratorConfig</span></code> to mirror device model
-and resource information as extra columns and keep them in sync using triggers.</p>
+<p>This table can join with <a class="reference internal" href="WaveformGeneratorConfig.html#WaveformGeneratorConfig" title="WaveformGeneratorConfig"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">WaveformGeneratorConfig</span></code></a> to mirror device
+model and resource information as extra columns and keep them in sync using
+triggers.</p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">

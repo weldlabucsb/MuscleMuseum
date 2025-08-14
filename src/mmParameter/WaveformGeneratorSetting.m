@@ -6,8 +6,9 @@ classdef WaveformGeneratorSetting < MmParameter
     % trigger configuration, output modes/loads, per-channel enable flags, and
     % waveform list names. Default values are provided via :attr:`DefaultValue`.
     %
-    % This table can join with ``WaveformGeneratorConfig`` to mirror device model
-    % and resource information as extra columns and keep them in sync using triggers.
+    % This table can join with :class:`WaveformGeneratorConfig` to mirror device
+    % model and resource information as extra columns and keep them in sync using
+    % triggers.
 
     properties
 

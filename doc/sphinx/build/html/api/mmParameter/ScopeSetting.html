@@ -46,8 +46,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/mmParameter/ScopeSetting';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="WaveformGeneratorConfig" href="WaveformGeneratorConfig.html" />
-    <link rel="prev" title="PhaseLockSetting" href="PhaseLockSetting.html" />
+    <link rel="next" title="VariableList" href="VariableList.html" />
+    <link rel="prev" title="RoiConfig" href="RoiConfig.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -165,14 +165,25 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">mmParameter</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="AcquisitionConfig.html">AcquisitionConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BecExpConfig.html">BecExpConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BecExpParameterUnit.html">BecExpParameterUnit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ComputerConfig.html">ComputerConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DatabaseConfig.html">DatabaseConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DatabaseServerConfig.html">DatabaseServerConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HardwareList.html">HardwareList</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ListList.html">ListList</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MmParameter.html">MmParameter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="PhaseLockSetting.html">PhaseLockSetting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RoiConfig.html">RoiConfig</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">ScopeSetting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VariableList.html">VariableList</a></li>
 <li class="toctree-l3"><a class="reference internal" href="WaveformGeneratorConfig.html">WaveformGeneratorConfig</a></li>
 <li class="toctree-l3"><a class="reference internal" href="WaveformGeneratorSetting.html">WaveformGeneratorSetting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generateParameter.html">generateParameter</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -401,6 +412,9 @@ document.write(`
 <p>Columns include device model, capture duration/samples, trigger configuration,
 per-channel coupling, offsets and ranges, and enable flags. Defaults and a
 default entry are provided to initialize the table.</p>
+<p>Typical usage: construct, call <a class="reference internal" href="MmParameter.html#MmParameter.checkTable" title="MmParameter.checkTable"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">MmParameter.checkTable()</span></code></a> once to ensure
+schema, then <a class="reference internal" href="MmParameter.html#MmParameter.readTable" title="MmParameter.readTable"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">MmParameter.readTable()</span></code></a>/<a class="reference internal" href="MmParameter.html#MmParameter.updateTable" title="MmParameter.updateTable"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">MmParameter.updateTable()</span></code></a> to
+load/save profiles.</p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
@@ -433,20 +447,20 @@ default entry are provided to initialize the table.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="PhaseLockSetting.html"
+       href="RoiConfig.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">PhaseLockSetting</p>
+        <p class="prev-next-title">RoiConfig</p>
       </div>
     </a>
     <a class="right-next"
-       href="WaveformGeneratorConfig.html"
+       href="VariableList.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">WaveformGeneratorConfig</p>
+        <p class="prev-next-title">VariableList</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

@@ -1,6 +1,9 @@
 classdef WaveformGeneratorConfig < MmParameter
     %:class:`WaveformGeneratorConfig` stores device-level configuration for
     % waveform generators, such as model name and VISA resource.
+    %
+    % Typically joined into :class:`WaveformGeneratorSetting` to mirror
+    % :attr:`DeviceModel` and :attr:`ResourceName` by device :attr:`Name`.
     
     properties
 

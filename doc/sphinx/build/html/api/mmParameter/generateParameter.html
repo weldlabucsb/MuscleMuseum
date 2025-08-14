@@ -46,7 +46,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/mmParameter/generateParameter';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="trial" href="../trial/index.html" />
+    <link rel="next" title="mmSetting" href="../mmSetting/index.html" />
     <link rel="prev" title="WaveformGeneratorSetting" href="WaveformGeneratorSetting.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -165,14 +165,25 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">mmParameter</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="AcquisitionConfig.html">AcquisitionConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BecExpConfig.html">BecExpConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BecExpParameterUnit.html">BecExpParameterUnit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ComputerConfig.html">ComputerConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DatabaseConfig.html">DatabaseConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DatabaseServerConfig.html">DatabaseServerConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HardwareList.html">HardwareList</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ListList.html">ListList</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MmParameter.html">MmParameter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="PhaseLockSetting.html">PhaseLockSetting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RoiConfig.html">RoiConfig</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ScopeSetting.html">ScopeSetting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VariableList.html">VariableList</a></li>
 <li class="toctree-l3"><a class="reference internal" href="WaveformGeneratorConfig.html">WaveformGeneratorConfig</a></li>
 <li class="toctree-l3"><a class="reference internal" href="WaveformGeneratorSetting.html">WaveformGeneratorSetting</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">generateParameter</a></li>
 </ul>
 </details></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -397,9 +408,10 @@ document.write(`
 <dt class="sig sig-object mat" id="generateParameter">
 <span class="sig-name descname"><span class="pre">generateParameter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/mmParameter/generateParameter.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#generateParameter" title="Link to this definition">#</a></dt>
 <dd><p>Generate or update parameter tables from .mat snapshots.</p>
-<p>This script loads configuration tables from peer <code class="docutils literal notranslate"><span class="pre">.mat</span></code> files and
-initializes/updates the corresponding parameter tables. It is intended to be
-run after installation or when parameter snapshots change.</p>
+<p>Loads configuration tables from peer <code class="docutils literal notranslate"><span class="pre">.mat</span></code> files and
+initializes/updates the corresponding parameter tables implemented as
+<a class="reference internal" href="MmParameter.html#MmParameter" title="MmParameter"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">MmParameter</span></code></a> subclasses. Run after installation or when parameter
+snapshots change to populate the local SQLite database.</p>
 </dd></dl>
 
 </section>
@@ -425,11 +437,11 @@ run after installation or when parameter snapshots change.</p>
       </div>
     </a>
     <a class="right-next"
-       href="../trial/index.html"
+       href="../mmSetting/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">trial</p>
+        <p class="prev-next-title">mmSetting</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

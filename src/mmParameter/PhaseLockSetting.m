@@ -1,9 +1,9 @@
 classdef PhaseLockSetting < MmParameter
-    %:class:`PhaseLockSetting` stores phase lock device parameters.
+    %:class:`PhaseLockSetting` stores phase lock device settings.
     %
-    % Columns include a logical name, the device model, drive frequency, and an
-    % associated variable name. Defaults and a single default entry are provided
-    % to initialize the table.
+    % Columns include a logical :attr:`Name`, :attr:`DeviceModel`, drive
+    % :attr:`Frequency`, and an associated :attr:`VariableName` for linking
+    % application variables.
 
     properties
 

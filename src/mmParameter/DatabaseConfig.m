@@ -1,9 +1,8 @@
 classdef DatabaseConfig < MmParameter
-    %:class:`PhaseLockSetting` stores phase lock device parameters.
+    %:class:`DatabaseConfig` lists logical databases and their table lists.
     %
-    % Columns include a logical name, the device model, drive frequency, and an
-    % associated variable name. Defaults and a single default entry are provided
-    % to initialize the table.
+    % Used by higher-level code to determine which parameter tables belong to a
+    % given logical database (e.g., ``experiment`` or ``simulation``).
 
     properties
 

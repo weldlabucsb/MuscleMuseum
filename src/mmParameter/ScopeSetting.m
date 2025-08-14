@@ -4,6 +4,10 @@ classdef ScopeSetting < MmParameter
     % Columns include device model, capture duration/samples, trigger configuration,
     % per-channel coupling, offsets and ranges, and enable flags. Defaults and a
     % default entry are provided to initialize the table.
+    %
+    % Typical usage: construct, call :meth:`MmParameter.checkTable` once to ensure
+    % schema, then :meth:`MmParameter.readTable`/:meth:`MmParameter.updateTable` to
+    % load/save profiles.
 
     properties
 

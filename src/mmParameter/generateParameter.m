@@ -1,14 +1,21 @@
 % Generate or update parameter tables from .mat snapshots.
 %
-% This script loads configuration tables from peer ``.mat`` files and
-% initializes/updates the corresponding parameter tables. It is intended to be
-% run after installation or when parameter snapshots change.
+% Loads configuration tables from peer ``.mat`` files and
+% initializes/updates the corresponding parameter tables implemented as
+% :class:`MmParameter` subclasses. Run after installation or when parameter
+% snapshots change to populate the local SQLite database.
 
-% Generate config
+%% Generate config
+clear
 configList = [
+    "BecExpParameterUnit"
     "WaveformGeneratorConfig";
     "AcquisitionConfig";
-    "DatabaseConfig"
+    "DatabaseConfig";
+    "DatabaseServerConfig";
+    "ComputerConfig";
+    "HardwareList";
+    "RoiConfig"
 ];
 for ii = 1:numel(configList)
     configName = configList(ii);
@@ -23,7 +30,7 @@ for ii = 1:numel(configList)
     s.updateTable(t)
 end
 
-% Generate setting
+%% Generate setting
 settingList = [
     "WaveformGeneratorSetting";
     "PhaseLockSetting";
@@ -38,3 +45,23 @@ for ii = 1:numel(settingList)
     s.updateTable(t)
 end
 
+%% HardwareList
+settingList = [
+    "ListList";
+    "VariableList"
+    ];
+for ii = 1:numel(settingList)
+    settingName = settingList(ii);
+    t = loadVar("HardwareVariable" + ".mat",settingName);
+    s = eval(settingName);
+    s.checkTable;
+    s.updateTable(t)
+end
+
+%% BecExp
+becExpType = readtable("becExpType.csv.xlsx",'TextType','string');
+becExpType.FringeRemovalMask = arrayfun(@str2num,becExpType.FringeRemovalMask,'UniformOutput',false);
+becExpType.AnalysisMethod = arrayfun(@str2strmat,becExpType.AnalysisMethod,'UniformOutput',false);
+s = BecExpConfig;
+s.checkTable;
+s.updateTable(becExpType)
