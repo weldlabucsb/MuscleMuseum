@@ -1,7 +1,7 @@
-MmSetting
-=========
+MmParameter
+===========
 
-.. mat:autoclass:: src.mmSetting.MmSetting
+.. mat:autoclass:: src.mmParameter.MmParameter
    :members:
    :private-members:
    :show-inheritance:

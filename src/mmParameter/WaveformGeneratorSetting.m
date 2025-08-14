@@ -1,6 +1,13 @@
-classdef WaveformGeneratorSetting < MmSetting
-    %WAVEFORMGENERATORSETTING Summary of this class goes here
-    %   Detailed explanation goes here
+classdef WaveformGeneratorSetting < MmParameter
+    %:class:`WaveformGeneratorSetting` stores and manages waveform generator
+    % configuration and per-channel settings.
+    %
+    % Columns in :attr:`TableColumn` include device identity, sampling rates,
+    % trigger configuration, output modes/loads, per-channel enable flags, and
+    % waveform list names. Default values are provided via :attr:`DefaultValue`.
+    %
+    % This table can join with ``WaveformGeneratorConfig`` to mirror device model
+    % and resource information as extra columns and keep them in sync using triggers.
 
     properties
 
@@ -8,7 +15,7 @@ classdef WaveformGeneratorSetting < MmSetting
 
     methods
         function obj = WaveformGeneratorSetting()
-            obj@MmSetting()
+            obj@MmParameter()
         end
 
         function defineSchema(obj)
@@ -60,7 +67,12 @@ classdef WaveformGeneratorSetting < MmSetting
                 "WaveformListName" ...
                 ] ...
                 );
-            obj.JoinCondition = dictionary({["WaveformGeneratorConfig","Name"]},{["DeviceModel","ResourceName"]});
+
+            % Define join condition
+            obj.JoinCondition = dictionary(...
+                {["WaveformGeneratorConfig","Name"]},{["DeviceModel"]}...
+                );
+            obj.IsIncludeDefaultEntry = true;
         end
     end
 end

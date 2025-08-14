@@ -11,5 +11,5 @@ API Documentation
    hardware/index
    math/index
    misc/index
-   mmSetting/index
+   mmParameter/index
    trial/index

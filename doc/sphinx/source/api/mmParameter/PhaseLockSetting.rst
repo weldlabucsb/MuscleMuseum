@@ -1,7 +1,7 @@
 PhaseLockSetting
 ================
 
-.. mat:autoclass:: src.mmSetting.PhaseLockSetting
+.. mat:autoclass:: src.mmParameter.PhaseLockSetting
    :members:
    :private-members:
    :show-inheritance:

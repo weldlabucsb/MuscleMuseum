@@ -1,0 +1,918 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>MmParameter &#8212; MuscleMuseum 0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=2149b5ce"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/mmParameter/MmParameter';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="PhaseLockSetting" href="PhaseLockSetting.html" />
+    <link rel="prev" title="mmParameter" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MuscleMuseum 0.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../intro/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/index.html">database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../field/index.html">field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">mmParameter</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">MmParameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PhaseLockSetting.html">PhaseLockSetting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ScopeSetting.html">ScopeSetting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="WaveformGeneratorConfig.html">WaveformGeneratorConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="WaveformGeneratorSetting.html">WaveformGeneratorSetting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generateParameter.html">generateParameter</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sup/support.html">Support</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/api/mmParameter/MmParameter.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/issues/new?title=Issue%20on%20page%20%2Fapi/mmParameter/MmParameter.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>MmParameter</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="mmparameter">
+<h1>MmParameter<a class="headerlink" href="#mmparameter" title="Link to this heading">#</a></h1>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="MmParameter">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">MmParameter</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/mmParameter/MmParameter.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MmParameter" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
+<p><a class="reference internal" href="#MmParameter" title="MmParameter"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">MmParameter</span></code></a> manages persistent toolbox parameters/settings using a local SQLite database.</p>
+<p>Provides schema definition, validation, and automatic migration via a metadata
+table and a schema hash. Supports default entries, typed columns, and
+conversion between MATLAB types and SQLite storage formats.</p>
+<p>Key features:
+- Metadata table for multi-table schema tracking
+- Schema hashing for change detection
+- PRAGMA table_info for schema introspection</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">YourParameterSubclass</span><span class="p">();</span>
+<span class="n">s</span><span class="p">.</span><span class="n">checkTable</span><span class="p">();</span><span class="w"> </span><span class="c">% ensure schema exists and is current</span>
+<span class="n">t</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">readTable</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Notes:</strong></p>
+<ul class="simple">
+<li><p>The database file is placed under <code class="docutils literal notranslate"><span class="pre">getHome()/Documents/MMUser/config</span></code> and is
+named according to <a class="reference internal" href="#MmParameter.DataBaseName" title="MmParameter.DataBaseName"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DataBaseName</span></code></a>.</p></li>
+<li><p>String and matrix-typed columns are serialized to TEXT and converted back on read.</p></li>
+</ul>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.MmParameter">
+<span class="sig-name descname"><span class="pre">MmParameter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.MmParameter" title="Link to this definition">#</a></dt>
+<dd><p>Construct an instance of <a class="reference internal" href="#MmParameter" title="MmParameter"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">MmParameter</span></code></a>.</p>
+<p>Subclasses should define their schema in the constructor by setting
+<a class="reference internal" href="#MmParameter.TableColumn" title="MmParameter.TableColumn"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TableColumn</span></code></a>, <a class="reference internal" href="#MmParameter.DefaultValue" title="MmParameter.DefaultValue"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DefaultValue</span></code></a>, and optionally <a class="reference internal" href="#MmParameter.DefaultEntry" title="MmParameter.DefaultEntry"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DefaultEntry</span></code></a>.</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.ColumnNameAll">
+<span class="sig-name descname"><span class="pre">ColumnNameAll</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#MmParameter.ColumnNameAll" title="Link to this definition">#</a></dt>
+<dd><p>Including the SerialNumber column</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.ColumnTypeAll">
+<span class="sig-name descname"><span class="pre">ColumnTypeAll</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#MmParameter.ColumnTypeAll" title="Link to this definition">#</a></dt>
+<dd><p>Including the SerialNumber column’s type</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.DataBaseName">
+<span class="sig-name descname"><span class="pre">DataBaseName</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;mmParameter.db&quot;</span></em><a class="headerlink" href="#MmParameter.DataBaseName" title="Link to this definition">#</a></dt>
+<dd><p>Database file name. Saved under MMUser/config</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.DataTypeMapping">
+<span class="sig-name descname"><span class="pre">DataTypeMapping</span></span><em class="property"> <span class="pre">=</span> <span class="pre">dictionary([&quot;int64&quot;,&quot;double&quot;,&quot;logical&quot;,&quot;string&quot;,&quot;doubleMatrix&quot;,&quot;logicalMatrix&quot;,&quot;stringMatrix&quot;],</span> <span class="pre">...</span> <span class="pre">[&quot;INT&quot;,&quot;REAL&quot;,&quot;INTEGER&quot;,&quot;TEXT&quot;,&quot;TEXT&quot;,&quot;TEXT&quot;,&quot;TEXT&quot;])</span></em><a class="headerlink" href="#MmParameter.DataTypeMapping" title="Link to this definition">#</a></dt>
+<dd><p>Map MATLAB types to database types</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.DefaultEntry">
+<span class="sig-name descname"><span class="pre">DefaultEntry</span></span><em class="property"> <span class="pre">table</span></em><a class="headerlink" href="#MmParameter.DefaultEntry" title="Link to this definition">#</a></dt>
+<dd><p>Default entries for initial setup</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.DefaultKey">
+<span class="sig-name descname"><span class="pre">DefaultKey</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">string</span></em><a class="headerlink" href="#MmParameter.DefaultKey" title="Link to this definition">#</a></dt>
+<dd><p>The default key string will be the name of the first column after SerialNumber</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.DefaultValue">
+<span class="sig-name descname"><span class="pre">DefaultValue</span></span><em class="property"> <span class="pre">dictionary</span> <span class="pre">=</span> <span class="pre">dictionary(&quot;Name&quot;,&quot;Name&quot;)</span></em><a class="headerlink" href="#MmParameter.DefaultValue" title="Link to this definition">#</a></dt>
+<dd><p>Stores column name and default value. Should be defined in subclass’s construtor. Using Null is not recommended.</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.ExtraColumnFromJoin">
+<span class="sig-name descname"><span class="pre">ExtraColumnFromJoin</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#MmParameter.ExtraColumnFromJoin" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.IsSchemaCurrent">
+<span class="sig-name descname"><span class="pre">IsSchemaCurrent</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">logical</span></em><a class="headerlink" href="#MmParameter.IsSchemaCurrent" title="Link to this definition">#</a></dt>
+<dd><p>Check whether the stored schema hash matches the current schema.</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.IsTriggerJoinOnJoinTable">
+<span class="sig-name descname"><span class="pre">IsTriggerJoinOnJoinTable</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">false</span></em><a class="headerlink" href="#MmParameter.IsTriggerJoinOnJoinTable" title="Link to this definition">#</a></dt>
+<dd><p>Determine if we want to trigger the join automatically when the join table is updated or inserted</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.IsTriggerJoinOnSelf">
+<span class="sig-name descname"><span class="pre">IsTriggerJoinOnSelf</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">false</span></em><a class="headerlink" href="#MmParameter.IsTriggerJoinOnSelf" title="Link to this definition">#</a></dt>
+<dd><p>Determine if we want to trigger the join automatically when this table is updated or inserted</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.JoinCondition">
+<span class="sig-name descname"><span class="pre">JoinCondition</span></span><em class="property"> <span class="pre">dictionary</span> <span class="pre">=</span> <span class="pre">dictionary([],[])</span></em><a class="headerlink" href="#MmParameter.JoinCondition" title="Link to this definition">#</a></dt>
+<dd><p>{[Table,KeyColumn]} -&gt;{[DataColumn1,DataColumn2,…]}</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.MetadataTableName">
+<span class="sig-name descname"><span class="pre">MetadataTableName</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;SchemaMetadata&quot;</span></em><a class="headerlink" href="#MmParameter.MetadataTableName" title="Link to this definition">#</a></dt>
+<dd><p>Table to store schema information for all tables</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.SchemaHash">
+<span class="sig-name descname"><span class="pre">SchemaHash</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">string</span></em><a class="headerlink" href="#MmParameter.SchemaHash" title="Link to this definition">#</a></dt>
+<dd><p>Hash of current schema definition including default entries</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.TableColumn">
+<span class="sig-name descname"><span class="pre">TableColumn</span></span><em class="property"> <span class="pre">dictionary</span> <span class="pre">=</span> <span class="pre">dictionary(&quot;Name&quot;,&quot;string&quot;)</span></em><a class="headerlink" href="#MmParameter.TableColumn" title="Link to this definition">#</a></dt>
+<dd><p>Stores column name and type. Should be defined in subclass’s construtor</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.TableName">
+<span class="sig-name descname"><span class="pre">TableName</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">string</span></em><a class="headerlink" href="#MmParameter.TableName" title="Link to this definition">#</a></dt>
+<dd><p>Table name is consistent with the subclass name</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.checkConstructor">
+<span class="sig-name descname"><span class="pre">checkConstructor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.checkConstructor" title="Link to this definition">#</a></dt>
+<dd><p>Validate constructor-provided schema and defaults.</p>
+<p>Ensures <a class="reference internal" href="#MmParameter.TableColumn" title="MmParameter.TableColumn"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TableColumn</span></code></a> types follow <a class="reference internal" href="#MmParameter.DataTypeMapping" title="MmParameter.DataTypeMapping"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DataTypeMapping</span></code></a>,
+<a class="reference internal" href="#MmParameter.DefaultEntry" title="MmParameter.DefaultEntry"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DefaultEntry</span></code></a> rows can be serialized by <a class="reference internal" href="#MmParameter.prepareInputTable" title="MmParameter.prepareInputTable"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">prepareInputTable()</span></code></a>,
+and that <a class="reference internal" href="#MmParameter.DefaultValue" title="MmParameter.DefaultValue"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DefaultValue</span></code></a> includes all columns.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.checkDataBase">
+<span class="sig-name descname"><span class="pre">checkDataBase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.checkDataBase" title="Link to this definition">#</a></dt>
+<dd><p>Ensure the SQLite database file and metadata table exist.</p>
+<p>Creates the database file in <code class="docutils literal notranslate"><span class="pre">MMUser/config</span></code> if missing and initializes
+the <code class="docutils literal notranslate"><span class="pre">SchemaMetadata</span></code> table for schema tracking.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.checkTable">
+<span class="sig-name descname"><span class="pre">checkTable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.checkTable" title="Link to this definition">#</a></dt>
+<dd><p>Ensure this parameter table exists and matches the current schema.</p>
+<p>If the table does not exist, it is created. If the schema hash differs
+from the stored one, an automatic schema migration is performed.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.connectDatabase">
+<span class="sig-name descname"><span class="pre">connectDatabase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.connectDatabase" title="Link to this definition">#</a></dt>
+<dd><p>Open a read-write connection to the SQLite database file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SQLite connection handle</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>sqlite</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.connectDatabaseRead">
+<span class="sig-name descname"><span class="pre">connectDatabaseRead</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.connectDatabaseRead" title="Link to this definition">#</a></dt>
+<dd><p>Open a read-only connection to the SQLite database file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SQLite read-only connection handle</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>sqlite</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.convertOutputTable">
+<span class="sig-name descname"><span class="pre">convertOutputTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">t</span></em>, <em class="sig-param"><span class="pre">IsHideSerial</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.convertOutputTable" title="Link to this definition">#</a></dt>
+<dd><p>Convert SQLite-stored values back to MATLAB types.</p>
+<p>Converts matrix-encoded strings and logical columns to their corresponding
+MATLAB representations based on <a class="reference internal" href="#MmParameter.TableColumn" title="MmParameter.TableColumn"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TableColumn</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">table</span></code></span>) – Table read from the database.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Table with converted MATLAB types.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>table</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.createJoin">
+<span class="sig-name descname"><span class="pre">createJoin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.createJoin" title="Link to this definition">#</a></dt>
+<dd><p>Create join-backed shadow columns and triggers based on <a class="reference internal" href="#MmParameter.JoinCondition" title="MmParameter.JoinCondition"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">JoinCondition</span></code></a>.</p>
+<p>For each entry in <a class="reference internal" href="#MmParameter.JoinCondition" title="MmParameter.JoinCondition"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">JoinCondition</span></code></a> with key <code class="docutils literal notranslate"><span class="pre">[JoinTable,</span> <span class="pre">JoinKey]</span></code> and
+value of data columns to mirror, this will:</p>
+<ul class="simple">
+<li><p>Add missing columns to this table</p></li>
+<li><p>Populate them once from the join table</p></li>
+<li><p>Create triggers to keep them updated on INSERT/UPDATE of either table,
+according to <a class="reference internal" href="#MmParameter.IsTriggerJoinOnJoinTable" title="MmParameter.IsTriggerJoinOnJoinTable"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">IsTriggerJoinOnJoinTable</span></code></a> and <a class="reference internal" href="#MmParameter.IsTriggerJoinOnSelf" title="MmParameter.IsTriggerJoinOnSelf"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">IsTriggerJoinOnSelf</span></code></a>.</p></li>
+</ul>
+<p>Called from <a class="reference internal" href="#MmParameter.checkTable" title="MmParameter.checkTable"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">checkTable()</span></code></a> after ensuring the base table exists.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.createTable">
+<span class="sig-name descname"><span class="pre">createTable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.createTable" title="Link to this definition">#</a></dt>
+<dd><p>Create the SQLite table according to the current schema definition.</p>
+<p>Uses <a class="reference internal" href="#MmParameter.TableColumn" title="MmParameter.TableColumn"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TableColumn</span></code></a> and <a class="reference internal" href="#MmParameter.DataTypeMapping" title="MmParameter.DataTypeMapping"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DataTypeMapping</span></code></a> to generate the CREATE TABLE
+statement, writes default entries if provided, and updates schema metadata.
+Create the table with current schema</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.deleteEntry">
+<span class="sig-name descname"><span class="pre">deleteEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">keyColumnValue</span></em>, <em class="sig-param"><span class="pre">keyColumnName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.deleteEntry" title="Link to this definition">#</a></dt>
+<dd><p>Delete entries by key column and value(s).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keyColumnName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Key column used for deletion</p></li>
+<li><p><strong>keyColumnValue</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">vector</span></code></span>) – Key values to delete (vector)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.insertDefaultEntry">
+<span class="sig-name descname"><span class="pre">insertDefaultEntry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.insertDefaultEntry" title="Link to this definition">#</a></dt>
+<dd><p>Insert default entries into the table if present.</p>
+<p>Uses <a class="reference internal" href="#MmParameter.DefaultEntry" title="MmParameter.DefaultEntry"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DefaultEntry</span></code></a> and the first key in <a class="reference internal" href="#MmParameter.TableColumn" title="MmParameter.TableColumn"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TableColumn</span></code></a> to write
+initial rows. No action if <a class="reference internal" href="#MmParameter.DefaultEntry" title="MmParameter.DefaultEntry"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DefaultEntry</span></code></a> is empty.
+Insert default entries if provided and not empty</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.prepareInputTable">
+<span class="sig-name descname"><span class="pre">prepareInputTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">t</span></em>, <em class="sig-param"><span class="pre">isAllColumnsRequired</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.prepareInputTable" title="Link to this definition">#</a></dt>
+<dd><p>Validate and normalize input rows against the schema.</p>
+<p>Ensures column names and MATLAB types match <a class="reference internal" href="#MmParameter.TableColumn" title="MmParameter.TableColumn"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TableColumn</span></code></a> regardless
+of the input column order. Partial inputs are allowed unless
+<code class="docutils literal notranslate"><span class="pre">isAllColumnsRequired</span></code> is true. Matrix-typed columns are serialized to
+TEXT: non-cell inputs are wrapped per row; cell inputs are validated and
+serialized. Supports empty [], missing/NaN/Inf in numeric matrices and
+empty strings in string matrices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">table</span> <span class="pre">or</span> <span class="pre">struct</span></code></span>) – Input rows. Struct inputs are converted to table.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Normalized table (column order and types aligned to schema) ready for SQL writes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>table</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.readEntry">
+<span class="sig-name descname"><span class="pre">readEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">keyColumnValue</span></em>, <em class="sig-param"><span class="pre">keyColumnName</span></em>, <em class="sig-param"><span class="pre">IsHideSerial</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.readEntry" title="Link to this definition">#</a></dt>
+<dd><p>Read entries filtered by a key column and specific values.</p>
+<p>Filtering is supported for base table columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keyColumnName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Column to filter on.</p></li>
+<li><p><strong>keyColumnValue</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">vector</span></code></span>) – Values to match in the key column.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Matching rows with MATLAB-typed columns.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>table</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.readTable">
+<span class="sig-name descname"><span class="pre">readTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">IsHideSerial</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.readTable" title="Link to this definition">#</a></dt>
+<dd><p>Read the entire table and convert columns to MATLAB types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>All rows in this parameter table.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>table</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.readValue">
+<span class="sig-name descname"><span class="pre">readValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">keyColumnValue</span></em>, <em class="sig-param"><span class="pre">readColumnName</span></em>, <em class="sig-param"><span class="pre">keyColumnName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.readValue" title="Link to this definition">#</a></dt>
+<dd><p>Read one or more columns filtered by a key column and values.</p>
+<p>When a single column is requested, a vector is returned instead of a table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keyColumnName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Column to filter on</p></li>
+<li><p><strong>keyColumnValue</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">vector</span></code></span>) – Key values to match (vector)</p></li>
+<li><p><strong>readColumnName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span> <span class="pre">or</span> <span class="pre">string</span> <span class="pre">vector</span></code></span>) – Column name(s) to return</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Table of selected columns, or a vector when a single column is requested</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>table or vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.recreateTable">
+<span class="sig-name descname"><span class="pre">recreateTable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.recreateTable" title="Link to this definition">#</a></dt>
+<dd><p>Recreate the table from scratch to remove extra columns or change types.</p>
+<p>Backs up the current table, creates a new table with the target schema,
+copies compatible columns, and then drops the backup.
+Recreate table with current schema (for removing columns or changing types)</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.setProperty">
+<span class="sig-name descname"><span class="pre">setProperty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.setProperty" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.updateEntry">
+<span class="sig-name descname"><span class="pre">updateEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">t</span></em>, <em class="sig-param"><span class="pre">keyColumnName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.updateEntry" title="Link to this definition">#</a></dt>
+<dd><p>Upsert rows using <code class="docutils literal notranslate"><span class="pre">sqlupdate</span></code> for matching keys and <code class="docutils literal notranslate"><span class="pre">sqlwrite</span></code> for new rows.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">table</span> <span class="pre">or</span> <span class="pre">struct</span></code></span>) – Input rows to write (all schema columns, any order)</p></li>
+<li><p><strong>keyColumnName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – Conflict key when <code class="docutils literal notranslate"><span class="pre">SerialNumber</span></code> is absent; default “SerialNumber”</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.updateSchemaMetadata">
+<span class="sig-name descname"><span class="pre">updateSchemaMetadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.updateSchemaMetadata" title="Link to this definition">#</a></dt>
+<dd><p>Update or insert the current schema hash into the metadata table.</p>
+<p>Records <code class="docutils literal notranslate"><span class="pre">TableName</span></code>, <code class="docutils literal notranslate"><span class="pre">SchemaHash</span></code>, and <code class="docutils literal notranslate"><span class="pre">LastUpdated</span></code> for change tracking.
+Insert or update schema metadata for this table
+Uses INSERT OR REPLACE to handle both new entries and updates</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.updateTable">
+<span class="sig-name descname"><span class="pre">updateTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.updateTable" title="Link to this definition">#</a></dt>
+<dd><p>Overwrite the entire database table with validated content.</p>
+<blockquote>
+<div><p>Drops and recreates the table according to the current schema, then
+upserts rows from <code class="docutils literal notranslate"><span class="pre">t</span></code> using <a class="reference internal" href="#MmParameter.DefaultKey" title="MmParameter.DefaultKey"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DefaultKey</span></code></a>, and finally inserts
+the configured default entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param t<span class="colon">:</span></dt>
+<dd class="field-odd"><p>New table content that matches <a class="reference internal" href="#MmParameter.TableColumn" title="MmParameter.TableColumn"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TableColumn</span></code></a> names and types</p>
+</dd>
+<dt class="field-even">type t<span class="colon">:</span></dt>
+<dd class="field-even"><p>table</p>
+</dd>
+</dl>
+<p><strong>Raises:</strong></p>
+<blockquote>
+<div><dl class="simple">
+<dt><code class="xref mat mat-class docutils literal notranslate"><span class="pre">error</span></code></dt><dd><p>If input table names or types do not match the schema.</p>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+<p>Overwrite the entire database table</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.updateTableSchema">
+<span class="sig-name descname"><span class="pre">updateTableSchema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.updateTableSchema" title="Link to this definition">#</a></dt>
+<dd><p>Migrate the SQLite table to match the current schema.</p>
+<p>Adds missing columns with default values when provided, and recreates the table
+if extra columns or type mismatches are detected. Updates metadata afterward.
+Update table schema to match current definition</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.updateValue">
+<span class="sig-name descname"><span class="pre">updateValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">keyColumnValue</span></em>, <em class="sig-param"><span class="pre">updateColumnName</span></em>, <em class="sig-param"><span class="pre">value</span></em>, <em class="sig-param"><span class="pre">keyColumnName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.updateValue" title="Link to this definition">#</a></dt>
+<dd><p>Update values in a specific column for selected key values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keyColumnName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Key column to match</p></li>
+<li><p><strong>keyColumnValue</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">vector</span></code></span>) – Key values to update (vector)</p></li>
+<li><p><strong>updateColumnName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Column to be updated</p></li>
+<li><p><strong>value</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">vector</span> <span class="pre">or</span> <span class="pre">cell</span></code></span>) – New values (vector; for matrix columns use cell array)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.writeEntry">
+<span class="sig-name descname"><span class="pre">writeEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.writeEntry" title="Link to this definition">#</a></dt>
+<dd><p>Append entries to the table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">table</span> <span class="pre">or</span> <span class="pre">struct</span></code></span>) – Rows to write. Struct inputs are converted to table.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">mmParameter</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="PhaseLockSetting.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">PhaseLockSetting</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Weld Lab
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Weld Lab.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

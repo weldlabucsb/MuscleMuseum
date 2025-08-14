@@ -1,7 +1,7 @@
 ScopeSetting
 ============
 
-.. mat:autoclass:: src.mmSetting.ScopeSetting
+.. mat:autoclass:: src.mmParameter.ScopeSetting
    :members:
    :private-members:
    :show-inheritance:

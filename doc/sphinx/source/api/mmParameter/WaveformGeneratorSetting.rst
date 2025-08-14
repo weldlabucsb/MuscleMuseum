@@ -1,7 +1,7 @@
 WaveformGeneratorSetting
 ========================
 
-.. mat:autoclass:: src.mmSetting.WaveformGeneratorSetting
+.. mat:autoclass:: src.mmParameter.WaveformGeneratorSetting
    :members:
    :private-members:
    :show-inheritance:

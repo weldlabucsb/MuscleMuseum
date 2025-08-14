@@ -656,15 +656,15 @@ document.write(`
         <li><a href="api/hardware/VescentPhaseLock.html#VescentPhaseLock.check">(VescentPhaseLock method)</a>
 </li>
       </ul></li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.checkConstructor">checkConstructor() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.checkConstructor">checkConstructor() (MmParameter method)</a>
 </li>
       <li><a href="api/math/FitData1D.html#FitData1D.checkData">checkData() (FitData1D method)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.checkDataBase">checkDataBase() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.checkDataBase">checkDataBase() (MmParameter method)</a>
 </li>
       <li><a href="api/hardware/Andor.html#Andor.checkError">checkError() (Andor method)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.checkTable">checkTable() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.checkTable">checkTable() (MmParameter method)</a>
 </li>
       <li><a href="api/bec/BEC.html#BEC.ChemicalPotential">ChemicalPotential (BEC attribute)</a>
 </li>
@@ -718,6 +718,10 @@ document.write(`
         <li><a href="api/trial/Od.html#Od.Colormap">(Od attribute)</a>
 </li>
       </ul></li>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.ColumnNameAll">ColumnNameAll (MmParameter attribute)</a>
+</li>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.ColumnTypeAll">ColumnTypeAll (MmParameter attribute)</a>
+</li>
       <li><a href="api/trial/computeAbsorption.html#computeAbsorption">computeAbsorption() (built-in function)</a>
 </li>
       <li><a href="api/field/OpticalLattice.html#OpticalLattice.computeAll1D">computeAll1D() (OpticalLattice method)</a>
@@ -730,10 +734,10 @@ document.write(`
 </li>
       <li><a href="api/field/OpticalLattice.html#OpticalLattice.computeBandPopulation1D">computeBandPopulation1D() (OpticalLattice method)</a>
 </li>
-      <li><a href="api/field/OpticalLattice.html#OpticalLattice.computeBandPopulationFourier1D">computeBandPopulationFourier1D() (OpticalLattice method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/field/OpticalLattice.html#OpticalLattice.computeBandPopulationFourier1D">computeBandPopulationFourier1D() (OpticalLattice method)</a>
+</li>
       <li><a href="api/field/OpticalLattice.html#OpticalLattice.computeBerryConnection1D">computeBerryConnection1D() (OpticalLattice method)</a>
 </li>
       <li><a href="api/field/OpticalLattice.html#OpticalLattice.computeFloquetAmpMod1D">computeFloquetAmpMod1D() (OpticalLattice method)</a>
@@ -792,9 +796,9 @@ document.write(`
         <li><a href="api/hardware/Andor.html#Andor.connectCamera">(Andor method)</a>
 </li>
       </ul></li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.connectDatabase">connectDatabase() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.connectDatabase">connectDatabase() (MmParameter method)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.connectDatabaseRead">connectDatabaseRead() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.connectDatabaseRead">connectDatabaseRead() (MmParameter method)</a>
 </li>
       <li><a href="api/database/connectPsqlDatabase.html#connectPsqlDatabase">connectPsqlDatabase() (built-in function)</a>
 </li>
@@ -812,17 +816,19 @@ document.write(`
 </li>
       <li><a href="api/trial/convertidx.html#convertidx">convertidx() (built-in function)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.convertOutput">convertOutput() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.convertOutputTable">convertOutputTable() (MmParameter method)</a>
 </li>
       <li><a href="api/math/Roi.html#Roi.CornerList">CornerList (Roi attribute)</a>
 </li>
       <li><a href="api/trial/BecExp.html#BecExp.countExistedLog">countExistedLog() (BecExp method)</a>
 </li>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.createJoin">createJoin() (MmParameter method)</a>
+</li>
       <li><a href="api/math/Roi.html#Roi.createMask">createMask() (Roi method)</a>
 </li>
       <li><a href="api/database/createReader.html#createReader">createReader() (built-in function)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.createTable">createTable() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.createTable">createTable() (MmParameter method)</a>
 </li>
       <li><a href="api/trial/Trial.html#Trial.createWatcher">createWatcher() (Trial method)</a>
 </li>
@@ -870,7 +876,7 @@ document.write(`
 </li>
       <li><a href="api/trial/SimRun.html#SimRun.DataAnalysisPath">DataAnalysisPath (SimRun attribute)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.DataBaseName">DataBaseName (MmSetting attribute)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.DataBaseName">DataBaseName (MmParameter attribute)</a>
 </li>
       <li><a href="api/trial/SimRun.html#SimRun.DataFormat">DataFormat (SimRun attribute)</a>
 </li>
@@ -890,21 +896,31 @@ document.write(`
 </li>
       <li><a href="api/hardware/Hardware.html#Hardware.DataType">DataType (Hardware attribute)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.DataTypeMapping">DataTypeMapping (MmSetting attribute)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.DataTypeMapping">DataTypeMapping (MmParameter attribute)</a>
 </li>
       <li><a href="api/trial/Trial.html#Trial.DateTime">DateTime (Trial attribute)</a>
 </li>
       <li><a href="api/trial/decompfactor.html#decompfactor">decompfactor() (built-in function)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.DefaultEntry">DefaultEntry (MmSetting attribute)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.DefaultEntry">DefaultEntry (MmParameter attribute)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.DefaultKey">DefaultKey (MmSetting attribute)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.DefaultKey">DefaultKey (MmParameter attribute)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.DefaultValue">DefaultValue (MmSetting attribute)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.DefaultValue">DefaultValue (MmParameter attribute)</a>
 </li>
+      <li><a href="api/mmParameter/PhaseLockSetting.html#PhaseLockSetting.defineSchema">defineSchema() (PhaseLockSetting method)</a>
+
+      <ul>
+        <li><a href="api/mmParameter/ScopeSetting.html#ScopeSetting.defineSchema">(ScopeSetting method)</a>
+</li>
+        <li><a href="api/mmParameter/WaveformGeneratorConfig.html#WaveformGeneratorConfig.defineSchema">(WaveformGeneratorConfig method)</a>
+</li>
+        <li><a href="api/mmParameter/WaveformGeneratorSetting.html#WaveformGeneratorSetting.defineSchema">(WaveformGeneratorSetting method)</a>
+</li>
+      </ul></li>
       <li><a href="api/trial/deleteBecExp.html#deleteBecExp">deleteBecExp() (built-in function)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.deleteEntry">deleteEntry() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.deleteEntry">deleteEntry() (MmParameter method)</a>
 </li>
       <li><a href="api/trial/deleteMeSim.html#deleteMeSim">deleteMeSim() (built-in function)</a>
 </li>
@@ -932,12 +948,12 @@ document.write(`
         <li><a href="api/field/OpticalTrap.html#OpticalTrap.Depth">(OpticalTrap attribute)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/field/OpticalLattice.html#OpticalLattice.DepthKd">DepthKd (OpticalLattice attribute)</a>
 </li>
       <li><a href="api/field/OpticalLattice.html#OpticalLattice.DepthLaser">DepthLaser (OpticalLattice attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/field/OpticalLattice.html#OpticalLattice.DepthLu">DepthLu (OpticalLattice attribute)</a>
 </li>
       <li><a href="api/field/OpticalLattice.html#OpticalLattice.DepthSpec">DepthSpec (OpticalLattice attribute)</a>
@@ -1091,6 +1107,8 @@ document.write(`
       <li><a href="api/math/FitData1D.html#FitData1D.evaluateFit">evaluateFit() (FitData1D method)</a>
 </li>
       <li><a href="api/hardware/Acquisition.html#Acquisition.ExposureTime">ExposureTime (Acquisition attribute)</a>
+</li>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.ExtraColumnFromJoin">ExtraColumnFromJoin (MmParameter attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1286,7 +1304,7 @@ document.write(`
 </li>
       <li><a href="api/trial/gaussiantr.html#gaussiantr">gaussiantr() (built-in function)</a>
 </li>
-      <li><a href="api/mmSetting/generateSetting.html#generateSetting">generateSetting() (built-in function)</a>
+      <li><a href="api/mmParameter/generateParameter.html#generateParameter">generateParameter() (built-in function)</a>
 </li>
       <li><a href="api/hardware/getAcq.html#getAcq">getAcq() (built-in function)</a>
 </li>
@@ -1506,8 +1524,6 @@ document.write(`
         <li><a href="api/trial/Tof.html#Tof.initialize">(Tof method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/trial/SpaceTimeSim.html#SpaceTimeSim.InitialTime">InitialTime (SpaceTimeSim attribute)</a>
 
       <ul>
@@ -1516,7 +1532,9 @@ document.write(`
         <li><a href="api/trial/TimeSimRun.html#TimeSimRun.InitialTime">(TimeSimRun attribute)</a>
 </li>
       </ul></li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.insertDefaultEntry">insertDefaultEntry() (MmSetting method)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.insertDefaultEntry">insertDefaultEntry() (MmParameter method)</a>
 </li>
       <li><a href="api/field/Laser.html#Laser.Intensity">Intensity (Laser attribute)</a>
 </li>
@@ -1566,7 +1584,7 @@ document.write(`
 </li>
       <li><a href="api/trial/CenterFit.html#CenterFit.IsSaveCenter">IsSaveCenter (CenterFit attribute)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.IsSchemaCurrent">IsSchemaCurrent (MmSetting attribute)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.IsSchemaCurrent">IsSchemaCurrent (MmParameter attribute)</a>
 </li>
       <li><a href="api/trial/AtomNumber.html#AtomNumber.IsShowCondensate">IsShowCondensate (AtomNumber attribute)</a>
 </li>
@@ -1581,6 +1599,10 @@ document.write(`
       <li><a href="api/math/Roi.html#Roi.IsSubRoi">IsSubRoi (Roi attribute)</a>
 </li>
       <li><a href="api/math/WaveformList.html#WaveformList.IsTriggerAdvance">IsTriggerAdvance (WaveformList attribute)</a>
+</li>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.IsTriggerJoinOnJoinTable">IsTriggerJoinOnJoinTable (MmParameter attribute)</a>
+</li>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.IsTriggerJoinOnSelf">IsTriggerJoinOnSelf (MmParameter attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1600,14 +1622,16 @@ document.write(`
         <li><a href="api/atom/TwoJManifoldDivalent.html#TwoJManifoldDivalent.JExcited">(TwoJManifoldDivalent attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/atom/TwoJManifold.html#TwoJManifold.JGround">JGround (TwoJManifold attribute)</a>
 
       <ul>
         <li><a href="api/atom/TwoJManifoldDivalent.html#TwoJManifoldDivalent.JGround">(TwoJManifoldDivalent attribute)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.JoinCondition">JoinCondition (MmParameter attribute)</a>
+</li>
       <li><a href="api/atom/OneJManifold.html#OneJManifold.JOperator">JOperator (OneJManifold attribute)</a>
 
       <ul>
@@ -1892,7 +1916,7 @@ document.write(`
 </li>
       <li><a href="api/trial/MeSimRun.html#MeSimRun.MeSimRun">MeSimRun() (MeSimRun method)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.MetadataTableName">MetadataTableName (MmSetting attribute)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.MetadataTableName">MetadataTableName (MmParameter attribute)</a>
 </li>
       <li><a href="api/trial/GPE.html#GPE.method1">method1() (GPE method)</a>
 </li>
@@ -1918,9 +1942,9 @@ document.write(`
 </li>
       <li><a href="api/atom/TwoJManifoldDivalent.html#TwoJManifoldDivalent.MJGround">MJGround (TwoJManifoldDivalent attribute)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting">MmSetting (built-in class)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter">MmParameter (built-in class)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.MmSetting">MmSetting() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.MmParameter">MmParameter() (MmParameter method)</a>
 </li>
       <li><a href="api/hardware/Hardware.html#Hardware.Model">Model (Hardware attribute)</a>
 </li>
@@ -2236,9 +2260,9 @@ document.write(`
 </li>
       <li><a href="api/hardware/PhaseLockControlPanel.html#PhaseLockControlPanel">PhaseLockControlPanel (built-in application)</a>
 </li>
-      <li><a href="api/mmSetting/PhaseLockSetting.html#PhaseLockSetting">PhaseLockSetting (built-in class)</a>
+      <li><a href="api/mmParameter/PhaseLockSetting.html#PhaseLockSetting">PhaseLockSetting (built-in class)</a>
 </li>
-      <li><a href="api/mmSetting/PhaseLockSetting.html#PhaseLockSetting.PhaseLockSetting">PhaseLockSetting() (PhaseLockSetting method)</a>
+      <li><a href="api/mmParameter/PhaseLockSetting.html#PhaseLockSetting.PhaseLockSetting">PhaseLockSetting() (PhaseLockSetting method)</a>
 </li>
       <li><a href="api/math/ModulatedWaveform.html#ModulatedWaveform.PhaseModulation">PhaseModulation (ModulatedWaveform attribute)</a>
 </li>
@@ -2318,7 +2342,7 @@ document.write(`
 </li>
       <li><a href="api/field/Laser.html#Laser.Power">Power (Laser attribute)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.prepareInputTable">prepareInputTable() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.prepareInputTable">prepareInputTable() (MmParameter method)</a>
 </li>
       <li><a href="api/trial/GPE.html#GPE.Property1">Property1 (GPE attribute)</a>
 </li>
@@ -2400,7 +2424,7 @@ document.write(`
 </li>
       <li><a href="api/trial/BecExp.html#BecExp.readCiceroLog">readCiceroLog() (BecExp method)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.readEntry">readEntry() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.readEntry">readEntry() (MmParameter method)</a>
 </li>
       <li><a href="api/trial/BecExp.html#BecExp.readRun">readRun() (BecExp method)</a>
 
@@ -2410,9 +2434,9 @@ document.write(`
       </ul></li>
       <li><a href="api/trial/BecExp.html#BecExp.readRunRoi">readRunRoi() (BecExp method)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.readTable">readTable() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.readTable">readTable() (MmParameter method)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.readValue">readValue() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.readValue">readValue() (MmParameter method)</a>
 </li>
       <li><a href="api/atom/AtomManifold.html#AtomManifold.RecoilEnergy">RecoilEnergy (AtomManifold attribute)</a>
 
@@ -2438,7 +2462,7 @@ document.write(`
         <li><a href="api/field/OpticalPotential.html#OpticalPotential.RecoilVelocity">(OpticalPotential attribute)</a>
 </li>
       </ul></li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.recreateTable">recreateTable() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.recreateTable">recreateTable() (MmParameter method)</a>
 </li>
       <li><a href="api/atom/TwoJManifold.html#TwoJManifold.ReducedDipoleMatrixElement">ReducedDipoleMatrixElement (TwoJManifold attribute)</a>
 
@@ -2674,7 +2698,7 @@ document.write(`
       </ul></li>
       <li><a href="api/trial/Trial.html#Trial.ScannedParameterUnit">ScannedParameterUnit (Trial attribute)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.SchemaHash">SchemaHash (MmSetting attribute)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.SchemaHash">SchemaHash (MmParameter attribute)</a>
 </li>
       <li><a href="api/hardware/Scope.html#Scope">Scope (built-in class)</a>
 </li>
@@ -2684,9 +2708,9 @@ document.write(`
 </li>
       <li><a href="api/trial/BecExp.html#BecExp.ScopeData">ScopeData (BecExp attribute)</a>
 </li>
-      <li><a href="api/mmSetting/ScopeSetting.html#ScopeSetting">ScopeSetting (built-in class)</a>
+      <li><a href="api/mmParameter/ScopeSetting.html#ScopeSetting">ScopeSetting (built-in class)</a>
 </li>
-      <li><a href="api/mmSetting/ScopeSetting.html#ScopeSetting.ScopeSetting">ScopeSetting() (ScopeSetting method)</a>
+      <li><a href="api/mmParameter/ScopeSetting.html#ScopeSetting.ScopeSetting">ScopeSetting() (ScopeSetting method)</a>
 </li>
       <li><a href="api/trial/ScopeValue.html#ScopeValue">ScopeValue (built-in class)</a>
 </li>
@@ -2783,6 +2807,8 @@ document.write(`
       <li><a href="api/hardware/setPcoConfig.html#setPcoConfig">setPcoConfig() (built-in function)</a>
 </li>
       <li><a href="api/trial/InitialCondition.html#InitialCondition.setProperties">setProperties() (InitialCondition method)</a>
+</li>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.setProperty">setProperty() (MmParameter method)</a>
 </li>
       <li><a href="api/hardware/SpectrumWaveformGenerator.html#SpectrumWaveformGenerator.setSpec">setSpec() (SpectrumWaveformGenerator method)</a>
 </li>
@@ -3070,9 +3096,9 @@ document.write(`
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.TableColumn">TableColumn (MmSetting attribute)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.TableColumn">TableColumn (MmParameter attribute)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.TableName">TableName (MmSetting attribute)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.TableName">TableName (MmParameter attribute)</a>
 </li>
       <li><a href="api/math/TanhSinePulse.html#TanhSinePulse">TanhSinePulse (built-in class)</a>
 </li>
@@ -3344,7 +3370,7 @@ document.write(`
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.updateEntry">updateEntry() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.updateEntry">updateEntry() (MmParameter method)</a>
 </li>
       <li><a href="api/trial/AtomNumber.html#AtomNumber.updateFigure">updateFigure() (AtomNumber method)</a>
 
@@ -3382,15 +3408,15 @@ document.write(`
 </li>
       <li><a href="api/trial/Trial.html#Trial.updateObject">updateObject() (Trial method)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.updateSchemaMetadata">updateSchemaMetadata() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.updateSchemaMetadata">updateSchemaMetadata() (MmParameter method)</a>
 </li>
       <li><a href="api/trial/BecExp.html#BecExp.updateScopeData">updateScopeData() (BecExp method)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.updateTable">updateTable() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.updateTable">updateTable() (MmParameter method)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.updateTableSchema">updateTableSchema() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.updateTableSchema">updateTableSchema() (MmParameter method)</a>
 </li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.updateValue">updateValue() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.updateValue">updateValue() (MmParameter method)</a>
 </li>
       <li><a href="api/hardware/KeysightWaveformGenerator.html#KeysightWaveformGenerator.upload">upload() (KeysightWaveformGenerator method)</a>
 
@@ -3486,9 +3512,13 @@ document.write(`
 </li>
       <li><a href="api/hardware/WaveformGenerator.html#WaveformGenerator.WaveformGenerator">WaveformGenerator() (WaveformGenerator method)</a>
 </li>
-      <li><a href="api/mmSetting/WaveformGeneratorSetting.html#WaveformGeneratorSetting">WaveformGeneratorSetting (built-in class)</a>
+      <li><a href="api/mmParameter/WaveformGeneratorConfig.html#WaveformGeneratorConfig">WaveformGeneratorConfig (built-in class)</a>
 </li>
-      <li><a href="api/mmSetting/WaveformGeneratorSetting.html#WaveformGeneratorSetting.WaveformGeneratorSetting">WaveformGeneratorSetting() (WaveformGeneratorSetting method)</a>
+      <li><a href="api/mmParameter/WaveformGeneratorConfig.html#WaveformGeneratorConfig.WaveformGeneratorConfig">WaveformGeneratorConfig() (WaveformGeneratorConfig method)</a>
+</li>
+      <li><a href="api/mmParameter/WaveformGeneratorSetting.html#WaveformGeneratorSetting">WaveformGeneratorSetting (built-in class)</a>
+</li>
+      <li><a href="api/mmParameter/WaveformGeneratorSetting.html#WaveformGeneratorSetting.WaveformGeneratorSetting">WaveformGeneratorSetting() (WaveformGeneratorSetting method)</a>
 </li>
       <li><a href="api/math/WaveformList.html#WaveformList">WaveformList (built-in class)</a>
 
@@ -3500,10 +3530,10 @@ document.write(`
       </ul></li>
       <li><a href="api/math/WaveformList.html#WaveformList.WaveformList">WaveformList() (WaveformList method)</a>
 </li>
-      <li><a href="api/math/WaveformListEditor.html#WaveformListEditor">WaveformListEditor (built-in application)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/math/WaveformListEditor.html#WaveformListEditor">WaveformListEditor (built-in application)</a>
+</li>
       <li><a href="api/math/WaveformList.html#WaveformList.WaveformOrigin">WaveformOrigin (WaveformList attribute)</a>
 </li>
       <li><a href="api/math/WaveformList.html#WaveformList.WaveformPrepared">WaveformPrepared (WaveformList attribute)</a>
@@ -3538,7 +3568,7 @@ document.write(`
         <li><a href="api/trial/SeSim1D.html#SeSim1D.writeDatabase">(SeSim1D method)</a>
 </li>
       </ul></li>
-      <li><a href="api/mmSetting/MmSetting.html#MmSetting.writeEntry">writeEntry() (MmSetting method)</a>
+      <li><a href="api/mmParameter/MmParameter.html#MmParameter.writeEntry">writeEntry() (MmParameter method)</a>
 </li>
   </ul></td>
 </tr></table>

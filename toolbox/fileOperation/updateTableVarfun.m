@@ -8,8 +8,9 @@ if isempty(varList)
     return
 end
 tRep = varfun(func, t, 'InputVariables', varList);
+s = functions(func);
 for ii = 1:numel(varList)
-    t.(varList(ii)) = tRep.("Fun_" + varList(ii));
+    t.(varList(ii)) = tRep.(string(s.function) + "_" + varList(ii));
 end
 end
 

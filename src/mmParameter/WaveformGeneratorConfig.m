@@ -1,6 +1,6 @@
-classdef WaveformGeneratorConfig < MmSetting
-    %WAVEFORMGENERATORSETTING Summary of this class goes here
-    %   Detailed explanation goes here
+classdef WaveformGeneratorConfig < MmParameter
+    %:class:`WaveformGeneratorConfig` stores device-level configuration for
+    % waveform generators, such as model name and VISA resource.
     
     properties
 
@@ -8,7 +8,7 @@ classdef WaveformGeneratorConfig < MmSetting
     
     methods
         function obj = WaveformGeneratorConfig()
-            obj@MmSetting()
+            obj@MmParameter()
         end
         
         function defineSchema(obj)
@@ -20,9 +20,9 @@ classdef WaveformGeneratorConfig < MmSetting
             
             % Define default values for each column (used when adding new columns) via :attr:`DefaultValue`
             obj.DefaultValue = dictionary(...
-                "Name", "DefaultWg", ...      
-                "DeviceModel", "Keysight33600A", ...     
-                "ResourceName", "XXX" ...    
+                "Name", "'DefaultWg'", ...      
+                "DeviceModel", "'Keysight33600A'", ...     
+                "ResourceName", "'XXX'" ...    
             );
             
             % Define default entries for initial table setup in :attr:`DefaultEntry`
