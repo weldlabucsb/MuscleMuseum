@@ -1,4 +1,4 @@
-classdef RoiConfig < MmParameter
+classdef RoiSetting < MmParameter
     %:class:`RoiConfig` stores rectangular ROIs and optional sub-ROI grids.
     %
     % Columns define a ROI by bounds (:attr:`Y1`..:attr:`X2`), image size,
@@ -9,7 +9,7 @@ classdef RoiConfig < MmParameter
     end
 
     methods
-        function obj = RoiConfig()
+        function obj = RoiSetting()
             obj@MmParameter()
         end
 

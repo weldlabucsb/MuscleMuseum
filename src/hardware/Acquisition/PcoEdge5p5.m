@@ -16,6 +16,7 @@ classdef PcoEdge5p5 < Pco
             obj.PixelSize = 6.5e-06;
             obj.ImageSize = [2160,2560];
             obj.BitsPerSample = 16;
+            obj.QuantumEfficiencyData = loadVar("quantumEfficiency.mat","pcoQE");
         end
     end
 end

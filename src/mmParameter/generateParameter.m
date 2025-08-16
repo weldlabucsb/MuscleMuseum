@@ -16,11 +16,15 @@ configList = [
     "ComputerConfig";
     "HardwareList";
     "RoiConfig"
-];
+    ];
 for ii = 1:numel(configList)
     configName = configList(ii);
     t = loadVar("Config" + ".mat",configName);
-    s = eval(configName);
+    if configName == "RoiConfig"
+        s = RoiSetting;
+    else
+        s = eval(configName);
+    end
     s.checkTable;
     if configName == "DatabaseConfig"
         tList = t.Table;
