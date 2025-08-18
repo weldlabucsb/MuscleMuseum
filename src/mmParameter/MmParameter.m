@@ -34,9 +34,9 @@ classdef MmParameter < handle
         ColumnNameAll string %Including the ID column
         ColumnTypeAll string %Including the ID column's type
         ExtraColumnFromJoin string
-        JoinCondition dictionary = dictionary([],[]) %{[Table,KeyColumn]} ->{[DataColumn1,DataColumn2,...]}
-        IsTriggerJoinOnJoinTable (1,1) logical = false %Determine if we want to trigger the join automatically when the join table is updated or inserted
-        IsTriggerJoinOnSelf (1,1) logical = false %Determine if we want to trigger the join automatically when this table is updated or inserted
+        JoinCondition table %TableRight,KeyLeft,KeyRight,ColumnLeft,ColumnRight
+        IsTriggerJoinOnRight (1,1) logical = false %Determine if we want to trigger the join automatically when the join table is updated or inserted
+        IsTriggerJoinOnLeft (1,1) logical = false %Determine if we want to trigger the join automatically when this table is updated or inserted
         IsIncludeDefaultEntry (1,1) logical = false %Determine if we want to automatically include the default entries into the table
     end
 
@@ -71,8 +71,8 @@ classdef MmParameter < handle
             obj.DefaultKey = columnName(1);
             obj.ColumnNameAll = ["ID",columnName.'];
             obj.ColumnTypeAll = ["int64",obj.TableColumn.values.'];
-            if ~isempty(obj.JoinCondition.values)
-                joinTableColumns = obj.JoinCondition.values.';
+            if ~isempty(obj.JoinCondition)
+                joinTableColumns = obj.JoinCondition.ColumnLeft.';
                 joinTableColumns = cat(2,joinTableColumns{:});
                 obj.ExtraColumnFromJoin = setdiff(joinTableColumns,obj.ColumnNameAll);
             end
@@ -117,12 +117,18 @@ classdef MmParameter < handle
             end
 
             % Add join information
-            if ~isempty(obj.JoinCondition.keys)
-                schemaStr = schemaStr + join("JoinTableKey:" + cellfun(@(x) join(x,","), obj.JoinCondition.keys) +...
-                    ",JoinColumn:" + cellfun(@(x) join(x,","), obj.JoinCondition.values),",") + ";";
+            if ~isempty(obj.JoinCondition)
+                schemaStr = schemaStr + ...
+                    join(...
+                    "TableRight:" + obj.JoinCondition.TableRight +...
+                    ",KeyLeft:" + obj.JoinCondition.KeyLeft +...
+                    ",KeyRight:" + obj.JoinCondition.KeyRight +...
+                    ",ColumnLeft:" + cellfun(@(x) join(x,","), obj.JoinCondition.ColumnLeft) + ...
+                    ",ColumnRight:" + cellfun(@(x) join(x,","), obj.JoinCondition.ColumnRight),...
+                    ",") + ";";
             end
-            schemaStr = schemaStr + "IsTriggerJoinOnJoinTable:" + obj.IsTriggerJoinOnJoinTable + ";";
-            schemaStr = schemaStr + "IsTriggerJoinOnSelf:" + obj.IsTriggerJoinOnSelf + ";";
+            schemaStr = schemaStr + "IsTriggerJoinOnJoinTable:" + obj.IsTriggerJoinOnRight + ";";
+            schemaStr = schemaStr + "IsTriggerJoinOnSelf:" + obj.IsTriggerJoinOnLeft + ";";
             schemaStr = schemaStr + "IsIncludeDefaultEntry:" + obj.IsIncludeDefaultEntry + ";";
 
             % Generate hash for change detection
@@ -226,26 +232,47 @@ classdef MmParameter < handle
             % and that :attr:`DefaultValue` includes all columns.
 
             if isempty(obj.TableColumn)
-                error("TableColumn can not be empty.")
+                obj.throwError("TableColumn can not be empty.")
             elseif(any(~ismember(obj.TableColumn.values,obj.DataTypeMapping.keys)))
-                error("Data types (the key values) are not set correctly in TableColumn")
+                obj.throwError("Data types (the key values) are not set correctly in TableColumn")
             end
 
             if ~isempty(obj.DefaultEntry)
                 try
                     obj.prepareInputTable(obj.DefaultEntry);
                 catch
-                    error("Default entries are not set correctly.")
+                    obj.throwError("Default entries are not set correctly.")
                 end
             end
 
             if isempty(obj.DefaultValue)
-                error("Default values must be set.")
+                obj.throwError("Default values must be set.")
             else
                 columnName = obj.TableColumn.keys;
                 defaulValueColumnName = obj.DefaultValue.keys;
                 if ~isempty(setdiff(columnName,defaulValueColumnName))
-                    error("Default values must be set for all columnes.")
+                    obj.throwError("Default values must be set for all columnes.")
+                end
+            end
+
+            if ~isempty(obj.JoinCondition)
+                columns = string(obj.JoinCondition.Properties.VariableNames);
+                if ~isempty(setdiff(["TableRight","KeyLeft","KeyRight","ColumnLeft","ColumnRight"],columns))
+                    obj.throwError("JoinCondition must include TableRight,KeyLeft,KeyRight,ColumnLeft,ColumnRight.")
+                elseif ~isstring(obj.JoinCondition.TableRight)
+                    obj.throwError("TableRight of JoinCondition must be astring")
+                elseif ~isstring(obj.JoinCondition.KeyLeft)
+                    obj.throwError("KeyLeft of JoinCondition must be astring")
+                elseif ~isstring(obj.JoinCondition.KeyRight)
+                    obj.throwError("KeyRight of JoinCondition must be astring")
+                elseif ~iscell(obj.JoinCondition.ColumnLeft) || ~isstring(obj.JoinCondition.ColumnLeft{1})
+                    obj.throwError("ColumnLeft of JoinCondition must be is a cell of string.")
+                elseif ~iscell(obj.JoinCondition.ColumnRight) || ~isstring(obj.JoinCondition.ColumnRight{1})
+                    obj.throwError("ColumnRight of JoinCondition must be is a cell of string.")
+                elseif any(cellfun(@numel,obj.JoinCondition.ColumnLeft) ~= cellfun(@numel,obj.JoinCondition.ColumnRight))
+                    obj.throwError("In JoinCondition, ColumnLeft element number must be equal to ColumnRight.")
+                elseif any(~ismember(obj.JoinCondition.KeyLeft,obj.ColumnNameAll))
+                    obj.throwError("KeyLeft of JoinCondition must be a memeber of this table's columns.")
                 end
             end
         end
@@ -299,8 +326,8 @@ classdef MmParameter < handle
             %   according to :attr:`IsTriggerJoinOnJoinTable` and :attr:`IsTriggerJoinOnSelf`.
             %
             % Called from :meth:`checkTable` after ensuring the base table exists.
-            jcName = obj.JoinCondition.keys;
-            if isempty(jcName)
+            
+            if isempty(obj.JoinCondition)
                 return
             end
 
@@ -309,26 +336,33 @@ classdef MmParameter < handle
             sqlquery = 'SELECT name, type FROM pragma_table_info(''' + obj.TableName +  ''')';
             dbColumn = fetch(conn, sqlquery);
 
-            % Create columns in the current table for join
-            for ii = 1:numel(jcName)
-                jTableName = jcName{ii}(1);
-                jKeyName = jcName{ii}(2);
-                sqlquery = 'SELECT name, type FROM pragma_table_info(''' + jTableName +  ''')';
-                jtdbColumn = fetch(conn, sqlquery);
-                if ~isempty(jtdbColumn) && ismember(jKeyName,jtdbColumn.name)
-                    jDataColumn = obj.JoinCondition(jcName(ii));
-                    [jDataColumn,idx] = intersect(jtdbColumn.name,jDataColumn{1});
-                    jDataType = jtdbColumn.type(idx);
-                    makeJoin(jTableName,jKeyName,jDataColumn,jDataType)
+            % Make join
+            for ii = 1:height(obj.JoinCondition)
+                tableRight = obj.JoinCondition.TableRight(ii);
+                keyLeft = obj.JoinCondition.KeyLeft(ii);
+                keyRight = obj.JoinCondition.KeyRight(ii);
+                sqlquery = 'SELECT name, type FROM pragma_table_info(''' + tableRight +  ''')';
+                rdbColumn = fetch(conn, sqlquery);
+                if ~isempty(rdbColumn) &&...
+                        ismember(keyRight,rdbColumn.name) &&...
+                        ismember(keyLeft,dbColumn.name)
+                    columnRight = obj.JoinCondition.ColumnRight{ii};
+                    columnLeft = obj.JoinCondition.ColumnLeft{ii};
+                    [columnRight,idx,idx2] = intersect(rdbColumn.name,columnRight);
+                    columnType = rdbColumn.type(idx);
+                    columnLeft = columnLeft(idx2);
+                    if ~isempty(columnRight)
+                        makeJoin(tableRight,keyLeft,keyRight,columnLeft.',columnRight,columnType)
+                    end
                 end
             end
 
-            function makeJoin(jt,jk,jdc,jdt)
+            function makeJoin(tr,kl,kr,cl,cr,ct)
                 %% Create column if missing
                 sql = "ALTER TABLE " + obj.TableName + ...
-                    " ADD " + jdc + " " + jdt + ";";
+                    " ADD " + cl + " " + ct + ";";
                 for ll = 1:numel(sql)
-                    if ~ismember(jdc(ll),dbColumn.name)
+                    if ~ismember(cl(ll),dbColumn.name)
                         execute(conn,sql(ll))
                     end
                 end
@@ -336,75 +370,75 @@ classdef MmParameter < handle
                 %% Join once
                 sql = "UPDATE " + obj.TableName + newline + ...
                     "SET " + newline + ...
-                    join("  " + jdc + " = (SELECT " + jt + "." + jdc + " FROM " +jt +...
-                    " WHERE " + jt + "." + jk + " = " + obj.TableName + "." + jk + ")",","+newline)+ ";";
+                    join("  " + cl + " = (SELECT " + tr + "." + cr + " FROM " +tr +...
+                    " WHERE " + tr + "." + kr + " = " + obj.TableName + "." + kl + ")",","+newline) + newline + ...
+                "WHERE " + kl + " IN (SELECT " + tr + "."+ kr + " FROM " + tr + ");";
                 execute(conn,sql)
 
                 %% Add trigger
 
-                if obj.IsTriggerJoinOnJoinTable
+                if obj.IsTriggerJoinOnRight
                     %% Check if update trigger already exists
-                    triggerNameUpdate = "update_" + obj.TableName + "_on_" + jt + "_" + jk + "_update";
+                    triggerNameUpdate = "update_" + obj.TableName + "_key_" + kl + "_on_" + tr + "_" + kr + "_update";
                     sql = "SELECT name FROM sqlite_master WHERE type='trigger' AND name='" + triggerNameUpdate + "';";
                     triggerDb = fetch(conn,sql);
                     if isempty(triggerDb)
                         % Create trigger
                         sql = "CREATE TRIGGER " + triggerNameUpdate + newline +...
-                            "AFTER UPDATE OF " + jk + " ON " + jt + newline + ...
+                            "AFTER UPDATE OF " + kr + " ON " + tr + newline + ...
                             "FOR EACH ROW" + newline + ...
                             "BEGIN" + newline + ...
                             "   UPDATE " + obj.TableName + newline + ...
                             "   SET " + newline + ...
-                            join("      " + jdc + " = NEW." + jdc,","+newline) + newline + ...
-                            "   WHERE " + obj.TableName + "." + jk + " = OLD." + jk + ";" + newline + ...
+                            join("      " + cl + " = NEW." + cr,","+newline) + newline + ...
+                            "   WHERE " + obj.TableName + "." + kl + " = OLD." + kr + ";" + newline + ...
                             "END;";
                         execute(conn,sql)
                     end
 
                     %% Check if insert trigger already exists
-                    triggerNameUpdate = "update_" + obj.TableName + "_on_" + jt + "_" + jk + "_insert";
+                    triggerNameUpdate = "update_" + obj.TableName + "_key_" + kl + "_on_" + tr + "_" + kr + "_insert";
                     sql = "SELECT name FROM sqlite_master WHERE type='trigger' AND name='" + triggerNameUpdate + "';";
                     triggerDb = fetch(conn,sql);
                     if isempty(triggerDb)
                         % Create trigger
                         sql = "CREATE TRIGGER " + triggerNameUpdate + newline +...
-                            "AFTER INSERT ON " + jt + newline + ...
+                            "AFTER INSERT ON " + tr + newline + ...
                             "FOR EACH ROW" + newline + ...
                             "BEGIN" + newline + ...
                             "   UPDATE " + obj.TableName + newline + ...
                             "   SET " + newline + ...
-                            join("      " + jdc + " = NEW." + jdc,","+newline) + newline + ...
-                            "   WHERE " + obj.TableName + "." + jk + " = NEW." + jk + ";" + newline + newline + ...
-                            "   INSERT OR IGNORE INTO " + obj.TableName + " (" + join([jk;jdc],", ") + ")" + newline + ...
-                            "   VALUES (" + join("NEW."+[jk;jdc],", ") + ");" + newline + ...
+                            join("      " + cl + " = NEW." + cr,","+newline) + newline + ...
+                            "   WHERE " + obj.TableName + "." + kl + " = NEW." + kr + ";" + newline + newline + ...
                             "END;";
                         execute(conn,sql)
                     end
                 end
 
-                if obj.IsTriggerJoinOnSelf
+                if obj.IsTriggerJoinOnLeft
                     %% Check if update trigger already exists
-                    selectFromJoinTable = "(SELECT " + jt + "." + jdc + " FROM " + jt + " WHERE " + jt + "." + jk +" = NEW." + jk + ")";
-                    triggerNameUpdate = "update_" + obj.TableName + "_on_" + jt + "_" + obj.TableName + "_update";
+                    selectFromTableRight = "(SELECT " + tr + "." + cr + " FROM " + tr + " WHERE " + tr + "." + kr +" = NEW." + kl + ")";
+                    triggerNameUpdate = "update_" + obj.TableName + "_key_" + kl + "_on_" + obj.TableName + "_" + kl + "_update";
                     sql = "SELECT name FROM sqlite_master WHERE type='trigger' AND name='" + triggerNameUpdate + "';";
                     triggerDb = fetch(conn,sql);
                     if isempty(triggerDb)
                         % Create trigger
                         
                         sql = "CREATE TRIGGER " + triggerNameUpdate + newline +...
-                            "AFTER UPDATE OF " + jk + " ON " + obj.TableName + newline + ...
+                            "AFTER UPDATE OF " + kl + " ON " + obj.TableName + newline + ...
                             "FOR EACH ROW" + newline + ...
+                            "WHEN EXISTS (SELECT 1 FROM " + tr + " WHERE " + tr + "." + kr + " = NEW."+ kl +")" + newline + ...
                             "BEGIN" + newline + ...
                             "   UPDATE " + obj.TableName + newline + ...
                             "   SET " + newline + ...
-                            join("      " + jdc + " = " + selectFromJoinTable,","+newline) + newline + ...
-                            "   WHERE " + obj.TableName + "." + jk + " = NEW." + jk + ";" + newline + ...
+                            join("      " + cl + " = " + selectFromTableRight,","+newline) + newline + ...
+                            "   WHERE " + obj.TableName + "." + kl + " = NEW." + kl + ";" + newline + ...
                             "END;";
                         execute(conn,sql)
                     end
 
                     %% Check if insert trigger already exists
-                    triggerNameUpdate = "update_" + obj.TableName + "_on_" + obj.TableName + "_" + jk + "_insert";
+                    triggerNameUpdate = "update_" + obj.TableName + "_key_" + kl + "_on_" + obj.TableName + "_" + kl + "_insert";
                     sql = "SELECT name FROM sqlite_master WHERE type='trigger' AND name='" + triggerNameUpdate + "';";
                     triggerDb = fetch(conn,sql);
                     if isempty(triggerDb)
@@ -412,11 +446,12 @@ classdef MmParameter < handle
                         sql = "CREATE TRIGGER " + triggerNameUpdate + newline +...
                             "AFTER INSERT ON " + obj.TableName + newline + ...
                             "FOR EACH ROW" + newline + ...
+                            "WHEN EXISTS (SELECT 1 FROM " + tr + " WHERE " + tr + "." + kr + " = NEW."+ kl +")" + newline + ...
                             "BEGIN" + newline + ...
                             "   UPDATE " + obj.TableName + newline + ...
                             "   SET " + newline + ...
-                            join("      " + jdc + " = "+ selectFromJoinTable,","+newline) + newline + ...
-                            "   WHERE " + obj.TableName + "." + jk + " = NEW." + jk + ";" + newline + ...
+                            join("      " + cl + " = "+ selectFromTableRight,","+newline) + newline + ...
+                            "   WHERE " + obj.TableName + "." + kl + " = NEW." + kl + ";" + newline + ...
                             "END;";
                         execute(conn,sql)
                     end
@@ -553,13 +588,13 @@ classdef MmParameter < handle
             if isempty(t)
                 return
             end
-            t = obj.prepareInputTable(t, false);
+            t = obj.prepareInputTable(t, false, true);
             conn = obj.connectDatabase;
             sqlwrite(conn,obj.TableName,t)
             close(conn)
         end
 
-        function updateTable(obj,t)
+        function updateTable(obj,t,isRequireAll)
             % Overwrite the entire database table with validated content.
             %
             % Drops and recreates the table according to the current schema, then
@@ -576,14 +611,15 @@ classdef MmParameter < handle
             %Overwrite the entire database table
             arguments
                 obj
-                t table % Input table
+                t % Input table or structure
+                isRequireAll logical = false
             end
             if isempty(t)
                 return
             end
 
             % Check if the input table is formatted correctly (require all columns)
-            obj.prepareInputTable(t, true);
+            obj.prepareInputTable(t, isRequireAll);
 
             % Delete the existing entries
             conn = obj.connectDatabase;
@@ -614,15 +650,17 @@ classdef MmParameter < handle
             if isempty(t)
                 return
             elseif ~ismember(keyColumnName,obj.ColumnNameAll)
-                error("The keyColumnName does not match any database table column name.")
-            elseif ~ismember(keyColumnName,t.Properties.VariableNames)
-                error("The keyColumnName does not match any input table column name.")
+                obj.throwError("The keyColumnName does not match any database table column name.")
+            else
+                tOrigin = t;
+                t = prepareInputTable(obj,t);
+                if ~ismember(keyColumnName,t.Properties.VariableNames)
+                    obj.throwError("The keyColumnName does not match any input table column name.")
+                end
             end
 
             % rewrite entries if they match the key
             conn = obj.connectDatabase;
-            tOrigin = t;
-            t = prepareInputTable(obj,t);
             columnValue = t.(keyColumnName);
             rf = rowfilter(keyColumnName);
             rfList = arrayfun(@(x) rf.(keyColumnName) == x,columnValue,UniformOutput=false);
@@ -659,55 +697,20 @@ classdef MmParameter < handle
                 obj
                 keyColumnValue {mustBeVector(keyColumnValue)} %Key column values
                 updateColumnName (1,1) string %Column you want to update
-                value {mustBeVector(value)}
+                value
                 keyColumnName (1,1) string = "ID" %Key column name (optional)
             end
-            if ~ismember(keyColumnName,obj.ColumnNameAll) || ...
-                    ~ismember(updateColumnName,obj.ColumnNameAll)
-                error("The keyColumnName or updateColumnName does not match any database table column name.")
+            if ~ismember(keyColumnName,obj.ColumnNameAll)
+                obj.throwError("The keyColumnName does not match any database table column name.")
             end
-            if numel(keyColumnValue) ~= numel(value)
-                error("The size of key column values must match the size of val.")
+            if ~(numel(keyColumnValue) == 1 || numel(keyColumnValue) == numel(value))
+                obj.throwError("The size of key column values must match the size of val.")
+            end
+            if ~isempty(value) && ~isvector(value)
+                obj.throwError("Input value mut be a vector.")
             end
 
-            % Prepare the input value
-            if updateColumnName == "ID"
-                updateColumnType = "int64";
-            else
-                updateColumnType = obj.TableColumn(updateColumnName);
-            end
-            isNum = ~contains(updateColumnType,"string");
-            if ~contains(updateColumnType,"Matrix")
-                if string(class(value)) ~= updateColumnType
-                    if isNum
-                        if ~(isnumeric(value) || islogical(value))
-                            error("Input value type is not correct.")
-                        end
-                    else
-                        error("Input value type is not correct.")
-                    end
-                end
-            else
-                if ~iscell(value)
-                    error("For matrix columns, the input value mut be a cell array.")
-                elseif string(class(value{1})) ~= strrep(updateColumnType,"Matrix","")
-                    if isNum
-                        if ~(isnumeric(value{1}) || islogical(value{1}))
-                            error("Input value type is not correct.")
-                        end
-                    else
-                        error("Input value type is not correct.")
-                    end
-                end
-            end
-            switch updateColumnType
-                case "stringMatrix"
-                    value = cellfun(@(x) strmat2str(normalizeString(x)),value);
-                case "string"
-                    value = normalizeString(value);
-                otherwise
-                    value = cellfun(@(x) string(mat2str(x)),value);
-            end
+            value = obj.prepareInputValue(updateColumnName,value,numel(keyColumnValue) == 1);
 
             % Update the values
             conn = obj.connectDatabase;
@@ -719,6 +722,24 @@ classdef MmParameter < handle
             for ii = 1:numel(sqlquery)
                 execute(conn, sqlquery(ii));
             end
+            close(conn)
+        end
+
+        function updateColumn(obj,updateColumnName,value)
+            arguments
+                obj
+                updateColumnName (1,1) string
+                value   
+            end
+            if ~isempty(value) && ~isvector(value)
+                obj.throwError("Input value mut be a vector.")
+            end
+
+            value = obj.prepareInputValue(updateColumnName,value);
+            sqlquery = "UPDATE " + obj.TableName + " SET " + updateColumnName + ...
+                " = " + value + ";";
+            conn = obj.connectDatabase;
+            execute(conn,sqlquery)
             close(conn)
         end
 
@@ -735,7 +756,7 @@ classdef MmParameter < handle
                 keyColumnName (1,1) string = "ID" %Key column name (optional)
             end
             if ~ismember(keyColumnName,obj.ColumnNameAll)
-                error("The keyColumnName does not match any database table column name.")
+                obj.throwError("The keyColumnName does not match any database table column name.")
             end
 
             conn = obj.connectDatabase;
@@ -750,7 +771,7 @@ classdef MmParameter < handle
             close(conn)
         end
 
-        function t = prepareInputTable(obj, t, isAllColumnsRequired)
+        function t = prepareInputTable(obj, t, isAllColumnsRequired,isIgnoreId)
             % Validate and normalize input rows against the schema.
             %
             % Ensures column names and MATLAB types match :attr:`TableColumn` regardless
@@ -769,14 +790,15 @@ classdef MmParameter < handle
                 obj
                 t
                 isAllColumnsRequired (1,1) logical = false
+                isIgnoreId (1,1) logical = false
             end
 
             %% Coerce to table if needed
             if ~isa(t,"table")
                 if isa(t,"struct")
-                    t = struct2table(t);
+                    t = struct2table(t,'AsArray',true);
                 else
-                    error("Database input has to table or struct.")
+                    obj.throwError("Database input has to table or struct.")
                 end
             end
 
@@ -786,7 +808,7 @@ classdef MmParameter < handle
 
             %% Check column names
             if isAllColumnsRequired && ~isempty(setdiff(sColumnName,tColumnName))
-                error("If require all columns, the input table has to contain all columns.")
+                obj.throwError("If require all columns, the input table has to contain all columns.")
             end
 
             % Partial inputs allowed.
@@ -800,8 +822,10 @@ classdef MmParameter < handle
             %% Check data type for non-matrix columns
             tColumnType = string(arrayfun(@(x) class(t.(x)),sColumnName,'UniformOutput',false));
             if sColumnName(1)=="ID"
-                if ~isnumeric(t.ID)
-                    error("The ID column of the input table has to be numeric.")
+                if isIgnoreId
+                    t.ID = [];
+                elseif ~isnumeric(t.ID)
+                    obj.throwError("The ID column of the input table has to be numeric.")
                 elseif ~isinteger(t.ID)
                     t.ID = int64(t.ID);
                 end
@@ -822,7 +846,7 @@ classdef MmParameter < handle
                 passColumnName = passColumnName(mismatchNumPass);
                 mismatchName(ismember(mismatchName,passColumnName)) = [];
                 if ~isempty(mismatchName)
-                    error("Input table variable types do not match the database table for " + ...
+                    obj.throwError("Input table variable types do not match the database table for " + ...
                         join(mismatchName,",") + ".")
                 end
             end
@@ -847,7 +871,7 @@ classdef MmParameter < handle
                         passColumnName = passColumnName(mismatchNumPass);
                         mismatchName(ismember(mismatchName,passColumnName)) = [];
                         if ~isempty(mismatchName)
-                            error("Input table variable types do not match the database table for " + ...
+                            obj.throwError("Input table variable types do not match the database table for " + ...
                                 join(mismatchName,",") + ".")
                         end
                     end
@@ -870,7 +894,7 @@ classdef MmParameter < handle
                         passColumnName = passColumnName(mismatchNumPass);
                         mismatchName(ismember(mismatchName,passColumnName)) = [];
                         if ~isempty(mismatchName)
-                            error("Input table variable types do not match the database table for " + ...
+                            obj.throwError("Input table variable types do not match the database table for " + ...
                                 join(mismatchName,",") + ".")
                         end
                     end
@@ -882,6 +906,62 @@ classdef MmParameter < handle
             end
         end
 
+        function value = prepareInputValue(obj,updateColumnName,value,isScalar)
+            arguments
+                obj
+                updateColumnName (1,1) string
+                value
+                isScalar logical = false
+            end
+            if ~ismember(updateColumnName,obj.ColumnNameAll)
+                obj.throwError("The updateColumnName does not match any database table column name.")
+            end
+
+            % Prepare the input value
+            if updateColumnName == "ID"
+                updateColumnType = "int64";
+            else
+                updateColumnType = obj.TableColumn(updateColumnName);
+            end
+            isNum = ~contains(updateColumnType,"string");
+            if ~contains(updateColumnType,"Matrix")
+                if string(class(value)) ~= updateColumnType
+                    if isNum
+                        if ~(isnumeric(value) || islogical(value))
+                            obj.throwError("Input value type is not correct.")
+                        end
+                    else
+                        obj.throwError("Input value type is not correct.")
+                    end
+                end
+            else
+                if ~iscell(value)
+                    if isScalar
+                        value = {value};
+                    else
+                        obj.throwError("For matrix columns, the input value mut be a cell array.")
+                    end
+                end
+                if string(class(value{1})) ~= strrep(updateColumnType,"Matrix","")
+                    if isNum
+                        if ~(isnumeric(value{1}) || islogical(value{1}))
+                            obj.throwError("Input value type is not correct.")
+                        end
+                    else
+                        obj.throwError("Input value type is not correct.")
+                    end
+                end
+            end
+            switch updateColumnType
+                case "stringMatrix"
+                    value = cellfun(@(x) strmat2str(normalizeString(x)),value);
+                case "string"
+                    value = normalizeString(value);
+                case {"doubleMatrix","logicalMatrix"}
+                    value = cellfun(@(x) string(mat2str(x)),value);
+            end
+        end
+        
         function t = readTable(obj,IsHideSerial)
             % Read the entire table and convert columns to MATLAB types.
             %
@@ -915,8 +995,13 @@ classdef MmParameter < handle
                 IsHideSerial logical = false
             end
             if ~ismember(keyColumnName,obj.ColumnNameAll)
-                error("Wrong keyColumnName.")
+                obj.throwError("Wrong keyColumnName.")
             end
+
+            if keyColumnName == "ID" && islogical(keyColumnValue)
+                keyColumnValue = find(keyColumnValue);
+            end
+
             conn = obj.connectDatabaseRead;
             if keyColumnName == "ID" || ~contains(obj.TableColumn(keyColumnName), "string")
                 inList = "(" + join(string(keyColumnValue), ",") + ")";
@@ -930,6 +1015,21 @@ classdef MmParameter < handle
             t = fetch(conn,sqlquery);
             t = obj.convertOutputTable(t,IsHideSerial);
             close(conn)
+        end
+
+        function value = readColumn(obj,readColumnName)
+            arguments
+                obj
+                readColumnName (1,1) string
+            end
+            if ~ismember(readColumnName,[obj.ColumnNameAll,obj.ExtraColumnFromJoin])
+                obj.throwError("readColumnName is not a valid column name.")
+            end
+            sqlquery = "SELECT " + readColumnName + " FROM " + obj.TableName + ";";
+            conn = obj.connectDatabaseRead;
+            value = fetch(conn,sqlquery);
+            value = obj.convertOutputTable(value);
+            value = value.(readColumnName);
         end
 
         function t = readValue(obj,keyColumnValue,readColumnName,keyColumnName)
@@ -953,7 +1053,7 @@ classdef MmParameter < handle
             end
             cols = obj.ColumnNameAll;
             if ~ismember(keyColumnName,cols) || any(~ismember(readColumnName,[cols,obj.ExtraColumnFromJoin]))
-                error("Wrong keyColumnName or readColumnName.")
+                obj.throwError("Wrong keyColumnName or readColumnName.")
             end
             conn = obj.connectDatabaseRead;
             if keyColumnName == "ID" || ~contains(obj.TableColumn(keyColumnName), "string")
@@ -966,6 +1066,60 @@ classdef MmParameter < handle
             columnStr = join(readColumnName,",");
 
             sqlquery = "SELECT " + columnStr + " FROM " + obj.TableName + " WHERE " + obj.TableName + "." + keyColumnName + " IN " + inList + ";";
+            t = fetch(conn,sqlquery);
+            t = obj.convertOutputTable(t);
+            if isscalar(readColumnName)
+                t = t.(readColumnName);
+            end
+            close(conn)
+        end
+
+        function t = readValueTwoKey(obj,keyColumnValue,keyColumnValue2,readColumnName,keyColumnName,keyColumnName2)
+            % Read one or more columns filtered by a key column and values.
+            %
+            % When a single column is requested, a vector is returned instead of a table.
+            %
+            % :param keyColumnName: Column to filter on
+            % :type keyColumnName: string
+            % :param keyColumnValue: Key values to match (vector)
+            % :type keyColumnValue: vector
+            % :param readColumnName: Column name(s) to return
+            % :type readColumnName: string or string vector
+            % :return: Table of selected columns, or a vector when a single column is requested
+            % :rtype: table or vector
+            arguments
+                obj
+                keyColumnValue {mustBeVector(keyColumnValue)} %Key column1 values
+                keyColumnValue2 {mustBeVector(keyColumnValue2)} %Key column2 values
+                readColumnName string {mustBeVector(readColumnName)} %Columns you want to read
+                keyColumnName (1,1) string  %Key column1 name
+                keyColumnName2 (1,1) string = "ID" %Key column2 name (optional)
+            end
+            cols = obj.ColumnNameAll;
+            if any(~ismember([keyColumnName,keyColumnName2],cols)) || any(~ismember(readColumnName,[cols,obj.ExtraColumnFromJoin]))
+                obj.throwError("Wrong keyColumnName or readColumnName.")
+            end
+            conn = obj.connectDatabaseRead;
+            if keyColumnName == "ID" || ~contains(obj.TableColumn(keyColumnName), "string")
+                inList = "(" + join(string(keyColumnValue), ",") + ")";
+            else
+                vals = string(keyColumnValue);
+                vals = replace(vals, "'", "''");
+                inList = "('" + join(vals, "','") + "')";
+            end
+
+            if keyColumnName2 == "ID" || ~contains(obj.TableColumn(keyColumnName2), "string")
+                inList2 = "(" + join(string(keyColumnValue2), ",") + ")";
+            else
+                vals = string(keyColumnValue2);
+                vals = replace(vals, "'", "''");
+                inList2 = "('" + join(vals, "','") + "')";
+            end
+            columnStr = join(readColumnName,",");
+
+            sqlquery = "SELECT " + columnStr + " FROM " + obj.TableName +...
+                " WHERE " + obj.TableName + "." + keyColumnName + " IN " + inList + ...
+                " AND " + obj.TableName + "." + keyColumnName2 + " IN " + inList2 + ";";
             t = fetch(conn,sqlquery);
             t = obj.convertOutputTable(t);
             if isscalar(readColumnName)
@@ -1033,8 +1187,18 @@ classdef MmParameter < handle
             if IsHideSerial && ismember("ID",presentVars)
                 t.ID = [];
             end
+
+            % Remove cell and convert to struct if input is one-row
+            if height(t) == 1
+                t = table2struct(t);
+            end
         end
 
+        function throwError(obj,me)
+            str = newline + "Error in " + obj.TableName + ":" + newline + ...
+                me;
+            error(str)
+        end
     end
 
     methods (Abstract)
@@ -1060,6 +1224,12 @@ end
 
 function str = normalizeString(str)
 % Replace empty with None
+if isempty(str)
+    sz = size(str);
+    sz(sz==0) = 1;
+    str = repmat("None",sz);
+    return
+end
 maskEmpty = ismissing(str) | str == "";
 if any(maskEmpty(:))
     str(maskEmpty) = "None";

@@ -99,8 +99,8 @@ classdef Roi < handle
                 % image size explicitly.
                 obj.Name = roiName;  
                 if roiName ~= "Full"
-                    load("Config.mat","RoiConfig")
-                    configParameter = RoiConfig(RoiConfig.Name == roiName,:);
+                    p = RoiSetting;
+                    configParameter = p.readEntry(roiName,"Name");
                     obj.ImageSize = [configParameter.ImageSizeY,configParameter.ImageSizeX];
                     obj.Angle = configParameter.Angle;
                     obj.YXBoundary = [configParameter.Y1,configParameter.Y2,...
@@ -109,7 +109,7 @@ classdef Roi < handle
                     % set sub-ROI
                     obj.SubRoiNRowColumn = configParameter.SubRoiNRowColumn;
                     obj.SubRoiSeparation = configParameter.SubRoiSeparation;
-                    obj.SubRoiCenterSize = configParameter.SubRoiCenterSize{1};
+                    obj.SubRoiCenterSize = configParameter.SubRoiCenterSize;
                 else
                     if isempty(options.imageSize)
                         error("For full size ROI, imageSize has to be set.")

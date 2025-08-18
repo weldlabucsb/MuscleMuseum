@@ -379,7 +379,7 @@ classdef Od < BecAnalysis
                     yLine.XData = squeeze(obj.OdData(:,round(roiSize(2)/2),runList(ii)));
 
                     % Update title
-                    if ismissing(paraUnit)
+                    if paraUnit == "None" || ismissing(paraUnit)
                         paraLabel = "$\mathrm{" + paraName + "} = ~$" + ...
                             string(paraListSorted(ii));
                     else

@@ -1,5 +1,5 @@
 % This is a function to set the configuration file
-function setConfig_new
+function setParameter
 disp(newline + "Setting configurations...")
 mmConfig; % run the user-defined script to get user configurations
 varList = string(who).'; %check the user input parameters
@@ -17,7 +17,7 @@ end
 %% Set the main local data path
 mainPath = fullfile(getHome,"Documents","MMData");
 
-%% Set the computer configuration
+%% Set computer configuration
 
 %This somehow helps with the communication speed if the CiceroLogOrigin folder is a networkfolder
 if exist('BecExpControlComputerName','var') &&...
@@ -44,7 +44,7 @@ userParameters = join([intersect(userParameters,varList),defaultParameters],",")
 t = eval("table("+userParameters+")");
 updateConfig("ComputerConfig",t)
 
-%% Set the database configuration
+%% Set database configuration
 Name = "simulation";
 if exist('BecExpDatabaseName','var')
     Name = [Name;BecExpDatabaseName];
@@ -63,14 +63,14 @@ end
 t = table(Name,TableList); %This saves exp/sim database names and the names of the tables
 updateConfig("DatabaseConfig",t)
 
-%% Set the database server configuration
+%% Set database server configuration
 if exist('ServerName','var')
     Name = ServerName;
     t = table(Name,Port,Username,Password);
     updateConfig("DatabaseServerConfig",t)
 end
 
-%% Set the acquisition configuration
+%% Set acquisition configuration
 if exist('AcquisitionName','var')
     Name = AcquisitionName;
     DeviceModel = CameraDeviceModel;
@@ -81,7 +81,7 @@ if exist('AcquisitionName','var')
     updateConfig("AcquisitionConfig",t)
 end
 
-%% Set the waveform generator configuration
+%% Set waveform generator configuration
 if exist('WgName','var')
     Name = WgName;
     DeviceModel = WgDeviceModel;
@@ -90,7 +90,7 @@ if exist('WgName','var')
     updateConfig("WaveformGeneratorConfig",t)
 end
 
-%% Set the scope configuration
+%% Set scope configuration
 if exist("ScopeName",'var')
     Name = ScopeName;
     DeviceModel = ScopeDeviceModel;
@@ -99,7 +99,7 @@ if exist("ScopeName",'var')
     updateConfig("ScopeConfig",t)
 end
 
-%% Set the phase lock configuration
+%% Set phase lock configuration
 if exist("PlName",'var')
     Name = PlName;
     DeviceModel = PlDeviceModel;
@@ -108,7 +108,7 @@ if exist("PlName",'var')
     updateConfig("PhaseLockConfig",t)
 end
 
-%% Set the hardware list
+%% Set hardware list
 Name = [];
 Type = [];
 if exist('WgName','var')
@@ -133,51 +133,77 @@ if ~isempty(Name)
     updateConfig("HardwareList",t)
 end
 
-%% Set the BEC experiment configuration
-
-%copy the .dll for Cicero log reading
-dsLibPath = fullfile(matlabroot,'\bin\win64\DataStructures.dll');
-if ~exist(dsLibPath,'file')
-    try
-        copyfile(fullfile(RepoPath,"lib","datastructures","DataStructures.dll"),...
-            fullfile(matlabroot,'\bin\win64\DataStructures.dll'),'f');
-    catch
-        error("No permission to copy file. Try runing MATLAB as admin.")
+%% Set BEC experiment configuration
+if exist("BecExpDataPrefix","var")
+    %copy the .dll for Cicero log reading
+    dsLibPath = fullfile(matlabroot,'\bin\win64\DataStructures.dll');
+    if ~exist(dsLibPath,'file')
+        try
+            copyfile(fullfile(RepoPath,"lib","datastructures","DataStructures.dll"),...
+                fullfile(matlabroot,'\bin\win64\DataStructures.dll'),'f');
+        catch
+            error("No permission to copy file. Try runing MATLAB as admin.")
+        end
     end
+
+    userParameter = [
+        "ParentPath";
+        "DataPrefix";
+        "DataFormat";
+        "IsAutoDelete";
+        "DatabaseName";
+        "DatabaseTableName";
+        "DataGroupSize";
+        "IsAutoAcquire";
+        "OdColormap";
+        "AtomName";
+        "ImagingStageList";
+    ];
+    userParameter2 = intersect("BecExp"+userParameter,varList);
+    userParameter = replace(userParameter2,"BecExp","");
+    s = struct;
+    s.IsLocalTest = false;
+    for ii = 1:numel(userParameter)
+        s.(userParameter(ii)) = eval(userParameter2(ii));
+    end
+    s.ControlAppName = "BecControl";
+    if exist('CiceroLogOrigin','var')
+        s.CiceroLogOrigin = CiceroLogOrigin;
+    end
+    updateConfig("BecExpConfig",s)
 end
 
-BecExpConfig.ParentPath = BecExpParentPath;
-BecExpConfig.DataPrefix = "run";
-BecExpConfig.DataFormat = ".tif"; 
-BecExpConfig.IsAutoDelete = false; %If you want to auto delete empty BecExp data folders
-BecExpConfig.DatabaseName = BecExpDatabaseName;
-BecExpConfig.DatabaseTableName = BecExpDatabaseTableName;
-BecExpConfig.CiceroLogOrigin = CiceroLogOrigin;
-BecExpConfig.DataGroupSize = 3;
-BecExpConfig.IsAutoAcquire = true;
-BecExpConfig.OdColormap = {jet}; %Change to your favorite colormap
-BecExpConfig.AtomName = "Lithium7";
-BecExpConfig.ControlAppName = "BecControl";
-BecExpConfig.ImagingStageList = ["LF","HF","NI"]; %List your possible imaging stages here. For example, if you do imaging at low/high magnetic fields, type ["LF","HF"].
+%% Set BEC experiment local test configuration
+if exist("BecExpDataPrefix","var")
+    s.IsLocalTest = true;
+    s.DatabaseName = BecExpDatabaseName + "_local";
+    s.ParentPath = fullfile(mainPath,"becExp");
+    s.CiceroLogOrigin = fullfile(RepoPath,"test","testData","testLogFiles");
+    s.IsAutoAcquire= false;
+    s.IsAutoDelete = false;
+    p = BecExpConfig;
+    p.writeEntry(s)
+end
 
-becExpType = readtable("becExpType.csv.xlsx",'TextType','string');
-BecExpConfig = [becExpType,repmat(struct2table(BecExpConfig),size(becExpType,1),1)];
-BecExpParameterUnit = readtable("parameterUnit.csv.xlsx",'TextType','string');
-BecExpConfig = join(BecExpConfig,BecExpParameterUnit,'Keys',{'ScannedParameter','ScannedParameter'});
+disp("Done.")
 
-BecExpConfig.FringeRemovalMask = arrayfun(@eval,(fillmissing(BecExpConfig.FringeRemovalMask,'constant',"[]")),'UniformOutput',false);
-save(configName,"BecExpConfig","BecExpParameterUnit",'-mat','-append')
+%% Check setting
+disp(newline + "Checking user settings...")
+settingList = [
+    "WaveformGeneratorSetting";
+    "PhaseLockSetting";
+    "ScopeSetting";
+    "ListList";
+    "VariableList";
+    "BecExpSetting";
+    "BecExpParameterUnit";
+    "RoiSetting";
+    ];
 
-%% Set the BEC experiment local test configuration
-BecExpLocalTestConfig = BecExpConfig;
-BecExpLocalTestConfig.DatabaseName(:) = BecExpDatabaseName + "_local";
-BecExpLocalTestConfig.ParentPath(:) = fullfile(mainPath,"becExp");
-BecExpLocalTestConfig.CiceroLogOrigin(:) = fullfile(RepoPath,"test","testData","testLogFiles");
-BecExpLocalTestConfig.IsAutoAcquire(:) = false;
-BecExpLocalTestConfig.IsAutoDelete(:) = false;
-
-save(configName,"BecExpLocalTestConfig",'-mat','-append')
-
+for ii = 1:numel(settingList)
+    s = eval(settingList(ii));
+    s.checkTable;
+end
 disp("Done.")
 
 end

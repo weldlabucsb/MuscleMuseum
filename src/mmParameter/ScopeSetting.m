@@ -80,6 +80,13 @@ classdef ScopeSetting < MmParameter
                 ] ...
                 );
             obj.IsIncludeDefaultEntry = true;
+
+            % Define join condition
+            obj.JoinCondition = cell2table({ ...
+                "ScopeConfig","Name","Name",{["DeviceModel"]},{["DeviceModel"]};...
+                },...
+                "VariableNames",["TableRight","KeyLeft","KeyRight","ColumnLeft","ColumnRight"]);
+            obj.IsIncludeDefaultEntry = true;
         end
     end
 end

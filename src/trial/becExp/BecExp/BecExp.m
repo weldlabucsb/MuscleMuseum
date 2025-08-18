@@ -55,34 +55,16 @@ classdef BecExp < Trial
     end
 
     methods
-        function obj = BecExp(trialName,options)
+        function obj = BecExp(trialName,config)
             %BECEXP Construct an instance of this class
             %   Detailed explanation goes here
             arguments
                 trialName string
-                options.isLocalTest logical = false
-                options.config = struct.empty
-            end
-            if isempty(options.config)
-                if options.isLocalTest
-                    config = "BecExpLocalTestConfig";
-                else
-                    config = "BecExpConfig";
-                end
-            else
-                config = options.config;
+                config = "BecExpSetting"
             end
             obj@Trial(trialName,config);
-            load("Config.mat","BecExpParameterUnit","HardwareList")
             obj.ParameterUnitConfig = BecExpParameterUnit;
             obj.HardwareList = HardwareList;
-            obj.ScannedParameter = str2strmat(obj.ScannedParameter);
-            if ~obj.Is2DScan
-                obj.ScannedParameterUnit = obj.ParameterUnitConfig(obj.ParameterUnitConfig.ScannedParameter == obj.ScannedParameter(1),:).ScannedParameterUnit;
-            else
-                obj.ScannedParameterUnit = [obj.ParameterUnitConfig(obj.ParameterUnitConfig.ScannedParameter == obj.ScannedParameter(1),:).ScannedParameterUnit,...
-                    obj.ParameterUnitConfig(obj.ParameterUnitConfig.ScannedParameter == obj.ScannedParameter(2),:).ScannedParameterUnit];
-            end
 
             % Atom setting
             obj.Atom = getAtom(obj.ConfigParameter.AtomName);
@@ -105,7 +87,8 @@ classdef BecExp < Trial
 
             % Analysis settings
             obj.AnalysisMethod = rmmissing(["Od";"Imaging";"Ad";...
-                strtrim(split(obj.AnalysisMethod,";"))]);
+                obj.AnalysisMethod]);
+            obj.AnalysisMethod(obj.AnalysisMethod == "None") = [];
             obj.addAnalysis(obj.AnalysisMethod);
             obj.setAnalyzer;
 
@@ -117,8 +100,8 @@ classdef BecExp < Trial
         function paraList = get.ScannedParameterList(obj)
             if obj.Is2DScan
                 % For 2D scans, return a 2xN matrix with both parameters
-                param1 = obj.ScannedParameter(1);
-                param2 = obj.ScannedParameter(2);
+                param1 = obj.ScannedParameter;
+                param2 = obj.ScannedParameter2;
                 
                 % Get first parameter values
                 switch param1
@@ -212,36 +195,21 @@ classdef BecExp < Trial
 
         function runListSorted = get.RunListSorted(obj)
             paraList = obj.ScannedParameterList;
-            [~,runListSorted] =  sort(paraList);
+            [~,runListSorted] =  sort(paraList,2);
         end
 
         function parameterListSorted = get.ScannedParameterListSorted(obj)
             paraList = obj.ScannedParameterList;
-            [parameterListSorted,~] =  sort(paraList);
+            [parameterListSorted,~] =  sort(paraList,2);
         end
 
-
-
         function xLabel = get.XLabel(obj)
-            if obj.Is2DScan
-                sP = obj.ScannedParameter(1);
-                sP = strrep(sP,'_','\_');
-                if isempty(obj.ScannedParameterUnit) || size(obj.ScannedParameterUnit, 2) < 1 ||...
-                        ismissing(obj.ScannedParameterUnit(1)) || obj.ScannedParameterUnit(1) == ""
-                    xLabel = sP;
-                else
-                    unit1 = obj.ScannedParameterUnit(1);
-                    xLabel = sP + "~[$\mathrm{" + unit1 + "}$]";
-                end
+            sP = obj.ScannedParameter;
+            sP = strrep(sP,'_','\_');
+            if obj.ScannedParameterUnit == "None"
+                xLabel = sP;
             else
-                sP = obj.ScannedParameter;
-                sP = strrep(sP,'_','\_');
-                if isempty(obj.ScannedParameterUnit) || ismissing(obj.ScannedParameterUnit) ||...
-                        obj.ScannedParameterUnit == ""
-                    xLabel = sP;
-                else
-                    xLabel = sP + "~[$\mathrm{" + obj.ScannedParameterUnit + "}$]";
-                end
+                xLabel = sP + "~[$\mathrm{" + obj.ScannedParameterUnit + "}$]";
             end
         end
 
@@ -251,14 +219,12 @@ classdef BecExp < Trial
                 return
             end
             
-            sP = obj.ScannedParameter(2);
+            sP = obj.ScannedParameter2;
             sP = strrep(sP,'_','\_');
-            if isempty(obj.ScannedParameterUnit) || size(obj.ScannedParameterUnit, 2) < 2 ||...
-                    ismissing(obj.ScannedParameterUnit(2)) || obj.ScannedParameterUnit(2) == ""
+            if obj.ScannedParameter2Unit == "None"
                 yLabel = sP;
             else
-                unit2 = obj.ScannedParameterUnit(2);
-                yLabel = sP + "~[$\mathrm{" + unit2 + "}$]";
+                yLabel = sP + "~[$\mathrm{" + obj.ScannedParameter2Unit + "}$]";
             end
         end
 
@@ -408,10 +374,14 @@ classdef BecExp < Trial
                 obj.updateScopeData
 
                 %% Check if the scanned parameter is correct
-                % Check single parameter for 1D scans
                 if isempty(obj.ScannedParameterList)
-                    obj.displayLog("Can not find [" + obj.ScannedParameter + "]" + ...
-                        " in Cicero or Hardware Variable List or scope data list. Please correct and restart.","error")
+                    if ~obj.Is2DScan
+                        obj.displayLog("Can not find [" + obj.ScannedParameter + "]" + ...
+                            " in Cicero or Hardware Variable List or scope data list. Please correct and restart.","error")
+                    else
+                        obj.displayLog("Can not find [" + obj.ScannedParameter + "] or [" + obj.ScannedParameter2 + "]" + ...
+                            " in Cicero or Hardware Variable List or scope data list. Please correct and restart.","error")
+                    end
                 end
 
                 %% Show Images
@@ -434,6 +404,7 @@ classdef BecExp < Trial
                 warning('Input are not all listed in AnalysisOrder.')
             end
             newAnalysisList = rmmissing(newAnalysisList);
+            newAnalysisList(newAnalysisList == "None") = [];
             if isempty(newAnalysisList)
                 return
             end
@@ -1003,7 +974,7 @@ classdef BecExp < Trial
             %COUNTEXISTEDLOG Summary of this function goes here
             %   Detailed explanation goes here
             obj.ExistedCiceroLogNumber = countFileNumber(obj.CiceroLogOrigin,".clg");
-            obj.ExistedHardwareLogNumber = arrayfun(@countFileNumber,obj.HardwareList.DataPath);
+            obj.ExistedHardwareLogNumber = arrayfun(@countFileNumber,obj.HardwareList.readColumn("DataPath"));
         end
 
         function [sData, readsuccess] = readCiceroLog(obj,runIdx)
@@ -1122,26 +1093,26 @@ classdef BecExp < Trial
             dataPrefix = obj.DataPrefix;
 
             % Scan the origin folder to find if a new log file is created.
-            newLogNum = arrayfun(@countFileNumberJava,hardwareList.DataPath) - existedLogNum;
+            newLogNum = arrayfun(@countFileNumberJava,hardwareList.readColumn("DataPath")) - existedLogNum;
             if any(newLogNum>1)
                 warning('>1 hardware log files found.')
             end
-            hardwareList(newLogNum ~= 1,:) = [];
-            if isempty(hardwareList)
+            newLogList = hardwareList.readEntry(newLogNum == 1);
+            if isempty(newLogList)
                 obj.displayLog("No hardware data found.")
                 return
             end
 
             % Get the newest log file.
-            newLogPath = arrayfun(@findLatestFile,hardwareList.DataPath,UniformOutput=false);
+            newLogPath = arrayfun(@findLatestFile,newLogList.DataPath,UniformOutput=false);
 
             % Try moving the log file to the data path.
             for ii = 1:numel(newLogPath)
                 if ~isempty(newLogPath{ii})
-                    obj.displayLog("Fetching " + hardwareList.Name(ii))
+                    obj.displayLog("Fetching " + newLogList.Name(ii))
                     [~,~,ext] = fileparts(newLogPath{ii});
                     movefile(newLogPath{ii},...
-                        fullfile(obj.HardwareLogPath,dataPrefix + "_" + num2str(runIdx)) + "_" + hardwareList.Name(ii) + ext,'f');
+                        fullfile(obj.HardwareLogPath,dataPrefix + "_" + num2str(runIdx)) + "_" + newLogList.Name(ii) + ext,'f');
                 end
             end
 

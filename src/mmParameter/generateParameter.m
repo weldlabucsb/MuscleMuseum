@@ -66,6 +66,6 @@ end
 becExpType = readtable("becExpType.csv.xlsx",'TextType','string');
 becExpType.FringeRemovalMask = arrayfun(@str2num,becExpType.FringeRemovalMask,'UniformOutput',false);
 becExpType.AnalysisMethod = arrayfun(@str2strmat,becExpType.AnalysisMethod,'UniformOutput',false);
-s = BecExpConfig;
+s = BecExpSetting;
 s.checkTable;
 s.updateTable(becExpType)

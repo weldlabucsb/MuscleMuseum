@@ -26,8 +26,10 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
         Description string = "This is a test trial."
         NCompletedRun int32 = 0
         NRun int32 = 1
-        ScannedParameter string = "dummy"  % Can be string or 1x2 string array for 2D scans
-        ScannedParameterUnit string = "V"  % Can be string or 1x2 string array for 2D scans
+        ScannedParameter string = "dummy"  
+        ScannedParameterUnit string = "V"  
+        ScannedParameter2 string = "None"  
+        ScannedParameterUnit2 string = "None"  
         Is2dScan logical = false
     end
 
@@ -113,9 +115,10 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
             elseif isstring(config)
                 % Load the configuration from file
                 try
-                    configTable = loadVar("Config.mat",config);
+                    p = eval(config);
+                    configTable = p.readTable;
                 catch
-                    error("Can not find the configuration table in [Config.mat]. Try running the [setConfig.m] file.")
+                    error("Can not find the configuration table in [mmParameter.db]. Try running the [setConfig.m] and [checkSetting].")
                 end
 
                 % Set the configuration parameters
@@ -253,11 +256,7 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
             % :return: True if :attr:`ScannedParameter` is a 1x2 string array.
             % :rtype: logical
             % Determine if this is a 2D scan based on ScannedParameter dimensions
-            if isstring(obj.ScannedParameter)
-                is2DScan = size(obj.ScannedParameter, 2) == 2;
-            else
-                is2DScan = false;
-            end
+            is2DScan =  obj.ScannedParameter2 ~= "None";
         end
 
         function createWatcher(obj)
