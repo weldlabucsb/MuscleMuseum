@@ -46,7 +46,7 @@ classdef MmParameter < handle
         DataBaseName = "mmParameter.db" %Database file name. Saved under MMUser/config
         DataTypeMapping = dictionary(...
             ["int64","double","logical","string","doubleMatrix","logicalMatrix","stringMatrix","struct","table"],...
-            ["INT","REAL","INTEGER","TEXT","TEXT","TEXT","TEXT","TEXT","TEXT"]) %Map MATLAB types to database types
+            ["INTEGER","REAL","INTEGER","TEXT","TEXT","TEXT","TEXT","TEXT","TEXT"]) %Map MATLAB types to database types
         MetadataTableName = "SchemaMetadata" %Table to store schema information for all tables
     end
 
@@ -869,8 +869,8 @@ classdef MmParameter < handle
                         obj.throwError("Input table variable types do not match the database table for " + ...
                         join(mismatchName,",") + ".")
                     end
-                    for ii = 1:find(cellIdx)
-                        t.(sColumnName(ii)) = cellfun(@(x) string(jsonencode(x)), t.(sColumnName(ii)));
+                    for ii = find(cellIdx)
+                        t.(sColumnName(ii)) = cellfun(@normalizeJson, t.(sColumnName(ii)));
                     end
                 end
                 if any(nonCellIdx)
@@ -881,8 +881,8 @@ classdef MmParameter < handle
                         obj.throwError("Input table variable types do not match the database table for " + ...
                         join(mismatchName,",") + ".")
                     end
-                    for ii = 1:find(nonCellIdx)
-                        t.(sColumnName(ii)) = arrayfun(@(x) string(jsonencode(x)), t.(sColumnName(ii)));
+                    for ii = find(nonCellIdx)
+                        t.(sColumnName(ii)) = arrayfun(@normalizeJson, t.(sColumnName(ii)));
                     end
                 end
             end
@@ -1000,9 +1000,9 @@ classdef MmParameter < handle
                     value = cellfun(@(x) string(mat2str(x)),value);
                 case {"table","struct"}
                     if iscell(value)
-                        value = cellfun(@(x) string(jsonencode(x)), value);
+                        value = cellfun(@normalizeJson, value);
                     else
-                        value = string(jsonencode(value));
+                        value = arrayfun(@normalizeJson, value);
                     end
             end
         end
@@ -1241,9 +1241,9 @@ classdef MmParameter < handle
                     end
                     switch columnType(ii)
                         case "table"
-                            t.(columnName(ii)) = arrayfun(@(x) struct2table(jsondecode(x)),t.(columnName(ii)));
+                            t.(columnName(ii)) = arrayfun(@jsondecodeTable, t.(columnName(ii)), "UniformOutput", false);
                         case "struct"
-                            t.(columnName(ii)) = arrayfun(@(x) jsondecode(x),t.(columnName(ii)));
+                            t.(columnName(ii)) = arrayfun(@jsondecodeStruct, t.(columnName(ii)), "UniformOutput", false);
                     end
                 end
             end
@@ -1305,3 +1305,26 @@ str = replace(str, "'", "''");
 str = replace(str, '"', '""');
 end
 
+function str = normalizeJson(s)
+if isempty(s)
+    str = "None";
+else
+    str = string(jsonencode(s));
+end
+end
+
+function s = jsondecodeStruct(str)
+if str == "None"
+    s = struct.empty(0,1);
+else
+    s = jsondecode(str);
+end
+end
+
+function s = jsondecodeTable(str)
+if str == "None"
+    s = table.empty(0,1);
+else
+    s = struct2table(jsondecode(str));
+end
+end

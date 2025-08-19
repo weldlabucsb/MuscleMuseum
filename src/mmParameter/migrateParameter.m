@@ -72,6 +72,16 @@ becExpType.AnalysisMethod = arrayfun(@str2strmat,becExpType.AnalysisMethod,'Unif
 s0 = BecExpParameterUnit;
 dict = dictionary(s0.readColumn("ScannedParameter"),s0.readColumn("ID"));
 becExpType.ScannedParameterID = dict(becExpType.ScannedParameter);
+becExpType.WaveformAssociation = arrayfun(@(x) str2table(x), becExpType.WaveformAssociation,'UniformOutput',false);
+becExpType.PhaseLockAssociation = arrayfun(@(x) str2table(x), becExpType.PhaseLockAssociation,'UniformOutput',false);
 s = BecExpSetting;
 s.checkTable;
 s.updateTable(becExpType)
+
+% function str = normalizeJson(s)
+% if isempty(s)
+%     str = "None";
+% else
+%     str = string(jsonencode(s));
+% end
+% end

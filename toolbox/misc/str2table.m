@@ -4,7 +4,7 @@ arguments
     s string
 end
 t = table.empty;
-if isempty(s)
+if isempty(s) || ismissing(s)
     return
 end
 s = strsplit(s,";");
