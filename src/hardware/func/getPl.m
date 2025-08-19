@@ -5,13 +5,13 @@ arguments
     name string
     isLoadingSetting logical = false
 end
-load("Config.mat","PhaseLockConfig")
-plConfig = PhaseLockConfig(PhaseLockConfig.Name == name,:);
+p = PhaseLockConfig;
+plConfig = p.readEntry(name,"Name",true);
 if ~isempty(plConfig)
     plObj = feval(plConfig.DeviceModel,plConfig.ResourceName,plConfig.Name);
     if isLoadingSetting
-        load("PhaseLockSetting","PhaseLockSetting")
-        setting = PhaseLockSetting(PhaseLockSetting.Name == name,:);
+        p = PhaseLockSetting;
+        setting = p.readEntry(name,"Name",true);
         plObj.Frequency = setting.Frequency;
         plObj.VariableName = setting.VariableName;
     end

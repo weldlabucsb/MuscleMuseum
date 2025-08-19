@@ -76,8 +76,8 @@ classdef (Abstract) Hardware < handle & matlab.mixin.SetGetExactNames
 
             % Set logging folder
             if isSaving
-                load("Config.mat","ComputerConfig")
-                obj.ParentPath = ComputerConfig.HardwareLogOrigin;
+                p = ComputerConfig;
+                obj.ParentPath = p.readValue(1,"HardwareLogOrigin");
                 if isfolder(obj.ParentPath)
                     obj.DataPath = fullfile(obj.ParentPath,name);
                     createFolder(obj.DataPath);

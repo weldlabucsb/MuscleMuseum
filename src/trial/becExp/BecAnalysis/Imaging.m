@@ -50,7 +50,7 @@ classdef Imaging < BecAnalysis
             c = Constants.SI("c");
             omega = 2*pi*becExp.Atom.CyclerFrequency;
             lambda = 2*pi*c/omega;
-            obj.ImagingTimeUnit = becExp.ParameterUnitConfig.readValue("t_image","ScannedParameterUnit","ScannedParameter");
+            obj.ImagingTimeUnit = becExp.ParameterUnitSetting.readValue("t_image","ScannedParameterUnit","ScannedParameter");
             mul = unit2SI(obj.ImagingTimeUnit);
             obj.Prefactor = hbar*omega/(pixelSize/mag)^2/Isat/mul;
 

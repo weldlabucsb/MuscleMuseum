@@ -5,8 +5,8 @@ arguments
     name string
     isLoadingSetting logical = false
 end
-load("Config.mat","ScopeConfig")
-scopeConfig = ScopeConfig(ScopeConfig.Name == name,:);
+p = ScopeConfig;
+scopeConfig = p.readEntry(name,"Name",true);
 if ~isempty(ScopeConfig)
     scopeObj = feval(scopeConfig.DeviceModel,scopeConfig.ResourceName,scopeConfig.Name);
 else

@@ -31,6 +31,9 @@ for ii = 1:numel(configList)
         t.Table = [];
         t.TableList = tList;
     end
+    if configName == "BecExpParameterUnit"
+        t(t.ScannedParameter == "RunIndex",:) = [];
+    end
     s.updateTable(t)
 end
 
@@ -66,6 +69,9 @@ end
 becExpType = readtable("becExpType.csv.xlsx",'TextType','string');
 becExpType.FringeRemovalMask = arrayfun(@str2num,becExpType.FringeRemovalMask,'UniformOutput',false);
 becExpType.AnalysisMethod = arrayfun(@str2strmat,becExpType.AnalysisMethod,'UniformOutput',false);
+s0 = BecExpParameterUnit;
+dict = dictionary(s0.readColumn("ScannedParameter"),s0.readColumn("ID"));
+becExpType.ScannedParameterID = dict(becExpType.ScannedParameter);
 s = BecExpSetting;
 s.checkTable;
 s.updateTable(becExpType)

@@ -12,7 +12,15 @@ classdef BecExp < Trial
         PhaseLockAssociation string
     end
 
+    properties(Dependent)
+        ScannedParameter string
+        ScannedParameterUnit string  
+        ScannedParameter2 string  
+        ScannedParameterUnit2 string  
+    end
+
     properties(Hidden)
+        ScannedParameterID double
         IsAutoAcquire logical = false %If we want to automatically set the camera through MATLAB
         IsHoldRefresh logical = false
         IsAcquiring logical = false %If the program is still acquiring images
@@ -28,7 +36,7 @@ classdef BecExp < Trial
         CiceroLogPath string
         CiceroLogTime datetime
         DeletedRunParameterList
-        ParameterUnitConfig
+        ParameterUnitSetting
         HardwareList
         HardwareLogPath string
     end
@@ -55,16 +63,16 @@ classdef BecExp < Trial
     end
 
     methods
-        function obj = BecExp(trialName,config)
+        function obj = BecExp(trialName,config,isLoad)
             %BECEXP Construct an instance of this class
             %   Detailed explanation goes here
             arguments
                 trialName string
                 config = "BecExpSetting"
+                isLoad logical = false
             end
-            obj@Trial(trialName,config);
-            obj.ParameterUnitConfig = BecExpParameterUnit;
-            obj.HardwareList = HardwareList;
+            obj@Trial(trialName,config,isLoad);
+
 
             % Atom setting
             obj.Atom = getAtom(obj.ConfigParameter.AtomName);
@@ -93,10 +101,45 @@ classdef BecExp < Trial
             obj.setAnalyzer;
 
             % Finalize construction
-            obj.update;
-            obj.displayLog("Object construction done.")
+            if ~isLoad
+                obj.update;
+                obj.displayLog("Object construction done.")
+            end
         end
 
+        function setParameterTable(obj)
+            obj.ParameterUnitSetting = BecExpParameterUnit;
+            obj.HardwareList = HardwareList;
+        end
+        
+        function param1 = get.ScannedParameter(obj)
+            id = obj.ScannedParameterID;
+            param1 = obj.ParameterUnitSetting.readValue(id(1),"ScannedParameter");
+        end
+
+        function param2 = get.ScannedParameter2(obj)
+            id = obj.ScannedParameterID;
+            if numel(id) == 1
+                param2 = "None";
+            else
+                param2 = obj.ParameterUnitSetting.readValue(id(2),"ScannedParameter");
+            end
+        end
+
+        function unit1 = get.ScannedParameterUnit(obj)
+            id = obj.ScannedParameterID;
+            unit1 = obj.ParameterUnitSetting.readValue(id(1),"ScannedParameterUnit");
+        end
+
+        function unit2 = get.ScannedParameterUnit2(obj)
+            id = obj.ScannedParameterID;
+            if numel(id) == 1
+                unit2 = "None";
+            else
+                unit2 = obj.ParameterUnitSetting.readValue(id(2),"ScannedParameterUnit");
+            end
+        end
+        
         function paraList = get.ScannedParameterList(obj)
             if obj.Is2DScan
                 % For 2D scans, return a 2xN matrix with both parameters
@@ -1098,6 +1141,7 @@ classdef BecExp < Trial
                 warning('>1 hardware log files found.')
             end
             newLogList = hardwareList.readEntry(newLogNum == 1);
+
             if isempty(newLogList)
                 obj.displayLog("No hardware data found.")
                 return
@@ -1369,6 +1413,36 @@ classdef BecExp < Trial
             set(obj,propList(ia)',structcell(ib)')
         end
 
+    end
+
+    methods (Static)
+        function obj = loadobj(s)
+            % Reconnect DB writer and GUI handle when the object is loaded.
+            %
+            % :return: Loaded object with transient handles restored when possible.
+            % :rtype: :class:`Trial`
+
+            % This is for back-ward compatibility
+            if isstruct(s)
+                p = BecExpParameterUnit;
+                if s.DateTime < datetime(2025,8,18)
+                    s.ScannedParameterID = p.readValue(s.ScannedParameter,"ID","ScannedParameter");
+                    s = rmfield(s,"ScannedParameter");
+                    s = rmfield(s,"ScannedParameterUnit");
+                end
+                s.AnalysisMethod = s.AnalysisMethod(4:end).';
+                obj = BecExp(s.Name,s,true);
+            else
+                obj = s;
+            end
+            try
+                obj.Writer = createWriter(obj.DatabaseName); %Create writer type database connection
+            catch
+            end
+            if ~isempty(obj.ControlAppName)
+                obj.ControlApp = get(findall(0, 'Tag', obj.ControlAppName), 'RunningAppInstance');
+            end
+        end
     end
 end
 

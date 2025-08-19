@@ -45,8 +45,8 @@ classdef MmParameter < handle
     properties (Constant)
         DataBaseName = "mmParameter.db" %Database file name. Saved under MMUser/config
         DataTypeMapping = dictionary(...
-            ["int64","double","logical","string","doubleMatrix","logicalMatrix","stringMatrix"],...
-            ["INT","REAL","INTEGER","TEXT","TEXT","TEXT","TEXT"]) %Map MATLAB types to database types
+            ["int64","double","logical","string","doubleMatrix","logicalMatrix","stringMatrix","struct","table"],...
+            ["INT","REAL","INTEGER","TEXT","TEXT","TEXT","TEXT","TEXT","TEXT"]) %Map MATLAB types to database types
         MetadataTableName = "SchemaMetadata" %Table to store schema information for all tables
     end
 
@@ -819,7 +819,7 @@ classdef MmParameter < handle
                 return
             end
 
-            %% Check data type for non-matrix columns
+            %% Check data type for non-matrix and non-json columns
             tColumnType = string(arrayfun(@(x) class(t.(x)),sColumnName,'UniformOutput',false));
             if sColumnName(1)=="ID"
                 if isIgnoreId
@@ -834,13 +834,16 @@ classdef MmParameter < handle
             end
             sColumnType = obj.TableColumn(sColumnName);
 
+            jsonIdx = (sColumnType == "table") | (sColumnType == "struct");
+            
             matIdx = contains(sColumnType,"Matrix");
-            numIdx = ~contains(sColumnType,"string");
-            mismatchIndex = tColumnType(~matIdx) ~= sColumnType(~matIdx);
+            numIdx = contains(sColumnType,["double","logical"]);
+            nonMatnonJsonIdx = (~matIdx) & (~jsonIdx);
+            mismatchIndex = tColumnType(nonMatnonJsonIdx) ~= sColumnType(nonMatnonJsonIdx);
             if any(mismatchIndex)
-                nonMatColumnName = sColumnName(~matIdx);
+                nonMatColumnName = sColumnName(nonMatnonJsonIdx);
                 mismatchName = nonMatColumnName(mismatchIndex);
-                mismatchNumIdx = mismatchIndex & numIdx(~matIdx);
+                mismatchNumIdx = mismatchIndex & numIdx(nonMatnonJsonIdx);
                 mismatchNumPass = arrayfun(@(x) isnumeric(t.(x))||islogical(t.(x)),nonMatColumnName(mismatchNumIdx));
                 passColumnName = nonMatColumnName(mismatchNumIdx);
                 passColumnName = passColumnName(mismatchNumPass);
@@ -850,14 +853,45 @@ classdef MmParameter < handle
                         join(mismatchName,",") + ".")
                 end
             end
-            strScalrIdx = sColumnType == "string";
-            t = updateTableVarfun(@normalizeString,t,sColumnName(strScalrIdx));
+            strScalarIdx = sColumnType == "string";
+            t = updateTableVarfun(@normalizeString,t,sColumnName(strScalarIdx));
+
+            %% Check data type for json columns
+            if any(jsonIdx)
+                cellIdx = (tColumnType == "cell") & jsonIdx;
+                nonCellIdx = (tColumnType ~= "cell") & jsonIdx;
+                if any(cellIdx)
+                    cellColumnName = sColumnName(cellIdx);
+                    tColumnTypeCell = string(arrayfun(@(x) class(t.(x){1}),cellColumnName,'UniformOutput',false));
+                    mismatchIndex = tColumnTypeCell ~= sColumnType(cellIdx);
+                    if any(mismatchIndex)
+                        mismatchName = cellColumnName(mismatchIndex);
+                        obj.throwError("Input table variable types do not match the database table for " + ...
+                        join(mismatchName,",") + ".")
+                    end
+                    for ii = 1:find(cellIdx)
+                        t.(sColumnName(ii)) = cellfun(@(x) string(jsonencode(x)), t.(sColumnName(ii)));
+                    end
+                end
+                if any(nonCellIdx)
+                    nonCellColumnName = sColumnName(nonCellIdx);
+                    mismatchIndex = tColumnType(nonCellIdx) ~= sColumnType(nonCellIdx);
+                    if any(mismatchIndex)
+                        mismatchName = nonCellColumnName(mismatchIndex);
+                        obj.throwError("Input table variable types do not match the database table for " + ...
+                        join(mismatchName,",") + ".")
+                    end
+                    for ii = 1:find(nonCellIdx)
+                        t.(sColumnName(ii)) = arrayfun(@(x) string(jsonencode(x)), t.(sColumnName(ii)));
+                    end
+                end
+            end
 
             %% Check data type for matrix columns, serialize and normalize the output
             if any(matIdx)
+                cellIdx = (tColumnType == "cell") & matIdx;
+                nonCellIdx = (tColumnType ~= "cell") & matIdx;
                 sColumnTypeBare = replace(sColumnType,"Matrix","");
-                cellIdx = tColumnType == "cell";
-                nonCellIdx = (~cellIdx) & matIdx;
                 if any(nonCellIdx)
                     % Do the operation for matrix columns that was not
                     % prepared as cells
@@ -923,11 +957,16 @@ classdef MmParameter < handle
             else
                 updateColumnType = obj.TableColumn(updateColumnName);
             end
-            isNum = ~contains(updateColumnType,"string");
+            isNum = contains(updateColumnType,["double","logical","int64"]);
+            isJson = contains(updateColumnType,["table","struct"]);
             if ~contains(updateColumnType,"Matrix")
                 if string(class(value)) ~= updateColumnType
                     if isNum
                         if ~(isnumeric(value) || islogical(value))
+                            obj.throwError("Input value type is not correct.")
+                        end
+                    elseif isJson
+                        if string(class(value{1})) ~= updateColumnType
                             obj.throwError("Input value type is not correct.")
                         end
                     else
@@ -959,6 +998,12 @@ classdef MmParameter < handle
                     value = normalizeString(value);
                 case {"doubleMatrix","logicalMatrix"}
                     value = cellfun(@(x) string(mat2str(x)),value);
+                case {"table","struct"}
+                    if iscell(value)
+                        value = cellfun(@(x) string(jsonencode(x)), value);
+                    else
+                        value = string(jsonencode(value));
+                    end
             end
         end
         
@@ -1000,6 +1045,10 @@ classdef MmParameter < handle
 
             if keyColumnName == "ID" && islogical(keyColumnValue)
                 keyColumnValue = find(keyColumnValue);
+                if isempty(keyColumnValue)
+                    t = [];
+                    return
+                end
             end
 
             conn = obj.connectDatabaseRead;
@@ -1165,9 +1214,9 @@ classdef MmParameter < handle
                             t.(columnName(ii)) = arrayfun(@(x) str2strmat(x),t.(columnName(ii)),"UniformOutput",false);
                         case "doubleMatrix"
                             % Parse numeric matrix strings to numeric arrays
-                            t.(columnName(ii)) = arrayfun(@(x) str2num(x), t.(columnName(ii)), "UniformOutput", false); %#ok<ST2NM>
+                            t.(columnName(ii)) = arrayfun(@(x) str2num(x), t.(columnName(ii)), "UniformOutput", false);
                         case "logicalMatrix"
-                            t.(columnName(ii)) = arrayfun(@(x) logical(str2num(x)), t.(columnName(ii)), "UniformOutput", false); %#ok<ST2NM>
+                            t.(columnName(ii)) = arrayfun(@(x) logical(str2num(x)), t.(columnName(ii)), "UniformOutput", false);
                     end
                 end
             end
@@ -1180,6 +1229,22 @@ classdef MmParameter < handle
                         continue
                     end
                     t.(columnName(ii)) = arrayfun(@(x) logical(x),t.(columnName(ii)));
+                end
+            end
+
+            % Convert json data
+            jsonIdx = contains(columnType,["table","struct"]);
+            if any(jsonIdx)
+                for ii = find(jsonIdx)
+                    if ~ismember(columnName(ii), presentVars)
+                        continue
+                    end
+                    switch columnType(ii)
+                        case "table"
+                            t.(columnName(ii)) = arrayfun(@(x) struct2table(jsondecode(x)),t.(columnName(ii)));
+                        case "struct"
+                            t.(columnName(ii)) = arrayfun(@(x) jsondecode(x),t.(columnName(ii)));
+                    end
                 end
             end
 

@@ -5,21 +5,21 @@ arguments
     name string
     isLoadingSetting logical = false
 end
-load("Config.mat","WaveformGeneratorConfig")
-wgConfig = WaveformGeneratorConfig(WaveformGeneratorConfig.Name == name,:);
+p = WaveformGeneratorConfig;
+wgConfig = p.readEntry(name,"Name",true);
 if ~isempty(wgConfig)
     wgObj = feval(wgConfig.DeviceModel,wgConfig.ResourceName,wgConfig.Name);
     if isLoadingSetting
-        load("WaveformGeneratorSetting","WaveformGeneratorSetting")
+        p = WaveformGeneratorSetting;
         load("WaveformLibrary.mat","WaveformLibrary")
-        setting = WaveformGeneratorSetting(WaveformGeneratorSetting.Name == name,:);
-        wgObj.SamplingRate = setting.SamplingRate{1};
-        wgObj.TriggerSource = setting.TriggerSource{1};
-        wgObj.TriggerSlope = setting.TriggerSlope{1};
-        wgObj.OutputMode = setting.OutputMode{1};
-        wgObj.OutputLoad = setting.OutputLoad{1};
-        wgObj.IsOutput = setting.IsOutput{1};
-        wfName = setting.WaveformListName{1};
+        setting = p.readEntry(name,"Name",true);
+        wgObj.SamplingRate = setting.SamplingRate;
+        wgObj.TriggerSource = setting.TriggerSource;
+        wgObj.TriggerSlope = setting.TriggerSlope;
+        wgObj.OutputMode = setting.OutputMode;
+        wgObj.OutputLoad = setting.OutputLoad;
+        wgObj.IsOutput = setting.IsOutput;
+        wfName = setting.WaveformListName;
         for ii = 1:numel(wfName)
             if any(wfName(ii) == [WaveformLibrary.Name])
                 wgObj.WaveformList{ii} = WaveformLibrary([WaveformLibrary.Name] == wfName(ii));
@@ -29,7 +29,7 @@ if ~isempty(wgConfig)
         end
     end
 else
-    error("No device named [" + name + "] found in Config. Check your setConfig.")
+    error("No device named [" + name + "] found. Check your mmConfig.")
 end
 end
 
