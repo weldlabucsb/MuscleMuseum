@@ -86,10 +86,10 @@ s = BecExpSetting;
 s.checkTable;
 s.updateTable(becExpType)
 
-% function str = normalizeJson(s)
-% if isempty(s)
-%     str = "None";
-% else
-%     str = string(jsonencode(s));
-% end
-% end
+%% Waveform
+p = WaveformListLibrary;
+p2 = WaveformLibrary;
+wfl = loadVar("WaveformLibrary.mat","WaveformLibrary");
+for ii = 1:numel(wfl)
+    saveWaveformList(wfl(ii),p,p2)
+end

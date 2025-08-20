@@ -1,26 +1,22 @@
-function saveWaveform(wf,wflID)
-%SAVEWAVEFORM Summary of this function goes here
-%   Detailed explanation goes here
+function wfID = saveWaveform(wf,wflID,p,wfID)
 arguments
     wf
-    wflID double
+    wflID int64 = 0
+    p = []
+    wfID int64 = []
 end
-p = WaveformLibrary;
-wfName = class(wf);
-mc = metaclass(wf);
-prop = mc.PropertyList;
-prop = prop(~([prop.Dependent] | [prop.Constant] | [prop.Hidden]));
-prop = string({prop.Name});
-prop(ismember(prop,["SamplingRate","Scan"])) = [];
-if isa(wf,"ConstantTop")
-    prop(ismember(prop,["Frequency","Phase"]))=[];
+if isempty(p)
+    p = WaveformLibrary;
 end
-% if ismember(wfName,app.ExceptionWaveform)
-%     prop(ismember(prop,["Offset","Amplitude","RiseTime","FallTime"]))=[];
-% end
-val = zeros(numel(prop),1);
-for ii = 1:numel(prop)
-    val(ii) = wf.(prop(ii));
+
+t = wf.convert2Table;
+t.WaveformListID = wflID;
+if isempty(wfID)
+    p.writeEntry(t)
+    wfID = p.getLastID;
+else
+    t.ID = wfID;
+    p.updateEntry(t)
 end
 end
 

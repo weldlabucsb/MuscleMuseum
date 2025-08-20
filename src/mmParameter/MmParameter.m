@@ -38,6 +38,7 @@ classdef MmParameter < handle
         IsTriggerJoinOnRight (1,1) logical = false %Determine if we want to trigger the join automatically when the join table is updated or inserted
         IsTriggerJoinOnLeft (1,1) logical = false %Determine if we want to trigger the join automatically when this table is updated or inserted
         IsIncludeDefaultEntry (1,1) logical = false %Determine if we want to automatically include the default entries into the table
+        IsFirstColumnUnique (1,1) logical = true %Determine if we want ot make the first column unique or not
     end
 
     % Removed IsIndexed: all tables now have a built-in INTEGER PRIMARY KEY 'ID'
@@ -130,6 +131,7 @@ classdef MmParameter < handle
             schemaStr = schemaStr + "IsTriggerJoinOnJoinTable:" + obj.IsTriggerJoinOnRight + ";";
             schemaStr = schemaStr + "IsTriggerJoinOnSelf:" + obj.IsTriggerJoinOnLeft + ";";
             schemaStr = schemaStr + "IsIncludeDefaultEntry:" + obj.IsIncludeDefaultEntry + ";";
+            schemaStr = schemaStr + "IsFirstColumnUnique:" + obj.IsFirstColumnUnique + ";";
 
             % Generate hash for change detection
             schemaHash = dataHash(schemaStr);
@@ -222,6 +224,11 @@ classdef MmParameter < handle
             end
 
             obj.createJoin
+            obj.createView
+        end
+
+        function createView(obj)
+
         end
 
         function checkConstructor(obj)
@@ -302,8 +309,13 @@ classdef MmParameter < handle
             columnType = obj.DataTypeMapping(obj.TableColumn.values);
             columnDefault = obj.DefaultValue(columnName);
             % Build DDL with ID first as INTEGER PRIMARY KEY
+            if obj.IsFirstColumnUnique
+                uniqStre = " NOT NULL UNIQUE, ";
+            else
+                uniqStre = " DEFAULT " + columnDefault(1) + ", ";
+            end
             colDefs = "ID INTEGER PRIMARY KEY, " + ...
-                columnName(1) + " " + columnType(1) + " NOT NULL UNIQUE, " + ...
+                columnName(1) + " " + columnType(1) + uniqStre + ...
                 join(columnName(2:end) + " " + columnType(2:end) + ...
                 " DEFAULT " + columnDefault(2:end), ", ");
             sqlquery = "CREATE TABLE " + obj.TableName + "(" + colDefs + ");";
@@ -662,9 +674,12 @@ classdef MmParameter < handle
             % rewrite entries if they match the key
             conn = obj.connectDatabase;
             columnValue = t.(keyColumnName);
-            rf = rowfilter(keyColumnName);
-            rfList = arrayfun(@(x) rf.(keyColumnName) == x,columnValue,UniformOutput=false);
-            sqlupdate(conn,obj.TableName,t,rfList)
+            nrow = fetch(conn,"SELECT COUNT(*) FROM "+obj.TableName);
+            if nrow.("COUNT(*)") ~= 0
+                rf = rowfilter(keyColumnName);
+                rfList = arrayfun(@(x) rf.(keyColumnName) == x,columnValue,UniformOutput=false);
+                sqlupdate(conn,obj.TableName,t,rfList)
+            end
 
             % write extra entries if they don't exist
             sqlquery = "SELECT " + keyColumnName + " FROM " + obj.TableName;
@@ -1259,6 +1274,14 @@ classdef MmParameter < handle
             if height(t) == 1
                 t = table2struct(t);
             end
+        end
+
+        function id = getLastID(obj)
+            conn = obj.connectDatabaseRead;
+            sqlquery = "SELECT ID FROM " + obj.TableName + " ORDER BY id DESC LIMIT 1;";
+            out = fetch(conn,sqlquery);
+            id = out.ID;
+            close(conn)
         end
 
         function throwError(obj,me)

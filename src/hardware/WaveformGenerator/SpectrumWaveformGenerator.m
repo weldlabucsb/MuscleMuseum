@@ -133,7 +133,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             t = cell(1,nEnabledChannel);
             for ii = 1:nEnabledChannel
                 obj.WaveformList{enabledChannel(ii)}.SamplingRate = obj.SamplingRate(1);
-                obj.WaveformList{enabledChannel(ii)}.NCycle = NaN; % For spectrum AWG, we don't want to split a periodic waveform into parts and upload
+                obj.WaveformList{enabledChannel(ii)}.NCycle = 0; % For spectrum AWG, we don't want to split a periodic waveform into parts and upload
                 t{ii} = obj.WaveformList{enabledChannel(ii)}.WaveformPrepared; % Load the prepared waveforms
             end
 

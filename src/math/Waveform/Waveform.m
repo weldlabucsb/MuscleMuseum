@@ -30,7 +30,8 @@ classdef (Abstract) Waveform < handle
         SamplingRate double {mustBePositive} = 1 % Sampling rate [Hz]
         StartTime double = 0 % Start time :math:`t_0` [s]
         Duration double {mustBeNonnegative} = 0.1 % Duration :math:`T` [s]
-        Scan table = table(string.empty,string.empty, 'VariableNames',{'ParameterName','VariableName'}) % Parameter scan table for control panels
+        % Scan table = table(string.empty,string.empty, 'VariableNames',{'ParameterName','VariableName'}) % Parameter scan table for control panels
+        Scan dictionary = dictionary([],[]) % Parameter scan table for control panels
     end
 
     properties (Dependent)
@@ -94,6 +95,67 @@ classdef (Abstract) Waveform < handle
             xlabel("Time [s]",Interpreter="latex")
             ylabel("Signal",Interpreter="latex")
             render
+        end
+
+        function t = convert2Table(obj)
+            %% Get properties from the Waveform
+            mc = metaclass(obj);
+            Type = string(mc.Name);
+            Name = mc.PropertyList;
+            Name = Name(~([Name.Dependent] | [Name.Constant] | [Name.Hidden]));
+            Name = string({Name.Name});
+            Name(ismember(Name,["SamplingRate","Scan"])) = [];
+            if isa(obj,"ConstantTop")
+                Name(ismember(Name,["Frequency","Phase"]))=[];
+            end
+            if Type == "LinearRamp"
+                Name(ismember(Name,["Offset","Amplitude","RiseTime","FallTime"]))=[];
+            end
+            modList = ["AmplitudeModulation","FrequencyModulation","PhaseModulation"];
+            Name(ismember(Name,modList)) = [];
+            Name = Name(:);
+            CurrentValue = zeros(numel(Name),1);
+            nProp = numel(Name);
+
+            %% Get values
+            for ii = 1:nProp
+                CurrentValue(ii) = obj.(Name(ii));
+            end
+            VariableID = zeros(numel(Name),1);
+
+            %% Get Scan
+            key = obj.Scan.keys;
+            if ~isempty(key)
+                for ii = 1:nProp
+                    if ismember(Name(ii),key)
+                        VariableID(ii) = obj.Scan(Name(ii));
+                    end
+                end
+            end
+
+            %% Construct table
+            Parameter = {table(Name,VariableID,CurrentValue)};
+            SamplingRate = obj.SamplingRate;
+            if isa(obj,"ModulatedWaveform")
+                if ~isempty(obj.AmplitudeModulation)
+                    AmplitudeModulation = obj.AmplitudeModulation.Name;
+                else
+                    AmplitudeModulation = "None";
+                end
+                if ~isempty(obj.FrequencyModulation)
+                    FrequencyModulation = obj.FrequencyModulation.Name;
+                else
+                    FrequencyModulation = "None";
+                end
+                if ~isempty(obj.PhaseModulation)
+                    PhaseModulation = obj.PhaseModulation.Name;
+                else
+                    PhaseModulation = "None";
+                end
+                t = table(Type,SamplingRate,Parameter,AmplitudeModulation,FrequencyModulation,PhaseModulation);
+            else
+                t = table(Type,SamplingRate,Parameter);
+            end
         end
     end
 

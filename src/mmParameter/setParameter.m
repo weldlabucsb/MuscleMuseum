@@ -199,6 +199,7 @@ settingList = [
     "BecExpParameterUnit";
     "RoiSetting";
     "WaveformLibrary";
+    "WaveformListLibrary";
     ];
 
 for ii = 1:numel(settingList)

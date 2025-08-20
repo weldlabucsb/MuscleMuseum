@@ -151,7 +151,7 @@ classdef WaveformList < handle
             switch obj.ConcatMethod
                 case "Sequential"
                     for ii = 1:nWave
-                        if isa(obj.WaveformOrigin{ii},"PeriodicWaveform") && ~isnan(obj.WaveformOrigin{ii}.NCycle)
+                        if isa(obj.WaveformOrigin{ii},"PeriodicWaveform") && (obj.WaveformOrigin{ii}.NCycle ~= 0)
                             if isa(obj.WaveformOrigin{ii},"ConstantWave")
                                 obj.WaveformOrigin{ii}.Frequency = obj.SamplingRate;
                             end
@@ -171,7 +171,7 @@ classdef WaveformList < handle
                                 PlayMode(sampleIdx) = "Repeat";
                                 sampleIdx = sampleIdx + 1;
                             end
-                        elseif isa(obj.WaveformOrigin{ii},"PartialPeriodicWaveform") && ~isnan(obj.WaveformOrigin{ii}.NCycle)
+                        elseif isa(obj.WaveformOrigin{ii},"PartialPeriodicWaveform") && (obj.WaveformOrigin{ii}.NCycle~=0)
                             sBefore = obj.WaveformOrigin{ii}.SampleBefore;
                             if ~isempty(sBefore)
                                 Sample{sampleIdx} = sBefore;
@@ -366,6 +366,20 @@ classdef WaveformList < handle
                     obj.WaveformOrigin{ii}.NCycle = obj.NCycle;
                 end
             end
+        end
+
+        function t = convert2Table(obj)
+            Name = obj.Name;
+            SamplingRate = obj.SamplingRate;
+            ConcatMethod = obj.ConcatMethod;
+            PatchMethod = obj.PatchMethod;
+            PatchConstant = obj.PatchConstant;
+            IsTriggerAdvance = obj.IsTriggerAdvance;
+            NCycle = obj.NCycle;
+            if isnan(NCycle)
+                NCycle = 0;
+            end
+            t = table(Name,SamplingRate,ConcatMethod,PatchMethod,PatchConstant,IsTriggerAdvance,NCycle);
         end
     end
 end
