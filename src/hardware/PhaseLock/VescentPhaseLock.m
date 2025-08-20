@@ -71,6 +71,7 @@ classdef (Abstract) VescentPhaseLock < PhaseLock
             readline(obj.Serialport);
             writeline(obj.Serialport,"SERVO ON");
             readline(obj.Serialport);
+            disp(obj.Name + " is locked successfully.")
         end
 
         function unlock(obj)
@@ -79,6 +80,7 @@ classdef (Abstract) VescentPhaseLock < PhaseLock
             if obj.Status
                 writeline(obj.Serialport,"SERVO OFF");
                 readline(obj.Serialport);
+                disp(obj.Name + " is unlocked successfully.")
             end
         end
     end

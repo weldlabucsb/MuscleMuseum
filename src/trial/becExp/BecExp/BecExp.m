@@ -38,6 +38,7 @@ classdef BecExp < Trial
         DeletedRunParameterList
         ParameterUnitSetting
         HardwareList
+        VariableList
         HardwareLogPath string
     end
 
@@ -110,6 +111,7 @@ classdef BecExp < Trial
         function setParameterTable(obj)
             obj.ParameterUnitSetting = BecExpParameterUnit;
             obj.HardwareList = HardwareList;
+            obj.VariableList = VariableList;
         end
         
         function param1 = get.ScannedParameter(obj)
@@ -1241,16 +1243,14 @@ classdef BecExp < Trial
             hwApp = get(findall(0, 'Tag', "HwControlPanel"), 'RunningAppInstance');
             if ~isempty(hwApp)
                 if isvalid(hwApp)
-                    if ~isempty(hwApp.CurrentVariableList)
-                        hardwareData = table2cell(hwApp.CurrentVariableList);
-                        hardwareData = cell2struct(hardwareData(:,2),string(hardwareData(:,1)));
-                        if isempty(obj.HardwareData)
-                            obj.HardwareData = hardwareData;
-                        else
-                            f = fields(obj.HardwareData);
-                            for ii = 1:numel(f)
-                                obj.HardwareData.(f{ii}) = [obj.HardwareData.(f{ii}),hardwareData.(f{ii})];
-                            end
+                    hardwareData = table2cell(obj.VariableList.readColumn(["Name","CurrentValue"]));
+                    hardwareData = cell2struct(hardwareData(:,2),string(hardwareData(:,1)));
+                    if isempty(obj.HardwareData)
+                        obj.HardwareData = hardwareData;
+                    else
+                        f = fields(obj.HardwareData);
+                        for ii = 1:numel(f)
+                            obj.HardwareData.(f{ii}) = [obj.HardwareData.(f{ii}),hardwareData.(f{ii})];
                         end
                     end
                     hwApp.update

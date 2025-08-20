@@ -60,6 +60,14 @@ settingList = [
 for ii = 1:numel(settingList)
     settingName = settingList(ii);
     t = loadVar("HardwareVariable" + ".mat",settingName);
+    if settingName == "VariableList"
+        temp = t.Value;
+        t.Value = [];
+        t.DefaultValue = temp;
+        temp = t.EquationValue;
+        t.EquationValue = [];
+        t.CurrentValue = temp;
+    end
     s = eval(settingName);
     s.checkTable;
     s.updateTable(t)

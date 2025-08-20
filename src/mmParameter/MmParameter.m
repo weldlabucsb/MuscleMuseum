@@ -736,9 +736,9 @@ classdef MmParameter < handle
             end
 
             value = obj.prepareInputValue(updateColumnName,value);
+            conn = obj.connectDatabase;
             sqlquery = "UPDATE " + obj.TableName + " SET " + updateColumnName + ...
                 " = " + value + ";";
-            conn = obj.connectDatabase;
             execute(conn,sqlquery)
             close(conn)
         end
@@ -1069,16 +1069,18 @@ classdef MmParameter < handle
         function value = readColumn(obj,readColumnName)
             arguments
                 obj
-                readColumnName (1,1) string
+                readColumnName string {mustBeVector(readColumnName)} 
             end
-            if ~ismember(readColumnName,[obj.ColumnNameAll,obj.ExtraColumnFromJoin])
+            if any(~ismember(readColumnName,[obj.ColumnNameAll,obj.ExtraColumnFromJoin]))
                 obj.throwError("readColumnName is not a valid column name.")
             end
-            sqlquery = "SELECT " + readColumnName + " FROM " + obj.TableName + ";";
+            sqlquery = "SELECT " + join(readColumnName,", ") + " FROM " + obj.TableName + ";";
             conn = obj.connectDatabaseRead;
             value = fetch(conn,sqlquery);
             value = obj.convertOutputTable(value);
-            value = value.(readColumnName);
+            if isscalar(readColumnName)
+                value = value.(readColumnName);
+            end
         end
 
         function t = readValue(obj,keyColumnValue,readColumnName,keyColumnName)
