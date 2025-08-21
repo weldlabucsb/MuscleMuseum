@@ -1134,7 +1134,7 @@ classdef MmParameter < handle
             sqlquery = "SELECT " + columnStr + " FROM " + obj.TableName + " WHERE " + obj.TableName + "." + keyColumnName + " IN " + inList + ";";
             t = fetch(conn,sqlquery);
             t = obj.convertOutputTable(t);
-            if isscalar(readColumnName)
+            if isscalar(readColumnName) && ~isempty(t)
                 t = t.(readColumnName);
             end
             close(conn)

@@ -6,15 +6,21 @@ end
 if isempty(p)
     p = WaveformLibrary;
 end
-conn = p.connectDatabaseRead;
-sqlquery = "SELECT" + newline + ...
-    "   wp.Name," + newline + ...
-    "   wp.CurrentValue," + newline + ...
-    "    COALESCE(vl.CurrentValue, wp.CurrentValue) AS NewCurrentValue" + newline + ...
-    "FROM WaveformParameters AS wp" + newline + ...
-    "LEFT JOIN VariableList AS vl" + newline + ...
-    "   ON wp.VariableID = vl.ID" + newline + ...
-    "WHERE wp.ID = " + wfID + ";";
-wf = fetch(conn,sqlquery);
+s = p.readWaveform(wfID);
+
+wf = eval(s.Type);
+wf.SamplingRate = s.SamplingRate;
+wf.Scan = s.Scan;
+for ii = 1:height(s.Parameter)
+    wf.(s.Parameter.Name(ii)) = s.Parameter.Value(ii);
+end
+if isa(wf,"ModulatedWaveform")
+    modList = ["AmplitudeModulation","FrequencyModulation","PhaseModulation"];
+    for ii = 1:numel(modList)
+        if wfPara2.(modList(ii)) ~= 0
+            wf.(modList(ii)) = loadWaveformList(s.(modList(ii)));
+        end
+    end
+end
 end
 

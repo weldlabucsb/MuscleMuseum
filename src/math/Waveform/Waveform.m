@@ -30,8 +30,8 @@ classdef (Abstract) Waveform < handle
         SamplingRate double {mustBePositive} = 1 % Sampling rate [Hz]
         StartTime double = 0 % Start time :math:`t_0` [s]
         Duration double {mustBeNonnegative} = 0.1 % Duration :math:`T` [s]
-        % Scan table = table(string.empty,string.empty, 'VariableNames',{'ParameterName','VariableName'}) % Parameter scan table for control panels
-        Scan dictionary = dictionary([],[]) % Parameter scan table for control panels
+        Scan = table(string.empty,string.empty, 'VariableNames',{'ParameterName','VariableName'}) % Parameter scan table for control panels
+        % Scan dictionary = dictionary([],[]) % Parameter scan table for control panels
     end
 
     properties (Dependent)
@@ -114,43 +114,60 @@ classdef (Abstract) Waveform < handle
             modList = ["AmplitudeModulation","FrequencyModulation","PhaseModulation"];
             Name(ismember(Name,modList)) = [];
             Name = Name(:);
-            CurrentValue = zeros(numel(Name),1);
+            DefaultValue = zeros(numel(Name),1);
             nProp = numel(Name);
 
             %% Get values
             for ii = 1:nProp
-                CurrentValue(ii) = obj.(Name(ii));
+                DefaultValue(ii) = obj.(Name(ii));
             end
             VariableID = zeros(numel(Name),1);
 
             %% Get Scan
-            key = obj.Scan.keys;
-            if ~isempty(key)
+            if istable(obj.Scan) && ~isempty(obj.Scan)
+                p = VariableList;
                 for ii = 1:nProp
-                    if ismember(Name(ii),key)
-                        VariableID(ii) = obj.Scan(Name(ii));
+                    if ismember(Name(ii),obj.Scan.ParameterName)
+                        varName = obj.Scan(obj.Scan.ParameterName == Name(ii),:).VariableName;
+                        id = p.readValue(varName,"ID","Name");
+                        if ~isempty(id)
+                            VariableID(ii) = p.readValue(varName,"ID","Name");
+                        end
+                    end
+                end
+            elseif class(obj.Scan) == "dictionary"
+                key = obj.Scan.keys;
+                if ~isempty(key)
+                    for ii = 1:nProp
+                        if ismember(Name(ii),key)
+                            VariableID(ii) = obj.Scan(Name(ii));
+                        end
                     end
                 end
             end
 
             %% Construct table
-            Parameter = {table(Name,VariableID,CurrentValue)};
+            Parameter = {table(Name,VariableID,DefaultValue)};
             SamplingRate = obj.SamplingRate;
             if isa(obj,"ModulatedWaveform")
+                p = WaveformListLibrary;
                 if ~isempty(obj.AmplitudeModulation)
                     AmplitudeModulation = obj.AmplitudeModulation.Name;
+                    AmplitudeModulation = p.readValue(AmplitudeModulation,"ID","Name");
                 else
-                    AmplitudeModulation = "None";
+                    AmplitudeModulation = 0;
                 end
                 if ~isempty(obj.FrequencyModulation)
                     FrequencyModulation = obj.FrequencyModulation.Name;
+                    FrequencyModulation = p.readValue(FrequencyModulation,"ID","Name");
                 else
-                    FrequencyModulation = "None";
+                    FrequencyModulation = 0;
                 end
                 if ~isempty(obj.PhaseModulation)
                     PhaseModulation = obj.PhaseModulation.Name;
+                    PhaseModulation = p.readValue(PhaseModulation,"ID","Name");
                 else
-                    PhaseModulation = "None";
+                    PhaseModulation = 0;
                 end
                 t = table(Type,SamplingRate,Parameter,AmplitudeModulation,FrequencyModulation,PhaseModulation);
             else

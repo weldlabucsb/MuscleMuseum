@@ -38,6 +38,26 @@ classdef WaveformListLibrary < MmParameter
                 "WaveformOrigin","'[]'"...
                 );
         end
+
+        function wfl = loadEntry(obj,nameOrID)
+            if isnumeric(nameOrID)
+                wflPara = obj.readEntry(nameOrID);
+            else
+                wflPara = obj.readEntry(nameOrID,"Name");
+            end
+            if isempty(wflPara)
+                wfl = WaveformList.empty;
+                return
+            end
+            p = WaveformLibrary;
+            wfo = arrayfun(@(x) p.loadEntry(x),wflPara.WaveformOrigin,'UniformOutput',false);
+            wfl = WaveformList(wflPara.Name,waveformOrigin=wfo);
+            paraList = obj.TableColumn.keys;
+            paraList(ismember(paraList,["WaveformOrigin","Name"])) = [];
+            for ii = 1:numel(paraList)
+                wfl.(paraList(ii)) = wflPara.(paraList(ii));
+            end
+        end
     end
 end
 

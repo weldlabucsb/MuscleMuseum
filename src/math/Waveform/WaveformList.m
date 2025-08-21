@@ -219,8 +219,8 @@ classdef WaveformList < handle
                             sample = sample + tFunc(t);
                         end
                         Sample{sampleIdx} = sample;
-                        NRepeat{sampleIdx} = 1;
-                        PlayMode{sampleIdx} = obj.RepeatMode;
+                        NRepeat(sampleIdx) = 1;
+                        PlayMode(sampleIdx) = obj.RepeatMode;
                         sampleIdx = sampleIdx + 1;
                         if jj ~= nUnion
                             if unionLimit(jj,2) ~= unionLimit(jj+1,1)
@@ -232,8 +232,8 @@ classdef WaveformList < handle
                                 end
                                 tPatch = patchLimit(jj,2) - patchLimit(jj,1);
                                 Sample{sampleIdx} = repmat(patchConstant,1,32);
-                                NRepeat{sampleIdx} = floor(tPatch / dt / 32);
-                                PlayMode{sampleIdx} = obj.RepeatMode;
+                                NRepeat(sampleIdx) = floor(tPatch / dt / 32);
+                                PlayMode(sampleIdx) = obj.RepeatMode;
                                 sampleIdx = sampleIdx + 1;
                             end
                         end
