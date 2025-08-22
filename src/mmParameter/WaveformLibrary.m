@@ -114,6 +114,22 @@ classdef WaveformLibrary < MmParameter
             end
         end
     
+        function wflID = checkVariableBound(obj,varID)
+            conn = obj.connectDatabaseRead;
+            sqlquery = "SELECT" + newline + ...
+                "   wl.WaveformListID"  + newline + ...
+                "FROM WaveformLibrary AS wl, " + newline + ...
+                "   json_each(wl.Parameter) AS json" + newline + ...
+                "WHERE json.value ->> 'VariableID' = " + varID + newline + ...
+                "GROUP BY wl.WaveformListID;";
+            t = fetch(conn,sqlquery);
+            if isempty(t)
+                wflID = [];
+            else
+                wflID = unique(t.WaveformListID);
+            end
+            close(conn)
+        end
     end
 end
 

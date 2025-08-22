@@ -871,7 +871,7 @@ classdef MmParameter < handle
             strScalarIdx = sColumnType == "string";
             t = updateTableVarfun(@normalizeString,t,sColumnName(strScalarIdx));
             logicalScalarIdx = sColumnType == "logical";
-            t = updateTableVarfun(@int64,t,sColumnName(logicalScalarIdx));
+            t = updateTableVarfun(@double,t,sColumnName(logicalScalarIdx));
 
             %% Check data type for json columns
             if any(jsonIdx)
@@ -1014,7 +1014,7 @@ classdef MmParameter < handle
                 case "string"
                     value = normalizeString(value);
                 case "logical"
-                    value = int64(value);
+                    value = double(value);
                 case {"doubleMatrix","logicalMatrix"}
                     value = cellfun(@(x) string(mat2str(x)),value);
                 case {"table","struct"}
