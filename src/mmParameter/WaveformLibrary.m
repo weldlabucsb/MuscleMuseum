@@ -61,6 +61,7 @@ classdef WaveformLibrary < MmParameter
             conn = obj.connectDatabaseRead;
             %% Read general waveform properties
             sqlquery = "SELECT" + ...
+                " ID," + ...
                 " Type," + ...
                 " SamplingRate," + ...
                 " AmplitudeModulation," + ...
@@ -104,9 +105,10 @@ classdef WaveformLibrary < MmParameter
             end
             if isa(wf,"ModulatedWaveform")
                 modList = ["AmplitudeModulation","FrequencyModulation","PhaseModulation"];
+                p = WaveformListLibrary;
                 for ii = 1:numel(modList)
-                    if wfPara2.(modList(ii)) ~= 0
-                        wf.(modList(ii)) = loadWaveformList(s.(modList(ii)));
+                    if s.(modList(ii)) ~= 0
+                        wf.(modList(ii)) = p.loadEntry(s.(modList(ii)));
                     end
                 end
             end

@@ -58,6 +58,36 @@ classdef WaveformListLibrary < MmParameter
                 wfl.(paraList(ii)) = wflPara.(paraList(ii));
             end
         end
+
+        function deleteEntry(obj,keyColumnValue,keyColumnName)
+            arguments
+                obj
+                keyColumnValue {mustBeVector(keyColumnValue)} %Key column value. Can be an array
+                keyColumnName (1,1) string = "ID" %Key column name (optional)
+            end
+            if ~ismember(keyColumnName,obj.ColumnNameAll)
+                obj.throwError("The keyColumnName does not match any database table column name.")
+            end
+
+            conn = obj.connectDatabase;
+            if keyColumnName == "ID" || ~contains(obj.TableColumn(keyColumnName), "string")
+                inList = "(" + join(string(keyColumnValue), ",") + ")";
+            else
+                inList = "('" + join(string(keyColumnValue), "','") + "')";
+            end
+
+            id = obj.readValue(keyColumnValue,"ID",keyColumnName);
+            if isempty(id)
+                return
+            end
+
+            p = WaveformLibrary;
+            p.deleteEntry(id,"WaveformListID")
+
+            sqlquery = "DELETE FROM " + obj.TableName + " WHERE " + obj.TableName + "." + keyColumnName + " IN " + inList + ";";
+            execute(conn,sqlquery);
+            close(conn)
+        end
     end
 end
 

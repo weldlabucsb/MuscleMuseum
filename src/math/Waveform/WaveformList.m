@@ -45,6 +45,10 @@ classdef WaveformList < handle
         NSample double % Total number of samples in the combined waveform.
     end
 
+    properties (Constant)
+        PlotNumberLimit = 1e6
+    end
+
     methods
         function obj = WaveformList(name,options)
             %Construct a WaveformList object.
@@ -319,16 +323,26 @@ classdef WaveformList < handle
                 ax = []
             end
             
-            if isempty(obj.WaveformOrigin)
-                time = 0;
-                sample = 0;
-            else
+            sr = obj.SamplingRate;
+            if ~isempty(obj.WaveformOrigin)
+                tTotal = sum(cellfun(@(x) x.Duration,obj.WaveformOrigin));
+                nSample = tTotal * sr; % Estimate the number of samples
+                if nSample > obj.PlotNumberLimit
+                    % If we have too many samples for plotting, reduce the
+                    % sampling rate
+                    warning("Too many samples. Will reduce the sampling rate for plotting.")
+                    obj.SamplingRate = round(obj.SamplingRate * obj.PlotNumberLimit / nSample);
+                end
                 dt = obj.TimeStep;
                 sample = obj.Sample;
                 time = 0:(numel(sample)-1);
                 time = time * dt;
+            else
+                time = 0;
+                sample = 0;
             end
 
+            % Plot
             if isempty(ax)
                 figure(14739)
                 plot(time,sample)
@@ -339,6 +353,11 @@ classdef WaveformList < handle
                 plot(ax,time,sample,'LineWidth',1.5);
                 xlabel(ax,"Time [s]",'Interpreter','latex')
                 ylabel(ax,"Waveform Sample",'Interpreter','latex')
+            end
+
+            % Set sampling rate back
+            if nSample > obj.PlotNumberLimit
+                obj.SamplingRate = sr;
             end
         end
 
