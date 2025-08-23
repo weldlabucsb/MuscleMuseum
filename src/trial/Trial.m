@@ -30,10 +30,10 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
     end
 
     properties (Abstract)
-        ScannedParameter string
-        ScannedParameterUnit string  
-        ScannedParameter2 string  
-        ScannedParameterUnit2 string  
+        ScannedVariable string
+        ScannedVariableUnit string  
+        ScannedVariable2 string  
+        ScannedVariableUnit2 string  
     end
 
     properties (SetAccess = protected)
@@ -265,12 +265,12 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
         end
 
         function is2DScan = get.Is2DScan(obj)
-            % Whether this trial configures a 2D parameter scan.
+            % Whether this trial configures a 2D variable scan.
             %
             % :return: True if :attr:`ScannedParameter` is a 1x2 string array.
             % :rtype: logical
-            % Determine if this is a 2D scan based on ScannedParameter dimensions
-            is2DScan =  obj.ScannedParameter2 ~= "None";
+            % Determine if this is a 2D scan based on ScannedVariable dimensions
+            is2DScan =  obj.ScannedVariable2 ~= "None";
         end
 
         function createWatcher(obj)

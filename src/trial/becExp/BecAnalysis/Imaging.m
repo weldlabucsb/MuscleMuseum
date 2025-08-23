@@ -50,7 +50,7 @@ classdef Imaging < BecAnalysis
             c = Constants.SI("c");
             omega = 2*pi*becExp.Atom.CyclerFrequency;
             lambda = 2*pi*c/omega;
-            obj.ImagingTimeUnit = becExp.ParameterUnitSetting.readValue("t_image","ScannedParameterUnit","ScannedParameter");
+            obj.ImagingTimeUnit = becExp.VariableUnitSetting.readValue("t_image","ScannedVariableUnit","ScannedVariable");
             mul = unit2SI(obj.ImagingTimeUnit);
             obj.Prefactor = hbar*omega/(pixelSize/mag)^2/Isat/mul;
 
@@ -135,13 +135,13 @@ classdef Imaging < BecAnalysis
         function updateFigure1D(obj, fig)
             % 1D plotting logic (original implementation)
             % Parameters
-            paraList = obj.BecExp.ScannedParameterList;
+            varList = obj.BecExp.ScannedVariableList;
             ax = findobj(fig,'Type','Axes');
 
             % Find x, y, and error plot data
-            [xLight,yLight,stdLight] = computeStd(paraList,obj.LightMean);
-            [xDark,yDark,stdDark] = computeStd(paraList,obj.DarkMean);
-            [xSat,ySat,stdSat] = computeStd(paraList,obj.SaturationParameterMean);
+            [xLight,yLight,stdLight] = computeStd(varList,obj.LightMean);
+            [xDark,yDark,stdDark] = computeStd(varList,obj.DarkMean);
+            [xSat,ySat,stdSat] = computeStd(varList,obj.SaturationParameterMean);
 
             % Update imaging counts plots
             l = findobj(ax(1),'Type','ErrorBar');

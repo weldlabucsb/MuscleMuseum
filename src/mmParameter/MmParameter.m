@@ -740,6 +740,30 @@ classdef MmParameter < handle
             close(conn)
         end
 
+        function updateMatrixElement(obj,keyColumnValue,updateColumnName,value,index,keyColumnName)
+            arguments
+                obj
+                keyColumnValue {mustBeVector(keyColumnValue)} %Key column values
+                updateColumnName (1,1) string %Column you want to update
+                value
+                index {mustBeNumeric(index)}
+                keyColumnName (1,1) string = "ID" %Key column name (optional)
+            end
+            if isempty(index)
+                return
+            end
+            if any(index<0)
+                obj.throwError("Index must be a possitive array for matrix element updating.")
+            end
+            matValue = obj.readValue(keyColumnValue,updateColumnName,keyColumnName);
+            try
+                matValue(index) = value;
+            catch
+                obj.throwError("The value or index are not correct for matrix element updating.")
+            end
+            obj.updateValue(keyColumnValue,updateColumnName,matValue,keyColumnName)
+        end
+        
         function updateColumn(obj,updateColumnName,value)
             arguments
                 obj
@@ -1138,8 +1162,14 @@ classdef MmParameter < handle
             sqlquery = "SELECT " + columnStr + " FROM " + obj.TableName + " WHERE " + obj.TableName + "." + keyColumnName + " IN " + inList + ";";
             t = fetch(conn,sqlquery);
             t = obj.convertOutputTable(t);
-            if isscalar(readColumnName) && ~isempty(t)
-                t = t.(readColumnName);
+            if isscalar(readColumnName) 
+                if ~isempty(t)
+                    t = t.(readColumnName);
+                elseif readColumnName == "ID"
+                    t = int64.empty;
+                else
+                    t = eval(replace(obj.TableColumn(readColumnName),"Matrix","") + ".empty");
+                end
             end
             close(conn)
         end

@@ -13,14 +13,15 @@ classdef BecExp < Trial
     end
 
     properties(Dependent)
-        ScannedParameter string
-        ScannedParameterUnit string  
-        ScannedParameter2 string  
-        ScannedParameterUnit2 string  
+        ScannedVariable string
+        ScannedVariableUnit string  
+        ScannedVariable2 string  
+        ScannedVariableUnit2 string  
     end
 
     properties(Hidden)
-        ScannedParameterID double
+        ScannedVariableID double = 1
+        ScannedVariableID2 double = 0
         IsAutoAcquire logical = false %If we want to automatically set the camera through MATLAB
         IsHoldRefresh logical = false
         IsAcquiring logical = false %If the program is still acquiring images
@@ -35,8 +36,8 @@ classdef BecExp < Trial
         CiceroLogOrigin = "."
         CiceroLogPath string
         CiceroLogTime datetime
-        DeletedRunParameterList
-        ParameterUnitSetting
+        DeletedRunVariableList
+        VariableUnitSetting
         HardwareList
         VariableList
         HardwareLogPath string
@@ -50,12 +51,12 @@ classdef BecExp < Trial
     end
 
     properties (Dependent,Hidden)
-        ScannedParameterList
+        ScannedVariableList
         RunListSorted
-        ScannedParameterListSorted
+        ScannedVariableListSorted
         XLabel
         YLabel                     % Y-axis label for 2D scans
-        ParameterGrid              % 2D parameter grid for 2D scans
+        VariableGrid              % 2D parameter grid for 2D scans
     end
 
     properties (Constant,Hidden)
@@ -95,10 +96,12 @@ classdef BecExp < Trial
             end
 
             % Analysis settings
-            obj.AnalysisMethod = rmmissing(["Od";"Imaging";"Ad";...
-                obj.AnalysisMethod]);
-            obj.AnalysisMethod(obj.AnalysisMethod == "None") = [];
-            obj.addAnalysis(obj.AnalysisMethod);
+            if ~isLoad
+                obj.AnalysisMethod = rmmissing(["Od";"Imaging";"Ad";...
+                    obj.AnalysisMethod]);
+                obj.AnalysisMethod(obj.AnalysisMethod == "None") = [];
+                obj.addAnalysis(obj.AnalysisMethod);
+            end
             obj.setAnalyzer;
 
             % Finalize construction
@@ -109,129 +112,129 @@ classdef BecExp < Trial
         end
 
         function setParameterTable(obj)
-            obj.ParameterUnitSetting = BecExpParameterUnit;
+            obj.VariableUnitSetting = BecExpVariableUnit;
             obj.HardwareList = HardwareList;
             obj.VariableList = VariableList;
         end
         
-        function param1 = get.ScannedParameter(obj)
-            id = obj.ScannedParameterID;
-            param1 = obj.ParameterUnitSetting.readValue(id(1),"ScannedParameter");
+        function var1 = get.ScannedVariable(obj)
+            id = obj.ScannedVariableID;
+            var1 = obj.VariableUnitSetting.readValue(id,"ScannedVariable");
         end
 
-        function param2 = get.ScannedParameter2(obj)
-            id = obj.ScannedParameterID;
-            if numel(id) == 1
-                param2 = "None";
+        function var2 = get.ScannedVariable2(obj)
+            id = obj.ScannedVariableID2;
+            if id == 0
+                var2 = "None";
             else
-                param2 = obj.ParameterUnitSetting.readValue(id(2),"ScannedParameter");
+                var2 = obj.VariableUnitSetting.readValue(id,"ScannedVariable");
             end
         end
 
-        function unit1 = get.ScannedParameterUnit(obj)
-            id = obj.ScannedParameterID;
-            unit1 = obj.ParameterUnitSetting.readValue(id(1),"ScannedParameterUnit");
+        function unit1 = get.ScannedVariableUnit(obj)
+            id = obj.ScannedVariableID;
+            unit1 = obj.VariableUnitSetting.readValue(id,"ScannedVariableUnit");
         end
 
-        function unit2 = get.ScannedParameterUnit2(obj)
-            id = obj.ScannedParameterID;
-            if numel(id) == 1
+        function unit2 = get.ScannedVariableUnit2(obj)
+            id = obj.ScannedVariableID2;
+            if id == 0
                 unit2 = "None";
             else
-                unit2 = obj.ParameterUnitSetting.readValue(id(2),"ScannedParameterUnit");
+                unit2 = obj.VariableUnitSetting.readValue(id,"ScannedVariableUnit");
             end
         end
         
-        function paraList = get.ScannedParameterList(obj)
+        function varList = get.ScannedVariableList(obj)
             if obj.Is2DScan
                 % For 2D scans, return a 2xN matrix with both parameters
-                param1 = obj.ScannedParameter;
-                param2 = obj.ScannedParameter2;
+                var1 = obj.ScannedVariable;
+                var2 = obj.ScannedVariable2;
                 
                 % Get first parameter values
-                switch param1
+                switch var1
                     case "RunIndex"
-                        paraList1 = double(1:obj.NCompletedRun);
+                        varList1 = double(1:obj.NCompletedRun);
                     case "CiceroLogTime"
                         if ~isempty(obj.CiceroLogTime)
-                            paraList1 = obj.CiceroLogTime;
-                            paraList1 = paraList1 - paraList1(1);
-                            paraList1 = seconds(paraList1);
+                            varList1 = obj.CiceroLogTime;
+                            varList1 = varList1 - varList1(1);
+                            varList1 = seconds(varList1);
                         else
-                            paraList1 = [];
+                            varList1 = [];
                         end
                     otherwise
-                        if isfield(obj.CiceroData,param1)
-                            paraList1 = obj.CiceroData.(param1);
-                        elseif isfield(obj.HardwareData,param1)
-                            paraList1 = obj.HardwareData.(param1);
+                        if isfield(obj.CiceroData,var1)
+                            varList1 = obj.CiceroData.(var1);
+                        elseif isfield(obj.HardwareData,var1)
+                            varList1 = obj.HardwareData.(var1);
                         else
                             obj.updateScopeData
-                            if isfield(obj.ScopeData,param1)
-                                paraList1 = obj.ScopeData.(param1);
+                            if isfield(obj.ScopeData,var1)
+                                varList1 = obj.ScopeData.(var1);
                             else
-                                paraList1 = [];
+                                varList1 = [];
                             end
                         end
                 end
                 
                 % Get second parameter values
-                switch param2
+                switch var2
                     case "RunIndex"
-                        paraList2 = double(1:obj.NCompletedRun);
+                        varList2 = double(1:obj.NCompletedRun);
                     case "CiceroLogTime"
                         if ~isempty(obj.CiceroLogTime)
-                            paraList2 = obj.CiceroLogTime;
-                            paraList2 = paraList2 - paraList2(1);
-                            paraList2 = seconds(paraList2);
+                            varList2 = obj.CiceroLogTime;
+                            varList2 = varList2 - varList2(1);
+                            varList2 = seconds(varList2);
                         else
-                            paraList2 = [];
+                            varList2 = [];
                         end
                     otherwise
-                        if isfield(obj.CiceroData,param2)
-                            paraList2 = obj.CiceroData.(param2);
-                        elseif isfield(obj.HardwareData,param2)
-                            paraList2 = obj.HardwareData.(param2);
+                        if isfield(obj.CiceroData,var2)
+                            varList2 = obj.CiceroData.(var2);
+                        elseif isfield(obj.HardwareData,var2)
+                            varList2 = obj.HardwareData.(var2);
                         else
                             obj.updateScopeData
-                            if isfield(obj.ScopeData,param2)
-                                paraList2 = obj.ScopeData.(param2);
+                            if isfield(obj.ScopeData,var2)
+                                varList2 = obj.ScopeData.(var2);
                             else
-                                paraList2 = [];
+                                varList2 = [];
                             end
                         end
                 end
                 
                 % Return 2xN matrix
-                if ~isempty(paraList1) && ~isempty(paraList2)
-                    paraList = [paraList1; paraList2];
+                if ~isempty(varList1) && ~isempty(varList2)
+                    varList = [varList1; varList2];
                 else
-                    paraList = [];
+                    varList = [];
                 end
             else
                 % 1D scan - original logic
-                switch obj.ScannedParameter
+                switch obj.ScannedVariable
                     case "RunIndex"
-                        paraList = double(1:obj.NCompletedRun);
+                        varList = double(1:obj.NCompletedRun);
                     case "CiceroLogTime"
                         if ~isempty(obj.CiceroLogTime)
-                            paraList = obj.CiceroLogTime;
-                            paraList = paraList - paraList(1);
-                            paraList = seconds(paraList);
+                            varList = obj.CiceroLogTime;
+                            varList = varList - varList(1);
+                            varList = seconds(varList);
                         else
-                            paraList = [];
+                            varList = [];
                         end
                     otherwise
-                        if isfield(obj.CiceroData,obj.ScannedParameter)
-                            paraList = obj.CiceroData.(obj.ScannedParameter);
-                        elseif isfield(obj.HardwareData,obj.ScannedParameter)
-                            paraList = obj.HardwareData.(obj.ScannedParameter);
+                        if isfield(obj.CiceroData,obj.ScannedVariable)
+                            varList = obj.CiceroData.(obj.ScannedVariable);
+                        elseif isfield(obj.HardwareData,obj.ScannedVariable)
+                            varList = obj.HardwareData.(obj.ScannedVariable);
                         else
                             obj.updateScopeData
-                            if isfield(obj.ScopeData,obj.ScannedParameter)
-                                paraList = obj.ScopeData.(obj.ScannedParameter);
+                            if isfield(obj.ScopeData,obj.ScannedVariable)
+                                varList = obj.ScopeData.(obj.ScannedVariable);
                             else
-                                paraList = [];
+                                varList = [];
                             end
                         end
                 end
@@ -239,22 +242,22 @@ classdef BecExp < Trial
         end
 
         function runListSorted = get.RunListSorted(obj)
-            paraList = obj.ScannedParameterList;
-            [~,runListSorted] =  sort(paraList,2);
+            varList = obj.ScannedVariableList;
+            [~,runListSorted] =  sort(varList,2);
         end
 
-        function parameterListSorted = get.ScannedParameterListSorted(obj)
-            paraList = obj.ScannedParameterList;
-            [parameterListSorted,~] =  sort(paraList,2);
+        function varListSorted = get.ScannedVariableListSorted(obj)
+            varList = obj.ScannedVariableList;
+            [varListSorted,~] =  sort(varList,2);
         end
 
         function xLabel = get.XLabel(obj)
-            sP = obj.ScannedParameter;
+            sP = obj.ScannedVariable;
             sP = strrep(sP,'_','\_');
-            if obj.ScannedParameterUnit == "None"
+            if obj.ScannedVariableUnit == "None"
                 xLabel = sP;
             else
-                xLabel = sP + "~[$\mathrm{" + obj.ScannedParameterUnit + "}$]";
+                xLabel = sP + "~[$\mathrm{" + obj.ScannedVariableUnit + "}$]";
             end
         end
 
@@ -264,49 +267,49 @@ classdef BecExp < Trial
                 return
             end
             
-            sP = obj.ScannedParameter2;
+            sP = obj.ScannedVariable2;
             sP = strrep(sP,'_','\_');
-            if obj.ScannedParameter2Unit == "None"
+            if obj.ScannedVariable2Unit == "None"
                 yLabel = sP;
             else
-                yLabel = sP + "~[$\mathrm{" + obj.ScannedParameter2Unit + "}$]";
+                yLabel = sP + "~[$\mathrm{" + obj.ScannedVariable2Unit + "}$]";
             end
         end
 
-        function paramGrid = get.ParameterGrid(obj)
+        function varGrid = get.VariableGrid(obj)
             % Create 2D parameter grid for 2D scans
             if ~obj.Is2DScan
-                paramGrid = [];
+                varGrid = [];
                 return
             end
             
-            paraList = obj.ScannedParameterList;
-            if isempty(paraList) || size(paraList, 1) ~= 2
-                paramGrid = [];
+            varList = obj.ScannedVariableList;
+            if isempty(varList) || size(varList, 1) ~= 2
+                varGrid = [];
                 return
             end
             
-            paraList1 = paraList(1, :);
-            paraList2 = paraList(2, :);
+            varList1 = varList(1, :);
+            varList2 = varList(2, :);
             
             % Get unique values for each parameter
-            unique1 = unique(paraList1);
-            unique2 = unique(paraList2);
+            unique1 = unique(varList1);
+            unique2 = unique(varList2);
             
             % Create meshgrid
             [X, Y] = meshgrid(unique1, unique2);
-            paramGrid = struct('X', X, 'Y', Y, 'unique1', unique1, 'unique2', unique2);
+            varGrid = struct('X', X, 'Y', Y, 'unique1', unique1, 'unique2', unique2);
         end
 
-        function drp = get.DeletedRunParameterList(obj)
-            if isempty(obj.DeletedRunParameterList)
-                drp = eval(class(obj.ScannedParameterList)+".empty(0,0)");
+        function drp = get.DeletedRunVariableList(obj)
+            if isempty(obj.DeletedRunVariableList)
+                drp = eval(class(obj.ScannedVariableList)+".empty(0,0)");
                 return
             end
-            if all(~ismember(obj.DeletedRunParameterList,obj.ScannedParameterList))
-                drp = obj.DeletedRunParameterList;
+            if all(~ismember(obj.DeletedRunVariableList,obj.ScannedVariableList))
+                drp = obj.DeletedRunVariableList;
             else
-                drp = obj.DeletedRunParameterList(~ismember(obj.DeletedRunParameterList,obj.ScannedParameterList));
+                drp = obj.DeletedRunVariableList(~ismember(obj.DeletedRunVariableList,obj.ScannedVariableList));
             end
         end
     end
@@ -419,12 +422,12 @@ classdef BecExp < Trial
                 obj.updateScopeData
 
                 %% Check if the scanned parameter is correct
-                if isempty(obj.ScannedParameterList)
+                if isempty(obj.ScannedVariableList)
                     if ~obj.Is2DScan
-                        obj.displayLog("Can not find [" + obj.ScannedParameter + "]" + ...
+                        obj.displayLog("Can not find [" + obj.ScannedVariable + "]" + ...
                             " in Cicero or Hardware Variable List or scope data list. Please correct and restart.","error")
                     else
-                        obj.displayLog("Can not find [" + obj.ScannedParameter + "] or [" + obj.ScannedParameter2 + "]" + ...
+                        obj.displayLog("Can not find [" + obj.ScannedVariable + "] or [" + obj.ScannedVariable2 + "]" + ...
                             " in Cicero or Hardware Variable List or scope data list. Please correct and restart.","error")
                     end
                 end
@@ -851,11 +854,11 @@ classdef BecExp < Trial
 
             if any(runIdx>NComp)
                 warning("Input run numbers are greater than the number of completed runs. Will try to delete residual files.")
-                obj.DeletedRunParameterList = [obj.DeletedRunParameterList,obj.ScannedParameterList(runIdx(runIdx<=NComp))];
+                obj.DeletedRunVariableList = [obj.DeletedRunVariableList,obj.ScannedVariableList(runIdx(runIdx<=NComp))];
                 obj.NCompletedRun = NComp - sum(runIdx<=NComp);
             else
                 try
-                    obj.DeletedRunParameterList = [obj.DeletedRunParameterList,obj.ScannedParameterList(runIdx(runIdx<=NComp))];
+                    obj.DeletedRunVariableList = [obj.DeletedRunVariableList,obj.ScannedVariableList(runIdx(runIdx<=NComp))];
                 catch
                 end
                 obj.NCompletedRun = NComp - numel(runIdx);
@@ -1263,8 +1266,8 @@ classdef BecExp < Trial
             %UPDATESCOPEDATA Summary of this function goes here
             %   Detailed explanation goes here
             fullValueName = string.empty;
-            if contains(obj.ScannedParameter,"Scope","IgnoreCase",true)
-                fullValueName = [fullValueName,obj.ScannedParameter];
+            if contains(obj.ScannedVariable,"Scope","IgnoreCase",true)
+                fullValueName = [fullValueName,obj.ScannedVariable];
             end
             if isprop(obj,"ScopeValue") && ~isempty(obj.ScopeValue.FullValueName)
                 fullValueName = [fullValueName,obj.ScopeValue.FullValueName];
@@ -1429,13 +1432,10 @@ classdef BecExp < Trial
 
             % This is for back-ward compatibility
             if isstruct(s)
-                p = BecExpParameterUnit;
-                if s.DateTime < datetime(2025,8,18)
-                    s.ScannedParameterID = p.readValue(s.ScannedParameter,"ID","ScannedParameter");
-                    s = rmfield(s,"ScannedParameter");
-                    s = rmfield(s,"ScannedParameterUnit");
+                if isfield(s,"ScannedParameter")
+                    p = BecExpVariableUnit;
+                    s.ScannedVariableID = p.readValue(s.ScannedParameter,"ID","ScannedVariable");
                 end
-                s.AnalysisMethod = s.AnalysisMethod(4:end).';
                 obj = BecExp(s.Name,s,true);
             else
                 obj = s;

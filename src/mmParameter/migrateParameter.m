@@ -22,6 +22,8 @@ for ii = 1:numel(configList)
     t = loadVar("Config" + ".mat",configName);
     if configName == "RoiConfig"
         s = RoiSetting;
+    elseif configName == "BecExpParameterUnit"
+        s = BecExpVariableUnit;
     else
         s = eval(configName);
     end
@@ -33,6 +35,9 @@ for ii = 1:numel(configList)
     end
     if configName == "BecExpParameterUnit"
         t(t.ScannedParameter == "RunIndex",:) = [];
+        t = renamevars(t,...
+            ["ScannedParameter","ScannedParameterUnit"],...
+            ["ScannedVariable","ScannedVariableUnit"]);
     end
     s.updateTable(t)
 end
@@ -77,9 +82,9 @@ end
 becExpType = readtable("becExpType.csv.xlsx",'TextType','string');
 becExpType.FringeRemovalMask = arrayfun(@str2num,becExpType.FringeRemovalMask,'UniformOutput',false);
 becExpType.AnalysisMethod = arrayfun(@str2strmat,becExpType.AnalysisMethod,'UniformOutput',false);
-s0 = BecExpParameterUnit;
-dict = dictionary(s0.readColumn("ScannedParameter"),s0.readColumn("ID"));
-becExpType.ScannedParameterID = dict(becExpType.ScannedParameter);
+s0 = BecExpVariableUnit;
+dict = dictionary(s0.readColumn("ScannedVariable"),s0.readColumn("ID"));
+becExpType.ScannedVariableID = dict(becExpType.ScannedParameter);
 becExpType.WaveformAssociation = arrayfun(@(x) str2table(x), becExpType.WaveformAssociation,'UniformOutput',false);
 becExpType.PhaseLockAssociation = arrayfun(@(x) str2table(x), becExpType.PhaseLockAssociation,'UniformOutput',false);
 s = BecExpSetting;
@@ -102,3 +107,16 @@ end
 for ii = modwfl
     saveWaveformList(wfl(ii),p,p2)
 end
+
+%% Reset database column names
+p = BecExpConfig;
+s = p.readEntry(2);
+conn = createWriter(s.DatabaseName);
+sqlquery = "ALTER TABLE " + s.DatabaseTableName + newline + ...
+"RENAME COLUMN ""ScannedParameter"" TO ""ScannedVariable"";";
+execute(conn,sqlquery)
+sqlquery = "ALTER TABLE " + s.DatabaseTableName + newline + ...
+"RENAME COLUMN ""ScannedParameterUnit"" TO ""ScannedVariableUnit"";";
+execute(conn,sqlquery)
+close(conn)
+

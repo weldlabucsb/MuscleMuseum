@@ -215,8 +215,8 @@ classdef Ad < BecAnalysis
             adData = obj.AdData;
             x = obj.BecExp.Roi.XList * obj.BecExp.Acquisition.PixelSizeReal;
             y = obj.BecExp.Roi.YList * obj.BecExp.Acquisition.PixelSizeReal;
-            xlabel = obj.BecExp.ScannedParameterList;
-            save(fullfile(obj.BecExp.DataAnalysisPath,"AdData"),"adData","x","y","xlabel");
+            scannedVariableList = obj.BecExp.ScannedVariableList;
+            save(fullfile(obj.BecExp.DataAnalysisPath,"AdData"),"adData","x","y","scannedVariableList");
             if obj.Chart(1).IsEnabled
                 saveas(obj.Chart(1).Figure,obj.Chart(1).Path,'png')
             end
@@ -304,7 +304,7 @@ classdef Ad < BecAnalysis
             ax.TickDir = "out";
             tickSpace = roiSize(2);
             ax.XTick = (tickSpace/2):tickSpace:(tickSpace*double(nRun)-tickSpace/2);
-            ax.XTickLabel = string(obj.BecExp.ScannedParameterListSorted);
+            ax.XTickLabel = string(obj.BecExp.ScannedVariableListSorted);
             set(ax,'box','off')
             ax.Units = "pixels";
             outerpos = ax.OuterPosition;
@@ -390,9 +390,9 @@ classdef Ad < BecAnalysis
             roiSize = roi.CenterSize(3:4);
             nRun = becExp.NCompletedRun;
             runList = obj.BecExp.RunListSorted;
-            paraName = becExp.ScannedParameter;
-            paraListSorted = becExp.ScannedParameterListSorted;
-            paraUnit = becExp.ScannedParameterUnit;
+            varName = becExp.ScannedVariable;
+            varListSorted = becExp.ScannedVariableListSorted;
+            varUnit = becExp.ScannedVariable;
 
             %% Initialize plots
             roiAspect = roiSize(2)/roiSize(1);
@@ -469,19 +469,19 @@ classdef Ad < BecAnalysis
                     yLine.XData = squeeze(obj.AdData(:,round(roiSize(2)/2),runList(ii))) / obj.Unit;
 
                     % Update title
-                    if ismissing(paraUnit)
-                        paraLabel = "$\mathrm{" + paraName + "} = ~$" + ...
-                            string(paraListSorted(ii));
+                    if ismissing(varUnit)
+                        varLabel = "$\mathrm{" + varName + "} = ~$" + ...
+                            string(varListSorted(ii));
                     else
-                        paraLabel = "$\mathrm{" + paraName + "} = ~$" + ...
-                            string(paraListSorted(ii)) + "$~\mathrm{" + ...
-                            paraUnit + "}$";
+                        varLabel = "$\mathrm{" + varName + "} = ~$" + ...
+                            string(varListSorted(ii)) + "$~\mathrm{" + ...
+                            varUnit + "}$";
                     end
                     imgAxes.Title.String = ...
                         "TrialName: " + becExp.Name + ...
                         ", Trial \#" + num2str(becExp.SerialNumber) + ...
                         ", Run \#" + num2str(ii) + ", " + ...
-                        paraLabel;
+                        varLabel;
 
                     % Save as gif
                     frame = getframe(fig);

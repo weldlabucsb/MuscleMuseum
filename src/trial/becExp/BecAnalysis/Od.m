@@ -193,9 +193,9 @@ classdef Od < BecAnalysis
             roiSize = roi.CenterSize(3:4);
             nRun = becExp.NCompletedRun;
             runList = obj.BecExp.RunListSorted;
-            paraName = becExp.ScannedParameter;
-            paraListSorted = becExp.ScannedParameterListSorted;
-            paraUnit = becExp.ScannedParameterUnit;
+            paraName = becExp.ScannedVariable;
+            paraListSorted = becExp.ScannedVariableListSorted;
+            paraUnit = becExp.ScannedVariableUnit;
 
             %% Initialize plots
             roiAspect = roiSize(2)/roiSize(1);
@@ -222,7 +222,7 @@ classdef Od < BecAnalysis
             ax.TickDir = "out";
             tickSpace = roiSize(2);
             ax.XTick = (tickSpace/2):tickSpace:(tickSpace*double(nRun)-tickSpace/2);
-            ax.XTickLabel = string(obj.BecExp.ScannedParameterListSorted);
+            ax.XTickLabel = string(obj.BecExp.ScannedVariableListSorted);
             set(ax,'box','off')
             ax.Units = "pixels";
             outerpos = ax.OuterPosition;
@@ -300,9 +300,9 @@ classdef Od < BecAnalysis
             roiSize = roi.CenterSize(3:4);
             nRun = becExp.NCompletedRun;
             runList = obj.BecExp.RunListSorted;
-            paraName = becExp.ScannedParameter;
-            paraListSorted = becExp.ScannedParameterListSorted;
-            paraUnit = becExp.ScannedParameterUnit;
+            varName = becExp.ScannedVariable;
+            varListSorted = becExp.ScannedVariableListSorted;
+            varUnit = becExp.ScannedVariableUnit;
 
             %% Initialize plots
             roiAspect = roiSize(2)/roiSize(1);
@@ -379,19 +379,19 @@ classdef Od < BecAnalysis
                     yLine.XData = squeeze(obj.OdData(:,round(roiSize(2)/2),runList(ii)));
 
                     % Update title
-                    if paraUnit == "None" || ismissing(paraUnit)
-                        paraLabel = "$\mathrm{" + paraName + "} = ~$" + ...
-                            string(paraListSorted(ii));
+                    if varUnit == "None" || ismissing(varUnit)
+                        varLabel = "$\mathrm{" + varName + "} = ~$" + ...
+                            string(varListSorted(ii));
                     else
-                        paraLabel = "$\mathrm{" + paraName + "} = ~$" + ...
-                            string(paraListSorted(ii)) + "$~\mathrm{" + ...
-                            paraUnit + "}$";
+                        varLabel = "$\mathrm{" + varName + "} = ~$" + ...
+                            string(varListSorted(ii)) + "$~\mathrm{" + ...
+                            varUnit + "}$";
                     end
                     imgAxes.Title.String = ...
                         "TrialName: " + becExp.Name + ...
                         ", Trial \#" + num2str(becExp.SerialNumber) + ...
                         ", Run \#" + num2str(ii) + ", " + ... 
-                        paraLabel;
+                        varLabel;
 
                     % Save as gif
                     frame = getframe(fig);
