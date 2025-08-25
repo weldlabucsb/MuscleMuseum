@@ -356,7 +356,7 @@ classdef WaveformList < handle
             end
 
             % Set sampling rate back
-            if nSample > obj.PlotNumberLimit
+            if ~isempty(obj.WaveformOrigin) && nSample > obj.PlotNumberLimit
                 obj.SamplingRate = sr;
             end
         end

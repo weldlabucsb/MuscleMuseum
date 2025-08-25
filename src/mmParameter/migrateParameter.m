@@ -112,11 +112,27 @@ end
 p = BecExpConfig;
 s = p.readEntry(2);
 conn = createWriter(s.DatabaseName);
-sqlquery = "ALTER TABLE " + s.DatabaseTableName + newline + ...
-"RENAME COLUMN ""ScannedParameter"" TO ""ScannedVariable"";";
-execute(conn,sqlquery)
-sqlquery = "ALTER TABLE " + s.DatabaseTableName + newline + ...
-"RENAME COLUMN ""ScannedParameterUnit"" TO ""ScannedVariableUnit"";";
-execute(conn,sqlquery)
+
+try
+    sqlquery = "ALTER TABLE " + s.DatabaseTableName + newline + ...
+        "RENAME COLUMN ""ScannedParameter"" TO ""ScannedVariable"";";
+    execute(conn,sqlquery)
+catch
+end
+
+try
+    sqlquery = "ALTER TABLE " + s.DatabaseTableName + newline + ...
+        "RENAME COLUMN ""ScannedParameterUnit"" TO ""ScannedVariableUnit"";";
+    execute(conn,sqlquery)
+catch
+end
+
+try
+    sqlquery = "ALTER TABLE " + s.DatabaseTableName + newline + ...
+        "RENAME COLUMN ""IsCompeted"" TO ""IsCompleted"";";
+    execute(conn,sqlquery)
+catch
+end
+
 close(conn)
 

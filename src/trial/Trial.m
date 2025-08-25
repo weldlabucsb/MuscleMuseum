@@ -48,7 +48,7 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
     end
 
     properties (Dependent)
-        IsCompeted logical
+        IsCompleted logical
         Is2DScan logical  % Computed property based on ScannedParameter dimensions
     end
 
@@ -256,7 +256,7 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
             s = rmfield(s,"SerialNumber");
         end
 
-        function isCompeted = get.IsCompeted(obj)
+        function isCompeted = get.IsCompleted(obj)
             % Whether all runs have completed.
             %
             % :return: True if :attr:`NRun` equals :attr:`NCompletedRun`.
