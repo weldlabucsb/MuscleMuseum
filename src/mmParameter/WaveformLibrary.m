@@ -16,7 +16,7 @@ classdef WaveformLibrary < MmParameter
 
         function defineSchema(obj)
             obj.TableColumn = dictionary(...
-                "WaveformListID", "double", ...
+                "WaveformListID", "int64", ...
                 "Type", "string", ...
                 "SamplingRate", "double", ...
                 "Parameter", "table",...
@@ -27,7 +27,7 @@ classdef WaveformLibrary < MmParameter
 
             % Define default values for each column (used when adding new columns) via :attr:`DefaultValue`
             obj.DefaultValue = dictionary(...
-                "WaveformListID", "0", ...
+                "WaveformListID", "1", ...
                 "Type", "'ConstantWave'", ...
                 "SamplingRate", "1000", ...
                 "Parameter", "'None'",...
@@ -35,6 +35,11 @@ classdef WaveformLibrary < MmParameter
                 "FrequencyModulation", "0", ...
                 "PhaseModulation", "0" ...
                 );
+
+            % Define foreign key
+            obj.ForeignKey = cell2table( ...
+                {"WaveformListLibrary","WaveformListID","ID"},...
+                "VariableNames",["ParentTable","KeyChild","KeyParent"]);
             obj.IsFirstColumnUnique = false;
         end
 
@@ -113,7 +118,26 @@ classdef WaveformLibrary < MmParameter
                 end
             end
         end
-    
+
+        function wfID = saveEntry(obj,wf,wflID,wfID)
+            % Save a Waveform object into the database
+            arguments
+                obj
+                wf
+                wflID
+                wfID = []
+            end
+            t = wf.convert2Table;
+            t.WaveformListID = wflID;
+            if isempty(wfID)
+                obj.writeEntry(t)
+                wfID = obj.getLastID;
+            else
+                t.ID = wfID;
+                obj.updateEntry(t)
+            end
+        end
+
         function wflID = checkVariableBound(obj,varID)
             conn = obj.connectDatabaseRead;
             sqlquery = "SELECT" + newline + ...

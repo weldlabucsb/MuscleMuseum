@@ -86,6 +86,63 @@ classdef (Abstract) Hardware < handle & matlab.mixin.SetGetExactNames
                 end
             end
         end
+
+        function t = convert2Table(obj)
+            %% Get setable properties from the hw object
+            mc = metaclass(obj);
+            NameList = mc.PropertyList;
+            NameList = NameList(~([NameList.Dependent] |...
+                [NameList.Constant] |...
+                [NameList.Hidden] |...
+                [NameList.Transient] |...
+                string({NameList.SetAccess}) == "protected" | ...
+                string({NameList.SetAccess}) == "private"));
+            NameList = string({NameList.Name});
+            nProp = numel(NameList);
+            DefaultValue = "";
+            Type = "";
+            ChannelNumber = 1;
+            paraIdx = 1;
+            Name = "";
+            for ii = 1:nProp
+                temp = obj.(NameList(ii));
+                type = string(class(temp));
+                for jj = 1:numel(temp)
+                    if type ~= "cell"
+                        DefaultValue(paraIdx) = string(temp(jj));
+                        Type(paraIdx) = type;
+                    else
+                        if ~isempty(temp{jj})
+                            DefaultValue(paraIdx) = temp{jj}.Name;
+                        else
+                            DefaultValue(paraIdx) = "None";
+                        end
+                        Type(paraIdx) = "string";
+                    end
+                    ChannelNumber(paraIdx) = jj;
+                    Name(paraIdx) = NameList(ii);
+                    paraIdx = paraIdx + 1;
+                end
+            end
+            ChannelNumber = ChannelNumber(:);
+            Name = Name(:);
+            Type = Type(:);
+            DefaultValue = DefaultValue(:);
+            Parameter = {table(ChannelNumber,Name,Type,DefaultValue)};
+
+            %% Get other parameters
+            Type = string(mc.SuperclassList(1).SuperclassList(1).Name);
+            DataPath = obj.DataPath;
+            DeviceModel = obj.Manufacturer + obj.Model;
+            if ~isempty(obj.ResourceName)
+                ResourceName = obj.ResourceName;
+            else
+                ResourceName = "None";
+            end
+            Name = obj.Name;
+            t = table(Name,Type,DataPath,DeviceModel,ResourceName,Parameter);
+
+        end
     end
 
     methods (Access = protected)

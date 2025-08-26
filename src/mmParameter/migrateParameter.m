@@ -93,19 +93,18 @@ s.updateTable(becExpType)
 
 %% Waveform
 p = WaveformListLibrary;
-p2 = WaveformLibrary;
 wfl = loadVar("WaveformLibrary.mat","WaveformLibrary");
 modwfl = [];
 for ii = 1:numel(wfl)
     if any(cellfun(@(x) isa(x,"ModulatedWaveform"), wfl(ii).WaveformOrigin))
         modwfl = [modwfl,ii];
     else
-        saveWaveformList(wfl(ii),p,p2)
+        p.saveEntry(wfl(ii))
     end
 end
 
 for ii = modwfl
-    saveWaveformList(wfl(ii),p,p2)
+    p.saveEntry(wfl(ii))
 end
 
 %% Reset database column names

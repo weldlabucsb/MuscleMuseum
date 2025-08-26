@@ -40,6 +40,7 @@ classdef WaveformListLibrary < MmParameter
         end
 
         function wfl = loadEntry(obj,nameOrID)
+            % Load a WaveformList object from the database
             if isnumeric(nameOrID)
                 wflPara = obj.readEntry(nameOrID);
             else
@@ -49,9 +50,12 @@ classdef WaveformListLibrary < MmParameter
                 wfl = WaveformList.empty;
                 return
             end
+            % Read and load WavformOrigin fomr WaveformLibrary
             p = WaveformLibrary;
             wfo = arrayfun(@(x) p.loadEntry(x),wflPara.WaveformOrigin,'UniformOutput',false);
             wfl = WaveformList(wflPara.Name,waveformOrigin=wfo);
+            
+            % Read and load other WaveformList parameters
             paraList = obj.TableColumn.keys;
             paraList(ismember(paraList,["WaveformOrigin","Name"])) = [];
             for ii = 1:numel(paraList)
@@ -59,34 +63,66 @@ classdef WaveformListLibrary < MmParameter
             end
         end
 
-        function deleteEntry(obj,keyColumnValue,keyColumnName)
+        function wflID = saveEntry(obj,wfl)
+            % Save a WaveformList object into the database
             arguments
                 obj
-                keyColumnValue {mustBeVector(keyColumnValue)} %Key column value. Can be an array
+                wfl WaveformList
+            end
+            % Save parameter
+            t = wfl.convert2Table;
+            obj.updateEntry(t,"Name")
+            wflID = obj.readValue(t.Name,"ID","Name");
+
+            % Check WaveformOrigin
+            wfo = obj.readValue(wflID,"WaveformOrigin");
+            nwf = numel(wfl.WaveformOrigin);
+            if nwf == 0
+                obj.updateValue(wflID,"WaveformOrigin",{[]})
+                return
+            end
+
+            % Update WaveformLibrary
+            p = WaveformLibrary;
+            if ~isempty(wfo)
+                p.deleteEntry(wfo)
+            end
+            id = zeros(1,nwf);
+            for ii = 1:numel(wfl.WaveformOrigin)
+                id(ii) = p.saveEntry(wfl.WaveformOrigin{ii},wflID);
+            end
+            obj.updateValue(wflID,"WaveformOrigin",{id});
+        end
+
+        function wflID = duplicateEntry(obj,keyColumnValue,name,keyColumnName)
+            arguments
+                obj
+                keyColumnValue (1,1) %Key column value. Can be an array
+                name string
                 keyColumnName (1,1) string = "ID" %Key column name (optional)
             end
             if ~ismember(keyColumnName,obj.ColumnNameAll)
                 obj.throwError("The keyColumnName does not match any database table column name.")
             end
 
-            conn = obj.connectDatabase;
-            if keyColumnName == "ID" || ~contains(obj.TableColumn(keyColumnName), "string")
-                inList = "(" + join(string(keyColumnValue), ",") + ")";
-            else
-                inList = "('" + join(string(keyColumnValue), "','") + "')";
+            % Duplicate the entry in WaveformListLibrary
+            s = obj.readEntry(keyColumnValue,keyColumnName,true);
+            if ~isempty(name)
+                s.(obj.FirstColumn) = name;
             end
+            obj.writeEntry(s)
 
-            id = obj.readValue(keyColumnValue,"ID",keyColumnName);
-            if isempty(id)
-                return
-            end
+            % Check WaveformOrigin
+            wflID = obj.getLastID;
+            wfo = s.WaveformOrigin;
 
+            % Write WaveformOrigin into WaveformLibrary
             p = WaveformLibrary;
-            p.deleteEntry(id,"WaveformListID")
-
-            sqlquery = "DELETE FROM " + obj.TableName + " WHERE " + obj.TableName + "." + keyColumnName + " IN " + inList + ";";
-            execute(conn,sqlquery);
-            close(conn)
+            wfID = zeros(1,numel(wfo));
+            for ii = 1:numel(wfo)
+                wfID(ii) = p.duplicateEntry(wfo(ii),wflID);
+            end
+            obj.updateValue(wflID,"WaveformOrigin",{wfID});
         end
     end
 end

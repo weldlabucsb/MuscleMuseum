@@ -30,11 +30,12 @@ classdef MmParameter < handle
         DefaultValue dictionary =  dictionary("Name","Name") %Stores column name and default value. Should be defined in subclass's construtor. Using Null is not recommended.
         DefaultEntry table %Default entries for initial setup
         TableName (1,1) string %Table name is consistent with the subclass name
-        DefaultKey (1,1) string %The default key string will be the name of the first column after ID
+        FirstColumn (1,1) string %The default key string will be the name of the first column after ID
         ColumnNameAll string %Including the ID column
         ColumnTypeAll string %Including the ID column's type
         ExtraColumnFromJoin string
-        JoinCondition table %TableRight,KeyLeft,KeyRight,ColumnLeft,ColumnRight
+        JoinCondition table %TableRight, KeyLeft,KeyRight,ColumnLeft,ColumnRight
+        ForeignKey table %ParentTable, KeyChild, KeyParent
         IsTriggerJoinOnRight (1,1) logical = false %Determine if we want to trigger the join automatically when the join table is updated or inserted
         IsTriggerJoinOnLeft (1,1) logical = false %Determine if we want to trigger the join automatically when this table is updated or inserted
         IsIncludeDefaultEntry (1,1) logical = false %Determine if we want to automatically include the default entries into the table
@@ -69,7 +70,7 @@ classdef MmParameter < handle
         function setProperty(obj)
             obj.TableName = string(class(obj));
             columnName = obj.TableColumn.keys;
-            obj.DefaultKey = columnName(1);
+            obj.FirstColumn = columnName(1);
             obj.ColumnNameAll = ["ID",columnName.'];
             obj.ColumnTypeAll = ["int64",obj.TableColumn.values.'];
             if ~isempty(obj.JoinCondition)
@@ -128,6 +129,14 @@ classdef MmParameter < handle
                     ",ColumnRight:" + cellfun(@(x) join(x,","), obj.JoinCondition.ColumnRight),...
                     ",") + ";";
             end
+            if ~isempty(obj.ForeignKey)
+                schemaStr = schemaStr + ...
+                    join(...
+                    "ParentTable:" + obj.ForeignKey.ParentTable +...
+                    ",KeyChild:" + obj.ForeignKey.KeyChild +...
+                    ",KeyParent:" + obj.ForeignKey.KeyParent,...
+                    ",") + ";";
+            end
             schemaStr = schemaStr + "IsTriggerJoinOnJoinTable:" + obj.IsTriggerJoinOnRight + ";";
             schemaStr = schemaStr + "IsTriggerJoinOnSelf:" + obj.IsTriggerJoinOnLeft + ";";
             schemaStr = schemaStr + "IsIncludeDefaultEntry:" + obj.IsIncludeDefaultEntry + ";";
@@ -167,6 +176,7 @@ classdef MmParameter < handle
             % :return: SQLite connection handle
             % :rtype: sqlite
             conn = sqlite(which(obj.DataBaseName),"connect");
+            execute(conn,"PRAGMA foreign_keys = ON;")
         end
 
         function conn = connectDatabaseRead(obj)
@@ -282,6 +292,16 @@ classdef MmParameter < handle
                     obj.throwError("KeyLeft of JoinCondition must be a memeber of this table's columns.")
                 end
             end
+
+            if ~isempty(obj.ForeignKey)
+                columns = string(obj.ForeignKey.Properties.VariableNames);
+                if ~isempty(setdiff(["ParentTable","KeyChild","KeyParent"],columns))
+                    obj.throwError("ForeignKey must include ParentTable,KeyChild,KeyParent.")
+                end
+                if ~isempty(setdiff(obj.ForeignKey.KeyChild,obj.TableColumn.keys))
+                    obj.throwError("In ForeignKey table, KeyChild has to be a valid column name.")
+                end
+            end
         end
 
         function updateSchemaMetadata(obj)
@@ -318,6 +338,13 @@ classdef MmParameter < handle
                 columnName(1) + " " + columnType(1) + uniqStre + ...
                 join(columnName(2:end) + " " + columnType(2:end) + ...
                 " DEFAULT " + columnDefault(2:end), ", ");
+            if ~isempty(obj.ForeignKey)
+                colDefs = colDefs + ", " + ...
+                    join("FOREIGN KEY (" + obj.ForeignKey.KeyChild +")" + ...
+                    " REFERENCES " + obj.ForeignKey.ParentTable + "(" + ...
+                    obj.ForeignKey.KeyParent + ") ON DELETE CASCADE"....
+                    ,",");
+            end
             sqlquery = "CREATE TABLE " + obj.TableName + "(" + colDefs + ");";
             execute(conn,sqlquery)
 
@@ -481,9 +508,9 @@ classdef MmParameter < handle
             if ~isempty(obj.DefaultEntry)
                 if obj.IsIncludeDefaultEntry
                     % Use the first schema column (e.g., Name) as the upsert key
-                    obj.updateEntry(obj.DefaultEntry, obj.DefaultKey)
+                    obj.updateEntry(obj.DefaultEntry, obj.FirstColumn)
                 else
-                    obj.deleteEntry(obj.DefaultEntry.(obj.DefaultKey),obj.DefaultKey)
+                    obj.deleteEntry(obj.DefaultEntry.(obj.FirstColumn),obj.FirstColumn)
                 end
             end
         end
@@ -555,7 +582,7 @@ classdef MmParameter < handle
 
             % Delete default entries
             if ~isempty(obj.DefaultEntry)
-                obj.deleteEntry(obj.DefaultEntry.(obj.DefaultKey),obj.DefaultKey)
+                obj.deleteEntry(obj.DefaultEntry.(obj.FirstColumn),obj.FirstColumn)
             end
 
             % Backup existing data
@@ -643,7 +670,7 @@ classdef MmParameter < handle
             obj.updateDefaultEntry
 
             % Insert t into the database table
-            obj.updateEntry(t,obj.DefaultKey)
+            obj.updateEntry(t,obj.FirstColumn)
 
         end
 
@@ -808,6 +835,27 @@ classdef MmParameter < handle
             sqlquery = "DELETE FROM " + obj.TableName + " WHERE " + obj.TableName + "." + keyColumnName + " IN " + inList + ";";
             execute(conn,sqlquery);
             close(conn)
+        end
+
+        function id = duplicateEntry(obj,keyColumnValue,firstColumnValue,keyColumnName)
+            arguments
+                obj
+                keyColumnValue (1,1) %Key column value. Can be an array
+                firstColumnValue = []
+                keyColumnName (1,1) string = "ID" %Key column name (optional)
+            end
+            if obj.IsFirstColumnUnique && isempty(firstColumnValue)
+                obj.throwError("You must provide value for the unique first column when duplicating an entry.")
+            end
+            if ~ismember(keyColumnName,obj.ColumnNameAll)
+                obj.throwError("The keyColumnName does not match any database table column name.")
+            end
+            s = obj.readEntry(keyColumnValue,keyColumnName);
+            if ~isempty(firstColumnValue)
+                s.(obj.FirstColumn) = firstColumnValue;
+            end
+            obj.writeEntry(s)
+            id = obj.getLastID;
         end
 
         function t = prepareInputTable(obj, t, isAllColumnsRequired,isIgnoreId)
@@ -1050,22 +1098,22 @@ classdef MmParameter < handle
             end
         end
         
-        function t = readTable(obj,IsHideSerial)
+        function t = readTable(obj,IsHideId)
             % Read the entire table and convert columns to MATLAB types.
             %
             % :return: All rows in this parameter table.
             % :rtype: table
             arguments
                 obj
-                IsHideSerial logical = false
+                IsHideId logical = false
             end
             conn = obj.connectDatabaseRead;
             t = sqlread(conn,obj.TableName);
-            t = obj.convertOutputTable(t,IsHideSerial);
+            t = obj.convertOutputTable(t,IsHideId);
             close(conn)
         end
 
-        function t = readEntry(obj,keyColumnValue,keyColumnName,IsHideSerial)
+        function t = readEntry(obj,keyColumnValue,keyColumnName,IsHideId)
             % Read entries filtered by a key column and specific values.
             %
             % Filtering is supported for base table columns.
@@ -1080,7 +1128,7 @@ classdef MmParameter < handle
                 obj
                 keyColumnValue {mustBeVector(keyColumnValue)} %Key column values
                 keyColumnName (1,1) string = "ID" %Key column name (optional)
-                IsHideSerial logical = false
+                IsHideId logical = false
             end
             if ~ismember(keyColumnName,obj.ColumnNameAll)
                 obj.throwError("Wrong keyColumnName.")
@@ -1105,7 +1153,7 @@ classdef MmParameter < handle
 
             sqlquery = "SELECT * FROM " + obj.TableName + " WHERE " + obj.TableName + "." + keyColumnName + " IN " + inList + ";";
             t = fetch(conn,sqlquery);
-            t = obj.convertOutputTable(t,IsHideSerial);
+            t = obj.convertOutputTable(t,IsHideId);
             close(conn)
         end
 
@@ -1130,6 +1178,9 @@ classdef MmParameter < handle
             % Read one or more columns filtered by a key column and values.
             %
             % When a single column is requested, a vector is returned instead of a table.
+            %
+            % Attention: the output order is not guarenteed to match the
+            % keyColumnValue.
             %
             % :param keyColumnName: Column to filter on
             % :type keyColumnName: string
@@ -1159,7 +1210,9 @@ classdef MmParameter < handle
             end
             columnStr = join(readColumnName,",");
 
-            sqlquery = "SELECT " + columnStr + " FROM " + obj.TableName + " WHERE " + obj.TableName + "." + keyColumnName + " IN " + inList + ";";
+            sqlquery = "SELECT " + columnStr + " FROM " + obj.TableName +...
+                " WHERE " + obj.TableName + "." + keyColumnName +...
+                " IN " + inList + " ORDER BY ID ASC" + ";";
             t = fetch(conn,sqlquery);
             t = obj.convertOutputTable(t);
             if isscalar(readColumnName) 
@@ -1228,7 +1281,7 @@ classdef MmParameter < handle
             close(conn)
         end
 
-        function t = convertOutputTable(obj,t,IsHideSerial)
+        function t = convertOutputTable(obj,t,IsHideId)
             % Convert SQLite-stored values back to MATLAB types.
             %
             % Converts matrix-encoded strings and logical columns to their corresponding
@@ -1241,7 +1294,7 @@ classdef MmParameter < handle
             arguments
                 obj
                 t table
-                IsHideSerial logical = false
+                IsHideId logical = false
             end
 
             if isempty(t)
@@ -1300,7 +1353,7 @@ classdef MmParameter < handle
             end
 
             % Delete ID if needed
-            if IsHideSerial && ismember("ID",presentVars)
+            if IsHideId && ismember("ID",presentVars)
                 t.ID = [];
             end
 
