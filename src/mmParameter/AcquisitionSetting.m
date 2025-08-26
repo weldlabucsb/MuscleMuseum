@@ -1,4 +1,4 @@
-classdef AcquisitionConfig < MmParameter
+classdef AcquisitionSetting < MmParameter
     %:class:`AcquisitionConfig` stores per-camera acquisition configuration.
     %
     % Defines camera identity and acquisition-related parameters such as
@@ -16,7 +16,7 @@ classdef AcquisitionConfig < MmParameter
     end
 
     methods
-        function obj = AcquisitionConfig()
+        function obj = AcquisitionSetting()
             obj@MmParameter()
         end
 

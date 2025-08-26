@@ -924,7 +924,7 @@ classdef MmParameter < handle
             jsonIdx = (sColumnType == "table") | (sColumnType == "struct");
             
             matIdx = contains(sColumnType,"Matrix");
-            numIdx = contains(sColumnType,["double","logical"]);
+            numIdx = contains(sColumnType,["double","logical","int64"]);
             nonMatnonJsonIdx = (~matIdx) & (~jsonIdx);
             mismatchIndex = tColumnType(nonMatnonJsonIdx) ~= sColumnType(nonMatnonJsonIdx);
             if any(mismatchIndex)
@@ -1169,9 +1169,17 @@ classdef MmParameter < handle
             conn = obj.connectDatabaseRead;
             value = fetch(conn,sqlquery);
             value = obj.convertOutputTable(value);
+
             if isscalar(readColumnName)
-                value = value.(readColumnName);
+                if ~isempty(value)
+                    value = value.(readColumnName);
+                elseif readColumnName == "ID"
+                    value = int64.empty;
+                else
+                    value = eval(replace(obj.TableColumn(readColumnName),"Matrix","") + ".empty");
+                end
             end
+
         end
 
         function t = readValue(obj,keyColumnValue,readColumnName,keyColumnName)

@@ -51,13 +51,15 @@ classdef (Abstract) Hardware < handle & matlab.mixin.SetGetExactNames
         NChannel double % How many channels the device has
         ResourceName string % Interfaces (like VISA) require a resource name to identify the device
         DataType string {mustBeMember(DataType,{'uint8','double'})}= "uint8"
-        ParentPath string
-        DataPath string % Folder to save the object
         DisabledProperty string % Properties that are not implemented for specific models
     end
 
+    properties(Hidden)
+        DataPath string % Folder to save the object
+    end
+
     methods
-        function obj = Hardware(resourceName,name,isSaving)
+        function obj = Hardware(resourceName,name)
             % Construct a :class:`Hardware` object.
             %
             % :param resourceName: VISA/ethernet/COM resource identifier for the device.
@@ -69,22 +71,9 @@ classdef (Abstract) Hardware < handle & matlab.mixin.SetGetExactNames
             arguments
                 resourceName string
                 name string = string.empty
-                isSaving logical = true
             end
             obj.ResourceName = resourceName;
             obj.Name = name;
-
-            % Set logging folder
-            if isSaving
-                p = ComputerConfig;
-                obj.ParentPath = p.readValue(1,"HardwareLogOrigin");
-                if isfolder(obj.ParentPath)
-                    obj.DataPath = fullfile(obj.ParentPath,name);
-                    createFolder(obj.DataPath);
-                else
-                    warning("Can not find the hardware log folder. Check your setConfig")
-                end
-            end
         end
 
         function t = convert2Table(obj)
@@ -104,23 +93,41 @@ classdef (Abstract) Hardware < handle & matlab.mixin.SetGetExactNames
             ChannelNumber = 1;
             paraIdx = 1;
             Name = "";
+            className = string(mc.SuperclassList(1).SuperclassList(1).Name);
             for ii = 1:nProp
                 temp = obj.(NameList(ii));
                 type = string(class(temp));
                 for jj = 1:numel(temp)
+                    ChannelNumber(paraIdx) = jj;
+                    Name(paraIdx) = NameList(ii);
                     if type ~= "cell"
                         DefaultValue(paraIdx) = string(temp(jj));
                         Type(paraIdx) = type;
                     else
-                        if ~isempty(temp{jj})
-                            DefaultValue(paraIdx) = temp{jj}.Name;
+                        if className == "WaveformGenerator" && NameList(ii) == "WaveformList"
+                            p = WaveformListLibrary;
+                            Type(paraIdx) = "int64";
+                            Name(paraIdx) = "WaveformListID";
+                            if ~isempty(temp{jj})
+                                name = temp{jj}.Name;
+                                id = p.readValue(name,"ID","Name");
+                                if ~isempty(id)
+                                    DefaultValue(paraIdx) = string(id);
+                                else
+                                    DefaultValue(paraIdx) = "0";
+                                end
+                            else
+                                DefaultValue(paraIdx) = "0";
+                            end
                         else
-                            DefaultValue(paraIdx) = "None";
+                            if ~isempty(temp{jj})
+                                DefaultValue(paraIdx) = temp{jj};
+                            else
+                                DefaultValue(paraIdx) = "None";
+                            end
+                            Type(paraIdx) = string(class(temp{jj}));
                         end
-                        Type(paraIdx) = "string";
                     end
-                    ChannelNumber(paraIdx) = jj;
-                    Name(paraIdx) = NameList(ii);
                     paraIdx = paraIdx + 1;
                 end
             end
@@ -128,11 +135,10 @@ classdef (Abstract) Hardware < handle & matlab.mixin.SetGetExactNames
             Name = Name(:);
             Type = Type(:);
             DefaultValue = DefaultValue(:);
-            Parameter = {table(ChannelNumber,Name,Type,DefaultValue)};
+            Setting = {table(ChannelNumber,Name,Type,DefaultValue)};
 
             %% Get other parameters
-            Type = string(mc.SuperclassList(1).SuperclassList(1).Name);
-            DataPath = obj.DataPath;
+            Type = className;
             DeviceModel = obj.Manufacturer + obj.Model;
             if ~isempty(obj.ResourceName)
                 ResourceName = obj.ResourceName;
@@ -140,7 +146,7 @@ classdef (Abstract) Hardware < handle & matlab.mixin.SetGetExactNames
                 ResourceName = "None";
             end
             Name = obj.Name;
-            t = table(Name,Type,DataPath,DeviceModel,ResourceName,Parameter);
+            t = table(Name,Type,DeviceModel,ResourceName,Setting);
 
         end
     end

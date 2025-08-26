@@ -21,6 +21,10 @@ classdef SpectrumDN2662_02 < SpectrumWaveformGenerator
             obj.Model = "DN2662_02";
             obj.NChannel = 2;
             obj.IsOutput = [true,true];
+            obj.OutputLoad = ["50","50"];
+            obj.OutputMode = ["Normal","Normal"];
+            obj.TriggerSource = ["External","External"];
+            obj.TriggerSlope = ["Rise","Rise"];
             obj.Memory = 2e9;
             obj.SamplingRate = [1.25e9,1.25e9];
             obj.WaveformList = cell(1,obj.NChannel);

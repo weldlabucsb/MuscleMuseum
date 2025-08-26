@@ -71,14 +71,10 @@ if exist('ServerName','var')
 end
 
 %% Set acquisition configuration
-if exist('AcquisitionName','var')
-    Name = AcquisitionName;
-    DeviceModel = CameraDeviceModel;
-    DeviceID = CameraDeviceID;
-    SerialNumber = CameraSerialNumber;
-    t = table(Name,DeviceModel,DeviceID,SerialNumber,ExposureTime,...
-        BadRow,Magnification,Transmission);
-    updateConfig("AcquisitionConfig",t)
+if exist('AcquisitionConfig','var')
+    if ~isempty(AcquisitionConfig)
+        updateConfig("AcquisitionSetting",AcquisitionConfig)
+    end
 end
 
 %% Set waveform generator configuration
@@ -108,29 +104,68 @@ if exist("PlName",'var')
     updateConfig("PhaseLockConfig",t)
 end
 
-%% Set hardware list
-Name = [];
-Type = [];
-if exist('WgName','var')
-    Name = [Name;WgName];
-    Type = [Type;repmat("WaveformGenerator",numel(WgName),1)];
+%% Set hardware list and hardware setting
+t = array2table(zeros(0,4));
+t.Properties.VariableNames = ["Name","Type","DeviceModel","ResourceName"];
+
+if exist("WaveformGeneratorConfig","var")
+    if ~isempty(WaveformGeneratorConfig)
+        WaveformGeneratorConfig.Type = repmat("WaveformGenerator",height(WaveformGeneratorConfig),1);
+        t = [t;WaveformGeneratorConfig];
+    end
 end
-if exist('ScopeName','var')
-    Name = [Name;ScopeName];
-    Type = [Type;repmat("Scope",numel(ScopeName),1)];
+
+if exist("ScopeConfig","var")
+    if ~isempty(ScopeConfig)
+        ScopeConfig.Type = repmat("Scope",height(ScopeConfig),1);
+        t = [t;ScopeConfig];
+    end
 end
-if exist('PlName','var')
-    Name = [Name;PlName];
-    Type = [Type;repmat("PhaseLock",numel(PlName),1)];
+
+if exist("PhaseLockConfig","var")
+    if ~isempty(PhaseLockConfig)
+        PhaseLockConfig.Type = repmat("PhaseLock",height(PhaseLockConfig),1);
+        t = [t;PhaseLockConfig];
+    end
 end
-if ~isempty(Name)
+
+p = HardwareList;
+p.checkTable
+p2 = HardwareSetting;
+p2.checkTable
+oldId = p.readColumn("ID");
+
+if ~isempty(t)
     if exist('HardwareLogOrigin','var')
-        DataPath = fullfile(HardwareLogOrigin,Name);
+        DataPath = fullfile(HardwareLogOrigin,t.Name);
+        if isfolder(HardwareLogOrigin)
+            arrayfun(@createFolder,DataPath);
+        else
+            warning("Can not find the hardware log folder. Check your setConfig")
+        end
     else
         error("HardwareLogOrigin must be defined when hardware is used.")
     end
-    t = table(Name,Type,DataPath);
-    updateConfig("HardwareList",t)
+    t.DataPath = DataPath;
+    p.updateEntry(t,"Name")
+    newId = p.readColumn("ID");
+else
+    newId = [];
+end
+
+deleteId = setdiff(oldId,newId);
+if ~isempty(deleteId)
+    p.deleteEntry(deleteId)
+end
+
+extraId = setdiff(newId,oldId);
+if ~isempty(extraId)
+    for ii = 1:numel(extraId)
+        extraDeviceModel = p.readValue(extraId(ii),"DeviceModel");
+        extraName = p.readValue(extraId(ii),"Name");
+        hw = eval(extraDeviceModel + "('xxx',extraName)");
+        p.saveEntry(hw,true);
+    end
 end
 
 %% Set BEC experiment configuration
@@ -187,12 +222,9 @@ end
 
 disp("Done.")
 
-%% Check setting
+%% Check other setting
 disp(newline + "Checking user settings...")
 settingList = [
-    "WaveformGeneratorSetting";
-    "PhaseLockSetting";
-    "ScopeSetting";
     "ListList";
     "VariableList";
     "BecExpSetting";
@@ -203,8 +235,8 @@ settingList = [
     ];
 
 for ii = 1:numel(settingList)
-    s = eval(settingList(ii));
-    s.checkTable;
+    p = eval(settingList(ii));
+    p.checkTable;
 end
 disp("Done.")
 

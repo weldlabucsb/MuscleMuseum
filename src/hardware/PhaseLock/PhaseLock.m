@@ -5,8 +5,7 @@ classdef (Abstract) PhaseLock < Hardware
     % and basic control API (:meth:`connect`, :meth:`lock`, :meth:`unlock`).
     
     properties
-        Frequency double {mustBePositive} % in [Hz]
-        VariableName string
+        Frequency double {mustBePositive} = 10e3 % in [Hz]
     end
 
     properties (SetAccess = protected)
@@ -27,7 +26,7 @@ classdef (Abstract) PhaseLock < Hardware
                 resourceName string
                 name string = string.empty
             end
-            obj@Hardware(resourceName,name,false)
+            obj@Hardware(resourceName,name)
         end
 
         function set.Frequency(obj,val)

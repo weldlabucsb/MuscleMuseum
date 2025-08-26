@@ -9,12 +9,10 @@
 clear
 configList = [
     "BecExpParameterUnit"
-    "WaveformGeneratorConfig";
     "AcquisitionConfig";
     "DatabaseConfig";
     "DatabaseServerConfig";
     "ComputerConfig";
-    "HardwareList";
     "RoiConfig"
     ];
 for ii = 1:numel(configList)
@@ -24,6 +22,8 @@ for ii = 1:numel(configList)
         s = RoiSetting;
     elseif configName == "BecExpParameterUnit"
         s = BecExpVariableUnit;
+    elseif configName == "AcquisitionConfig"
+        s = AcquisitionSetting;
     else
         s = eval(configName);
     end
@@ -42,22 +42,9 @@ for ii = 1:numel(configList)
     s.updateTable(t)
 end
 
-%% Generate setting
-settingList = [
-    "WaveformGeneratorSetting";
-    "PhaseLockSetting";
-    "ScopeSetting";
-    ];
 
-for ii = 1:numel(settingList)
-    settingName = settingList(ii);
-    t = loadVar(settingName + ".mat",settingName);
-    s = eval(settingName);
-    s.checkTable;
-    s.updateTable(t)
-end
 
-%% HardwareList
+%% Variable
 settingList = [
     "ListList";
     "VariableList"
@@ -99,12 +86,35 @@ for ii = 1:numel(wfl)
     if any(cellfun(@(x) isa(x,"ModulatedWaveform"), wfl(ii).WaveformOrigin))
         modwfl = [modwfl,ii];
     else
-        p.saveEntry(wfl(ii))
+        p.saveEntry(wfl(ii));
     end
 end
 
 for ii = modwfl
-    p.saveEntry(wfl(ii))
+    p.saveEntry(wfl(ii));
+end
+
+%% Generate hardware setting
+settingList = [
+    "WaveformGenerator";
+    "PhaseLock";
+    "Scope";
+    ];
+p = HardwareList;
+t = p.readColumn(["Name","Type"]);
+
+for ii = 1:height(t)
+    switch t.Type(ii)
+        case "WaveformGenerator"
+            hw = getWg(t.Name(ii),true);
+            p.saveEntry(hw,true);
+        case "PhaseLock"
+            hw = getPl(t.Name(ii),true);
+            p.saveEntry(hw,true);
+        case "Scope"
+            hw = getScope(t.Name(ii),true);
+            p.saveEntry(hw,true);
+    end
 end
 
 %% Reset database column names
@@ -135,3 +145,77 @@ end
 
 close(conn)
 
+%% Old get functions
+
+function wgObj = getWg(name,isLoadingSetting)
+%GETWG Summary of this function goes here
+%   Detailed explanation goes here
+arguments
+    name string
+    isLoadingSetting logical = false
+end
+load("Config.mat","WaveformGeneratorConfig")
+wgConfig = WaveformGeneratorConfig(WaveformGeneratorConfig.Name == name,:);
+if ~isempty(wgConfig)
+    wgObj = feval(wgConfig.DeviceModel,wgConfig.ResourceName,wgConfig.Name);
+    if isLoadingSetting
+        load("WaveformGeneratorSetting","WaveformGeneratorSetting")
+        load("WaveformLibrary.mat","WaveformLibrary")
+        setting = WaveformGeneratorSetting(WaveformGeneratorSetting.Name == name,:);
+        wgObj.SamplingRate = setting.SamplingRate{1};
+        wgObj.TriggerSource = setting.TriggerSource{1};
+        wgObj.TriggerSlope = setting.TriggerSlope{1};
+        wgObj.OutputMode = setting.OutputMode{1};
+        wgObj.OutputLoad = setting.OutputLoad{1};
+        wgObj.IsOutput = setting.IsOutput{1};
+        wfName = setting.WaveformListName{1};
+        for ii = 1:numel(wfName)
+            if any(wfName(ii) == [WaveformLibrary.Name])
+                wgObj.WaveformList{ii} = WaveformLibrary([WaveformLibrary.Name] == wfName(ii));
+            else
+                wgObj.WaveformList{ii} = [];
+            end
+        end
+    end
+else
+    error("No device named [" + name + "] found in Config. Check your setConfig.")
+end
+end
+
+function scopeObj = getScope(name,isLoadingSetting)
+%GETSCOPE Summary of this function goes here
+%   Detailed explanation goes here
+arguments
+    name string
+    isLoadingSetting logical = false
+end
+load("Config.mat","ScopeConfig")
+scopeConfig = ScopeConfig(ScopeConfig.Name == name,:);
+if ~isempty(ScopeConfig)
+    scopeObj = feval(scopeConfig.DeviceModel,scopeConfig.ResourceName,scopeConfig.Name);
+else
+    error("No device named [" + name + "] found in Config. Check your setConfig.")
+end
+end
+
+function plObj = getPl(name,isLoadingSetting)
+%GETWG Summary of this function goes here
+%   Detailed explanation goes here
+arguments
+    name string
+    isLoadingSetting logical = false
+end
+load("Config.mat","PhaseLockConfig")
+plConfig = PhaseLockConfig(PhaseLockConfig.Name == name,:);
+if ~isempty(plConfig)
+    plObj = feval(plConfig.DeviceModel,plConfig.ResourceName,plConfig.Name);
+    if isLoadingSetting
+        load("PhaseLockSetting","PhaseLockSetting")
+        setting = PhaseLockSetting(PhaseLockSetting.Name == name,:);
+        plObj.Frequency = setting.Frequency;
+        % plObj.VariableName = setting.VariableName;
+    end
+else
+    error("No device named [" + name + "] found in Config. Check your setConfig.")
+end
+end
