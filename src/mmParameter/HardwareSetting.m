@@ -92,6 +92,29 @@ classdef HardwareSetting < MmParameter
             close(conn)
         end
     
+        function varId = readSettingVariable(obj,hwId,settingName,channelNumber)
+            arguments
+                obj
+                hwId (1,1)
+                settingName string
+                channelNumber = 1
+            end
+
+            % Read the variable
+            conn = obj.connectDatabase;
+            sqlquery = "SELECT VariableID FROM " + obj.TableName + ...
+                " WHERE HardwareID ="  + hwId + ...
+                " AND ChannelNumber = " + channelNumber + ...
+                " AND Name = '" + settingName + "'; ";
+             varId = fetch(conn, sqlquery);
+             if ~isempty(varId)
+                 varId = varId.VariableID;
+             else
+                 varId = 0;
+             end
+             close(conn)
+        end
+
         function t = readSetting(obj,hwId)
             sqlquery = "SELECT" + newline + ...
                 "dp.Name," + newline + ...
@@ -125,6 +148,7 @@ classdef HardwareSetting < MmParameter
                 end
             end
         end
+   
     end
 end
 

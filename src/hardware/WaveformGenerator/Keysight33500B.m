@@ -27,6 +27,7 @@ classdef Keysight33500B < KeysightWaveformGenerator
             obj.TriggerSlope = ["Rise","Rise"];
             obj.Memory = 16e6;
             obj.SamplingRate = [250e6,250e6];
+            obj.SamplingRateLimit = 250e6;
             obj.WaveformList = cell(1,obj.NChannel);
             obj.OutputLimit = [10,10];
         end
