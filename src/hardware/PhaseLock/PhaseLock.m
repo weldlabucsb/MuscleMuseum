@@ -34,8 +34,8 @@ classdef (Abstract) PhaseLock < Hardware
             if isempty(obj.FrequencyLimit)
                 obj.Frequency = val;
             elseif val<obj.FrequencyLimit(1) || val>obj.FrequencyLimit(2)
-                error("Frequency is out of the range [" + num2str(obj.Frequency(1)*1e-6)  + " MHz, " + ...
-                    num2str(obj.Frequency(2)*1e-6)  + " MHz]")
+                error("Frequency is out of the range [" + num2str(obj.FrequencyLimit(1)*1e-6)  + " MHz, " + ...
+                    num2str(obj.FrequencyLimit(2)*1e-6)  + " MHz]")
             else
                 obj.Frequency = val;
             end

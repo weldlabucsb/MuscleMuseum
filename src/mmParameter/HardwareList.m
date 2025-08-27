@@ -5,7 +5,8 @@ classdef HardwareList < MmParameter
     % :attr:`DataPath` for storing logs/objects.
 
     properties
-        
+        HardwareSetting
+        WaveformListLibrary
     end
 
     methods
@@ -30,6 +31,8 @@ classdef HardwareList < MmParameter
                 "DeviceModel", "'Keysight33600A'", ...
                 "ResourceName", "'XXX'" ...     
                 );
+            obj.HardwareSetting = HardwareSetting;
+            obj.WaveformListLibrary = WaveformListLibrary;
         end
 
         function hwId = saveEntry(obj,hw,isSaveSettingOnly)
@@ -48,7 +51,7 @@ classdef HardwareList < MmParameter
             hwId = obj.readValue(t.Name,"ID","Name");
 
             % Save settings into HardwareSetting
-            p = HardwareSetting;
+            p = obj.HardwareSetting;
             p.deleteEntry(hwId,"HardwareID") % Delete the existing entries first
             s = t.Setting{1};
             s.HardwareID = repmat(hwId,height(s),1);
@@ -68,11 +71,30 @@ classdef HardwareList < MmParameter
                 hw = [];
                 return
             end
-            p = HardwareSetting;
-            p2 = WaveformListLibrary;
+            p = obj.HardwareSetting;
+            p2 = obj.WaveformListLibrary;
             setting = p.readSetting(id);
             hw = eval(hwPara.DeviceModel + "(hwPara.ResourceName,hwPara.Name)");
             hw.DataPath = hwPara.DataPath;
+            for ii = 1:height(setting)
+                if setting.Name(ii) == "WaveformListID"
+                    hw.WaveformList{setting.ChannelNumber(ii)} = p2.loadEntry(setting.Value{ii});
+                else
+                    hw.(setting.Name(ii))(setting.ChannelNumber(ii)) = setting.Value{ii};
+                end
+            end
+        end
+        
+        function hw = updateHardware(obj,nameOrID,hw)
+            % Update a Hardware object
+            if isnumeric(nameOrID)
+                id = nameOrID;
+            else
+                id = obj.readValue(nameOrID,"ID","Name");
+            end
+            p = obj.HardwareSetting;
+            p2 = obj.WaveformListLibrary;
+            setting = p.readSetting(id);
             for ii = 1:height(setting)
                 if setting.Name(ii) == "WaveformListID"
                     hw.WaveformList{setting.ChannelNumber(ii)} = p2.loadEntry(setting.Value{ii});

@@ -116,6 +116,17 @@ for ii = 1:height(t)
             p.saveEntry(hw,true);
     end
 end
+pset = loadVar("PhaseLockSetting.mat","PhaseLockSetting");
+for ii = 1:height(pset)
+    if ismember(pset.Name(ii),t.Name)
+        varName = pset.VariableName(ii);
+        p2 = VariableList;
+        varID = p2.readValue(varName,"ID","Name");
+        hwID = p.readValue(pset.Name(ii),"ID","Name");
+        p3 = HardwareSetting;
+        p3.updateSettingVariable(hwID,"Frequency",varID);
+    end
+end
 
 %% Reset database column names
 p = BecExpConfig;

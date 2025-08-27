@@ -140,7 +140,7 @@ classdef HardwareSetting < MmParameter
             function val = typeCast(ty,val)
                 switch ty
                     case "double"
-                        val = str2num(val);
+                        val = double(val);
                     case "logical"
                         val = str2num(val);
                     case "int64"
