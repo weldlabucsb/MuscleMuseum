@@ -120,13 +120,13 @@ classdef (Abstract) PeriodicWaveform < Waveform
             %
             % :return: Vector of sample values for one cycle
             % :rtype: double
-            % if obj.NRepeat == 1
-                % s = obj.Sample;
-            % else
+            if obj.NRepeat == 1
+                s = obj.Sample;
+            else
                 tFunc = obj.TimeFunc;
                 t = obj.StartTime : obj.TimeStep : (obj.StartTime + obj.DurationOneCycle - obj.TimeStep);
                 s = tFunc(t);
-            % end
+            end
         end
 
         function teC = get.EndTimeAllCycle(obj)
