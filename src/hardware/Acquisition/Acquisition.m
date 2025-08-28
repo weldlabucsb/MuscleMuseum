@@ -83,7 +83,9 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
         function connectCamera(obj)
             % Connect to the camera and create :attr:`VideoInput`.
             try
+                warning("off")
                 vid = videoinput(obj.AdaptorName,obj.DeviceID);
+                warning("on")
             catch ME
                 msg = ['Camera connection failed. Check if the camera is connected. To connect to Basler cameras,', ...
                     ' you may need to restart MATLAB. Error message from MATLAB:',newline,...

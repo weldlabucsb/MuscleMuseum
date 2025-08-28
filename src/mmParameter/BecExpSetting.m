@@ -122,6 +122,7 @@ classdef BecExpSetting < MmParameter
                 "VariableNames",["TableRight","KeyLeft","KeyRight","ColumnLeft","ColumnRight"]);
             obj.IsTriggerJoinOnLeft = true;
             obj.IsTriggerJoinOnRight = true;
+            obj.IsIncludeDefaultEntry = true;
         end
     end
 end

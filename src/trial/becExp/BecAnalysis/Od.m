@@ -165,7 +165,7 @@ classdef Od < BecAnalysis
                 obj.plotOdMix1D(fig);
             end
         end
-        
+
         function plotOdMix1D(obj, fig)
             %% 1D plotting logic (original implementation)
             %% BecExp parameters
@@ -199,7 +199,7 @@ classdef Od < BecAnalysis
             ax.Title.Interpreter = "latex";
             ax.Title.FontSize = fz;
             ax.FontSize = fz;
-            
+
             renderTicks(img,[1,2],yxBoundary(1):yxBoundary(2))
             ax.TickDir = "out";
             tickSpace = roiSize(2);
@@ -211,38 +211,38 @@ classdef Od < BecAnalysis
             fig.Position(4) = fig.Position(3) * outerpos(4)/outerpos(3)*1.05;
             ax.OuterPosition(2) = 0;
         end
-        
+
         function plotOdMix2D(obj, fig)
             %% 2D plotting logic
             becExp = obj.BecExp;
             roi = becExp.Roi;
             roiSize = roi.CenterSize(3:4);
-            
+
             % Get 2D plot data
             [xData, yData] = obj.get2DPlotData();
-            
+
             if isempty(xData) || isempty(yData)
                 % Fallback to 1D plotting if 2D data is not available
                 obj.plotOdMix1D(fig);
                 return;
             end
-            
+
             % Clear figure and create new axes
             clf(fig);
             ax = axes(fig);
-            
+
             % Create 2D density plot for a representative slice (middle of ROI)
             midSlice = round(roiSize(1)/2);
             odSlice = squeeze(obj.OdData(midSlice, :, :));
-            
+
             % Reshape to 2D grid
             od2D = obj.reshapeDataTo2D(odSlice);
-            
+
             % Create density plot
             imagesc(ax, xData, yData, od2D);
             ax.Colormap = obj.Colormap;
             ax.CLim = obj.CLim;
-            
+
             % Add labels and title
             ax.XLabel.String = becExp.XLabel;
             ax.XLabel.Interpreter = "latex";
@@ -255,7 +255,7 @@ classdef Od < BecAnalysis
                 " (OD at y=" + num2str(midSlice) + ")";
             ax.Title.Interpreter = "latex";
             ax.Title.FontSize = 12;
-            
+
             % Add colorbar
             colorbar(ax);
         end
@@ -324,8 +324,8 @@ classdef Od < BecAnalysis
             imgAxes.Title.Interpreter = "Latex";
             imgAxes.Title.FontSize = 14;
             imgAxes.Toolbar.Visible = "off";
-            
-            
+
+
             % X plot
             xAxes = axes(fig);
             xAxes.Units = "pixels";
@@ -337,7 +337,7 @@ classdef Od < BecAnalysis
             xAxes.YLim = obj.CLim;
             xAxes.XLim = [yxBoundary(3),yxBoundary(4)];
             xAxes.Toolbar.Visible = "off";
-            
+
             % Y plot
             yAxes = axes(fig);
             yAxes.Units = "pixels";
@@ -372,7 +372,7 @@ classdef Od < BecAnalysis
                     imgAxes.Title.String = ...
                         "TrialName: " + becExp.Name + ...
                         ", Trial \#" + num2str(becExp.SerialNumber) + ...
-                        ", Run \#" + num2str(ii) + ", " + ... 
+                        ", Run \#" + num2str(ii) + ", " + ...
                         varLabel;
 
                     % Save as gif
