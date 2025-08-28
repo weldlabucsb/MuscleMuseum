@@ -58,8 +58,8 @@ end
 %% Set Python
 setPython;
 
-%% Set Configuration
-setConfig;
+%% Set Parameter
+setParameter;
 
 %% Set DataBase
 setDatabase;
