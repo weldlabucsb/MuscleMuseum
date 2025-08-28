@@ -5,9 +5,9 @@ arguments
     serialNumber
     isForceDelete = false
 end
-load("Config.mat","BecExpConfig");
-databaseName = BecExpConfig.DatabaseName(1);
-databaseTableName = BecExpConfig.DatabaseTableName(1);
+p = BecExpConfig;
+databaseName = p.readValue(1,"DatabaseName");
+databaseTableName = p.readValue(1,"DatabaseTableName");
 conn = createWriter(databaseName);
 deleteTrial(conn,databaseTableName,serialNumber,isForceDelete);
 end

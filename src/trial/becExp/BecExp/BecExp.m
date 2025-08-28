@@ -1441,15 +1441,6 @@ classdef BecExp < Trial
             if ~isempty(obj.ControlAppName)
                 obj.ControlApp = get(findall(0, 'Tag', obj.ControlAppName), 'RunningAppInstance');
             end
-            if isprop(obj,"Od")
-                if numel(obj.Od.Gui) == 2
-                    obj.Od.Gui(1) = [];
-                end
-            end
-            if isprop(obj,"Ad")
-                obj.IsOdPreview = ~obj.Ad.Gui(1).IsEnabled;
-                obj.Ad.Gui(1).IsEnabled = true;
-            end
         end
     end
 end
