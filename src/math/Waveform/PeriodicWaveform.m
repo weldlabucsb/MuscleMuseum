@@ -29,7 +29,7 @@ classdef (Abstract) PeriodicWaveform < Waveform
     end
 
     properties (Hidden)
-        NCycle double = 10 % Number of cycles per repeat segment.
+        NPeriodPerCycle double = 10 % Number of cycles per repeat segment.
         MinimumSampleSize double = 32 % Minimum sample size for hardware compatibility.
     end
 
@@ -79,10 +79,10 @@ classdef (Abstract) PeriodicWaveform < Waveform
             %
             % :return: Number of repeats
             % :rtype: double
-            if obj.NPeriod <= obj.NCycle
+            if obj.NPeriod <= obj.NPeriodPerCycle
                 nR = 1;
             else
-                nR = floor(obj.NPeriod / obj.NCycle);
+                nR = floor(obj.NPeriod / obj.NPeriodPerCycle);
                 teC = obj.DurationOneCycle * nR + obj.StartTime - obj.TimeStep;
                 tFunc = obj.TimeFunc;
                 if isa(obj,"ConstantTop")
@@ -112,7 +112,7 @@ classdef (Abstract) PeriodicWaveform < Waveform
             %
             % :return: Duration in seconds
             % :rtype: double
-            tC = obj.Period * obj.NCycle;
+            tC = obj.Period * obj.NPeriodPerCycle;
         end
 
         function s = get.SampleOneCycle(obj)
@@ -120,7 +120,7 @@ classdef (Abstract) PeriodicWaveform < Waveform
             %
             % :return: Vector of sample values for one cycle
             % :rtype: double
-            if obj.NRepeat == 1
+            if obj.NRepeat == 1 && isempty(obj.SampleExtra)
                 s = obj.Sample;
             else
                 tFunc = obj.TimeFunc;

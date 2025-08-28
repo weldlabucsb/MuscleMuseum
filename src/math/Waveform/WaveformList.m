@@ -30,7 +30,7 @@ classdef WaveformList < handle
         IsTriggerAdvance logical = false % Whether to use trigger-advance mode for hardware control.
         WaveformOrigin cell % Cell array of waveform objects to be combined.
         SamplingRate double % In Hz - Sampling rate for all waveforms in the list.
-        NCycle double = 10 % Number of cycles for periodic waveforms.
+        NPeriodPerCycle double = 10 % Number of cycles for periodic waveforms.
     end
 
     properties (Dependent)
@@ -84,7 +84,7 @@ classdef WaveformList < handle
                 options.patchConstant double = 0
                 options.isTriggerAdvance logical = false
                 options.waveformOrigin cell = {}
-                options.nCycle double = 10
+                options.nPeriodPerCycle double = 10
             end
             obj.Name = name;
             field = string(fieldnames(options));
@@ -141,7 +141,7 @@ classdef WaveformList < handle
             %% Set NCycle
             for ii = 1:nWave
                 if isa(obj.WaveformOrigin{ii},"PeriodicWaveform")
-                    obj.WaveformOrigin{ii}.NCycle = obj.NCycle;
+                    obj.WaveformOrigin{ii}.NPeriodPerCycle = obj.NPeriodPerCycle;
                 end
             end
 
@@ -155,7 +155,7 @@ classdef WaveformList < handle
             switch obj.ConcatMethod
                 case "Sequential"
                     for ii = 1:nWave
-                        if isa(obj.WaveformOrigin{ii},"PeriodicWaveform") && (obj.WaveformOrigin{ii}.NCycle ~= 0)
+                        if isa(obj.WaveformOrigin{ii},"PeriodicWaveform") && (obj.WaveformOrigin{ii}.NPeriodPerCycle ~= 0)
                             if isa(obj.WaveformOrigin{ii},"ConstantWave")
                                 obj.WaveformOrigin{ii}.Frequency = obj.SamplingRate;
                             end
@@ -175,7 +175,7 @@ classdef WaveformList < handle
                                 PlayMode(sampleIdx) = "Repeat";
                                 sampleIdx = sampleIdx + 1;
                             end
-                        elseif isa(obj.WaveformOrigin{ii},"PartialPeriodicWaveform") && (obj.WaveformOrigin{ii}.NCycle~=0)
+                        elseif isa(obj.WaveformOrigin{ii},"PartialPeriodicWaveform") && (obj.WaveformOrigin{ii}.NPeriodPerCycle~=0)
                             sBefore = obj.WaveformOrigin{ii}.SampleBefore;
                             if ~isempty(sBefore)
                                 Sample{sampleIdx} = sBefore;
@@ -373,16 +373,16 @@ classdef WaveformList < handle
             end
         end
 
-        function set.NCycle(obj,val)
+        function set.NPeriodPerCycle(obj,val)
             %Set the number of cycles for periodic waveforms.
             %
             % :param val: New number of cycles
             % :type val: double
-            obj.NCycle = round(val);
+            obj.NPeriodPerCycle = round(val);
             nWave = numel(obj.WaveformOrigin);
             for ii = 1:nWave
                 if isa(obj.WaveformOrigin{ii},"PeriodicWaveform")
-                    obj.WaveformOrigin{ii}.NCycle = obj.NCycle;
+                    obj.WaveformOrigin{ii}.NPeriodPerCycle = obj.NPeriodPerCycle;
                 end
             end
         end
@@ -394,11 +394,11 @@ classdef WaveformList < handle
             PatchMethod = obj.PatchMethod;
             PatchConstant = obj.PatchConstant;
             IsTriggerAdvance = obj.IsTriggerAdvance;
-            NCycle = obj.NCycle;
-            if isnan(NCycle)
-                NCycle = 0;
+            NPeriodPerCycle = obj.NPeriodPerCycle;
+            if isnan(NPeriodPerCycle)
+                NPeriodPerCycle = 0;
             end
-            t = table(Name,SamplingRate,ConcatMethod,PatchMethod,PatchConstant,IsTriggerAdvance,NCycle);
+            t = table(Name,SamplingRate,ConcatMethod,PatchMethod,PatchConstant,IsTriggerAdvance,NPeriodPerCycle);
         end
     end
 end

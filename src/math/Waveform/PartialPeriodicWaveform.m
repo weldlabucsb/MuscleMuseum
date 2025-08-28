@@ -47,7 +47,7 @@ classdef (Abstract) PartialPeriodicWaveform < Waveform
     end
 
     properties (Hidden)
-        NCycle double = 10 % Number of cycles per repeat segment.
+        NPeriodPerCycle double = 10 % Number of cycles per repeat segment.
     end
     
     methods
@@ -113,10 +113,10 @@ classdef (Abstract) PartialPeriodicWaveform < Waveform
             %
             % :return: Number of repeats
             % :rtype: double
-            if obj.NPeriod <= obj.NCycle
+            if obj.NPeriod <= obj.NPeriodPerCycle
                 nR = 1;
             else
-                nR = floor(obj.NPeriod / obj.NCycle);
+                nR = floor(obj.NPeriod / obj.NPeriodPerCycle);
             end
         end
 
@@ -125,7 +125,7 @@ classdef (Abstract) PartialPeriodicWaveform < Waveform
             %
             % :return: Duration in seconds
             % :rtype: double
-            tC = (obj.Period * obj.NCycle);
+            tC = (obj.Period * obj.NPeriodPerCycle);
         end
 
         function s = get.SampleOneCycle(obj)
@@ -133,17 +133,19 @@ classdef (Abstract) PartialPeriodicWaveform < Waveform
             %
             % :return: Vector of sample values for one cycle
             % :rtype: double
-            % if obj.NRepeat == 1
-                % s = obj.Sample;
-            % else
-            if obj.PeriodicStartTime ~= obj.PeriodicEndTime
+            if obj.NRepeat == 1 && isempty(obj.SampleExtra)
                 tFunc = obj.TimeFunc;
-                t = obj.PeriodicStartTime : obj.TimeStep : (obj.PeriodicStartTime + obj.DurationOneCycle - obj.TimeStep);
+                t = obj.PeriodicStartTime : obj.TimeStep : (obj.PeriodicEndTime -  - obj.TimeStep);
                 s = tFunc(t);
             else
-                s = [];
+                if obj.PeriodicStartTime ~= obj.PeriodicEndTime
+                    tFunc = obj.TimeFunc;
+                    t = obj.PeriodicStartTime : obj.TimeStep : (obj.PeriodicStartTime + obj.DurationOneCycle - obj.TimeStep);
+                    s = tFunc(t);
+                else
+                    s = [];
+                end
             end
-            % end
         end
 
         function teC = get.EndTimeAllCycle(obj)

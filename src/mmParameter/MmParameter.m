@@ -587,7 +587,8 @@ classdef MmParameter < handle
             end
             if ~isempty(extraColumns) || any(mismatchedColumnIdx)
                 % Recreate table to remove extra columns
-                obj.recreateTable();
+                % obj.recreateTable(); % Disable for now. This may cause
+                % problems for foreign key
             end
             obj.updateDefaultEntry;
             obj.updateSchemaMetadata;
