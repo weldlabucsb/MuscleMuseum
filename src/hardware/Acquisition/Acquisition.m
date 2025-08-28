@@ -58,8 +58,9 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
             %
             % Loads ``AcquisitionConfig`` from ``Config.mat`` and applies with
             % a protected configuration setter.
-            load("Config.mat","AcquisitionConfig")
-            setConfigProperty(obj,table2struct(AcquisitionConfig(AcquisitionConfig.Name==acqName,:)))
+            p = AcquisitionSetting;
+            s = p.readEntry(acqName,"Name");
+            setConfigProperty(obj,s)
         end
 
         function qe = QuantumEfficiency(obj,lambda)

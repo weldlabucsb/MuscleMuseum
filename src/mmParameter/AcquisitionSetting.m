@@ -66,6 +66,16 @@ classdef AcquisitionSetting < MmParameter
                 ] ...
                 );
         end
+
+        function acqObj = loadEntry(obj,nameOrID)
+            if isnumeric(nameOrID)
+                acqConfig = obj.readEntry(nameOrID);
+            else
+                acqConfig = obj.readEntry(nameOrID,"Name");
+            end
+            acqObj = feval(acqConfig.DeviceModel,acqConfig.Name);
+        end
+        
     end
 end
 

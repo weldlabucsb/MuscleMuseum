@@ -48,7 +48,7 @@ classdef (Abstract) Hardware < handle & matlab.mixin.SetGetExactNames
         Manufacturer string % Manufacturer of the device
         Model string % Model number
         Memory double % How many sample points the device can store
-        NChannel double % How many channels the device has
+        NChannel double = 1 % How many channels the device has
         ResourceName string % Interfaces (like VISA) require a resource name to identify the device
         DataType string {mustBeMember(DataType,{'uint8','double'})}= "uint8"
         DisabledProperty string % Properties that are not implemented for specific models
@@ -107,7 +107,7 @@ classdef (Abstract) Hardware < handle & matlab.mixin.SetGetExactNames
                         if className == "WaveformGenerator" && NameList(ii) == "WaveformList"
                             p = WaveformListLibrary;
                             Type(paraIdx) = "int64";
-                            Name(paraIdx) = "WaveformListID";
+                            Name(paraIdx) = "WaveformList";
                             if ~isempty(temp{jj})
                                 name = temp{jj}.Name;
                                 id = p.readValue(name,"ID","Name");
@@ -149,6 +149,7 @@ classdef (Abstract) Hardware < handle & matlab.mixin.SetGetExactNames
             t = table(Name,Type,DeviceModel,ResourceName,Setting);
 
         end
+
     end
 
     methods (Access = protected)

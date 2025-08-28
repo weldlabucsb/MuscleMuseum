@@ -8,8 +8,6 @@ classdef BecExp < Trial
         AnalysisMethod string % List of analysis methods
         CloudCenter double % Cloud center [y_0,x_0] from previous measurement, in pixels
         AveragingMethod string = "StdErr" %Averaging method
-        WaveformAssociation table
-        PhaseLockAssociation table
     end
 
     properties(Dependent)
@@ -40,6 +38,7 @@ classdef BecExp < Trial
         VariableUnitSetting
         HardwareList
         VariableList
+        HardwareAssociation
         HardwareLogPath string
     end
 
@@ -80,7 +79,8 @@ classdef BecExp < Trial
             obj.Atom = getAtom(obj.ConfigParameter.AtomName);
 
             % Acquisition settings
-            obj.Acquisition = getAcq(obj.ConfigParameter.AcquisitionName);
+            p = AcquisitionSetting;
+            obj.Acquisition = p.loadEntry(obj.ConfigParameter.AcquisitionName);
             obj.Acquisition.ImagePath = obj.DataPath;
             obj.Acquisition.ImageFormat = obj.DataFormat;
             obj.Acquisition.ImagePrefix = obj.DataPrefix;
@@ -115,6 +115,7 @@ classdef BecExp < Trial
             obj.VariableUnitSetting = BecExpVariableUnit;
             obj.HardwareList = HardwareList;
             obj.VariableList = VariableList;
+            obj.HardwareAssociation = HardwareAssociation;
         end
         
         function var1 = get.ScannedVariable(obj)
@@ -1169,69 +1170,31 @@ classdef BecExp < Trial
 
         function setHardware(obj)
 
-            %% Set Waveform
-            obj.displayLog("Checking waveform associations...")
-            wa = obj.WaveformAssociation;
-            isWA = false;
-            if ~isempty(wa)
-                % Check if the existing settings are corrent
-                p = WaveformGeneratorSetting;
-                wgSettings = p.readTable;
-                deleteIdx = [];
-                for ii = 1:size(wa,1)
-                    wgs = wgSettings(wgSettings.Name == wa.WaveformGeneratorName(ii),:);
-                    chNumber = getNumberFromString(wa.ChannelName(ii));
-                    if wa.WaveformListName(ii) == wgs.WaveformListName{1}(chNumber) ...
-                            && wgs.IsOutput{1}(chNumber)
-                        deleteIdx = [deleteIdx,ii];
-                    end
-                end
-
-                % Delete consistent settings
-                wa(deleteIdx,:) = [];
-
-                if isempty(wa)
-                    obj.displayLog("The associated waveforms have already been uploaded.")
-                else
-                    % Force to change settings
-                    isWA = true;
-                    obj.displayLog("Force uploading the associated waveforms.")
-                end
-            else
-                obj.displayLog("No waveform association found.")
+            %% Set HardwareSetting
+            obj.displayLog("Checking hardware associations...")
+            t = obj.HardwareAssociation.readEntry(obj.ConfigParameter.ID,"TrialID",true);
+            if isempty(t)
+                obj.displayLog("Found no hardware association.")
+                return
             end
+            t = renamevars(t,"SettingID","ID");
+            p = HardwareSetting;
+            p.updateEntry(t)
+            hwId = unique(p.readValue(t.ID,"HardwareID"));
 
-            %% Set Phase Lock
-            obj.displayLog("Checking phase lock associations...")
-            pla = obj.PhaseLockAssociation;
-            isPLA = false;
-            if ~isempty(pla)
-                % Force to change settings
-                isPLA = true;
-                obj.displayLog("Force re-lock.")
-            else
-                obj.displayLog("No phase lock association found.")
-            end
- 
             %% Get the HardwareControlPanel app and upload
-            if isWA || isPLA
-                hwApp = get(findall(0, 'Tag', "HwControlPanel"), 'RunningAppInstance');
-                if isempty(hwApp)
-                    hwApp = HardwareControlPanel;
-                end
-                hwApp.setAssociation(WaveformAssociationTable = wa,PhaseLockAssociationTable = pla);
+            hwApp = get(findall(0, 'Tag', "HwControlPanel"), 'RunningAppInstance');
+            if isempty(hwApp)
+                hwApp = HardwareControlPanel;
             end
+            hwApp.setAssociation(hwId);
+
         end
 
         function unlock(obj)
-            if ~isempty(obj.PhaseLockAssociation)
-                %% Get the HardwareControlPanel app
-                hwApp = get(findall(0, 'Tag', "HwControlPanel"), 'RunningAppInstance');
-                if isempty(hwApp)
-                    hwApp = HardwareControlPanel;
-                end
-
-                %% unlock all
+            hwApp = get(findall(0, 'Tag', "HwControlPanel"), 'RunningAppInstance');
+            if ~isempty(hwApp)
+                hwApp = HardwareControlPanel;
                 try
                     hwApp.unlock;
                 catch

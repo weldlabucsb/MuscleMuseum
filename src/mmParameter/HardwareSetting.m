@@ -38,6 +38,7 @@ classdef HardwareSetting < MmParameter
             obj.ForeignKey = cell2table( ...
                 {"HardwareList","HardwareID","ID"},...
                 "VariableNames",["ParentTable","KeyChild","KeyParent"]);
+            obj.UniqueConstraint = ["HardwareID","ChannelNumber","Name"];
         end
 
         function updateSettingValue(obj,hwId,settingName,value,channelNumber)
@@ -111,6 +112,52 @@ classdef HardwareSetting < MmParameter
                  varId = varId.VariableID;
              else
                  varId = 0;
+             end
+             close(conn)
+        end
+        
+        function value = readSettingValue(obj,hwId,settingName,channelNumber)
+            arguments
+                obj
+                hwId (1,1)
+                settingName string
+                channelNumber = 1
+            end
+
+            % Read the value
+            conn = obj.connectDatabase;
+            sqlquery = "SELECT DefaultValue FROM " + obj.TableName + ...
+                " WHERE HardwareID ="  + hwId + ...
+                " AND ChannelNumber = " + channelNumber + ...
+                " AND Name = '" + settingName + "'; ";
+             value = fetch(conn, sqlquery);
+             if ~isempty(value)
+                 value = value.DefaultValue;
+             else
+                 value = 0;
+             end
+             close(conn)
+        end
+
+        
+        function id = readSettingID(obj,hwId,settingName,channelNumber)
+            arguments
+                obj
+                hwId (1,1)
+                settingName string
+                channelNumber = 1
+            end
+            % Read the ID
+            conn = obj.connectDatabase;
+            sqlquery = "SELECT ID FROM " + obj.TableName + ...
+                " WHERE HardwareID ="  + hwId + ...
+                " AND ChannelNumber = " + channelNumber + ...
+                " AND Name = '" + settingName + "'; ";
+             id = fetch(conn, sqlquery);
+             if ~isempty(id)
+                 id = id.ID;
+             else
+                 id = 0;
              end
              close(conn)
         end

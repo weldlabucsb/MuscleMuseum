@@ -36,6 +36,7 @@ classdef MmParameter < handle
         ExtraColumnFromJoin string
         JoinCondition table %TableRight, KeyLeft,KeyRight,ColumnLeft,ColumnRight
         ForeignKey table %ParentTable, KeyChild, KeyParent
+        UniqueConstraint string
         IsTriggerJoinOnRight (1,1) logical = false %Determine if we want to trigger the join automatically when the join table is updated or inserted
         IsTriggerJoinOnLeft (1,1) logical = false %Determine if we want to trigger the join automatically when this table is updated or inserted
         IsIncludeDefaultEntry (1,1) logical = false %Determine if we want to automatically include the default entries into the table
@@ -129,6 +130,8 @@ classdef MmParameter < handle
                     ",ColumnRight:" + cellfun(@(x) join(x,","), obj.JoinCondition.ColumnRight),...
                     ",") + ";";
             end
+
+            % Add foreign key info
             if ~isempty(obj.ForeignKey)
                 schemaStr = schemaStr + ...
                     join(...
@@ -137,6 +140,13 @@ classdef MmParameter < handle
                     ",KeyParent:" + obj.ForeignKey.KeyParent,...
                     ",") + ";";
             end
+            
+            % Add unique combination info
+            if ~isempty(obj.UniqueConstraint)
+                schemaStr = schemaStr + "UniqueConstraint:" + join(obj.UniqueConstraint,",") + ";";
+            end
+
+            % Other logical conditions
             schemaStr = schemaStr + "IsTriggerJoinOnJoinTable:" + obj.IsTriggerJoinOnRight + ";";
             schemaStr = schemaStr + "IsTriggerJoinOnSelf:" + obj.IsTriggerJoinOnLeft + ";";
             schemaStr = schemaStr + "IsIncludeDefaultEntry:" + obj.IsIncludeDefaultEntry + ";";
@@ -302,6 +312,12 @@ classdef MmParameter < handle
                     obj.throwError("In ForeignKey table, KeyChild has to be a valid column name.")
                 end
             end
+
+            if ~isempty(obj.UniqueConstraint)
+                if any(~ismember(obj.UniqueConstraint,obj.TableColumn.keys))
+                    obj.throwError("UniqueConstraint must be elements of TableColumn.")
+                end
+            end
         end
 
         function updateSchemaMetadata(obj)
@@ -344,6 +360,10 @@ classdef MmParameter < handle
                     " REFERENCES " + obj.ForeignKey.ParentTable + "(" + ...
                     obj.ForeignKey.KeyParent + ") ON DELETE CASCADE"....
                     ,",");
+            end
+            if ~isempty(obj.UniqueConstraint)
+                colDefs = colDefs + ", " + "UNIQUE(" + join(obj.UniqueConstraint,", ") + ...
+                    ") ON CONFLICT REPLACE";
             end
             sqlquery = "CREATE TABLE " + obj.TableName + "(" + colDefs + ");";
             execute(conn,sqlquery)
@@ -1283,8 +1303,14 @@ classdef MmParameter < handle
                 " AND " + obj.TableName + "." + keyColumnName2 + " IN " + inList2 + ";";
             t = fetch(conn,sqlquery);
             t = obj.convertOutputTable(t);
-            if isscalar(readColumnName)
-                t = t.(readColumnName);
+            if isscalar(readColumnName) 
+                if ~isempty(t)
+                    t = t.(readColumnName);
+                elseif readColumnName == "ID"
+                    t = int64.empty;
+                else
+                    t = eval(replace(obj.TableColumn(readColumnName),"Matrix","") + ".empty");
+                end
             end
             close(conn)
         end

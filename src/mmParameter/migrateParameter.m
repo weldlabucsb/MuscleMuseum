@@ -156,6 +156,44 @@ end
 
 close(conn)
 
+%% Hardware association
+p = HardwareAssociation;
+hwl = HardwareList;
+wfll = WaveformListLibrary;
+bs = BecExpSetting;
+hws = HardwareSetting;
+vl = VariableList;
+for ii = 1:height(becExpType)
+    wa = becExpType.WaveformAssociation{ii};
+    if ~isempty(wa)
+        for jj = 1:height(wa)
+            HardwareID = hwl.readValue(wa.WaveformGeneratorName(jj),"ID","Name");
+            ChannelNumber = regexp(wa.ChannelName(jj), '\d+', 'match');
+            ss.DefaultValue = wfll.readValue(wa.WaveformListName(jj),"ID","Name");
+            ss.TrialID = bs.readValue(becExpType.TrialName(ii),"ID","TrialName");
+            if isempty(ss.DefaultValue)
+                ss.DefaultValue = 0;
+            end
+            ss.DefaultValue = string(ss.DefaultValue);
+            ss.SettingID = hws.readSettingID(HardwareID,"WaveformList",double(ChannelNumber));
+            p.writeEntry(ss)
+        end
+    end
+    pla = becExpType.PhaseLockAssociation{ii};
+    if ~isempty(pla)
+        for jj = 1:height(pla)
+            HardwareID = hwl.readValue(pla.PhaseLockName(jj),"ID","Name");
+            ChannelNumber = 1;
+            ss2.DefaultValue = pla.Frequency(jj);
+            ss2.TrialID = bs.readValue(becExpType.TrialName(ii),"ID","TrialName");
+            ss2.VariableID = vl.readValue(pla.VariableName(jj),"ID","Name");
+            ss2.DefaultValue = string(ss2.DefaultValue);
+            ss2.SettingID = hws.readSettingID(HardwareID,"Frequency",double(ChannelNumber));
+            p.writeEntry(ss2)
+        end
+    end
+end
+
 %% Old get functions
 
 function wgObj = getWg(name,isLoadingSetting)

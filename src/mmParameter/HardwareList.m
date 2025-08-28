@@ -52,10 +52,29 @@ classdef HardwareList < MmParameter
 
             % Save settings into HardwareSetting
             p = obj.HardwareSetting;
-            p.deleteEntry(hwId,"HardwareID") % Delete the existing entries first
             s = t.Setting{1};
+            if isempty(s)
+                return
+            end
             s.HardwareID = repmat(hwId,height(s),1);
-            p.writeEntry(s)
+
+            % Perform upsert
+            conn = obj.connectDatabase;
+            sqlquery = "INSERT INTO " + p.TableName + ...
+                " (HardwareID, ChannelNumber, Name, Type, DefaultValue)" + newline + ...
+                "VALUES (" + ...
+                s.HardwareID + "," + ...
+                s.ChannelNumber + "," + ...
+                "'" + s.Name + "'," + ...
+                "'" + s.Type + "'," + ...
+                "'" + s.DefaultValue + "'" + ...
+                ")" + newline + ...
+                "ON CONFLICT (HardwareID, ChannelNumber, Name)" + newline + ...
+                "DO UPDATE SET DefaultValue = excluded.DefaultValue;";
+            for ii = 1:numel(sqlquery)
+                execute(conn,sqlquery(ii))
+            end
+            close(conn)
         end
     
         function hw = loadEntry(obj,nameOrID)
@@ -77,7 +96,7 @@ classdef HardwareList < MmParameter
             hw = eval(hwPara.DeviceModel + "(hwPara.ResourceName,hwPara.Name)");
             hw.DataPath = hwPara.DataPath;
             for ii = 1:height(setting)
-                if setting.Name(ii) == "WaveformListID"
+                if setting.Name(ii) == "WaveformList"
                     hw.WaveformList{setting.ChannelNumber(ii)} = p2.loadEntry(setting.Value{ii});
                 else
                     hw.(setting.Name(ii))(setting.ChannelNumber(ii)) = setting.Value{ii};
@@ -96,7 +115,7 @@ classdef HardwareList < MmParameter
             p2 = obj.WaveformListLibrary;
             setting = p.readSetting(id);
             for ii = 1:height(setting)
-                if setting.Name(ii) == "WaveformListID"
+                if setting.Name(ii) == "WaveformList"
                     hw.WaveformList{setting.ChannelNumber(ii)} = p2.loadEntry(setting.Value{ii});
                 else
                     hw.(setting.Name(ii))(setting.ChannelNumber(ii)) = setting.Value{ii};

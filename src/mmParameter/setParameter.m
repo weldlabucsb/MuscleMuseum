@@ -232,6 +232,7 @@ settingList = [
     "RoiSetting";
     "WaveformLibrary";
     "WaveformListLibrary";
+    "HardwareAssociation";
     ];
 
 for ii = 1:numel(settingList)

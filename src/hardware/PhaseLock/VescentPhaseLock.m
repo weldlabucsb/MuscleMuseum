@@ -4,7 +4,7 @@ classdef (Abstract) VescentPhaseLock < PhaseLock
     % Manages a serial connection (:attr:`Serialport`) and provides methods to
     % :meth:`connect`, :meth:`check`, :meth:`lock`, and :meth:`unlock`.
     
-    properties
+    properties (SetAccess = protected, Transient)
         Serialport internal.Serialport
     end
     
