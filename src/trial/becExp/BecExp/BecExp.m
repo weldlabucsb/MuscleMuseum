@@ -23,6 +23,7 @@ classdef BecExp < Trial
         IsAutoAcquire logical = false %If we want to automatically set the camera through MATLAB
         IsHoldRefresh logical = false
         IsAcquiring logical = false %If the program is still acquiring images
+        IsOdPreview logical = false
     end
 
     properties (Hidden,Transient)
@@ -274,6 +275,28 @@ classdef BecExp < Trial
                 yLabel = sP;
             else
                 yLabel = sP + "~[$\mathrm{" + obj.ScannedVariable2Unit + "}$]";
+            end
+        end
+
+        function l = ScannedVariableLabel(obj,runNumber)
+            if ~obj.Is2DScan
+                sv = obj.ScannedVariable;
+            else
+                sv = obj.ScannedVariable + ", " + obj.ScannedVariable2;           
+            end
+            sv = strrep(sv,'_','\_');
+
+            if isempty(obj.ScannedVariableList)  
+                l = sv;
+            else
+                sl = string(obj.ScannedVariableList(:,runNumber));
+                su = [obj.ScannedVariableUnit;obj.ScannedVariableUnit2];
+                su = " $\mathrm{" + replace(su,"None","") + "}$";
+                if ~obj.Is2DScan
+                    l = [sv,sl + su(1)]; 
+                else
+                    l = [sv,join(sl + su,",")]; 
+                end
             end
         end
 
@@ -1344,6 +1367,11 @@ classdef BecExp < Trial
             todayData = pgFetch(obj.Writer,query);
             obj.TrialIndex = size(todayData,1) + 1;
 
+            %% Find trial number
+            sqlQuery = "SELECT last_value FROM " + "public."""+obj.DatabaseTableName+"_SerialNumber_seq"";";
+            data = pgFetch(obj.Writer,sqlQuery);
+            trialNumber = data.last_value + 1;
+
             %% Find data folder index
             newestFolderList = sortNewestFolder(obj.DatePath);
             newestFolderList = newestFolderList(cellfun(@(x) contains(x,indexDelimiter),{newestFolderList.name}));
@@ -1357,7 +1385,7 @@ classdef BecExp < Trial
 
             %% Create data folders
             obj.DataPath = fullfile(obj.DatePath,num2str(folderIndex,'%02u')+" "+indexDelimiter+" "+ ...
-                obj.Name+trialDelimiter+num2str(obj.TrialIndex));
+                obj.Name+trialDelimiter+num2str(obj.TrialIndex) + trialDelimiter + "Trial" + trialDelimiter + trialNumber);
             obj.DataAnalysisPath = fullfile(obj.DataPath,'dataAnalysis');
             obj.ObjectPath = fullfile(obj.DataAnalysisPath, ...
                 obj.Name+yyyy+mm+dd+trialDelimiter+num2str(obj.TrialIndex)+'.mat');
@@ -1409,6 +1437,15 @@ classdef BecExp < Trial
             end
             if ~isempty(obj.ControlAppName)
                 obj.ControlApp = get(findall(0, 'Tag', obj.ControlAppName), 'RunningAppInstance');
+            end
+            if isprop(obj,"Od")
+                if numel(obj.Od.Gui) == 2
+                    obj.Od.Gui(1) = [];
+                end
+            end
+            if isprop(obj,"Ad")
+                obj.IsOdPreview = ~obj.Ad.Gui(1).IsEnabled;
+                obj.Ad.Gui(1).IsEnabled = true;
             end
         end
     end

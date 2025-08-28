@@ -25,13 +25,6 @@ classdef Od < BecAnalysis
             %   Detailed explanation goes here
             obj@BecAnalysis(becExp)
             obj.Gui(1) = Gui(...
-                name = "OdPreviewer",...
-                fpath = fullfile(becExp.DataAnalysisPath,"Od"),...
-                loc = [0.003125,0.387037037],...
-                size = [0.38984375,0.587037], ...
-                isEnabled = false...
-                );
-            obj.Gui(2) = Gui(...
                 name = "FringeRemoval",...
                 fpath = fullfile(becExp.DataAnalysisPath,"FringeRemoval"),...
                 loc = "center",...
@@ -68,7 +61,6 @@ classdef Od < BecAnalysis
             obj.ImageRatio = zeros([roiSize,1]);
             obj.CameraLightData = zeros([roiSize,1]);
 
-            obj.Gui(1).initialize(obj.BecExp) % invoke OdPreviewer
             addlistener(obj,'CLim','PostSet',@obj.handlePropEvents);
         end
 
@@ -86,9 +78,6 @@ classdef Od < BecAnalysis
             obj.OdData(:,:,runIdx) = absorption2Od(computeAbsorption(obj.RoiData(:,:,runIdx,:)));
             obj.ImageRatio(:,:, runIdx) = computeAbsorption(obj.RoiData(:,:,runIdx,:));
 
-            % Update OdPreviewer
-            obj.Gui(1).update;
-
             % Update camera light data
             obj.CameraLightData(:,:,runIdx) = obj.RoiData(:,:,runIdx,2) - obj.RoiData(:,:,runIdx,3);
         end
@@ -101,7 +90,6 @@ classdef Od < BecAnalysis
 
         function show(obj)
             addlistener(obj,'CLim','PostSet',@obj.handlePropEvents);
-            obj.Gui(1).initialize(obj.BecExp)
             obj.Chart(1).show
             obj.Chart(2).show
         end
@@ -112,12 +100,6 @@ classdef Od < BecAnalysis
             roi = becExp.Roi;
             roiSize = roi.CenterSize(3:4);
             nRun = becExp.NCompletedRun;
-
-            if isempty(obj.Gui(1).App) || ~isvalid(obj.Gui(1).App)
-                obj.Gui(1).initialize(obj.BecExp)
-            else
-                obj.Gui(1).update
-            end
 
             obj.RoiData = becExp.readRunRoi(1:nRun);
 
@@ -151,7 +133,7 @@ classdef Od < BecAnalysis
                         light = reshape(light,roiSize(1),roiSize(2),size(light,2),1);
                         OdAfter = absorption2Od(computeAbsorption(cat(4,atom,light)));
                         ImageRatioAfter = computeAbsorption(cat(4,atom,light));
-                        obj.Gui(2).initialize(OdBefore,OdAfter,Rtest,obj.FringeRemovalMethod)
+                        obj.Gui(1).initialize(OdBefore,OdAfter,Rtest,obj.FringeRemovalMethod)
                     otherwise
                         OdAfter = OdBefore;
                         ImageRatioAfter = ImageRatioBefore;
@@ -424,13 +406,16 @@ classdef Od < BecAnalysis
                             ax.CLim = obj.CLim;
                         end
                     end
-                    if ~isempty(obj.Gui(1).App)
-                        if isvalid(obj.Gui(1).App)
-                            obj.Gui(1).App.OdAxes.CLim = obj.CLim;
-                            obj.Gui(1).App.OdYAxes.XLim = obj.CLim;
-                            obj.Gui(1).App.OdXAxes.YLim = obj.CLim;
-                            obj.Gui(1).App.ODMinEditField.Value = obj.CLim(1);
-                            obj.Gui(1).App.ODMaxEditField.Value = obj.CLim(2);
+                    odApp = obj.BecExp.Ad.Gui(1).App;
+                    if ~isempty(odApp)
+                        if isvalid(odApp)
+                            if odApp.IsOd
+                                odApp.OdAxes.CLim = obj.CLim;
+                                odApp.OdYAxes.XLim = obj.CLim;
+                                odApp.OdXAxes.YLim = obj.CLim;
+                                odApp.ODMinEditField.Value = obj.CLim(1);
+                                odApp.ODMaxEditField.Value = obj.CLim(2);
+                            end
                         end
                     end
             end

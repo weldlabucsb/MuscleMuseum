@@ -30,7 +30,7 @@ classdef Ad < BecAnalysis
             %   Detailed explanation goes here
             obj@BecAnalysis(becExp)
             obj.Gui(1) = Gui(...
-                name = "AdPreviewer",...
+                name = "OdPreviewer",...
                 fpath = fullfile(becExp.DataAnalysisPath,"Ad"),...
                 loc = [0.003125,0.387037037],...
                 size = [0.38984375,0.587037], ...
@@ -71,6 +71,8 @@ classdef Ad < BecAnalysis
             obj.AdData = zeros([roiSize,1]);
 
             obj.Gui(1).initialize(obj.BecExp) % invoke AdPreviewer
+            obj.Gui(1).App.IsOd = obj.BecExp.IsOdPreview;
+            obj.Gui(1).App.updateLabel;
             addlistener(obj,'CLim','PostSet',@obj.handlePropEvents);
         end
 
@@ -182,6 +184,8 @@ classdef Ad < BecAnalysis
         function show(obj)
             addlistener(obj,'CLim','PostSet',@obj.handlePropEvents);
             obj.Gui(1).initialize(obj.BecExp)
+            obj.Gui(1).App.IsOd = obj.BecExp.IsOdPreview;
+            obj.Gui(1).App.updateLabel;
             if isfile(obj.Chart(1).Path + ".fig") % for backwards compatibility
                 obj.Chart(1).show
             elseif obj.Chart(1).IsEnabled
