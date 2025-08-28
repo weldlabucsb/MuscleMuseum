@@ -130,7 +130,8 @@ end
 
 %% Reset database column names
 p = BecExpConfig;
-s = p.readEntry(2);
+for ii = 1:2
+s = p.readEntry(ii);
 conn = createWriter(s.DatabaseName);
 
 try
@@ -155,6 +156,7 @@ catch
 end
 
 close(conn)
+end
 
 %% Hardware association
 p = HardwareAssociation;

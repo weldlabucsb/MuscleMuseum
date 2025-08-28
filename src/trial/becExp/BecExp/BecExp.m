@@ -1200,6 +1200,9 @@ classdef BecExp < Trial
                 obj.displayLog("Found no hardware association.")
                 return
             end
+            if isstruct(t)
+                t = struct2table(t);
+            end
             t = renamevars(t,"SettingID","ID");
             p = HardwareSetting;
             p.updateEntry(t)
