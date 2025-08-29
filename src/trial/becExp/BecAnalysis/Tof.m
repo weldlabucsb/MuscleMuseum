@@ -46,8 +46,8 @@ classdef Tof < BecAnalysis
 
         function initialize(obj)
             %% Check if we can do TOF analysis
-            if obj.BecExp.ScannedParameter ~= "TOF"
-                warning("Scanned Parameter is not TOF. Can not do TOF analysis")
+            if obj.BecExp.ScannedVariable ~= "TOF"
+                warning("Scanned Variable is not TOF. Can not do TOF analysis")
                 return
             elseif ~ismember("DensityFit",obj.BecExp.AnalysisMethod)
                 warning("No DensityFit. Can not do TOF analysis")
@@ -162,12 +162,12 @@ classdef Tof < BecAnalysis
 
         function updateData(obj,~)
             becExp = obj.BecExp;
-            if becExp.ScannedParameter ~= "TOF" || becExp.NCompletedRun < 2 ||...
+            if becExp.ScannedVariable ~= "TOF" || becExp.NCompletedRun < 2 ||...
                     ~ismember("DensityFit",obj.BecExp.AnalysisMethod) ||...
                     ~isempty(obj.BecExp.Roi.SubRoi)
                 return
             end
-            obj.TofTime = becExp.ScannedParameterList * unit2SI(becExp.ScannedParameterUnit);
+            obj.TofTime = becExp.ScannedVariableList * unit2SI(becExp.ScannedVariableUnit);
             wt = obj.BecExp.DensityFit.ThermalCloudSize;
             obj.FitDataThermal = [LinearFit1D([(obj.TofTime.^2).',(wt(1,:).^2).']);...
                 LinearFit1D([(obj.TofTime.^2).',(wt(2,:).^2).'])];
@@ -190,7 +190,7 @@ classdef Tof < BecAnalysis
         function updateFigure(obj,~)
             becExp = obj.BecExp;
             fig = obj.Chart(1).Figure;
-            if becExp.ScannedParameter ~= "TOF" || becExp.NCompletedRun < 2 ...
+            if becExp.ScannedVariable ~= "TOF" || becExp.NCompletedRun < 2 ...
                     || (isempty(fig) || ~ishandle(fig)) || ~ismember("DensityFit",obj.BecExp.AnalysisMethod) ||...
                     ~isempty(obj.BecExp.Roi.SubRoi)
                 return

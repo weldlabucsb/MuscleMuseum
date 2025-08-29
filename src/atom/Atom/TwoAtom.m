@@ -1,6 +1,5 @@
 classdef TwoAtom
-    %TWOATOM Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`TwoAtom` coupled two-atom helper with separate manifolds.
     
     properties (SetAccess = protected)
         Atom1
@@ -14,8 +13,16 @@ classdef TwoAtom
     
     methods
         function obj = TwoAtom(atomName1,atomName2,manifoldName1,manifoldName2)
-            %TWOATOM Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`TwoAtom`.
+            %
+            % :param atomName1: First atom name (ARC-known)
+            % :type atomName1: string
+            % :param atomName2: Second atom name
+            % :type atomName2: string
+            % :param manifoldName1: Optional manifold property name for atom1
+            % :type manifoldName1: string, optional
+            % :param manifoldName2: Optional manifold property name for atom2
+            % :type manifoldName2: string, optional
             arguments
                 atomName1 string
                 atomName2 string
@@ -33,6 +40,14 @@ classdef TwoAtom
         end
         
         function Ha = HamiltonianAtom(obj,fRot,U)
+            % Build two-atom Hamiltonian (sum) at rotation frequency :math:`f_\mathrm{rot}`.
+            %
+            % :param fRot: Rotation frequency [Hz]
+            % :type fRot: double, optional
+            % :param U: Optional basis transform
+            % :type U: double matrix, optional
+            % :return: Block-sum Hamiltonian :math:`H_1 \oplus H_2`
+            % :rtype: double matrix
             arguments
                 obj TwoAtom
                 fRot double = 0

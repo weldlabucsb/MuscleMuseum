@@ -1,21 +1,41 @@
 classdef MagneticPotential < Potential & matlab.mixin.Heterogeneous
-    %OPTICALPOTENTIAL Summary of this class goes here
-    %   Detailed explanation goes here
-    
+    %:class:`MagneticPotential` models Zeeman energy shifts from a magnetic field.
+    %
+    % Couples an :class:`Atom` state to a :class:`MagneticField` and provides low- and
+    % high-field limits for the Zeeman energy factor. Exposes space-dependent potential
+    % functions in both limits.
+    %
+    % **Example:**
+    %
+    % .. code-block:: matlab
+    %
+    %    mp = MagneticPotential(atom, magneticField, "Trap", manifold="DGround");
+    %    Vlow = mp.spaceFuncLowField();
+    %
     properties
-        MagneticField MagneticField
+        MagneticField MagneticField % Background magnetic field :math:`\mathbf{B}(\mathbf{r})`
     end
 
     properties (Dependent)
-        EnergyFactor
-        EnergyFactorLowField
-        EnergyFactorHighField
+        EnergyFactor % Effective Zeeman factor :math:`\alpha` [Hz/T]
+        EnergyFactorLowField % Low-field :math:`\alpha = m_F g_F \mu_B / h` [Hz/T]
+        EnergyFactorHighField % High-field :math:`\alpha = (m_J g_J + m_I g_I) \mu_B / h` [Hz/T]
     end
     
     methods
         function obj = MagneticPotential(atom,magneticField,name,options)
-            %OPTICALPOTENTIAL Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`MagneticPotential`.
+            %
+            % :param atom: Atomic species
+            % :type atom: :class:`Atom`
+            % :param magneticField: Magnetic field instance
+            % :type magneticField: :class:`MagneticField`
+            % :param name: Potential name
+            % :type name: string, optional
+            % :param manifold: Atomic manifold label (e.g., "DGround")
+            % :type manifold: string, optional
+            % :param stateIndex: Specific state index within manifold
+            % :type stateIndex: double, optional
             arguments
                 atom (1,1) Atom
                 magneticField MagneticField
@@ -37,6 +57,10 @@ classdef MagneticPotential < Potential & matlab.mixin.Heterogeneous
         end
 
         function eFactL = get.EnergyFactorLowField(obj)
+            % Low-field Zeeman factor :math:`\alpha = m_F g_F \mu_B / h` [Hz/T].
+            %
+            % :return: :math:`\alpha` in [Hz/T]
+            % :rtype: double
             stateIdx = obj.StateIndex;
             stateList = obj.Atom.(obj.Manifold).StateList;
             mF = stateList.MF(stateIdx);
@@ -47,6 +71,10 @@ classdef MagneticPotential < Potential & matlab.mixin.Heterogeneous
         end
 
         function eFactH = get.EnergyFactorHighField(obj)
+            % High-field Zeeman factor :math:`\alpha = (m_J g_J + m_I g_I) \mu_B / h` [Hz/T].
+            %
+            % :return: :math:`\alpha` in [Hz/T]
+            % :rtype: double
             stateIdx = obj.StateIndex;
             stateList = obj.Atom.(obj.Manifold).StateList;
             mJ = stateList.MJ(stateIdx);
@@ -59,6 +87,10 @@ classdef MagneticPotential < Potential & matlab.mixin.Heterogeneous
         end
 
         function eFact = get.EnergyFactor(obj)
+            % Choose :math:`\alpha` based on bias field vs. hyperfine splitting.
+            %
+            % :return: :math:`\alpha` in [Hz/T]
+            % :rtype: double
             energyList = obj.Atom.(obj.Manifold).StateList.Energy;
             hfs = max(energyList) - min(energyList);
             bias = vecnorm(obj.MagneticField.Bias);
@@ -72,12 +104,20 @@ classdef MagneticPotential < Potential & matlab.mixin.Heterogeneous
         end
 
         function func = spaceFuncLowField(obj)
+            % Build low-field potential :math:`V(\mathbf{r}) = \alpha \|\mathbf{B}(\mathbf{r})\|`.
+            %
+            % :return: function handle mapping :math:`\mathbf{r}` to :math:`V(\mathbf{r})` [Hz]
+            % :rtype: function_handle
             prefactor = obj.EnergyFactorLowField;
             bSpaceFunc = obj.MagneticField.spaceFunc;
             func = @(r) prefactor * vecnorm(bSpaceFunc(r));
         end
 
         function func = spaceFuncHighField(obj)
+            % Build high-field potential :math:`V(\mathbf{r}) = \alpha \|\mathbf{B}(\mathbf{r})\|`.
+            %
+            % :return: function handle mapping :math:`\mathbf{r}` to :math:`V(\mathbf{r})` [Hz]
+            % :rtype: function_handle
             prefactor = obj.EnergyFactorHighField;
             bSpaceFunc = obj.MagneticField.spaceFunc;
             func = @(r) prefactor * vecnorm(bSpaceFunc(r));

@@ -1,8 +1,13 @@
 classdef Basler < Acquisition
+    %:class:`Basler` acquisition using the GenTL adaptor.
+    %
+    % Provides an absorption-imaging configuration via :meth:`setCameraParameterAbsorption`.
     methods
         function obj = Basler(acqName)
-            %KEYSIGHT Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`Basler` acquisition instance.
+            %
+            % :param acqName: Camera config name
+            % :type acqName: string
             arguments
                 acqName string
             end
@@ -12,8 +17,10 @@ classdef Basler < Acquisition
         end
 
         function setCameraParameterAbsorption(obj)
-            %Set camera parameters using the predefined configuration
-            %functions.
+            % Configure absorption-imaging parameters for Basler GenTL.
+            %
+            % Requires connected :attr:`VideoInput`. Sets trigger to external rising edge,
+            % logs to memory, and frames per trigger suitable for 3-image sequences.
             if isempty(obj.VideoInput)
                 error('Camera not connected. Try the "connectCamera" method first.')
             end

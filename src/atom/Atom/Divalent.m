@@ -1,4 +1,8 @@
 classdef Divalent < Atom
+    %:class:`Divalent` atom subclass with cycling transition properties.
+    %
+    % Adds a blue transition manifold, cycler frequency, saturation intensity,
+    % cross-section, and derived quantities from ARC.
     properties(SetAccess=protected)
         Blue TwoJManifoldDivalent
         CyclerFrequency double
@@ -8,6 +12,10 @@ classdef Divalent < Atom
 
     methods
         function obj = Divalent(atomName)
+            % Construct a :class:`Divalent` atom.
+            %
+            % :param atomName: Isotope name known to ARC (e.g., "Strontium88")
+            % :type atomName: string
             obj@Atom(atomName)
             if obj.Type ~= "Divalent"
                 error("Wrong input [atomName]. [atomName] must be an divalent atom")

@@ -1,6 +1,28 @@
 classdef SineWaveModulated < ModulatedWaveform
-    %SINEWAVE Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`SineWaveModulated` generates amplitude, frequency, and phase modulated sine waves.
+    %
+    % Creates sine wave signals with time-varying amplitude, frequency, and phase
+    % modulation. Supports complex modulation patterns for advanced signal generation
+    % and communication applications. Inherits from :class:`ModulatedWaveform`.
+    %
+    % **Example1:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Create amplitude modulated sine wave
+    %     ampMod = SineWave(frequency = 10, amplitude = 0.5);
+    %     sine = SineWaveModulated(frequency = 1000, amplitude = 1.0, ...
+    %                              amplitudeModulation = ampMod);
+    %     sine.plot();
+    %
+    % **Example2:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Create frequency modulated sine wave
+    %     freqMod = SineWave(frequency = 5, amplitude = 100);
+    %     sine = SineWaveModulated(frequency = 1000, amplitude = 1.0, ...
+    %                              frequencyModulation = freqMod);
     
     properties
         
@@ -8,8 +30,36 @@ classdef SineWaveModulated < ModulatedWaveform
     
     methods
         function obj = SineWaveModulated(options)
-            %SINEWAVE Construct an instance of this class
-            %   Detailed explanation goes here
+            %Construct a SineWaveModulated object.
+            %
+            % :param samplingRate: Sampling rate in Hz (default: inherited)
+            % :type samplingRate: double, optional
+            % :param startTime: Start time in seconds (default: 0)
+            % :type startTime: double, optional
+            % :param duration: Duration in seconds (default: inherited)
+            % :type duration: double, optional
+            % :param amplitude: Peak-to-peak amplitude (default: inherited)
+            % :type amplitude: double, optional
+            % :param offset: DC offset (default: 0)
+            % :type offset: double, optional
+            % :param frequency: Carrier frequency in Hz (default: inherited)
+            % :type frequency: double, optional
+            % :param phase: Initial phase in radians (default: 0)
+            % :type phase: double, optional
+            % :param amplitudeModulation: Amplitude modulation waveform (default: [])
+            % :type amplitudeModulation: Waveform, optional
+            % :param frequencyModulation: Frequency modulation waveform (default: [])
+            % :type frequencyModulation: Waveform, optional
+            % :param phaseModulation: Phase modulation waveform (default: [])
+            % :type phaseModulation: Waveform, optional
+            %
+            % **Example:**
+            %
+            % .. code-block:: matlab
+            %
+            %     ampMod = SineWave(frequency = 10, amplitude = 0.5);
+            %     sine = SineWaveModulated(frequency = 1000, amplitude = 1.0, ...
+            %                              amplitudeModulation = ampMod);
             arguments
                 options.samplingRate double = [];
                 options.startTime double = 0;
@@ -32,8 +82,15 @@ classdef SineWaveModulated < ModulatedWaveform
         end
         
         function func = TimeFunc(obj)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
+            %Get the time function for the modulated sine wave.
+            %
+            % Creates a function handle that generates modulated sine wave values
+            % with time-varying amplitude, frequency, and phase based on the
+            % configured modulation waveforms. Implements the abstract :meth:`TimeFunc`
+            % method from :class:`Waveform`.
+            %
+            % :return: Function that takes time array and returns modulated sine wave values
+            % :rtype: function_handle
             amp = obj.Amplitude;
             freq = obj.Frequency;
             td = obj.Duration;

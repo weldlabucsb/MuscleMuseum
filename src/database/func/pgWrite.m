@@ -1,6 +1,23 @@
 function pgWrite(conn,tableName,data,varargin)
+% Write a MATLAB table to a PostgreSQL database table, adding columns if needed.
+%
+% :param conn: Open database connection
+% :type conn: database.relational.connection
+% :param tableName: Target table name
+% :type tableName: string | char
+% :param data: MATLAB table to write
+% :type data: table
+% :param isForceArray: Force new columns to be arrays when adding
+% :type isForceArray: logical, optional
+%
+% **Notes:**
+%
+%     - Extra variables in ``data`` that do not exist in the DB table are added with inferred types.
+%     - Vector-valued cells can be mapped to array column types (numeric[]/int[]/text[]).
+%     - This function is adapted from MATLAB's ``sqlwrite`` to handle vector columns.
 %PGWRITE Write a MATLAB table to a postgresql database table
-% pgWrite(conn,tableName,data)
+%pgWrite(conn,tableName,data)
+%   
 %   conn: connection to pg database
 %   tableName: database table name
 %   data: input MATLAB table

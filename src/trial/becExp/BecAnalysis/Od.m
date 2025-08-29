@@ -25,13 +25,6 @@ classdef Od < BecAnalysis
             %   Detailed explanation goes here
             obj@BecAnalysis(becExp)
             obj.Gui(1) = Gui(...
-                name = "OdPreviewer",...
-                fpath = fullfile(becExp.DataAnalysisPath,"Od"),...
-                loc = [0.003125,0.387037037],...
-                size = [0.38984375,0.587037], ...
-                isEnabled = false...
-                );
-            obj.Gui(2) = Gui(...
                 name = "FringeRemoval",...
                 fpath = fullfile(becExp.DataAnalysisPath,"FringeRemoval"),...
                 loc = "center",...
@@ -68,7 +61,6 @@ classdef Od < BecAnalysis
             obj.ImageRatio = zeros([roiSize,1]);
             obj.CameraLightData = zeros([roiSize,1]);
 
-            obj.Gui(1).initialize(obj.BecExp) % invoke OdPreviewer
             addlistener(obj,'CLim','PostSet',@obj.handlePropEvents);
         end
 
@@ -86,9 +78,6 @@ classdef Od < BecAnalysis
             obj.OdData(:,:,runIdx) = absorption2Od(computeAbsorption(obj.RoiData(:,:,runIdx,:)));
             obj.ImageRatio(:,:, runIdx) = computeAbsorption(obj.RoiData(:,:,runIdx,:));
 
-            % Update OdPreviewer
-            obj.Gui(1).update;
-
             % Update camera light data
             obj.CameraLightData(:,:,runIdx) = obj.RoiData(:,:,runIdx,2) - obj.RoiData(:,:,runIdx,3);
         end
@@ -101,7 +90,6 @@ classdef Od < BecAnalysis
 
         function show(obj)
             addlistener(obj,'CLim','PostSet',@obj.handlePropEvents);
-            obj.Gui(1).initialize(obj.BecExp)
             obj.Chart(1).show
             obj.Chart(2).show
         end
@@ -112,12 +100,6 @@ classdef Od < BecAnalysis
             roi = becExp.Roi;
             roiSize = roi.CenterSize(3:4);
             nRun = becExp.NCompletedRun;
-
-            if isempty(obj.Gui(1).App) || ~isvalid(obj.Gui(1).App)
-                obj.Gui(1).initialize(obj.BecExp)
-            else
-                obj.Gui(1).update
-            end
 
             obj.RoiData = becExp.readRunRoi(1:nRun);
 
@@ -151,7 +133,7 @@ classdef Od < BecAnalysis
                         light = reshape(light,roiSize(1),roiSize(2),size(light,2),1);
                         OdAfter = absorption2Od(computeAbsorption(cat(4,atom,light)));
                         ImageRatioAfter = computeAbsorption(cat(4,atom,light));
-                        obj.Gui(2).initialize(OdBefore,OdAfter,Rtest,obj.FringeRemovalMethod)
+                        obj.Gui(1).initialize(OdBefore,OdAfter,Rtest,obj.FringeRemovalMethod)
                     otherwise
                         OdAfter = OdBefore;
                         ImageRatioAfter = ImageRatioBefore;
@@ -168,53 +150,44 @@ classdef Od < BecAnalysis
         end
 
         function plotOdMix(obj)
-            %% Initialize
+            %% Initialize figure
             fig = obj.Chart(1).initialize;
             if ishandle(fig)
                 figure(fig)
             else
                 return
             end
-            ax = gca;
 
-            %% Plot OD Data
-            nRun = obj.BecExp.NCompletedRun;
-            cData = cell(1,nRun);
-            runList = obj.BecExp.RunListSorted;
-            for ii = 1:nRun
-                cData{ii} = obj.OdData(:,:,runList(ii));
-            end
-            mData = horzcat(cData{:});
-            img = imagesc(ax,mData);
-
-            %% Render
-            fz = 20;
-            cb = colorbar(ax);
-            clim(obj.CLim)
-            colormap(ax,obj.Colormap)
-            
-            cb.Label.Interpreter = "Latex";
-            cb.Label.String = "OD";
-            cb.Label.FontSize = fz;
-            roiSize = obj.BecExp.Roi.CenterSize(3:4);
-            yxBoundary = obj.BecExp.Roi.YXBoundary;
-            aspect = double(nRun)*roiSize(2)/roiSize(1);
-            figPos = fig.InnerPosition;
-            targetWidth = figPos(3)*0.85;
-            targetHeight = figPos(4)*0.85;
-            ax.Units = "pixels";
-            if targetWidth > targetHeight * aspect
-                ax.Position(4) = targetHeight;
-                ax.Position(3) = targetHeight * aspect;
+            %% Check if 2D scan and call appropriate plotting method
+            if obj.BecExp.Is2DScan
+                obj.plotOdMix2D(fig);
             else
-                ax.Position(3) = targetWidth;
-                ax.Position(4) = targetWidth / aspect;
+                obj.plotOdMix1D(fig);
             end
-            ax.Position(1:2) = [figPos(3)/2 - ax.Position(3)/2,...
-                figPos(4)/2 - ax.Position(4)/2];
-            pbaspect(ax,[aspect,1,1])
+        end
 
-            ax.Units = "normalized";
+        function plotOdMix1D(obj, fig)
+            %% 1D plotting logic (original implementation)
+            %% BecExp parameters
+            becExp = obj.BecExp;
+            roi = becExp.Roi;
+            yxBoundary = roi.YXBoundary;
+            roiSize = roi.CenterSize(3:4);
+            nRun = becExp.NCompletedRun;
+            runList = obj.BecExp.RunListSorted;
+            paraName = becExp.ScannedVariable;
+            paraListSorted = becExp.ScannedVariableListSorted;
+            paraUnit = becExp.ScannedVariableUnit;
+
+            %% Initialize plots
+            roiAspect = roiSize(2)/roiSize(1);
+            figPos = fig.InnerPosition;
+            gap = 15;
+            fz = 12;
+            ax = axes(fig);
+            img = imagesc(ax,zeros(roiSize));
+            ax.Colormap = obj.Colormap;
+            ax.CLim = obj.CLim;
             ax.XLabel.String = obj.BecExp.XLabel;
             ax.XLabel.Interpreter = "latex";
             ax.XLabel.FontSize = fz;
@@ -226,18 +199,65 @@ classdef Od < BecAnalysis
             ax.Title.Interpreter = "latex";
             ax.Title.FontSize = fz;
             ax.FontSize = fz;
-            
+
             renderTicks(img,[1,2],yxBoundary(1):yxBoundary(2))
             ax.TickDir = "out";
             tickSpace = roiSize(2);
             ax.XTick = (tickSpace/2):tickSpace:(tickSpace*double(nRun)-tickSpace/2);
-            ax.XTickLabel = string(obj.BecExp.ScannedParameterListSorted);
+            ax.XTickLabel = string(obj.BecExp.ScannedVariableListSorted);
             set(ax,'box','off')
             ax.Units = "pixels";
             outerpos = ax.OuterPosition;
             fig.Position(4) = fig.Position(3) * outerpos(4)/outerpos(3)*1.05;
             ax.OuterPosition(2) = 0;
-            
+        end
+
+        function plotOdMix2D(obj, fig)
+            %% 2D plotting logic
+            becExp = obj.BecExp;
+            roi = becExp.Roi;
+            roiSize = roi.CenterSize(3:4);
+
+            % Get 2D plot data
+            [xData, yData] = obj.get2DPlotData();
+
+            if isempty(xData) || isempty(yData)
+                % Fallback to 1D plotting if 2D data is not available
+                obj.plotOdMix1D(fig);
+                return;
+            end
+
+            % Clear figure and create new axes
+            clf(fig);
+            ax = axes(fig);
+
+            % Create 2D density plot for a representative slice (middle of ROI)
+            midSlice = round(roiSize(1)/2);
+            odSlice = squeeze(obj.OdData(midSlice, :, :));
+
+            % Reshape to 2D grid
+            od2D = obj.reshapeDataTo2D(odSlice);
+
+            % Create density plot
+            imagesc(ax, xData, yData, od2D);
+            ax.Colormap = obj.Colormap;
+            ax.CLim = obj.CLim;
+
+            % Add labels and title
+            ax.XLabel.String = becExp.XLabel;
+            ax.XLabel.Interpreter = "latex";
+            ax.XLabel.FontSize = 12;
+            ax.YLabel.String = becExp.YLabel;
+            ax.YLabel.Interpreter = "latex";
+            ax.YLabel.FontSize = 12;
+            ax.Title.String = "TrialName: " + obj.BecExp.Name + ...
+                ", Trial \#" + num2str(obj.BecExp.SerialNumber) + ...
+                " (OD at y=" + num2str(midSlice) + ")";
+            ax.Title.Interpreter = "latex";
+            ax.Title.FontSize = 12;
+
+            % Add colorbar
+            colorbar(ax);
         end
 
         function plotOdAnimation(obj)
@@ -262,9 +282,9 @@ classdef Od < BecAnalysis
             roiSize = roi.CenterSize(3:4);
             nRun = becExp.NCompletedRun;
             runList = obj.BecExp.RunListSorted;
-            paraName = becExp.ScannedParameter;
-            paraListSorted = becExp.ScannedParameterListSorted;
-            paraUnit = becExp.ScannedParameterUnit;
+            varName = becExp.ScannedVariable;
+            varListSorted = becExp.ScannedVariableListSorted;
+            varUnit = becExp.ScannedVariableUnit;
 
             %% Initialize plots
             roiAspect = roiSize(2)/roiSize(1);
@@ -304,8 +324,8 @@ classdef Od < BecAnalysis
             imgAxes.Title.Interpreter = "Latex";
             imgAxes.Title.FontSize = 14;
             imgAxes.Toolbar.Visible = "off";
-            
-            
+
+
             % X plot
             xAxes = axes(fig);
             xAxes.Units = "pixels";
@@ -317,7 +337,7 @@ classdef Od < BecAnalysis
             xAxes.YLim = obj.CLim;
             xAxes.XLim = [yxBoundary(3),yxBoundary(4)];
             xAxes.Toolbar.Visible = "off";
-            
+
             % Y plot
             yAxes = axes(fig);
             yAxes.Units = "pixels";
@@ -341,19 +361,19 @@ classdef Od < BecAnalysis
                     yLine.XData = squeeze(obj.OdData(:,round(roiSize(2)/2),runList(ii)));
 
                     % Update title
-                    if ismissing(paraUnit)
-                        paraLabel = "$\mathrm{" + paraName + "} = ~$" + ...
-                            string(paraListSorted(ii));
+                    if varUnit == "None" || ismissing(varUnit)
+                        varLabel = "$\mathrm{" + varName + "} = ~$" + ...
+                            string(varListSorted(ii));
                     else
-                        paraLabel = "$\mathrm{" + paraName + "} = ~$" + ...
-                            string(paraListSorted(ii)) + "$~\mathrm{" + ...
-                            paraUnit + "}$";
+                        varLabel = "$\mathrm{" + varName + "} = ~$" + ...
+                            string(varListSorted(ii)) + "$~\mathrm{" + ...
+                            varUnit + "}$";
                     end
                     imgAxes.Title.String = ...
                         "TrialName: " + becExp.Name + ...
                         ", Trial \#" + num2str(becExp.SerialNumber) + ...
-                        ", Run \#" + num2str(ii) + ", " + ... 
-                        paraLabel;
+                        ", Run \#" + num2str(ii) + ", " + ...
+                        varLabel;
 
                     % Save as gif
                     frame = getframe(fig);
@@ -386,13 +406,16 @@ classdef Od < BecAnalysis
                             ax.CLim = obj.CLim;
                         end
                     end
-                    if ~isempty(obj.Gui(1).App)
-                        if isvalid(obj.Gui(1).App)
-                            obj.Gui(1).App.OdAxes.CLim = obj.CLim;
-                            obj.Gui(1).App.OdYAxes.XLim = obj.CLim;
-                            obj.Gui(1).App.OdXAxes.YLim = obj.CLim;
-                            obj.Gui(1).App.ODMinEditField.Value = obj.CLim(1);
-                            obj.Gui(1).App.ODMaxEditField.Value = obj.CLim(2);
+                    odApp = obj.BecExp.Ad.Gui(1).App;
+                    if ~isempty(odApp)
+                        if isvalid(odApp)
+                            if odApp.IsOd
+                                odApp.OdAxes.CLim = obj.CLim;
+                                odApp.OdYAxes.XLim = obj.CLim;
+                                odApp.OdXAxes.YLim = obj.CLim;
+                                odApp.ODMinEditField.Value = obj.CLim(1);
+                                odApp.ODMaxEditField.Value = obj.CLim(2);
+                            end
                         end
                     end
             end

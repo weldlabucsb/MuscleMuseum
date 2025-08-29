@@ -1,9 +1,17 @@
 classdef (Abstract) WaveformGenerator < Hardware
-    %WAVEFORMGENERATOR Subclass of Hardware, includes additional parameters
-    %involved for operating an AWG
-    %   Generalized class for AWGs, with some additional parameters and
-    %   generic functions defined.
-    %   Properties:
+    %:class:`WaveformGenerator` abstract base for arbitrary waveform generators.
+    %
+    % Defines common properties (:attr:`SamplingRate`, :attr:`TriggerSource`,
+    % :attr:`TriggerSlope`, :attr:`OutputMode`, :attr:`IsOutput`, :attr:`OutputLoad`,
+    % :attr:`WaveformList`, :attr:`OutputLimit`) and abstract methods for device
+    % control (:meth:`connect`, :meth:`set`, :meth:`upload`, :meth:`close`, :meth:`check`).
+    %
+    % Concrete subclasses (e.g., :class:`KeysightWaveformGenerator`) implement the
+    % hardware-specific logic.
+    %Generalized class for AWGs, with some additional parameters and
+    %generic functions defined.
+    %Properties:
+    %
     %       SamplingRate: sample rate of waveform to be uploaded
     %       TriggerSource: String that describes the trigger used for the
     %       waveform, can be 'External', 'Software', or 'Immediate'.
@@ -21,7 +29,9 @@ classdef (Abstract) WaveformGenerator < Hardware
     %       channel
     %       OutputLimit: (1,2) array telling the lower and upper limit
     %       values of the waveform being inputed
-    %   Abstract Methods:
+    %
+    %Abstract Methods:
+    %
     %       connect(obj):
     %           Initializes connection to specific device
     %       set(obj):
@@ -43,6 +53,10 @@ classdef (Abstract) WaveformGenerator < Hardware
         IsOutput logical
         OutputLoad string {mustBeMember(OutputLoad,{'50','Infinity'})} = "50"
         WaveformList cell
+    end
+
+    properties (SetAccess=protected)
+        SamplingRateLimit (1,1) double
         OutputLimit (1,2) double % [lower,upper], At 50 Ohm
     end
     

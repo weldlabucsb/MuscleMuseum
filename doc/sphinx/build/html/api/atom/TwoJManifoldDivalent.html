@@ -1,0 +1,711 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>TwoJManifoldDivalent &#8212; MuscleMuseum 0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=2149b5ce"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/atom/TwoJManifoldDivalent';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="angularMomentumList" href="angularMomentumList.html" />
+    <link rel="prev" title="TwoJManifold" href="TwoJManifold.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MuscleMuseum 0.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../intro/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">atom</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Alkali.html">Alkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Atom.html">Atom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AtomManifold.html">AtomManifold</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Divalent.html">Divalent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OneFManifold.html">OneFManifold</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OneJManifold.html">OneJManifold</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TwoAtom.html">TwoAtom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TwoJManifold.html">TwoJManifold</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">TwoJManifoldDivalent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="angularMomentumList.html">angularMomentumList</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getAtom.html">getAtom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lithiumDME.html">lithiumDME</a></li>
+<li class="toctree-l3"><a class="reference internal" href="magneticAngularMomentum.html">magneticAngularMomentum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="saveAtom.html">saveAtom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="spinMatrices.html">spinMatrices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="strontiumDME.html">strontiumDME</a></li>
+<li class="toctree-l3"><a class="reference internal" href="totalAngularMomentum.html">totalAngularMomentum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uncoupledSpinBasis.html">uncoupledSpinBasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uncoupledSpinBasisTransformation.html">uncoupledSpinBasisTransformation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uncoupledSpinMatrices.html">uncoupledSpinMatrices</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/index.html">database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../field/index.html">field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sup/support.html">Support</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/api/atom/TwoJManifoldDivalent.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/issues/new?title=Issue%20on%20page%20%2Fapi/atom/TwoJManifoldDivalent.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>TwoJManifoldDivalent</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="twojmanifolddivalent">
+<h1>TwoJManifoldDivalent<a class="headerlink" href="#twojmanifolddivalent" title="Link to this heading">#</a></h1>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TwoJManifoldDivalent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">nG</span></em>, <em class="sig-param"><span class="pre">lG</span></em>, <em class="sig-param"><span class="pre">jG</span></em>, <em class="sig-param"><span class="pre">sG</span></em>, <em class="sig-param"><span class="pre">nE</span></em>, <em class="sig-param"><span class="pre">lE</span></em>, <em class="sig-param"><span class="pre">jE</span></em>, <em class="sig-param"><span class="pre">sE</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/AtomManifold/TwoJManifoldDivalent.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TwoJManifoldDivalent" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="AtomManifold.html#AtomManifold" title="AtomManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">AtomManifold</span></code></a></p>
+<p>TWOJ Summary of this class goes here
+Detailed explanation goes here</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.TwoJManifoldDivalent">
+<span class="sig-name descname"><span class="pre">TwoJManifoldDivalent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">nG</span></em>, <em class="sig-param"><span class="pre">lG</span></em>, <em class="sig-param"><span class="pre">jG</span></em>, <em class="sig-param"><span class="pre">sG</span></em>, <em class="sig-param"><span class="pre">nE</span></em>, <em class="sig-param"><span class="pre">lE</span></em>, <em class="sig-param"><span class="pre">jE</span></em>, <em class="sig-param"><span class="pre">sE</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifoldDivalent.TwoJManifoldDivalent" title="Link to this definition">#</a></dt>
+<dd><p>TWOJ Construct an instance of this class
+Detailed explanation goes here</p>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.DopplerTemperature">
+<span class="sig-name descname"><span class="pre">DopplerTemperature</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifoldDivalent.DopplerTemperature" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.EnergyExcited">
+<span class="sig-name descname"><span class="pre">EnergyExcited</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifoldDivalent.EnergyExcited" title="Link to this definition">#</a></dt>
+<dd><p>HFSCoefficientExcited %[A,B]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.EnergyGround">
+<span class="sig-name descname"><span class="pre">EnergyGround</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifoldDivalent.EnergyGround" title="Link to this definition">#</a></dt>
+<dd><p>HFSCoefficientGround %[A,B]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.IOperator">
+<span class="sig-name descname"><span class="pre">IOperator</span></span><em class="property"> <span class="pre">cell</span></em><a class="headerlink" href="#TwoJManifoldDivalent.IOperator" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.JExcited">
+<span class="sig-name descname"><span class="pre">JExcited</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifoldDivalent.JExcited" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.JGround">
+<span class="sig-name descname"><span class="pre">JGround</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifoldDivalent.JGround" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.JOperator">
+<span class="sig-name descname"><span class="pre">JOperator</span></span><em class="property"> <span class="pre">cell</span></em><a class="headerlink" href="#TwoJManifoldDivalent.JOperator" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.LExcited">
+<span class="sig-name descname"><span class="pre">LExcited</span></span><em class="property"> <span class="pre">int32</span></em><a class="headerlink" href="#TwoJManifoldDivalent.LExcited" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.LGround">
+<span class="sig-name descname"><span class="pre">LGround</span></span><em class="property"> <span class="pre">int32</span></em><a class="headerlink" href="#TwoJManifoldDivalent.LGround" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.LandegFExcited">
+<span class="sig-name descname"><span class="pre">LandegFExcited</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifoldDivalent.LandegFExcited" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.LandegFGround">
+<span class="sig-name descname"><span class="pre">LandegFGround</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifoldDivalent.LandegFGround" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.LandegJExcited">
+<span class="sig-name descname"><span class="pre">LandegJExcited</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifoldDivalent.LandegJExcited" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.LandegJGround">
+<span class="sig-name descname"><span class="pre">LandegJGround</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifoldDivalent.LandegJGround" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.LifetimeExcited">
+<span class="sig-name descname"><span class="pre">LifetimeExcited</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifoldDivalent.LifetimeExcited" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.MJExcited">
+<span class="sig-name descname"><span class="pre">MJExcited</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifoldDivalent.MJExcited" title="Link to this definition">#</a></dt>
+<dd><p>FExcited double</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.MJGround">
+<span class="sig-name descname"><span class="pre">MJGround</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifoldDivalent.MJGround" title="Link to this definition">#</a></dt>
+<dd><p>FGround double</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.NExcited">
+<span class="sig-name descname"><span class="pre">NExcited</span></span><em class="property"> <span class="pre">int32</span></em><a class="headerlink" href="#TwoJManifoldDivalent.NExcited" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.NGround">
+<span class="sig-name descname"><span class="pre">NGround</span></span><em class="property"> <span class="pre">int32</span></em><a class="headerlink" href="#TwoJManifoldDivalent.NGround" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.NaturalLinewidth">
+<span class="sig-name descname"><span class="pre">NaturalLinewidth</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifoldDivalent.NaturalLinewidth" title="Link to this definition">#</a></dt>
+<dd><p>FOperator cell</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.ReducedDipoleMatrixElement">
+<span class="sig-name descname"><span class="pre">ReducedDipoleMatrixElement</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifoldDivalent.ReducedDipoleMatrixElement" title="Link to this definition">#</a></dt>
+<dd><p>Following steck’s convention as &lt;Jg||d||Je&gt;, in SI unit.</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.ReducedSaturationIntensity">
+<span class="sig-name descname"><span class="pre">ReducedSaturationIntensity</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifoldDivalent.ReducedSaturationIntensity" title="Link to this definition">#</a></dt>
+<dd><p>In SI unit</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.ReducedSaturationIntensityLu">
+<span class="sig-name descname"><span class="pre">ReducedSaturationIntensityLu</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifoldDivalent.ReducedSaturationIntensityLu" title="Link to this definition">#</a></dt>
+<dd><p>In lab unit. mW/cm^2</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.SExcited">
+<span class="sig-name descname"><span class="pre">SExcited</span></span><a class="headerlink" href="#TwoJManifoldDivalent.SExcited" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.SGround">
+<span class="sig-name descname"><span class="pre">SGround</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifoldDivalent.SGround" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.StateList">
+<span class="sig-name descname"><span class="pre">StateList</span></span><em class="property"> <span class="pre">table</span></em><a class="headerlink" href="#TwoJManifoldDivalent.StateList" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.BiasDressedStateList">
+<span class="sig-name descname"><span class="pre">BiasDressedStateList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">isPlot</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifoldDivalent.BiasDressedStateList" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.DipoleMatrixElement">
+<span class="sig-name descname"><span class="pre">DipoleMatrixElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fG</span></em>, <em class="sig-param"><span class="pre">mfG</span></em>, <em class="sig-param"><span class="pre">fE</span></em>, <em class="sig-param"><span class="pre">mfE</span></em>, <em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifoldDivalent.DipoleMatrixElement" title="Link to this definition">#</a></dt>
+<dd><p>Dipole Matrix element &lt;fG,mfG|dq|fE,mfE&gt;, in SI unit. The
+sign of q is reversed to accomodate to Steck’s convention.
+Now the selection rule should be mfE + q = mfG.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.DipoleMatrixElementNu">
+<span class="sig-name descname"><span class="pre">DipoleMatrixElementNu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fG</span></em>, <em class="sig-param"><span class="pre">mfG</span></em>, <em class="sig-param"><span class="pre">fE</span></em>, <em class="sig-param"><span class="pre">mfE</span></em>, <em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifoldDivalent.DipoleMatrixElementNu" title="Link to this definition">#</a></dt>
+<dd><p>Dipole Matrix element &lt;fG,mfG|dq|fE,mfE&gt;, as multiples of the
+ReducedDipoleMatrixElement. Same numbers as in Steck’s Alkali
+D line Data.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.HamiltonianAtom">
+<span class="sig-name descname"><span class="pre">HamiltonianAtom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fRot</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifoldDivalent.HamiltonianAtom" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.HamiltonianAtomBiasField">
+<span class="sig-name descname"><span class="pre">HamiltonianAtomBiasField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifoldDivalent.HamiltonianAtomBiasField" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.HamiltonianAtomLaser">
+<span class="sig-name descname"><span class="pre">HamiltonianAtomLaser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">fRot</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifoldDivalent.HamiltonianAtomLaser" title="Link to this definition">#</a></dt>
+<dd><p>In Hz</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.LoweringOperator">
+<span class="sig-name descname"><span class="pre">LoweringOperator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifoldDivalent.LoweringOperator" title="Link to this definition">#</a></dt>
+<dd><p>See Steck Eq. (7.407)</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.ReducedRabiFrequency">
+<span class="sig-name descname"><span class="pre">ReducedRabiFrequency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">laser</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifoldDivalent.ReducedRabiFrequency" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.SaturationIntensity">
+<span class="sig-name descname"><span class="pre">SaturationIntensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fG</span></em>, <em class="sig-param"><span class="pre">mfG</span></em>, <em class="sig-param"><span class="pre">fE</span></em>, <em class="sig-param"><span class="pre">mfE</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifoldDivalent.SaturationIntensity" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="TwoJManifoldDivalent.getMIMJ">
+<span class="sig-name descname"><span class="pre">getMIMJ</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifoldDivalent.getMIMJ" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="TwoJManifold.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">TwoJManifold</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="angularMomentumList.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">angularMomentumList</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Weld Lab
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Weld Lab.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

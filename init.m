@@ -44,7 +44,8 @@ requiredPackageList = [
     "Database Toolbox",...
     "Image Processing Toolbox",...
     "Parallel Computing Toolbox",...
-    "Instrument Control Toolbox"
+    "Instrument Control Toolbox",...
+    "Signal Processing Toolbox"
     ];
 missedPackageList = requiredPackageList(~ismember(requiredPackageList,packageList));
 if ~isempty(missedPackageList)
@@ -57,8 +58,8 @@ end
 %% Set Python
 setPython;
 
-%% Set Configuration
-setConfig;
+%% Set Parameter
+setParameter;
 
 %% Set DataBase
 setDatabase;

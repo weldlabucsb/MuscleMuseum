@@ -1,6 +1,5 @@
 classdef (Abstract) SpaceSimRun < SimRun
-    %SPACESIMRUN Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`SpaceSimRun` abstract base for a space-discretized simulation run.
     
     properties
         SpaceOrigin double = [0;0;0] % in meters
@@ -22,8 +21,10 @@ classdef (Abstract) SpaceSimRun < SimRun
     
     methods
         function obj = SpaceSimRun(spaceSim)
-            %SPACESIMRUN Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`SpaceSimRun` using :class:`SpaceSim` metadata.
+            %
+            % :param spaceSim: Parent :class:`SpaceSim` or :class:`SpaceTimeSim`
+            % :type spaceSim: any, optional
             arguments
                 spaceSim = []
             end
@@ -41,7 +42,7 @@ classdef (Abstract) SpaceSimRun < SimRun
         end
 
         function obj = set.SpaceStep(obj,val)
-            % Number of steps must be power of 2
+            % Ensure number of steps is a power of 2.
             sRange = obj.SpaceRange;
             if isempty(sRange)
                 return
@@ -55,6 +56,7 @@ classdef (Abstract) SpaceSimRun < SimRun
         end
 
         function obj = set.SpaceRange(obj,val)
+            % Update space step when range changes.
             obj.SpaceRange = val;
             step = obj.SpaceStep;
             if isempty(step)
@@ -67,6 +69,7 @@ classdef (Abstract) SpaceSimRun < SimRun
         end
 
         function NN = get.NSpaceStep(obj)
+            % Number of space grid points per dimension.
             switch obj.Dimension
                 case 1
                     NN = numel(obj.SpaceList);
@@ -78,6 +81,7 @@ classdef (Abstract) SpaceSimRun < SimRun
         end
 
         function sList = get.SpaceList(obj)
+            % Space grid (1D) or cell of vectors (2D/3D).
             origin = obj.SpaceOrigin;
             sRange = obj.SpaceRange;
             step = obj.SpaceStep;
@@ -96,18 +100,8 @@ classdef (Abstract) SpaceSimRun < SimRun
             end
         end
 
-        % function spaceStep = get.SpaceStep(obj)
-        %     switch obj.Dimension
-        %         case 1
-        %             spaceStep = obj.SpaceList(2) - obj.SpaceList(1);
-        %         case 2
-        %             spaceStep = cellfun(@(x) x(2) - x(1),obj.SpaceList);
-        %         case 3
-        %             spaceStep = cellfun(@(x) x(2) - x(1),obj.SpaceList);
-        %     end
-        % end
-
         function kList = get.SpaceAngularFrequencyList(obj)
+            % FFT angular frequency grid(s) corresponding to :attr:`SpaceList`.
             NN = obj.NSpaceStep;
             step = obj.SpaceStep;
             switch obj.Dimension
@@ -126,6 +120,7 @@ classdef (Abstract) SpaceSimRun < SimRun
         end
 
         function kStep = get.SpaceAngularFrequencyStep(obj)
+            % Angular frequency steps per dimension.
             switch obj.Dimension
                 case 1
                     kStep = obj.SpaceAngularFrequencyList(2) - obj.SpaceAngularFrequencyList(1);

@@ -1,6 +1,5 @@
 classdef (Abstract) TimeSim < Sim
-    %TIMESIM Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`TimeSim` abstract base for time-domain simulations.
     
     properties
         InitialTime double = 0
@@ -12,8 +11,12 @@ classdef (Abstract) TimeSim < Sim
     
     methods
         function obj = TimeSim(trialName,config)
-            %TIMESIM Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`TimeSim`.
+            %
+            % :param trialName: Simulation name
+            % :type trialName: string
+            % :param config: Config table/struct or name
+            % :type config: string | table | struct
             obj@Sim(trialName,config);
         end
         

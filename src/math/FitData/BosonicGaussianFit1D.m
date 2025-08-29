@@ -1,6 +1,34 @@
 classdef BosonicGaussianFit1D < FitData1D
-    %GAUSSIANFIT1D Summary of this class goes here
-    %   Detailed explanation goes here
+    % Bosonic Gaussian function fit for one-dimensional data.
+    %
+    % Fits a bosonic Gaussian function that accounts for Bose-Einstein statistics
+    % to experimental data. Uses a Bose function approximation applied to a
+    % Gaussian distribution.
+    %
+    % **Example1:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Fit bosonic Gaussian to experimental data
+    %     x = linspace(-5, 5, 100);
+    %     y = 2*boseFunctionApprox(exp(-(x-1).^2/0.5), 2.5) + 0.1*randn(size(x));
+    %     data = [x', y'];
+    %     bosonicFit = BosonicGaussianFit1D(data);
+    %     bosonicFit.do();
+    %     bosonicFit.plot();
+    %
+    % **Example2:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Access fit parameters
+    %     bosonicFit = BosonicGaussianFit1D(data);
+    %     bosonicFit.do();
+    %     amplitude = bosonicFit.Coefficient(1);
+    %     center = bosonicFit.Coefficient(2);
+    %     sigma = bosonicFit.Coefficient(3);
+    %     offset = bosonicFit.Coefficient(4);
+    %
     
     properties
         
@@ -8,18 +36,38 @@ classdef BosonicGaussianFit1D < FitData1D
     
     methods
         function obj = BosonicGaussianFit1D(rawData)
-            %GAUSSIANFIT1D Construct an instance of this class
-            %   Detailed explanation goes here
+            % Constructor for BosonicGaussianFit1D class.
+            %
+            % :param rawData: Input data as n x 2 matrix [x, y]
+            % :type rawData: double array
+            %
+            % **Example:**
+            %
+            % .. code-block:: matlab
+            %
+            %     data = [1:10; randn(1,10)].';
+            %     bosonicFit = BosonicGaussianFit1D(data);
+            %
             obj@FitData1D(rawData)
             
         end
 
         function setFormula(obj)
+            % Set the bosonic Gaussian fit formula.
+            %
+            % Formula: A*boseFunctionApprox(exp(-(x-x0)^2/(2*sigma^2)), 2.5) + C
+            % Parameters: A (amplitude), x0 (center), sigma (width), C (offset)
+            %
             obj.Func = fittype('A*boseFunctionApprox(exp(-(x-x0)^2/(2*sigma^2)),2.5)+C','independent', {'x'},...
                 'coefficients', {'A', 'x0', 'sigma','C'});
         end
 
         function guessCoefficient(obj)
+            % Automatically estimate initial fit parameters from data.
+            %
+            % Estimates amplitude, center, standard deviation, and offset
+            % based on data characteristics, similar to standard Gaussian fit.
+            %
             if isempty(obj.DataSize) || obj.DataSize < obj.MinimumDataSize
                 return
             end

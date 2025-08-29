@@ -1,6 +1,33 @@
 classdef GaussianFit1D < FitData1D
-    %GAUSSIANFIT1D Summary of this class goes here
-    %   Detailed explanation goes here
+    % Gaussian function fit for one-dimensional data.
+    %
+    % Fits a Gaussian function of the form A*exp(-(x-x0)^2/(2*sigma^2))+C to
+    % experimental data. Automatically estimates initial parameters from the data.
+    %
+    % **Example1:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Fit Gaussian to experimental data
+    %     x = linspace(-5, 5, 100);
+    %     y = 2*exp(-(x-1).^2/0.5) + 0.1*randn(size(x));
+    %     data = [x', y'];
+    %     gaussianFit = GaussianFit1D(data);
+    %     gaussianFit.do();
+    %     gaussianFit.plot();
+    %
+    % **Example2:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Access fit parameters
+    %     gaussianFit = GaussianFit1D(data);
+    %     gaussianFit.do();
+    %     amplitude = gaussianFit.Coefficient(1);
+    %     center = gaussianFit.Coefficient(2);
+    %     sigma = gaussianFit.Coefficient(3);
+    %     offset = gaussianFit.Coefficient(4);
+    %
 
     properties
 
@@ -8,17 +35,37 @@ classdef GaussianFit1D < FitData1D
 
     methods
         function obj = GaussianFit1D(rawData)
-            %GAUSSIANFIT1D Construct an instance of this class
-            %   Detailed explanation goes here
+            % Constructor for GaussianFit1D class.
+            %
+            % :param rawData: Input data as n x 2 matrix [x, y]
+            % :type rawData: double array
+            %
+            % **Example:**
+            %
+            % .. code-block:: matlab
+            %
+            %     data = [1:10; randn(1,10)].';
+            %     gaussianFit = GaussianFit1D(data);
+            %
             obj@FitData1D(rawData)
         end
 
         function setFormula(obj)
+            % Set the Gaussian fit formula.
+            %
+            % Formula: A*exp(-(x-x0)^2/(2*sigma^2))+C
+            % Parameters: A (amplitude), x0 (center), sigma (width), C (offset)
+            %
             obj.Func = fittype('A*exp(-(x-x0)^2/(2*sigma^2))+C','independent', {'x'},...
                 'coefficients', {'A', 'x0', 'sigma','C'});
         end
 
         function guessCoefficient(obj)
+            % Automatically estimate initial fit parameters from data.
+            %
+            % Estimates amplitude, center, standard deviation, and offset
+            % based on data characteristics.
+            %
             if isempty(obj.DataSize) || obj.DataSize < obj.MinimumDataSize
                 return
             end

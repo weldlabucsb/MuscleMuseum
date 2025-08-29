@@ -8,14 +8,22 @@ classdef BecExp < Trial
         AnalysisMethod string % List of analysis methods
         CloudCenter double % Cloud center [y_0,x_0] from previous measurement, in pixels
         AveragingMethod string = "StdErr" %Averaging method
-        WaveformAssociation string
-        PhaseLockAssociation string
+    end
+
+    properties(Dependent)
+        ScannedVariable string
+        ScannedVariableUnit string  
+        ScannedVariable2 string  
+        ScannedVariableUnit2 string  
     end
 
     properties(Hidden)
+        ScannedVariableID double = 1
+        ScannedVariableID2 double = 0
         IsAutoAcquire logical = false %If we want to automatically set the camera through MATLAB
         IsHoldRefresh logical = false
         IsAcquiring logical = false %If the program is still acquiring images
+        IsOdPreview logical = false
     end
 
     properties (Hidden,Transient)
@@ -27,9 +35,11 @@ classdef BecExp < Trial
         CiceroLogOrigin = "."
         CiceroLogPath string
         CiceroLogTime datetime
-        DeletedRunParameterList
-        ParameterUnitConfig
+        DeletedRunVariableList
+        VariableUnitSetting
         HardwareList
+        VariableList
+        HardwareAssociation
         HardwareLogPath string
     end
 
@@ -41,10 +51,12 @@ classdef BecExp < Trial
     end
 
     properties (Dependent,Hidden)
-        ScannedParameterList
+        ScannedVariableList
         RunListSorted
-        ScannedParameterListSorted
+        ScannedVariableListSorted
         XLabel
+        YLabel                     % Y-axis label for 2D scans
+        VariableGrid              % 2D parameter grid for 2D scans
     end
 
     properties (Constant,Hidden)
@@ -53,33 +65,23 @@ classdef BecExp < Trial
     end
 
     methods
-        function obj = BecExp(trialName,options)
+        function obj = BecExp(trialName,config,isLoad)
             %BECEXP Construct an instance of this class
             %   Detailed explanation goes here
             arguments
                 trialName string
-                options.isLocalTest logical = false
-                options.config = struct.empty
+                config = "BecExpSetting"
+                isLoad logical = false
             end
-            if isempty(options.config)
-                if options.isLocalTest
-                    config = "BecExpLocalTestConfig";
-                else
-                    config = "BecExpConfig";
-                end
-            else
-                config = options.config;
-            end
-            obj@Trial(trialName,config);
-            load("Config.mat","BecExpParameterUnit","HardwareList")
-            obj.ParameterUnitConfig = BecExpParameterUnit;
-            obj.HardwareList = HardwareList;
+            obj@Trial(trialName,config,isLoad);
+
 
             % Atom setting
             obj.Atom = getAtom(obj.ConfigParameter.AtomName);
 
             % Acquisition settings
-            obj.Acquisition = getAcq(obj.ConfigParameter.AcquisitionName);
+            p = AcquisitionSetting;
+            obj.Acquisition = p.loadEntry(obj.ConfigParameter.AcquisitionName);
             obj.Acquisition.ImagePath = obj.DataPath;
             obj.Acquisition.ImageFormat = obj.DataFormat;
             obj.Acquisition.ImagePrefix = obj.DataPrefix;
@@ -95,74 +97,243 @@ classdef BecExp < Trial
             end
 
             % Analysis settings
-            obj.AnalysisMethod = rmmissing(["Od";"Imaging";"Ad";...
-                strtrim(split(obj.AnalysisMethod,";"))]);
-            obj.addAnalysis(obj.AnalysisMethod);
+            if ~isLoad
+                obj.AnalysisMethod = rmmissing(["Od";"Imaging";"Ad";...
+                    obj.AnalysisMethod]);
+                obj.AnalysisMethod(obj.AnalysisMethod == "None") = [];
+                obj.addAnalysis(obj.AnalysisMethod);
+            end
             obj.setAnalyzer;
 
             % Finalize construction
-            obj.update;
-            obj.displayLog("Object construction done.")
+            if ~isLoad
+                obj.update;
+                obj.displayLog("Object construction done.")
+            end
         end
 
-        function paraList = get.ScannedParameterList(obj)
-            switch obj.ScannedParameter
-                case "RunIndex"
-                    paraList = double(1:obj.NCompletedRun);
-                case "CiceroLogTime"
-                    if ~isempty(obj.CiceroLogTime)
-                        paraList = obj.CiceroLogTime;
-                        paraList = paraList - paraList(1);
-                        paraList = seconds(paraList);
-                    else
-                        paraList = [];
-                    end
-                otherwise
-                    if isfield(obj.CiceroData,obj.ScannedParameter)
-                        paraList = obj.CiceroData.(obj.ScannedParameter);
-                    elseif isfield(obj.HardwareData,obj.ScannedParameter)
-                        paraList = obj.HardwareData.(obj.ScannedParameter);
-                    else
-                        obj.updateScopeData
-                        if isfield(obj.ScopeData,obj.ScannedParameter)
-                            paraList = obj.ScopeData.(obj.ScannedParameter);
+        function setParameterTable(obj)
+            obj.VariableUnitSetting = BecExpVariableUnit;
+            obj.HardwareList = HardwareList;
+            obj.VariableList = VariableList;
+            obj.HardwareAssociation = HardwareAssociation;
+        end
+        
+        function var1 = get.ScannedVariable(obj)
+            id = obj.ScannedVariableID;
+            var1 = obj.VariableUnitSetting.readValue(id,"ScannedVariable");
+        end
+
+        function var2 = get.ScannedVariable2(obj)
+            id = obj.ScannedVariableID2;
+            if id == 0
+                var2 = "None";
+            else
+                var2 = obj.VariableUnitSetting.readValue(id,"ScannedVariable");
+            end
+        end
+
+        function unit1 = get.ScannedVariableUnit(obj)
+            id = obj.ScannedVariableID;
+            unit1 = obj.VariableUnitSetting.readValue(id,"ScannedVariableUnit");
+        end
+
+        function unit2 = get.ScannedVariableUnit2(obj)
+            id = obj.ScannedVariableID2;
+            if id == 0
+                unit2 = "None";
+            else
+                unit2 = obj.VariableUnitSetting.readValue(id,"ScannedVariableUnit");
+            end
+        end
+        
+        function varList = get.ScannedVariableList(obj)
+            if obj.Is2DScan
+                % For 2D scans, return a 2xN matrix with both parameters
+                var1 = obj.ScannedVariable;
+                var2 = obj.ScannedVariable2;
+                
+                % Get first parameter values
+                switch var1
+                    case "RunIndex"
+                        varList1 = double(1:obj.NCompletedRun);
+                    case "CiceroLogTime"
+                        if ~isempty(obj.CiceroLogTime)
+                            varList1 = obj.CiceroLogTime;
+                            varList1 = varList1 - varList1(1);
+                            varList1 = seconds(varList1);
                         else
-                            paraList = [];
+                            varList1 = [];
                         end
-                    end
+                    otherwise
+                        if isfield(obj.CiceroData,var1)
+                            varList1 = obj.CiceroData.(var1);
+                        elseif isfield(obj.HardwareData,var1)
+                            varList1 = obj.HardwareData.(var1);
+                        else
+                            obj.updateScopeData
+                            if isfield(obj.ScopeData,var1)
+                                varList1 = obj.ScopeData.(var1);
+                            else
+                                varList1 = [];
+                            end
+                        end
+                end
+                
+                % Get second parameter values
+                switch var2
+                    case "RunIndex"
+                        varList2 = double(1:obj.NCompletedRun);
+                    case "CiceroLogTime"
+                        if ~isempty(obj.CiceroLogTime)
+                            varList2 = obj.CiceroLogTime;
+                            varList2 = varList2 - varList2(1);
+                            varList2 = seconds(varList2);
+                        else
+                            varList2 = [];
+                        end
+                    otherwise
+                        if isfield(obj.CiceroData,var2)
+                            varList2 = obj.CiceroData.(var2);
+                        elseif isfield(obj.HardwareData,var2)
+                            varList2 = obj.HardwareData.(var2);
+                        else
+                            obj.updateScopeData
+                            if isfield(obj.ScopeData,var2)
+                                varList2 = obj.ScopeData.(var2);
+                            else
+                                varList2 = [];
+                            end
+                        end
+                end
+                
+                % Return 2xN matrix
+                if ~isempty(varList1) && ~isempty(varList2)
+                    varList = [varList1; varList2];
+                else
+                    varList = [];
+                end
+            else
+                % 1D scan - original logic
+                switch obj.ScannedVariable
+                    case "RunIndex"
+                        varList = double(1:obj.NCompletedRun);
+                    case "CiceroLogTime"
+                        if ~isempty(obj.CiceroLogTime)
+                            varList = obj.CiceroLogTime;
+                            varList = varList - varList(1);
+                            varList = seconds(varList);
+                        else
+                            varList = [];
+                        end
+                    otherwise
+                        if isfield(obj.CiceroData,obj.ScannedVariable)
+                            varList = obj.CiceroData.(obj.ScannedVariable);
+                        elseif isfield(obj.HardwareData,obj.ScannedVariable)
+                            varList = obj.HardwareData.(obj.ScannedVariable);
+                        else
+                            obj.updateScopeData
+                            if isfield(obj.ScopeData,obj.ScannedVariable)
+                                varList = obj.ScopeData.(obj.ScannedVariable);
+                            else
+                                varList = [];
+                            end
+                        end
+                end
             end
         end
 
         function runListSorted = get.RunListSorted(obj)
-            paraList = obj.ScannedParameterList;
-            [~,runListSorted] =  sort(paraList);
+            varList = obj.ScannedVariableList;
+            [~,runListSorted] =  sort(varList,2);
         end
 
-        function parameterListSorted = get.ScannedParameterListSorted(obj)
-            paraList = obj.ScannedParameterList;
-            [parameterListSorted,~] =  sort(paraList);
+        function varListSorted = get.ScannedVariableListSorted(obj)
+            varList = obj.ScannedVariableList;
+            [varListSorted,~] =  sort(varList,2);
         end
 
         function xLabel = get.XLabel(obj)
-            sP = obj.ScannedParameter;
+            sP = obj.ScannedVariable;
             sP = strrep(sP,'_','\_');
-            if isempty(obj.ScannedParameterUnit) || ismissing(obj.ScannedParameterUnit) ||...
-                    obj.ScannedParameterUnit == ""
+            if obj.ScannedVariableUnit == "None"
                 xLabel = sP;
             else
-                xLabel = sP + "~[$\mathrm{" + obj.ScannedParameterUnit + "}$]";
+                xLabel = sP + "~[$\mathrm{" + obj.ScannedVariableUnit + "}$]";
             end
         end
 
-        function drp = get.DeletedRunParameterList(obj)
-            if isempty(obj.DeletedRunParameterList)
-                drp = eval(class(obj.ScannedParameterList)+".empty(0,0)");
+        function yLabel = get.YLabel(obj)
+            if ~obj.Is2DScan
+                yLabel = "";
                 return
             end
-            if all(~ismember(obj.DeletedRunParameterList,obj.ScannedParameterList))
-                drp = obj.DeletedRunParameterList;
+            
+            sP = obj.ScannedVariable2;
+            sP = strrep(sP,'_','\_');
+            if obj.ScannedVariable2Unit == "None"
+                yLabel = sP;
             else
-                drp = obj.DeletedRunParameterList(~ismember(obj.DeletedRunParameterList,obj.ScannedParameterList));
+                yLabel = sP + "~[$\mathrm{" + obj.ScannedVariable2Unit + "}$]";
+            end
+        end
+
+        function l = ScannedVariableLabel(obj,runNumber)
+            if ~obj.Is2DScan
+                sv = obj.ScannedVariable;
+            else
+                sv = obj.ScannedVariable + ", " + obj.ScannedVariable2;           
+            end
+            sv = strrep(sv,'_','\_');
+
+            if isempty(obj.ScannedVariableList)  
+                l = sv;
+            else
+                sl = string(obj.ScannedVariableList(:,runNumber));
+                su = [obj.ScannedVariableUnit;obj.ScannedVariableUnit2];
+                su = " $\mathrm{" + replace(su,"None","") + "}$";
+                if ~obj.Is2DScan
+                    l = [sv,sl + su(1)]; 
+                else
+                    l = [sv,join(sl + su,",")]; 
+                end
+            end
+        end
+
+        function varGrid = get.VariableGrid(obj)
+            % Create 2D parameter grid for 2D scans
+            if ~obj.Is2DScan
+                varGrid = [];
+                return
+            end
+            
+            varList = obj.ScannedVariableList;
+            if isempty(varList) || size(varList, 1) ~= 2
+                varGrid = [];
+                return
+            end
+            
+            varList1 = varList(1, :);
+            varList2 = varList(2, :);
+            
+            % Get unique values for each parameter
+            unique1 = unique(varList1);
+            unique2 = unique(varList2);
+            
+            % Create meshgrid
+            [X, Y] = meshgrid(unique1, unique2);
+            varGrid = struct('X', X, 'Y', Y, 'unique1', unique1, 'unique2', unique2);
+        end
+
+        function drp = get.DeletedRunVariableList(obj)
+            if isempty(obj.DeletedRunVariableList)
+                drp = eval(class(obj.ScannedVariableList)+".empty(0,0)");
+                return
+            end
+            if all(~ismember(obj.DeletedRunVariableList,obj.ScannedVariableList))
+                drp = obj.DeletedRunVariableList;
+            else
+                drp = obj.DeletedRunVariableList(~ismember(obj.DeletedRunVariableList,obj.ScannedVariableList));
             end
         end
     end
@@ -275,9 +446,14 @@ classdef BecExp < Trial
                 obj.updateScopeData
 
                 %% Check if the scanned parameter is correct
-                if isempty(obj.ScannedParameterList)
-                    obj.displayLog("Can not find [" + obj.ScannedParameter + "]" + ...
-                        " in Cicero or Hardware Variable List or scope data list. Please correct and restart.","error")
+                if isempty(obj.ScannedVariableList)
+                    if ~obj.Is2DScan
+                        obj.displayLog("Can not find [" + obj.ScannedVariable + "]" + ...
+                            " in Cicero or Hardware Variable List or scope data list. Please correct and restart.","error")
+                    else
+                        obj.displayLog("Can not find [" + obj.ScannedVariable + "] or [" + obj.ScannedVariable2 + "]" + ...
+                            " in Cicero or Hardware Variable List or scope data list. Please correct and restart.","error")
+                    end
                 end
 
                 %% Show Images
@@ -300,6 +476,7 @@ classdef BecExp < Trial
                 warning('Input are not all listed in AnalysisOrder.')
             end
             newAnalysisList = rmmissing(newAnalysisList);
+            newAnalysisList(newAnalysisList == "None") = [];
             if isempty(newAnalysisList)
                 return
             end
@@ -701,11 +878,11 @@ classdef BecExp < Trial
 
             if any(runIdx>NComp)
                 warning("Input run numbers are greater than the number of completed runs. Will try to delete residual files.")
-                obj.DeletedRunParameterList = [obj.DeletedRunParameterList,obj.ScannedParameterList(runIdx(runIdx<=NComp))];
+                obj.DeletedRunVariableList = [obj.DeletedRunVariableList,obj.ScannedVariableList(runIdx(runIdx<=NComp))];
                 obj.NCompletedRun = NComp - sum(runIdx<=NComp);
             else
                 try
-                    obj.DeletedRunParameterList = [obj.DeletedRunParameterList,obj.ScannedParameterList(runIdx(runIdx<=NComp))];
+                    obj.DeletedRunVariableList = [obj.DeletedRunVariableList,obj.ScannedVariableList(runIdx(runIdx<=NComp))];
                 catch
                 end
                 obj.NCompletedRun = NComp - numel(runIdx);
@@ -869,7 +1046,7 @@ classdef BecExp < Trial
             %COUNTEXISTEDLOG Summary of this function goes here
             %   Detailed explanation goes here
             obj.ExistedCiceroLogNumber = countFileNumber(obj.CiceroLogOrigin,".clg");
-            obj.ExistedHardwareLogNumber = arrayfun(@countFileNumber,obj.HardwareList.DataPath);
+            obj.ExistedHardwareLogNumber = arrayfun(@countFileNumber,obj.HardwareList.readColumn("DataPath"));
         end
 
         function [sData, readsuccess] = readCiceroLog(obj,runIdx)
@@ -988,115 +1165,84 @@ classdef BecExp < Trial
             dataPrefix = obj.DataPrefix;
 
             % Scan the origin folder to find if a new log file is created.
-            newLogNum = arrayfun(@countFileNumberJava,hardwareList.DataPath) - existedLogNum;
+            newLogNum = arrayfun(@countFileNumberJava,hardwareList.readColumn("DataPath")) - existedLogNum;
             if any(newLogNum>1)
                 warning('>1 hardware log files found.')
             end
-            hardwareList(newLogNum ~= 1,:) = [];
-            if isempty(hardwareList)
+            newLogList = hardwareList.readEntry(newLogNum == 1);
+
+            if isempty(newLogList)
                 obj.displayLog("No hardware data found.")
                 return
             end
 
             % Get the newest log file.
-            newLogPath = arrayfun(@findLatestFile,hardwareList.DataPath,UniformOutput=false);
+            newLogPath = arrayfun(@findLatestFile,newLogList.DataPath,UniformOutput=false);
 
             % Try moving the log file to the data path.
             for ii = 1:numel(newLogPath)
                 if ~isempty(newLogPath{ii})
-                    obj.displayLog("Fetching " + hardwareList.Name(ii))
+                    obj.displayLog("Fetching " + newLogList.Name(ii))
                     [~,~,ext] = fileparts(newLogPath{ii});
                     movefile(newLogPath{ii},...
-                        fullfile(obj.HardwareLogPath,dataPrefix + "_" + num2str(runIdx)) + "_" + hardwareList.Name(ii) + ext,'f');
+                        fullfile(obj.HardwareLogPath,dataPrefix + "_" + num2str(runIdx)) + "_" + newLogList.Name(ii) + ext,'f');
                 end
             end
 
         end
 
         function setHardware(obj)
-            %% Get the HardwareControlPanel app    
+
+            %% Set HardwareSetting
+            obj.displayLog("Checking hardware associations...")
+            t = obj.HardwareAssociation.readEntry(obj.ConfigParameter.ID,"TrialID",true);
+            if isempty(t)
+                obj.displayLog("Found no hardware association.")
+                return
+            end
+            if isstruct(t)
+                t = struct2table(t);
+            end
+            t = renamevars(t,"SettingID","ID");
+            p = HardwareSetting;
+            p.updateEntry(t)
+            hwId = unique(p.readValue(t.ID,"HardwareID"));
+
+            %% Get the HardwareControlPanel app and upload
             hwApp = get(findall(0, 'Tag', "HwControlPanel"), 'RunningAppInstance');
             if isempty(hwApp)
                 hwApp = HardwareControlPanel;
             end
-            
-            %% Set Waveform
-            obj.displayLog("Checking waveform associations...")
-            wa = obj.WaveformAssociation;
-            if ~isempty(wa) && ~ismissing(wa) && wa ~="None"
-                % Check if the existing settings are corrent     
-                wat = str2table(wa);
-                wgSettings = loadVar("WaveformGeneratorSetting","WaveformGeneratorSetting");
-                deleteIdx = [];
-                for ii = 1:size(wat,1)
-                    wgs = wgSettings(wgSettings.Name == wat.WaveformGeneratorName(ii),:);
-                    chNumber = getNumberFromString(wat.ChannelName(ii));
-                    if wat.WaveformListName(ii) == wgs.WaveformListName{1}(chNumber) ...
-                            && wgs.IsOutput{1}(chNumber)
-                        deleteIdx = [deleteIdx,ii];
-                    end
-                end
+            hwApp.setAssociation(hwId);
 
-                % Delete consistent settings
-                wat(deleteIdx,:) = [];
-
-                if isempty(wat)
-                    obj.displayLog("The associated waveforms have already been uploaded.")
-                else
-                    % Force to change settings
-                    obj.displayLog("Force uploading the associated waveforms.")
-                end
-            else
-                obj.displayLog("No waveform association found.")
-                wat = [];
-            end
-
-            %% Set Phase Lock
-            obj.displayLog("Checking phase lock associations...")
-            pla = obj.PhaseLockAssociation;
-            if ~isempty(pla) && ~ismissing(pla) && pla ~="None"
-                plat = str2table(pla);
-                % Force to change settings
-                obj.displayLog("Force re-lock.")
-            else
-                obj.displayLog("No phase lock association found.")
-                plat = [];
-            end
-
-            %% upload
-            hwApp.setAssociation(WaveformAssociationTable = wat,PhaseLockAssociationTable = plat);
         end
 
         function unlock(obj)
-            %% Get the HardwareControlPanel app
             hwApp = get(findall(0, 'Tag', "HwControlPanel"), 'RunningAppInstance');
-            if isempty(hwApp)
+            if ~isempty(hwApp)
                 hwApp = HardwareControlPanel;
-            end
-
-            %% unlock all
-            try
-                hwApp.unlock;
-            catch
-                obj.displayLog("Can not unlock. Please check if phase lock is connected","warning")
+                try
+                    hwApp.unlock;
+                catch
+                    obj.displayLog("Can not unlock. Please check if phase lock is connected","warning")
+                end
             end
         end
+        
         function updateHardware(obj)
             %UPDATEHARDWARE Summary of this function goes here
             %   Detailed explanation goes here
             hwApp = get(findall(0, 'Tag', "HwControlPanel"), 'RunningAppInstance');
             if ~isempty(hwApp)
                 if isvalid(hwApp)
-                    if ~isempty(hwApp.CurrentVariableList)
-                        hardwareData = table2cell(hwApp.CurrentVariableList);
-                        hardwareData = cell2struct(hardwareData(:,2),string(hardwareData(:,1)));
-                        if isempty(obj.HardwareData)
-                            obj.HardwareData = hardwareData;
-                        else
-                            f = fields(obj.HardwareData);
-                            for ii = 1:numel(f)
-                                obj.HardwareData.(f{ii}) = [obj.HardwareData.(f{ii}),hardwareData.(f{ii})];
-                            end
+                    hardwareData = table2cell(obj.VariableList.readColumn(["Name","CurrentValue"]));
+                    hardwareData = cell2struct(hardwareData(:,2),string(hardwareData(:,1)));
+                    if isempty(obj.HardwareData)
+                        obj.HardwareData = hardwareData;
+                    else
+                        f = fields(obj.HardwareData);
+                        for ii = 1:numel(f)
+                            obj.HardwareData.(f{ii}) = [obj.HardwareData.(f{ii}),hardwareData.(f{ii})];
                         end
                     end
                     hwApp.update
@@ -1109,8 +1255,8 @@ classdef BecExp < Trial
             %UPDATESCOPEDATA Summary of this function goes here
             %   Detailed explanation goes here
             fullValueName = string.empty;
-            if contains(obj.ScannedParameter,"Scope","IgnoreCase",true)
-                fullValueName = [fullValueName,obj.ScannedParameter];
+            if contains(obj.ScannedVariable,"Scope","IgnoreCase",true)
+                fullValueName = [fullValueName,obj.ScannedVariable];
             end
             if isprop(obj,"ScopeValue") && ~isempty(obj.ScopeValue.FullValueName)
                 fullValueName = [fullValueName,obj.ScopeValue.FullValueName];
@@ -1224,6 +1370,11 @@ classdef BecExp < Trial
             todayData = pgFetch(obj.Writer,query);
             obj.TrialIndex = size(todayData,1) + 1;
 
+            %% Find trial number
+            sqlQuery = "SELECT last_value FROM " + "public."""+obj.DatabaseTableName+"_SerialNumber_seq"";";
+            data = pgFetch(obj.Writer,sqlQuery);
+            trialNumber = data.last_value + 1;
+
             %% Find data folder index
             newestFolderList = sortNewestFolder(obj.DatePath);
             newestFolderList = newestFolderList(cellfun(@(x) contains(x,indexDelimiter),{newestFolderList.name}));
@@ -1237,7 +1388,7 @@ classdef BecExp < Trial
 
             %% Create data folders
             obj.DataPath = fullfile(obj.DatePath,num2str(folderIndex,'%02u')+" "+indexDelimiter+" "+ ...
-                obj.Name+trialDelimiter+num2str(obj.TrialIndex));
+                obj.Name+trialDelimiter+num2str(obj.TrialIndex) + trialDelimiter + "Trial" + trialDelimiter + trialNumber);
             obj.DataAnalysisPath = fullfile(obj.DataPath,'dataAnalysis');
             obj.ObjectPath = fullfile(obj.DataAnalysisPath, ...
                 obj.Name+yyyy+mm+dd+trialDelimiter+num2str(obj.TrialIndex)+'.mat');
@@ -1264,6 +1415,33 @@ classdef BecExp < Trial
             set(obj,propList(ia)',structcell(ib)')
         end
 
+    end
+
+    methods (Static)
+        function obj = loadobj(s)
+            % Reconnect DB writer and GUI handle when the object is loaded.
+            %
+            % :return: Loaded object with transient handles restored when possible.
+            % :rtype: :class:`Trial`
+
+            % This is for back-ward compatibility
+            if isstruct(s)
+                if isfield(s,"ScannedParameter")
+                    p = BecExpVariableUnit;
+                    s.ScannedVariableID = p.readValue(s.ScannedParameter,"ID","ScannedVariable");
+                end
+                obj = BecExp(s.Name,s,true);
+            else
+                obj = s;
+            end
+            try
+                obj.Writer = createWriter(obj.DatabaseName); %Create writer type database connection
+            catch
+            end
+            if ~isempty(obj.ControlAppName)
+                obj.ControlApp = get(findall(0, 'Tag', obj.ControlAppName), 'RunningAppInstance');
+            end
+        end
     end
 end
 

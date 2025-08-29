@@ -1,6 +1,5 @@
 classdef (Abstract) SimRun < handle
-    %UNTITLED Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`SimRun` abstract base for a single simulation run.
     
     properties
         DataPath string
@@ -19,8 +18,10 @@ classdef (Abstract) SimRun < handle
     
     methods
         function obj = SimRun(sim)
-            %UNTITLED Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`SimRun` using metadata from a :class:`Sim`.
+            %
+            % :param sim: Parent simulation
+            % :type sim: :class:`Sim`, optional
             arguments
                 sim = [] 
             end
@@ -39,6 +40,10 @@ classdef (Abstract) SimRun < handle
         end
         
         function fPath = get.RunPath(obj)
+            % Get output path for this run file.
+            %
+            % :return: Full path to run file
+            % :rtype: string
             if ~isempty(obj.DataPath) && ~isempty(obj.DataPrefix)
                 fPath = fullfile(obj.DataPath,obj.DataPrefix+num2str(obj.RunIndex)+obj.DataFormat);
             else
@@ -47,6 +52,12 @@ classdef (Abstract) SimRun < handle
         end
         
         function data = readRun(obj,varName)
+            % Read a variable from this run file.
+            %
+            % :param varName: Variable name
+            % :type varName: string | char
+            % :return: Variable value loaded from MAT file
+            % :rtype: any
             data = loadVar(obj.RunPath,varName);
         end
     end

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API &#8212; MuscleMuseum 0.1 documentation</title>
+    <title>API Documentation &#8212; MuscleMuseum 0.1 documentation</title>
   
   
   
@@ -30,22 +30,25 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../_static/documentation_options.js?v=e1a75a79"></script>
+    <script src="../_static/documentation_options.js?v=2149b5ce"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/index';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Atom" href="atom.html" />
-    <link rel="prev" title="Quick Start" href="../intro/quick.html" />
+    <link rel="next" title="atom" href="atom/index.html" />
+    <link rel="prev" title="Waveform and WaveformList" href="../main/waveform.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -153,15 +156,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro/introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../intro/quick.html">Quick Start</a></li>
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="atom.html">Atom</a></li>
-<li class="toctree-l2"><a class="reference internal" href="field.html">Field</a></li>
-<li class="toctree-l2"><a class="reference internal" href="trial.html">Trial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="becexp.html">BecExp</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sim.html">Sim</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hardware.html">Hardware</a></li>
-<li class="toctree-l2"><a class="reference internal" href="math.html">Math</a></li>
-<li class="toctree-l2"><a class="reference internal" href="misc.html">Misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="atom/index.html">atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bec/index.html">bec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/index.html">database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="field/index.html">field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/index.html">hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/index.html">math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc/index.html">misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/index.html">mmParameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmSetting/index.html">mmSetting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/index.html">trial</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../sup/support.html">Support</a></li>
@@ -211,6 +217,70 @@
 
 
 
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/api/index.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/issues/new?title=Issue%20on%20page%20%2Fapi/index.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
 <div class="dropdown dropdown-download-buttons">
   <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
     <i class="fas fa-download"></i>
@@ -219,7 +289,7 @@
       
       
       
-      <li><a href="../_sources/api/index.rst" target="_blank"
+      <li><a href="../_sources/" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -301,7 +371,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>API</h1>
+    <h1>API Documentation</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -315,59 +385,253 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="api">
-<h1>API<a class="headerlink" href="#api" title="Link to this heading">#</a></h1>
+  <section id="api-documentation">
+<h1>API Documentation<a class="headerlink" href="#api-documentation" title="Link to this heading">#</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="atom.html">Atom</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="atom.html#module-src.atom.Atom">Atom</a></li>
-<li class="toctree-l2"><a class="reference internal" href="atom.html#atom-manifold">Atom Manifold</a></li>
-<li class="toctree-l2"><a class="reference internal" href="atom.html#functions">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="atom/index.html">atom</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="atom/Alkali.html">Alkali</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/Atom.html">Atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/AtomManifold.html">AtomManifold</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/Divalent.html">Divalent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/OneFManifold.html">OneFManifold</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/OneJManifold.html">OneJManifold</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/TwoAtom.html">TwoAtom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/TwoJManifold.html">TwoJManifold</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/TwoJManifoldDivalent.html">TwoJManifoldDivalent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/angularMomentumList.html">angularMomentumList</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/getAtom.html">getAtom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/lithiumDME.html">lithiumDME</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/magneticAngularMomentum.html">magneticAngularMomentum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/saveAtom.html">saveAtom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/spinMatrices.html">spinMatrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/strontiumDME.html">strontiumDME</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/totalAngularMomentum.html">totalAngularMomentum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/uncoupledSpinBasis.html">uncoupledSpinBasis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/uncoupledSpinBasisTransformation.html">uncoupledSpinBasisTransformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atom/uncoupledSpinMatrices.html">uncoupledSpinMatrices</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="field.html">Field</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="field.html#laser">Laser</a></li>
-<li class="toctree-l2"><a class="reference internal" href="field.html#magneticfield">MagneticField</a></li>
-<li class="toctree-l2"><a class="reference internal" href="field.html#potential">Potential</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bec/index.html">bec</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bec/BEC.html">BEC</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="trial.html">Trial</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="trial.html#id1">Trial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="trial.html#functions">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database/index.html">database</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="database/connectPsqlDatabase.html">connectPsqlDatabase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/createReader.html">createReader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/createWriter.html">createWriter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/findTimeRangeData.html">findTimeRangeData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/findTodayData.html">findTodayData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/pgFetch.html">pgFetch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/pgFetchHook.html">pgFetchHook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/pgRead.html">pgRead</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/pgReadHook.html">pgReadHook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/pgUpdate.html">pgUpdate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/pgWrite.html">pgWrite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/pgWriteHook.html">pgWriteHook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/quoteTableColumn.html">quoteTableColumn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/setDatabase.html">setDatabase</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="becexp.html">BecExp</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="becexp.html#module-src.trial.becExp.BecExp">BecExp</a></li>
-<li class="toctree-l2"><a class="reference internal" href="becexp.html#becanalysis">BecAnalysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="becexp.html#apps">Apps</a></li>
-<li class="toctree-l2"><a class="reference internal" href="becexp.html#functions">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="field/index.html">field</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="field/Aom.html">Aom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="field/Eom.html">Eom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="field/GaussianBeam.html">GaussianBeam</a></li>
+<li class="toctree-l2"><a class="reference internal" href="field/Laser.html">Laser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="field/MagneticField.html">MagneticField</a></li>
+<li class="toctree-l2"><a class="reference internal" href="field/MagneticPotential.html">MagneticPotential</a></li>
+<li class="toctree-l2"><a class="reference internal" href="field/Modulation.html">Modulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="field/OpticalLattice.html">OpticalLattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="field/OpticalPotential.html">OpticalPotential</a></li>
+<li class="toctree-l2"><a class="reference internal" href="field/OpticalTrap.html">OpticalTrap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="field/Potential.html">Potential</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="sim.html">Sim</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="sim.html#module-src.trial.sim.Sim">Sim</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sim.html#simrun">SimRun</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sim.html#mesim">MeSim</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sim.html#sesim">SeSim</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sim.html#functions">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hardware/index.html">hardware</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware/Acquisition.html">Acquisition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/Andor.html">Andor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/AndorIXon888.html">AndorIXon888</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/AndorIXon897.html">AndorIXon897</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/Basler.html">Basler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/BaslerAcA1920_25um.html">BaslerAcA1920_25um</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/Hardware.html">Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/HardwareControlPanel.html">HardwareControlPanel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/Keysight33500B.html">Keysight33500B</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/Keysight33600A.html">Keysight33600A</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/KeysightWaveformGenerator.html">KeysightWaveformGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/ListDialog.html">ListDialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/Pco.html">Pco</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/PcoEdge5p5.html">PcoEdge5p5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/PhaseLock.html">PhaseLock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/PhaseLockControlPanel.html">PhaseLockControlPanel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/PicoScope.html">PicoScope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/RfGenerator.html">RfGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/Scope.html">Scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/ScopeControlPanel.html">ScopeControlPanel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/SpectrumDN2662_02.html">SpectrumDN2662_02</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/SpectrumWaveformGenerator.html">SpectrumWaveformGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/Tektronix1104.html">Tektronix1104</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/TektronixScope.html">TektronixScope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/VescentPhaseLock.html">VescentPhaseLock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/VescentSlice.html">VescentSlice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/WaveformGenerator.html">WaveformGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/WgControlPanel.html">WgControlPanel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/getAcq.html">getAcq</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/getPl.html">getPl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/getScope.html">getScope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/getWg.html">getWg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/saveBecImageAbsorption.html">saveBecImageAbsorption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/setBaslerConfig.html">setBaslerConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/setIxon888Config.html">setIxon888Config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/setPcoConfig.html">setPcoConfig</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="hardware.html">Hardware</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="hardware.html#id1">Hardware</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hardware.html#acquisition">Acquisition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hardware.html#waveformgenerator">WaveformGenerator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hardware.html#rfgenerator">RfGenerator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hardware.html#scope">Scope</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hardware.html#apps">Apps</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hardware.html#functions">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="math/index.html">math</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="math/BosonicBimodalFit1D.html">BosonicBimodalFit1D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/BosonicGaussianFit1D.html">BosonicGaussianFit1D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/ConstantTop.html">ConstantTop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/ConstantWave.html">ConstantWave</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/FitData.html">FitData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/FitData1D.html">FitData1D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/FitOverride.html">FitOverride</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/GaussianFit1D.html">GaussianFit1D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/GaussianRandom.html">GaussianRandom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/LinearFit1D.html">LinearFit1D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/LinearFrequencyRamp.html">LinearFrequencyRamp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/LinearRamp.html">LinearRamp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/ModulatedWaveform.html">ModulatedWaveform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/ParabolicFit1D.html">ParabolicFit1D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/PartialPeriodicWaveform.html">PartialPeriodicWaveform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/PchipSinePulse.html">PchipSinePulse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/PeriodicWaveform.html">PeriodicWaveform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/RandomWaveform.html">RandomWaveform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/Roi.html">Roi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/SineFit1D.html">SineFit1D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/SineWave.html">SineWave</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/SineWaveModulated.html">SineWaveModulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/SqrtParabolicFit1D.html">SqrtParabolicFit1D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/SquareWave.html">SquareWave</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/TanhSinePulse.html">TanhSinePulse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/TrapezoidalPulse.html">TrapezoidalPulse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/TrapezoidalSinePulse.html">TrapezoidalSinePulse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/TriangleFit1D.html">TriangleFit1D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/UniformRandom.html">UniformRandom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/Waveform.html">Waveform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/WaveformEditor.html">WaveformEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/WaveformList.html">WaveformList</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/WaveformListEditor.html">WaveformListEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/getAllFitData.html">getAllFitData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/getAllFitData1D.html">getAllFitData1D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/getAllWaveform.html">getAllWaveform</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="math.html">Math</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="math.html#fitdata">FitData</a></li>
-<li class="toctree-l2"><a class="reference internal" href="math.html#waveform">Waveform</a></li>
-<li class="toctree-l2"><a class="reference internal" href="math.html#roi">Roi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc/index.html">misc</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="misc/Chart.html">Chart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc/Constants.html">Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc/Gui.html">Gui</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="misc.html">Misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mmParameter/index.html">mmParameter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/AcquisitionConfig.html">AcquisitionConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/BecExpConfig.html">BecExpConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/BecExpParameterUnit.html">BecExpParameterUnit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/ComputerConfig.html">ComputerConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/DatabaseConfig.html">DatabaseConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/DatabaseServerConfig.html">DatabaseServerConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/HardwareList.html">HardwareList</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/ListList.html">ListList</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/MmParameter.html">MmParameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/PhaseLockSetting.html">PhaseLockSetting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/RoiConfig.html">RoiConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/ScopeSetting.html">ScopeSetting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/VariableList.html">VariableList</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/WaveformGeneratorConfig.html">WaveformGeneratorConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/WaveformGeneratorSetting.html">WaveformGeneratorSetting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/generateParameter.html">generateParameter</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mmSetting/index.html">mmSetting</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="trial/index.html">trial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="trial/Ad.html">Ad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/AdPreviewer.html">AdPreviewer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/AtomNumber.html">AtomNumber</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/BecAnalysis.html">BecAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/BecBrowser.html">BecBrowser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/BecControlPanel.html">BecControlPanel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/BecExp.html">BecExp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/CenterFit.html">CenterFit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/DensityFit.html">DensityFit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/DensityFitDisplay.html">DensityFitDisplay</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/DiffusionProfile.html">DiffusionProfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/FokkerPlanck.html">FokkerPlanck</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/ForceProfile.html">ForceProfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/FringeRemoval.html">FringeRemoval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/GPE.html">GPE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/HardwareAssociation.html">HardwareAssociation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/Imaging.html">Imaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/InitialCondition.html">InitialCondition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/KapitzaDirac.html">KapitzaDirac</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/LatticeFourierSeSim1D.html">LatticeFourierSeSim1D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/LatticeFourierSeSim1DRun.html">LatticeFourierSeSim1DRun</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/LatticeSeSim1D.html">LatticeSeSim1D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/MeSim.html">MeSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/MeSimRun.html">MeSimRun</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/Od.html">Od</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/OdPreviewer.html">OdPreviewer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/ScopeValue.html">ScopeValue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/SeSim1D.html">SeSim1D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/SeSim1DRun.html">SeSim1DRun</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/Sim.html">Sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/SimRun.html">SimRun</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/SpaceSim.html">SpaceSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/SpaceSimRun.html">SpaceSimRun</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/SpaceTimeSim.html">SpaceTimeSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/TimeSim.html">TimeSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/TimeSimRun.html">TimeSimRun</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/Tof.html">Tof</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/Trial.html">Trial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/absorption2Od.html">absorption2Od</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/acceleration.html">acceleration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/angdist.html">angdist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/cgcoefficient.html">cgcoefficient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/cmd_rmdir.html">cmd_rmdir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/computeAbsorption.html">computeAbsorption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/computeFloquetHamiltonian.html">computeFloquetHamiltonian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/convertidx.html">convertidx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/decompfactor.html">decompfactor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/deleteBecExp.html">deleteBecExp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/deleteMeSim.html">deleteMeSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/deleteTrial.html">deleteTrial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/diffu.html">diffu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/fixPhase.html">fixPhase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/fixPhase2.html">fixPhase2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/fluxdist.html">fluxdist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/force.html">force</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/gaussian_gen.html">gaussian_gen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/gaussian_grad.html">gaussian_grad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/gaussian_prof.html">gaussian_prof</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/gaussiantr.html">gaussiantr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/gfactor.html">gfactor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/hamiltonian_al.html">hamiltonian_al</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/hamiltonian_al_a.html">hamiltonian_al_a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/histoplot.html">histoplot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/loadBecExp.html">loadBecExp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/loadMeSim.html">loadMeSim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/loadTrial.html">loadTrial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/pinky.html">pinky</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/rabi.html">rabi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/rabiMatrix.html">rabiMatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/randpdf.html">randpdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/rhodot.html">rhodot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/rhodot_a.html">rhodot_a</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/runLocalTest.html">runLocalTest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/so3.html">so3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/sortBecAnalysis.html">sortBecAnalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/wignersixj.html">wignersixj</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </section>
@@ -384,20 +648,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../intro/quick.html"
+       href="../main/waveform.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Quick Start</p>
+        <p class="prev-next-title">Waveform and WaveformList</p>
       </div>
     </a>
     <a class="right-next"
-       href="atom.html"
+       href="atom/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Atom</p>
+        <p class="prev-next-title">atom</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -417,7 +681,7 @@ document.write(`
   <div class="footer-item">
     
 <p class="component-author">
-By Xiao Chai
+By Weld Lab
 </p>
 
   </div>
@@ -427,7 +691,7 @@ By Xiao Chai
 
   <p class="copyright">
     
-      © Copyright 2024, Xiao Chai.
+      © Copyright 2025, Weld Lab.
       <br/>
     
   </p>

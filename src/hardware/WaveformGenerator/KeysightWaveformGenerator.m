@@ -1,6 +1,9 @@
 classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
-    %KEYSIGHT Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`KeysightWaveformGenerator` base for Keysight AWGs with VISA control.
+    %
+    % Provides setup, upload, triggering, and connection management for Keysight
+    % arbitrary waveform generators using :meth:`connect`, :meth:`set`, :meth:`upload`,
+    % :meth:`trigger`, :meth:`close`, and :meth:`check`.
     
     properties (SetAccess = protected,Transient)
         VisaDevice
@@ -8,8 +11,12 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
     
     methods
         function obj = KeysightWaveformGenerator(resourceName,name)
-            %KEYSIGHT Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`KeysightWaveformGenerator`.
+            %
+            % :param resourceName: VISA resource name, e.g., "TCPIP0::...::inst0::INSTR"
+            % :type resourceName: string
+            % :param name: Device nickname
+            % :type name: string, optional
             arguments
                 resourceName string
                 name string = string.empty
@@ -19,10 +26,12 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
         end
         
         function connect(obj)
+            % Open VISA connection using :attr:`ResourceName`.
             obj.VisaDevice = visadev(obj.ResourceName);
         end
 
         function set(obj)
+            % Configure channels (sample rate, voltage levels, trigger, mode, load).
             obj.check;
             v = obj.VisaDevice;
             v.ByteOrder = "little-endian";
@@ -80,6 +89,7 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
         end
 
         function upload(obj)
+            % Upload prepared waveforms to the device and start output if enabled.
             %% Check connection to the device
             obj.check;
             v = obj.VisaDevice;
@@ -170,6 +180,7 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
         end
 
         function trigger(obj)
+            % Issue a software trigger on channels configured for BUS trigger.
             %% Check connection to the device
             obj.check;
             v = obj.VisaDevice;
@@ -185,6 +196,7 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
         end
 
         function close(obj)
+            % Close the VISA session, ensuring device is idle.
             if isempty(obj.VisaDevice)
                 warning("VISA device is not connected.")
                 return
@@ -207,6 +219,7 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
         end
     
         function status = check(obj)
+            % Query device error status.
             status = false;
             if isempty(obj.VisaDevice)
                 error("VISA device is not connected.")
