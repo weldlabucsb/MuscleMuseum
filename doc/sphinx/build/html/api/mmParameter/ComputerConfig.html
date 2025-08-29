@@ -28,8 +28,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -38,7 +38,7 @@
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../_static/documentation_options.js?v=2149b5ce"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -47,7 +47,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="DatabaseConfig" href="DatabaseConfig.html" />
-    <link rel="prev" title="BecExpParameterUnit" href="BecExpParameterUnit.html" />
+    <link rel="prev" title="BecExpVariableUnit" href="BecExpVariableUnit.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -156,6 +156,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/Hardware_control.html">Hardware Control Panel and Related GUIs</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
@@ -165,25 +166,27 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">mmParameter</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="AcquisitionConfig.html">AcquisitionConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AcquisitionSetting.html">AcquisitionSetting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="BecExpConfig.html">BecExpConfig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecExpParameterUnit.html">BecExpParameterUnit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BecExpSetting.html">BecExpSetting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BecExpVariableUnit.html">BecExpVariableUnit</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">ComputerConfig</a></li>
 <li class="toctree-l3"><a class="reference internal" href="DatabaseConfig.html">DatabaseConfig</a></li>
 <li class="toctree-l3"><a class="reference internal" href="DatabaseServerConfig.html">DatabaseServerConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HardwareAssociation.html">HardwareAssociation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="HardwareList.html">HardwareList</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HardwareSetting.html">HardwareSetting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ListList.html">ListList</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MmParameter.html">MmParameter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="PhaseLockSetting.html">PhaseLockSetting</a></li>
-<li class="toctree-l3"><a class="reference internal" href="RoiConfig.html">RoiConfig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ScopeSetting.html">ScopeSetting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RoiSetting.html">RoiSetting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="VariableList.html">VariableList</a></li>
-<li class="toctree-l3"><a class="reference internal" href="WaveformGeneratorConfig.html">WaveformGeneratorConfig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="WaveformGeneratorSetting.html">WaveformGeneratorSetting</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generateParameter.html">generateParameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="WaveformLibrary.html">WaveformLibrary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="WaveformListLibrary.html">WaveformListLibrary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="migrateParameter.html">migrateParameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setParameter.html">setParameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="updateConfig.html">updateConfig</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -443,12 +446,12 @@ directories, as well as hostnames for control/logging computers.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="BecExpParameterUnit.html"
+       href="BecExpVariableUnit.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">BecExpParameterUnit</p>
+        <p class="prev-next-title">BecExpVariableUnit</p>
       </div>
     </a>
     <a class="right-next"

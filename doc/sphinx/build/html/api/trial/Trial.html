@@ -28,8 +28,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -38,7 +38,7 @@
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../_static/documentation_options.js?v=2149b5ce"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -156,6 +156,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/Hardware_control.html">Hardware Control Panel and Related GUIs</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
@@ -165,11 +166,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">trial</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="Ad.html">Ad</a></li>
 <li class="toctree-l3"><a class="reference internal" href="AdPreviewer.html">AdPreviewer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="AtomNumber.html">AtomNumber</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AtomPreviewer.html">AtomPreviewer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="BecAnalysis.html">BecAnalysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="BecBrowser.html">BecBrowser</a></li>
 <li class="toctree-l3"><a class="reference internal" href="BecControlPanel.html">BecControlPanel</a></li>
@@ -182,7 +183,7 @@
 <li class="toctree-l3"><a class="reference internal" href="ForceProfile.html">ForceProfile</a></li>
 <li class="toctree-l3"><a class="reference internal" href="FringeRemoval.html">FringeRemoval</a></li>
 <li class="toctree-l3"><a class="reference internal" href="GPE.html">GPE</a></li>
-<li class="toctree-l3"><a class="reference internal" href="HardwareAssociation.html">HardwareAssociation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HardwareAssociationEditor.html">HardwareAssociationEditor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Imaging.html">Imaging</a></li>
 <li class="toctree-l3"><a class="reference internal" href="InitialCondition.html">InitialCondition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="KapitzaDirac.html">KapitzaDirac</a></li>
@@ -466,7 +467,7 @@ document.write(`
 <h1>Trial<a class="headerlink" href="#trial" title="Link to this heading">#</a></h1>
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Trial">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Trial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/Trial.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Trial" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Trial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em>, <em class="sig-param"><span class="pre">isLoad</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/Trial.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Trial" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.SetGetExactNames</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">dynamicprops</span></code></p>
 <p><a class="reference internal" href="#Trial" title="Trial"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Trial</span></code></a> is an abstract base class for orchestrating experiments/simulations.</p>
 <p>Provides lifecycle management for a single run series: configuration loading,
@@ -494,7 +495,7 @@ GUI integration, and file system watching to trigger analysis.</p>
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Trial.Trial">
-<span class="sig-name descname"><span class="pre">Trial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Trial.Trial" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">Trial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em>, <em class="sig-param"><span class="pre">isLoad</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Trial.Trial" title="Link to this definition">#</a></dt>
 <dd><p>Construct a <a class="reference internal" href="#Trial" title="Trial"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Trial</span></code></a> object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -542,8 +543,8 @@ GUI integration, and file system watching to trigger analysis.</p>
 <dd></dd></dl>
 
 <dl class="mat attribute">
-<dt class="sig sig-object mat" id="Trial.IsCompeted">
-<span class="sig-name descname"><span class="pre">IsCompeted</span></span><em class="property"> <span class="pre">logical</span></em><a class="headerlink" href="#Trial.IsCompeted" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object mat" id="Trial.IsCompleted">
+<span class="sig-name descname"><span class="pre">IsCompleted</span></span><em class="property"> <span class="pre">logical</span></em><a class="headerlink" href="#Trial.IsCompleted" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat attribute">
@@ -567,16 +568,24 @@ GUI integration, and file system watching to trigger analysis.</p>
 <dd></dd></dl>
 
 <dl class="mat attribute">
-<dt class="sig sig-object mat" id="Trial.ScannedParameter">
-<span class="sig-name descname"><span class="pre">ScannedParameter</span></span><em class="property"> <span class="pre">string</span> <span class="pre">=</span> <span class="pre">&quot;dummy&quot;</span></em><a class="headerlink" href="#Trial.ScannedParameter" title="Link to this definition">#</a></dt>
-<dd><p>Can be string or 1x2 string array for 2D scans</p>
-</dd></dl>
+<dt class="sig sig-object mat" id="Trial.ScannedVariable">
+<span class="sig-name descname"><span class="pre">ScannedVariable</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#Trial.ScannedVariable" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="mat attribute">
-<dt class="sig sig-object mat" id="Trial.ScannedParameterUnit">
-<span class="sig-name descname"><span class="pre">ScannedParameterUnit</span></span><em class="property"> <span class="pre">string</span> <span class="pre">=</span> <span class="pre">&quot;V&quot;</span></em><a class="headerlink" href="#Trial.ScannedParameterUnit" title="Link to this definition">#</a></dt>
-<dd><p>Can be string or 1x2 string array for 2D scans</p>
-</dd></dl>
+<dt class="sig sig-object mat" id="Trial.ScannedVariable2">
+<span class="sig-name descname"><span class="pre">ScannedVariable2</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#Trial.ScannedVariable2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Trial.ScannedVariableUnit">
+<span class="sig-name descname"><span class="pre">ScannedVariableUnit</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#Trial.ScannedVariableUnit" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Trial.ScannedVariableUnit2">
+<span class="sig-name descname"><span class="pre">ScannedVariableUnit2</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#Trial.ScannedVariableUnit2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Trial.SerialNumber">

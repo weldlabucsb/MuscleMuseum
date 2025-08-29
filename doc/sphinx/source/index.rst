@@ -12,5 +12,6 @@ MuscleMuseum
    intro/install
    intro/quick
    main/waveform
+   main/Hardware_control
    api/index
    sup/support

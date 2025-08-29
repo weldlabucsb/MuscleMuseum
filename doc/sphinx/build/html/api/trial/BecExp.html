@@ -28,8 +28,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -38,7 +38,7 @@
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../_static/documentation_options.js?v=2149b5ce"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -156,6 +156,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/Hardware_control.html">Hardware Control Panel and Related GUIs</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
@@ -165,11 +166,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">trial</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="Ad.html">Ad</a></li>
 <li class="toctree-l3"><a class="reference internal" href="AdPreviewer.html">AdPreviewer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="AtomNumber.html">AtomNumber</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AtomPreviewer.html">AtomPreviewer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="BecAnalysis.html">BecAnalysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="BecBrowser.html">BecBrowser</a></li>
 <li class="toctree-l3"><a class="reference internal" href="BecControlPanel.html">BecControlPanel</a></li>
@@ -182,7 +183,7 @@
 <li class="toctree-l3"><a class="reference internal" href="ForceProfile.html">ForceProfile</a></li>
 <li class="toctree-l3"><a class="reference internal" href="FringeRemoval.html">FringeRemoval</a></li>
 <li class="toctree-l3"><a class="reference internal" href="GPE.html">GPE</a></li>
-<li class="toctree-l3"><a class="reference internal" href="HardwareAssociation.html">HardwareAssociation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HardwareAssociationEditor.html">HardwareAssociationEditor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Imaging.html">Imaging</a></li>
 <li class="toctree-l3"><a class="reference internal" href="InitialCondition.html">InitialCondition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="KapitzaDirac.html">KapitzaDirac</a></li>
@@ -466,7 +467,7 @@ document.write(`
 <h1>BecExp<a class="headerlink" href="#becexp" title="Link to this heading">#</a></h1>
 <dl class="mat class">
 <dt class="sig sig-object mat" id="BecExp">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BecExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/BecExp/BecExp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BecExp" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BecExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em>, <em class="sig-param"><span class="pre">isLoad</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/BecExp/BecExp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BecExp" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="Trial.html#Trial" title="Trial"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Trial</span></code></a></p>
 <p>BecExp This is BecExp. Test Test.
 Detailed explanation goes here</p>
@@ -474,7 +475,7 @@ Detailed explanation goes here</p>
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.BecExp">
-<span class="sig-name descname"><span class="pre">BecExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.BecExp" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">BecExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em>, <em class="sig-param"><span class="pre">isLoad</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.BecExp" title="Link to this definition">#</a></dt>
 <dd><p>BECEXP Construct an instance of this class
 Detailed explanation goes here</p>
 </dd></dl>
@@ -519,13 +520,28 @@ Detailed explanation goes here</p>
 <dd></dd></dl>
 
 <dl class="mat attribute">
-<dt class="sig sig-object mat" id="BecExp.PhaseLockAssociation">
-<span class="sig-name descname"><span class="pre">PhaseLockAssociation</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#BecExp.PhaseLockAssociation" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object mat" id="BecExp.Roi">
+<span class="sig-name descname"><span class="pre">Roi</span></span><em class="property"> <span class="pre">Roi</span></em><a class="headerlink" href="#BecExp.Roi" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat attribute">
-<dt class="sig sig-object mat" id="BecExp.Roi">
-<span class="sig-name descname"><span class="pre">Roi</span></span><em class="property"> <span class="pre">Roi</span></em><a class="headerlink" href="#BecExp.Roi" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object mat" id="BecExp.ScannedVariable">
+<span class="sig-name descname"><span class="pre">ScannedVariable</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#BecExp.ScannedVariable" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecExp.ScannedVariable2">
+<span class="sig-name descname"><span class="pre">ScannedVariable2</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#BecExp.ScannedVariable2" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecExp.ScannedVariableUnit">
+<span class="sig-name descname"><span class="pre">ScannedVariableUnit</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#BecExp.ScannedVariableUnit" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecExp.ScannedVariableUnit2">
+<span class="sig-name descname"><span class="pre">ScannedVariableUnit2</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#BecExp.ScannedVariableUnit2" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="mat attribute">
@@ -538,13 +554,13 @@ Detailed explanation goes here</p>
 <span class="sig-name descname"><span class="pre">SubRoi</span></span><em class="property"> <span class="pre">Roi</span></em><a class="headerlink" href="#BecExp.SubRoi" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="mat attribute">
-<dt class="sig sig-object mat" id="BecExp.WaveformAssociation">
-<span class="sig-name descname"><span class="pre">WaveformAssociation</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#BecExp.WaveformAssociation" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.ScannedVariableLabel">
+<span class="sig-name descname"><span class="pre">ScannedVariableLabel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runNumber</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.ScannedVariableLabel" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.addAnalysis">
 <span class="sig-name descname"><span class="pre">addAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">newAnalysisList</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.addAnalysis" title="Link to this definition">#</a></dt>
 <dd><p>ADDANALYSIS Summary of this function goes here
@@ -586,6 +602,20 @@ Detailed explanation goes here</p>
 <dt class="sig sig-object mat" id="BecExp.fetchHardwareLog">
 <span class="sig-name descname"><span class="pre">fetchHardwareLog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.fetchHardwareLog" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="BecExp.loadobj">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">loadobj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">s</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.loadobj" title="Link to this definition">#</a></dt>
+<dd><p>Reconnect DB writer and GUI handle when the object is loaded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Loaded object with transient handles restored when possible.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="Trial.html#Trial" title="Trial"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Trial</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.pause">
@@ -645,8 +675,13 @@ Detailed explanation goes here</p>
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.setHardware">
 <span class="sig-name descname"><span class="pre">setHardware</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.setHardware" title="Link to this definition">#</a></dt>
-<dd><p>Get the HardwareControlPanel app</p>
+<dd><p>Set HardwareSetting</p>
 </dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.setParameterTable">
+<span class="sig-name descname"><span class="pre">setParameterTable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.setParameterTable" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.show">
@@ -676,8 +711,7 @@ the analysis methods</p>
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.unlock">
 <span class="sig-name descname"><span class="pre">unlock</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.unlock" title="Link to this definition">#</a></dt>
-<dd><p>Get the HardwareControlPanel app</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.updateDatabase">

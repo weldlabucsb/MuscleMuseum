@@ -7,6 +7,7 @@ trial
    Ad
    AdPreviewer
    AtomNumber
+   AtomPreviewer
    BecAnalysis
    BecBrowser
    BecControlPanel
@@ -19,7 +20,7 @@ trial
    ForceProfile
    FringeRemoval
    GPE
-   HardwareAssociation
+   HardwareAssociationEditor
    Imaging
    InitialCondition
    KapitzaDirac

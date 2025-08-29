@@ -28,8 +28,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -38,7 +38,7 @@
   <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../_static/documentation_options.js?v=2149b5ce"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
@@ -48,7 +48,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="atom" href="atom/index.html" />
-    <link rel="prev" title="Waveform and WaveformList" href="../main/waveform.html" />
+    <link rel="prev" title="Hardware Control Panel and Related GUIs" href="../main/Hardware_control.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -157,6 +157,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../main/Hardware_control.html">Hardware Control Panel and Related GUIs</a></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bec/index.html">bec</a></li>
@@ -166,7 +167,6 @@
 <li class="toctree-l2"><a class="reference internal" href="math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -476,10 +476,6 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="hardware/VescentSlice.html">VescentSlice</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hardware/WaveformGenerator.html">WaveformGenerator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hardware/WgControlPanel.html">WgControlPanel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hardware/getAcq.html">getAcq</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hardware/getPl.html">getPl</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hardware/getScope.html">getScope</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hardware/getWg.html">getWg</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hardware/saveBecImageAbsorption.html">saveBecImageAbsorption</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hardware/setBaslerConfig.html">setBaslerConfig</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hardware/setIxon888Config.html">setIxon888Config</a></li>
@@ -491,6 +487,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="math/BosonicGaussianFit1D.html">BosonicGaussianFit1D</a></li>
 <li class="toctree-l2"><a class="reference internal" href="math/ConstantTop.html">ConstantTop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="math/ConstantWave.html">ConstantWave</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/ExponentialWithOffsetFit.html">ExponentialWithOffsetFit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="math/FitData.html">FitData</a></li>
 <li class="toctree-l2"><a class="reference internal" href="math/FitData1D.html">FitData1D</a></li>
 <li class="toctree-l2"><a class="reference internal" href="math/FitOverride.html">FitOverride</a></li>
@@ -532,31 +529,32 @@ document.write(`
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mmParameter/index.html">mmParameter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="mmParameter/AcquisitionConfig.html">AcquisitionConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/AcquisitionSetting.html">AcquisitionSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mmParameter/BecExpConfig.html">BecExpConfig</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mmParameter/BecExpParameterUnit.html">BecExpParameterUnit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/BecExpSetting.html">BecExpSetting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/BecExpVariableUnit.html">BecExpVariableUnit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mmParameter/ComputerConfig.html">ComputerConfig</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mmParameter/DatabaseConfig.html">DatabaseConfig</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mmParameter/DatabaseServerConfig.html">DatabaseServerConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/HardwareAssociation.html">HardwareAssociation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mmParameter/HardwareList.html">HardwareList</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/HardwareSetting.html">HardwareSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mmParameter/ListList.html">ListList</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mmParameter/MmParameter.html">MmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mmParameter/PhaseLockSetting.html">PhaseLockSetting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mmParameter/RoiConfig.html">RoiConfig</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mmParameter/ScopeSetting.html">ScopeSetting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/RoiSetting.html">RoiSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mmParameter/VariableList.html">VariableList</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mmParameter/WaveformGeneratorConfig.html">WaveformGeneratorConfig</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mmParameter/WaveformGeneratorSetting.html">WaveformGeneratorSetting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mmParameter/generateParameter.html">generateParameter</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="mmSetting/index.html">mmSetting</a><ul class="simple">
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/WaveformLibrary.html">WaveformLibrary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/WaveformListLibrary.html">WaveformListLibrary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/migrateParameter.html">migrateParameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/setParameter.html">setParameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmParameter/updateConfig.html">updateConfig</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="trial/index.html">trial</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="trial/Ad.html">Ad</a></li>
 <li class="toctree-l2"><a class="reference internal" href="trial/AdPreviewer.html">AdPreviewer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="trial/AtomNumber.html">AtomNumber</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/AtomPreviewer.html">AtomPreviewer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="trial/BecAnalysis.html">BecAnalysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="trial/BecBrowser.html">BecBrowser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="trial/BecControlPanel.html">BecControlPanel</a></li>
@@ -569,7 +567,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="trial/ForceProfile.html">ForceProfile</a></li>
 <li class="toctree-l2"><a class="reference internal" href="trial/FringeRemoval.html">FringeRemoval</a></li>
 <li class="toctree-l2"><a class="reference internal" href="trial/GPE.html">GPE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="trial/HardwareAssociation.html">HardwareAssociation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trial/HardwareAssociationEditor.html">HardwareAssociationEditor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="trial/Imaging.html">Imaging</a></li>
 <li class="toctree-l2"><a class="reference internal" href="trial/InitialCondition.html">InitialCondition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="trial/KapitzaDirac.html">KapitzaDirac</a></li>
@@ -648,12 +646,12 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../main/waveform.html"
+       href="../main/Hardware_control.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Waveform and WaveformList</p>
+        <p class="prev-next-title">Hardware Control Panel and Related GUIs</p>
       </div>
     </a>
     <a class="right-next"

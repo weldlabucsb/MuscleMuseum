@@ -8,6 +8,7 @@ math
    BosonicGaussianFit1D
    ConstantTop
    ConstantWave
+   ExponentialWithOffsetFit
    FitData
    FitData1D
    FitOverride

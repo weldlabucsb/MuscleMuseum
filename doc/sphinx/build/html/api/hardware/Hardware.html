@@ -28,8 +28,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -38,7 +38,7 @@
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../_static/documentation_options.js?v=2149b5ce"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -156,6 +156,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/Hardware_control.html">Hardware Control Panel and Related GUIs</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
@@ -190,10 +191,6 @@
 <li class="toctree-l3"><a class="reference internal" href="VescentSlice.html">VescentSlice</a></li>
 <li class="toctree-l3"><a class="reference internal" href="WaveformGenerator.html">WaveformGenerator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="WgControlPanel.html">WgControlPanel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getAcq.html">getAcq</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getPl.html">getPl</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getScope.html">getScope</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getWg.html">getWg</a></li>
 <li class="toctree-l3"><a class="reference internal" href="saveBecImageAbsorption.html">saveBecImageAbsorption</a></li>
 <li class="toctree-l3"><a class="reference internal" href="setBaslerConfig.html">setBaslerConfig</a></li>
 <li class="toctree-l3"><a class="reference internal" href="setIxon888Config.html">setIxon888Config</a></li>
@@ -203,7 +200,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -426,7 +422,7 @@ document.write(`
 <h1>Hardware<a class="headerlink" href="#hardware" title="Link to this heading">#</a></h1>
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Hardware">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Hardware</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">isSaving</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Hardware.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Hardware" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Hardware</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Hardware.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Hardware" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.SetGetExactNames</span></code></p>
 <p><a class="reference internal" href="#Hardware" title="Hardware"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Hardware</span></code></a> provides a common abstraction for controllable instruments.</p>
 <blockquote>
@@ -477,7 +473,7 @@ generation.</p>
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Hardware.Hardware">
-<span class="sig-name descname"><span class="pre">Hardware</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">isSaving</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Hardware.Hardware" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">Hardware</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">resourceName</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Hardware.Hardware" title="Link to this definition">#</a></dt>
 <dd><p>Construct a <a class="reference internal" href="#Hardware" title="Hardware"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Hardware</span></code></a> object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -492,12 +488,6 @@ generation.</p>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
-<dt class="sig sig-object mat" id="Hardware.DataPath">
-<span class="sig-name descname"><span class="pre">DataPath</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#Hardware.DataPath" title="Link to this definition">#</a></dt>
-<dd><p>Folder to save the object</p>
-</dd></dl>
-
-<dl class="mat attribute">
 <dt class="sig sig-object mat" id="Hardware.DataType">
 <span class="sig-name descname"><span class="pre">DataType</span></span><em class="property"> <span class="pre">string</span> <span class="pre">{mustBeMember(DataType,{'uint8','double'})}</span> <span class="pre">=</span> <span class="pre">&quot;uint8&quot;</span></em><a class="headerlink" href="#Hardware.DataType" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -528,7 +518,7 @@ generation.</p>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Hardware.NChannel">
-<span class="sig-name descname"><span class="pre">NChannel</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Hardware.NChannel" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">NChannel</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#Hardware.NChannel" title="Link to this definition">#</a></dt>
 <dd><p>How many channels the device has</p>
 </dd></dl>
 
@@ -539,14 +529,16 @@ generation.</p>
 </dd></dl>
 
 <dl class="mat attribute">
-<dt class="sig sig-object mat" id="Hardware.ParentPath">
-<span class="sig-name descname"><span class="pre">ParentPath</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#Hardware.ParentPath" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="mat attribute">
 <dt class="sig sig-object mat" id="Hardware.ResourceName">
 <span class="sig-name descname"><span class="pre">ResourceName</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#Hardware.ResourceName" title="Link to this definition">#</a></dt>
 <dd><p>Interfaces (like VISA) require a resource name to identify the device</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Hardware.convert2Table">
+<span class="sig-name descname"><span class="pre">convert2Table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Hardware.convert2Table" title="Link to this definition">#</a></dt>
+<dd><p>Get setable properties from the hw object</p>
 </dd></dl>
 
 </dd>

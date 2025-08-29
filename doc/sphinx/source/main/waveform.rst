@@ -1,3 +1,5 @@
+.. _waveform:
+
 Waveform and WaveformList
 ======================================
 

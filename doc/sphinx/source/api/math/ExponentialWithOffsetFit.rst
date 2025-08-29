@@ -1,7 +1,7 @@
-WaveformGeneratorSetting
+ExponentialWithOffsetFit
 ========================
 
-.. mat:autoclass:: src.mmParameter.WaveformGeneratorSetting
+.. mat:autoclass:: src.math.FitData.ExponentialWithOffsetFit
    :members:
    :private-members:
    :show-inheritance:

@@ -1,7 +1,7 @@
-ScopeSetting
-============
+RoiSetting
+==========
 
-.. mat:autoclass:: src.mmParameter.ScopeSetting
+.. mat:autoclass:: src.mmParameter.RoiSetting
    :members:
    :private-members:
    :show-inheritance:

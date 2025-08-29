@@ -1,7 +1,7 @@
-BecExpParameterUnit
+HardwareAssociation
 ===================
 
-.. mat:autoclass:: src.mmParameter.BecExpParameterUnit
+.. mat:autoclass:: src.mmParameter.HardwareAssociation
    :members:
    :private-members:
    :show-inheritance:
