@@ -96,7 +96,7 @@ classdef LinearFrequencyRamp < Waveform
             func = @tFunc;
             function waveOut = tFunc(t)
                 waveOut = (t>=t0 & t<=(t0+td)) .* ...
-                    (amp ./2 .* sin(2 * pi .* (freqi + (freqf-freqi) ./ td .* (t-t0)) .* (t-t0) + phi) + offset);
+                    (amp ./2 .* sin(2 * pi .* (freqi.*(t-t0) + cumtrapz(t-t0,((freqf-freqi) ./ td .* (t-t0))))  + phi) + offset);
             end
         end
     end

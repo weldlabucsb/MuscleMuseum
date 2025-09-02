@@ -520,11 +520,11 @@ classdef Ad < BecAnalysis
                     end
                     if ~isempty(obj.Gui(1).App)
                         if isvalid(obj.Gui(1).App)
-                            obj.Gui(1).App.AdAxes.CLim = obj.CLim;
-                            obj.Gui(1).App.AdYAxes.XLim = obj.CLim;
-                            obj.Gui(1).App.AdXAxes.YLim = obj.CLim;
-                            obj.Gui(1).App.ADMinEditField.Value = obj.CLim(1);
-                            obj.Gui(1).App.ADMaxEditField.Value = obj.CLim(2);
+                            obj.Gui(1).App.OdAxes.CLim = obj.CLim;
+                            obj.Gui(1).App.OdYAxes.XLim = obj.CLim;
+                            obj.Gui(1).App.OdXAxes.YLim = obj.CLim;
+                            obj.Gui(1).App.ODMinEditField.Value = obj.CLim(1);
+                            obj.Gui(1).App.ODMaxEditField.Value = obj.CLim(2);
                         end
                     end
             end
