@@ -168,26 +168,47 @@ classdef Od < BecAnalysis
 
         function plotOdMix1D(obj, fig)
             %% 1D plotting logic (original implementation)
-            %% BecExp parameters
-            becExp = obj.BecExp;
-            roi = becExp.Roi;
-            yxBoundary = roi.YXBoundary;
-            roiSize = roi.CenterSize(3:4);
-            nRun = becExp.NCompletedRun;
-            runList = obj.BecExp.RunListSorted;
-            paraName = becExp.ScannedVariable;
-            paraListSorted = becExp.ScannedVariableListSorted;
-            paraUnit = becExp.ScannedVariableUnit;
+            ax = gca;
 
-            %% Initialize plots
-            roiAspect = roiSize(2)/roiSize(1);
+            %% Plot AD Data
+            nRun = obj.BecExp.NCompletedRun;
+            cData = cell(1,nRun);
+            runList = obj.BecExp.RunListSorted;
+            odData = obj.OdData;
+            for ii = 1:nRun
+                cData{ii} = odData(:,:,runList(ii));
+            end
+            mData = horzcat(cData{:});
+            img = imagesc(ax,mData);
+
+            %% Render
+            fz = 20;
+            cb = colorbar(ax);
+            clim(obj.CLim)
+            colormap(ax,obj.Colormap)
+            
+            cb.Label.Interpreter = "Latex";
+            cb.Label.String = "OD";
+            cb.Label.FontSize = fz;
+            roiSize = obj.BecExp.Roi.CenterSize(3:4);
+            yxBoundary = obj.BecExp.Roi.YXBoundary;
+            aspect = double(nRun)*roiSize(2)/roiSize(1);
             figPos = fig.InnerPosition;
-            gap = 15;
-            fz = 12;
-            ax = axes(fig);
-            img = imagesc(ax,zeros(roiSize));
-            ax.Colormap = obj.Colormap;
-            ax.CLim = obj.CLim;
+            targetWidth = figPos(3)*0.85;
+            targetHeight = figPos(4)*0.8;
+            ax.Units = "pixels";
+            if targetWidth > targetHeight * aspect
+                ax.Position(4) = targetHeight;
+                ax.Position(3) = targetHeight * aspect;
+            else
+                ax.Position(3) = targetWidth;
+                ax.Position(4) = targetWidth / aspect;
+            end
+            ax.Position(1:2) = [figPos(3)/2 - ax.Position(3)/2,...
+                figPos(4)/2 - ax.Position(4)/2];
+            pbaspect(ax,[aspect,1,1])
+
+            ax.Units = "normalized";
             ax.XLabel.String = obj.BecExp.XLabel;
             ax.XLabel.Interpreter = "latex";
             ax.XLabel.FontSize = fz;
