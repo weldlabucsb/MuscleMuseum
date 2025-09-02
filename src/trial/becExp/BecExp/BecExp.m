@@ -18,8 +18,8 @@ classdef BecExp < Trial
     end
 
     properties(Hidden)
-        ScannedVariableID double = 1
-        ScannedVariableID2 double = 0
+        ScannedVariableID (1,1) double = 1
+        ScannedVariableID2 (1,1) double = 0
         IsAutoAcquire logical = false %If we want to automatically set the camera through MATLAB
         IsHoldRefresh logical = false
         IsAcquiring logical = false %If the program is still acquiring images
