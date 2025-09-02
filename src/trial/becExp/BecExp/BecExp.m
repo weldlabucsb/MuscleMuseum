@@ -1046,6 +1046,10 @@ classdef BecExp < Trial
             %COUNTEXISTEDLOG Summary of this function goes here
             %   Detailed explanation goes here
             obj.ExistedCiceroLogNumber = countFileNumber(obj.CiceroLogOrigin,".clg");
+            obj.coutExistedHardwareLog
+        end
+
+        function coutExistedHardwareLog(obj)
             obj.ExistedHardwareLogNumber = arrayfun(@countFileNumber,obj.HardwareList.readColumn("DataPath"));
         end
 
