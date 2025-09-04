@@ -108,7 +108,7 @@ classdef (Abstract) Waveform < handle
             if isa(obj,"ConstantTop")
                 Name(ismember(Name,["Frequency","Phase"]))=[];
             end
-            if Type == "LinearRamp"
+            if ismember(Type, ["LinearRamp","PchipRamp","TanhRamp"])
                 Name(ismember(Name,["Offset","Amplitude","RiseTime","FallTime"]))=[];
             end
             modList = ["AmplitudeModulation","FrequencyModulation","PhaseModulation"];
