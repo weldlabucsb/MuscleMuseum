@@ -14,6 +14,8 @@ classdef (Abstract) WaveformGenerator < Hardware
         IsOutput logical % Per-channel output enables
         OutputLoad string {mustBeMember(OutputLoad,{"50","Infinity"})} = "50" % Output load selection
         WaveformList cell % Per-channel waveform list objects
+        IsDDSCompatible logical = 0 % Determines whether the given AWG is also compatible with DDS operation.
+        IsDDSEnabled logical = 0 %Determines whether to use DDS mode or not in the AWG.
     end
 
     properties (SetAccess=protected)

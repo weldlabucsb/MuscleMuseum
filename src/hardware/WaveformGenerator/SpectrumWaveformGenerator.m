@@ -42,6 +42,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             end
             obj@WaveformGenerator(resourceName,name);
             obj.Manufacturer = "Spectrum";
+            
         end
 
         function connect(obj)
@@ -49,6 +50,10 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             %
             % Spectrum AWG MATLAB driver requires closing/opening the card
             % around uploads; use :meth:`connectSpec` within :meth:`upload`.
+            
+            % Briefly connects to retrieve some parameters from the device.
+            obj.connectSpec;
+            obj.closeSpec;
         end
         
         function connectSpec(obj)
@@ -69,6 +74,16 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             [isOpened,obj.Device] = spcMInitDevice(char(obj.ResourceName));
             if ~isOpened
                 spcMErrorMessageStdOut(obj.Device, 'Error: Could not open card\n', true)
+            end
+
+            % Checks that Device has DDS option installed
+            try
+            dds_featureMask = bitor (mRegs('SPCM_FEAT_EXTFW_DDS20'), mRegs('SPCM_FEAT_EXTFW_DDS50'));
+            if (bitand (obj.Device.extFeatureMap, dds_featureMask) == 1)
+                obj.IsDDSCompatible=1;
+            end
+            catch
+                error("Please update your matlab Spectrum driver to use DDS")
             end
         end
 
