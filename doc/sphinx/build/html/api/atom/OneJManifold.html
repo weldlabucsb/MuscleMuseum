@@ -43,6 +43,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/atom/OneJManifold';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -156,30 +157,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">atom</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="Alkali.html">Alkali</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Atom.html">Atom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AtomManifold.html">AtomManifold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Divalent.html">Divalent</a></li>
-<li class="toctree-l3"><a class="reference internal" href="OneFManifold.html">OneFManifold</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">OneJManifold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TwoAtom.html">TwoAtom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TwoJManifold.html">TwoJManifold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TwoJManifoldDivalent.html">TwoJManifoldDivalent</a></li>
-<li class="toctree-l3"><a class="reference internal" href="angularMomentumList.html">angularMomentumList</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getAtom.html">getAtom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lithiumDME.html">lithiumDME</a></li>
-<li class="toctree-l3"><a class="reference internal" href="magneticAngularMomentum.html">magneticAngularMomentum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="saveAtom.html">saveAtom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="spinMatrices.html">spinMatrices</a></li>
-<li class="toctree-l3"><a class="reference internal" href="strontiumDME.html">strontiumDME</a></li>
-<li class="toctree-l3"><a class="reference internal" href="totalAngularMomentum.html">totalAngularMomentum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="uncoupledSpinBasis.html">uncoupledSpinBasis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="uncoupledSpinBasisTransformation.html">uncoupledSpinBasisTransformation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="uncoupledSpinMatrices.html">uncoupledSpinMatrices</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../database/index.html">database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../field/index.html">field</a></li>
@@ -187,7 +173,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -412,114 +397,243 @@ document.write(`
 <dt class="sig sig-object mat" id="OneJManifold">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">OneJManifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">l</span></em>, <em class="sig-param"><span class="pre">j</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/AtomManifold/OneJManifold.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OneJManifold" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="AtomManifold.html#AtomManifold" title="AtomManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">AtomManifold</span></code></a></p>
-<p>TWOJ Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#OneJManifold" title="OneJManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OneJManifold</span></code></a> single-<span class="math notranslate nohighlight">\(J\)</span> hyperfine manifold (<span class="math notranslate nohighlight">\(F,M_F\)</span>).</p>
+<p>Builds the <a class="reference internal" href="#OneJManifold.StateList" title="OneJManifold.StateList"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StateList</span></code></a> with energies, <span class="math notranslate nohighlight">\(g\)</span>-factors and labels,
+and provides spin operators and Zeeman Hamiltonians.</p>
+<p><strong>Examples:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Example1: Use prebuilt manifold from an Alkali atom</span>
+<span class="n">alk</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Alkali</span><span class="p">(</span><span class="s">&quot;Rubidium87&quot;</span><span class="p">);</span>
+<span class="n">mani</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">alk</span><span class="p">.</span><span class="n">DGround</span><span class="p">;</span><span class="w">                 </span><span class="c">% :class:`OneJManifold` for ground state</span>
+<span class="n">B</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="n">MagneticField</span><span class="p">(</span><span class="n">bias</span><span class="p">=[</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="mf">1e-4</span><span class="p">]);</span>
+<span class="n">Hz</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="n">mani</span><span class="p">.</span><span class="n">HamiltonianAtomBiasField</span><span class="p">(</span><span class="n">B</span><span class="p">);</span><span class="w"> </span><span class="c">% Zeeman Hamiltonian [Hz]</span>
+</pre></div>
+</div>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Example2: Construct directly with (n,L,J)</span>
+<span class="n">alk</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Alkali</span><span class="p">(</span><span class="s">&quot;Rubidium87&quot;</span><span class="p">);</span>
+<span class="n">mani</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">OneJManifold</span><span class="p">(</span><span class="n">alk</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">=</span><span class="n">alk</span><span class="p">.</span><span class="n">groundStateN</span><span class="p">,</span><span class="w"> </span><span class="n">l</span><span class="p">=</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">j</span><span class="p">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">Ha</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="n">mani</span><span class="p">.</span><span class="n">HamiltonianAtom</span><span class="p">();</span><span class="w">      </span><span class="c">% Diagonal hyperfine Hamiltonian</span>
+</pre></div>
+</div>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="OneJManifold.OneJManifold">
 <span class="sig-name descname"><span class="pre">OneJManifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">l</span></em>, <em class="sig-param"><span class="pre">j</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OneJManifold.OneJManifold" title="Link to this definition">#</a></dt>
-<dd><p>TWOJ Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct a <a class="reference internal" href="#OneJManifold" title="OneJManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OneJManifold</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atom</strong> (<a class="reference internal" href="Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a>) – Atom context</p></li>
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Principal quantum number</p></li>
+<li><p><strong>l</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Orbital angular momentum</p></li>
+<li><p><strong>j</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Total electronic angular momentum</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="OneJManifold.Energy">
 <span class="sig-name descname"><span class="pre">Energy</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#OneJManifold.Energy" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Hyperfine energy shifts [Hz]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="OneJManifold.F">
 <span class="sig-name descname"><span class="pre">F</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#OneJManifold.F" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Hyperfine <span class="math notranslate nohighlight">\(F\)</span> values</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="OneJManifold.FOperator">
 <span class="sig-name descname"><span class="pre">FOperator</span></span><em class="property"> <span class="pre">cell</span></em><a class="headerlink" href="#OneJManifold.FOperator" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Hyperfine spin operators <span class="math notranslate nohighlight">\(F_{x,y,z}\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="OneJManifold.HFSCoefficient">
 <span class="sig-name descname"><span class="pre">HFSCoefficient</span></span><a class="headerlink" href="#OneJManifold.HFSCoefficient" title="Link to this definition">#</a></dt>
-<dd><p>[A,B]</p>
+<dd><p>[A,B] hyperfine coefficients (Hz)</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="OneJManifold.IOperator">
 <span class="sig-name descname"><span class="pre">IOperator</span></span><em class="property"> <span class="pre">cell</span></em><a class="headerlink" href="#OneJManifold.IOperator" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Nuclear spin operators <span class="math notranslate nohighlight">\(I_{x,y,z}\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="OneJManifold.J">
 <span class="sig-name descname"><span class="pre">J</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#OneJManifold.J" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Total electronic angular momentum <span class="math notranslate nohighlight">\(J\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="OneJManifold.JOperator">
 <span class="sig-name descname"><span class="pre">JOperator</span></span><em class="property"> <span class="pre">cell</span></em><a class="headerlink" href="#OneJManifold.JOperator" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Electronic spin operators <span class="math notranslate nohighlight">\(J_{x,y,z}\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="OneJManifold.L">
 <span class="sig-name descname"><span class="pre">L</span></span><em class="property"> <span class="pre">int32</span></em><a class="headerlink" href="#OneJManifold.L" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Orbital angular momentum <span class="math notranslate nohighlight">\(L\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="OneJManifold.LandegF">
 <span class="sig-name descname"><span class="pre">LandegF</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#OneJManifold.LandegF" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Landé <span class="math notranslate nohighlight">\(g_F\)</span> per <span class="math notranslate nohighlight">\(F\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="OneJManifold.LandegI">
 <span class="sig-name descname"><span class="pre">LandegI</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#OneJManifold.LandegI" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Nuclear <span class="math notranslate nohighlight">\(g_I\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="OneJManifold.LandegJ">
 <span class="sig-name descname"><span class="pre">LandegJ</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#OneJManifold.LandegJ" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Landé <span class="math notranslate nohighlight">\(g_J\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="OneJManifold.MF">
 <span class="sig-name descname"><span class="pre">MF</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#OneJManifold.MF" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Magnetic sublevels <span class="math notranslate nohighlight">\(M_F\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="OneJManifold.N">
 <span class="sig-name descname"><span class="pre">N</span></span><em class="property"> <span class="pre">int32</span></em><a class="headerlink" href="#OneJManifold.N" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Principal quantum number</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="OneJManifold.StateList">
 <span class="sig-name descname"><span class="pre">StateList</span></span><em class="property"> <span class="pre">table</span></em><a class="headerlink" href="#OneJManifold.StateList" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Basis state table with labels</p>
+</dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="OneJManifold.BiasDressedStateList">
 <span class="sig-name descname"><span class="pre">BiasDressedStateList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">isPlot</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OneJManifold.BiasDressedStateList" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Compute bias-field dressed states and optional dispersion map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<a class="reference internal" href="#OneJManifold" title="OneJManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OneJManifold</span></code></a>) – Hyperfine manifold object.</p></li>
+<li><p><strong>B</strong> (<a class="reference internal" href="../field/MagneticField.html#MagneticField" title="MagneticField"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">MagneticField</span></code></a>) – Bias magnetic field [T], aligned with quantization axis.</p></li>
+<li><p><strong>isPlot</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">logical</span> <span class="pre">optional</span></code></span>) – Plot dressed energies vs bias field.</p></li>
+<li><p><strong>samplingSize</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span> <span class="pre">optional</span></code></span>) – Number of samples along B.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>dressedStateList — table with indices, energies, dressed states</p></li>
+<li><p>U — unitary to the dressed basis</p></li>
+<li><p>brMap — {Bz [T], eigenvalue matrix [Hz]}</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>table, double, cell</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="OneJManifold.BiasDressedStateListTest">
 <span class="sig-name descname"><span class="pre">BiasDressedStateListTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">isPlot</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OneJManifold.BiasDressedStateListTest" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Test variant of bias-field dressed states (alternate indexing).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<a class="reference internal" href="#OneJManifold" title="OneJManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OneJManifold</span></code></a>) – Hyperfine manifold object.</p></li>
+<li><p><strong>B</strong> (<a class="reference internal" href="../field/MagneticField.html#MagneticField" title="MagneticField"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">MagneticField</span></code></a>) – Bias magnetic field [T], aligned with quantization axis.</p></li>
+<li><p><strong>isPlot</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">logical</span> <span class="pre">optional</span></code></span>) – Plot dressed energies vs bias field.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>dressedStateList — table with indices, energies, dressed states</p></li>
+<li><p>U — unitary to the dressed basis</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>table, double</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="OneJManifold.HamiltonianAtom">
 <span class="sig-name descname"><span class="pre">HamiltonianAtom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OneJManifold.HamiltonianAtom" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Diagonal hyperfine Hamiltonian; applies optional basis change.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<a class="reference internal" href="#OneJManifold" title="OneJManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OneJManifold</span></code></a>) – Hyperfine manifold object.</p></li>
+<li><p><strong>U</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span> <span class="pre">optional</span></code></span>) – Basis-change unitary. Use 1 to keep current basis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Ha — atomic Hamiltonian [Hz].</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[H_a = U^\dagger \operatorname{diag}(E)\, U\]</div>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="OneJManifold.HamiltonianAtomBiasField">
 <span class="sig-name descname"><span class="pre">HamiltonianAtomBiasField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OneJManifold.HamiltonianAtomBiasField" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Zeeman Hamiltonian in a static bias field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<a class="reference internal" href="#OneJManifold" title="OneJManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OneJManifold</span></code></a>) – Hyperfine manifold object.</p></li>
+<li><p><strong>B</strong> (<a class="reference internal" href="../field/MagneticField.html#MagneticField" title="MagneticField"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">MagneticField</span></code></a>) – Magnetic field [T].</p></li>
+<li><p><strong>U</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span> <span class="pre">optional</span></code></span>) – Basis-change unitary. Use 1 to keep current basis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Ham — Zeeman Hamiltonian [Hz].</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[H_Z = \mu_B \big( g_J \mathbf{J} + g_I \mathbf{I} \big) \cdot \mathbf{B} / h\]</div>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="OneJManifold.getMIMJ">
 <span class="sig-name descname"><span class="pre">getMIMJ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">isPlot</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OneJManifold.getMIMJ" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Map zero-field states to uncoupled projections (M_I, M_J) by adiabatic following.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<a class="reference internal" href="#OneJManifold" title="OneJManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OneJManifold</span></code></a>) – Hyperfine manifold object.</p></li>
+<li><p><strong>isPlot</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">logical</span> <span class="pre">optional</span></code></span>) – Plot energies and labels with (M_I, M_J).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>mimjList — table with columns MI and MJ per basis state.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>table</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd>
 </dl>

@@ -1,28 +1,40 @@
 classdef Od < BecAnalysis
-    %OD Calculate and plot optical depth
-    %   Detailed explanation goes here
+    %:class:`Od` compute optical depth (OD) and related plots per run.
+    %
+    % Reads ROI images (atom/light/dark), computes absorption and OD, applies
+    % optional fringe removal, and renders OD mix and GIF animations. Also
+    % stores background-subtracted light for downstream imaging analysis.
+    %
+    % **Associated Charts:**
+    %   - Chart(1): "OdMix" - Horizontal mosaic or 2D density plot of OD
+    %   - Chart(2): "OdAnimation" - Animated GIF showing OD evolution
+    %
+    % **Associated GUIs:**
+    %   - Gui(1): "FringeRemoval" - Interface for fringe removal configuration
 
     properties (Transient)
-        RoiData double % Raw RoiData, including atom/light/dark.
-        CameraLightData double % For calculating cross section. Background subtracted. Fringe removed.
-        OdData double % Calculated OdData
-        ImageRatio double % Calculated Ratio of post-subtracted Atom and Light Imaging for PCI
+        RoiData double % Raw ROI image stack with shape (:math:`N_y`, :math:`N_x`, :math:`N_\mathrm{run}`, [atom, light, dark])
+        CameraLightData double % Background-subtracted light images after fringe removal processing
+        OdData double % Optical depth maps :math:`\mathrm{OD} = -\ln(I_\mathrm{atom}/I_\mathrm{light})` per run
+        ImageRatio double % Atom-to-light intensity ratio :math:`I_\mathrm{atom}/I_\mathrm{light}` for phase contrast imaging
     end
 
     properties
-        FringeRemovalMethod string = "LSR" % Least square regression
-        FringeRemovalMask double % 2*N array. First column is y coordinate. Second column is x coordinate.
-        Colormap = jet
+        FringeRemovalMethod string = "LSR" % Fringe removal algorithm: "LSR" (least squares regression) or "None"
+        FringeRemovalMask double % Background region coordinates as 2×N matrix [:math:`y`; :math:`x`] in pixels
+        Colormap = jet % Colormap function handle for optical depth visualization
     end
 
     properties (SetObservable)
-        CLim double = [0,4]
+        CLim double = [0,4] % Color axis limits for optical depth plots [OD_min, OD_max]
     end
 
     methods
         function obj = Od(becExp)
-            %OD Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct :class:`Od` analyzer.
+            %
+            % :param becExp: Owning experiment
+            % :type becExp: :class:`BecExp`
             obj@BecAnalysis(becExp)
             obj.Gui(1) = Gui(...
                 name = "FringeRemoval",...
@@ -54,7 +66,10 @@ classdef Od < BecAnalysis
     methods
 
         function initialize(obj)
-            % Initialize matrices
+            % Initialize internal data arrays and property change listeners.
+            %
+            % Sets up storage arrays for ROI data, optical depth maps, image ratios,
+            % and processed light images. Establishes listener for color limit changes.
             roiSize = obj.BecExp.Roi.CenterSize(3:4);
             obj.RoiData = zeros([roiSize,1,3]);
             obj.OdData = zeros([roiSize,1]);
@@ -65,6 +80,14 @@ classdef Od < BecAnalysis
         end
 
         function update(obj,runIdx)
+            % Read run data and compute optical depth without fringe removal.
+            %
+            % Loads raw images for the specified run, computes optical depth using
+            % the absorption-to-OD conversion, and updates camera light data for
+            % downstream analysis modules.
+            %
+            % :param runIdx: Run index to process
+            % :type runIdx: double
             becExp = obj.BecExp;
             if ~isempty(becExp.TempData)
                 % Read RoiData from camera
@@ -83,18 +106,31 @@ classdef Od < BecAnalysis
         end
 
         function finalize(obj)
+            % Apply fringe removal and generate final OD visualizations.
+            %
+            % Performs fringe removal processing (if configured), then creates
+            % the OD mosaic plot and animated GIF showing temporal evolution.
             obj.doFringeRemoval
             obj.plotOdMix
             obj.plotOdAnimation
         end
 
         function show(obj)
+            % Display OD mosaic and animation charts with property listeners.
+            %
+            % Makes the OD visualization charts visible and establishes property
+            % change listeners for real-time color limit updates.
             addlistener(obj,'CLim','PostSet',@obj.handlePropEvents);
             obj.Chart(1).show
             obj.Chart(2).show
         end
 
         function refresh(obj)
+            % Reload all ROI data from disk and regenerate OD analysis.
+            %
+            % Clears temporary data, reloads all run images from disk, and
+            % recomputes the complete OD analysis including fringe removal
+            % and visualization.
             becExp = obj.BecExp;
             becExp.TempData = [];
             roi = becExp.Roi;
@@ -103,11 +139,17 @@ classdef Od < BecAnalysis
 
             obj.RoiData = becExp.readRunRoi(1:nRun);
 
-            % Redo ploting
+            % Redo plotting
             obj.finalize;
         end
 
         function doFringeRemoval(obj)
+            % Perform optional fringe removal and update processed data.
+            %
+            % Applies fringe removal algorithm (if configured) to reduce systematic
+            % intensity variations. Updates optical depth, image ratio, and camera
+            % light data with the corrected values.
+
             %% First calculate atom and light with background subtraction
             atom = obj.RoiData(:,:,:,1) - obj.RoiData(:,:,:,3);
             light = obj.RoiData(:,:,:,2) - obj.RoiData(:,:,:,3);
@@ -150,6 +192,12 @@ classdef Od < BecAnalysis
         end
 
         function plotOdMix(obj)
+            % Generate OD mosaic plot for 1D scans or 2D parameter map.
+            %
+            % Creates either a horizontal mosaic of OD images (for 1D parameter
+            % scans) or a 2D density map (for 2D parameter scans) showing the
+            % spatial distribution of optical depth.
+
             %% Initialize figure
             fig = obj.Chart(1).initialize;
             if ishandle(fig)
@@ -167,7 +215,13 @@ classdef Od < BecAnalysis
         end
 
         function plotOdMix1D(obj, fig)
-            %% 1D plotting logic (original implementation)
+            % Create horizontal mosaic of OD images for 1D parameter scans.
+            %
+            % Concatenates OD images from all runs side-by-side, sorted by
+            % parameter value, with proper axis labeling and colorbar.
+            %
+            % :param fig: Target figure handle
+            % :type fig: matlab.ui.Figure
             ax = gca;
 
             %% Plot AD Data
@@ -234,7 +288,14 @@ classdef Od < BecAnalysis
         end
 
         function plotOdMix2D(obj, fig)
-            %% 2D plotting logic
+            % Create 2D parameter density map from OD data.
+            %
+            % Generates a 2D density plot showing OD variation across the
+            % two-dimensional parameter space, using a representative slice
+            % through the ROI.
+            %
+            % :param fig: Target figure handle
+            % :type fig: matlab.ui.Figure
             becExp = obj.BecExp;
             roi = becExp.Roi;
             roiSize = roi.CenterSize(3:4);
@@ -282,6 +343,12 @@ classdef Od < BecAnalysis
         end
 
         function plotOdAnimation(obj)
+            % Generate animated GIF showing OD evolution across parameter values.
+            %
+            % Creates an animated visualization with the main OD image and
+            % cross-sectional profiles, stepping through parameter values
+            % to show temporal or parametric evolution.
+            
             %% Initialize figure
             fig = obj.Chart(2).initialize;
             if ishandle(fig)
@@ -417,6 +484,7 @@ classdef Od < BecAnalysis
 
     methods (Static)
         function handlePropEvents(src,evnt)
+            % Listener callback to propagate CLim changes.
             switch src.Name
                 case 'CLim'
                     obj = evnt.AffectedObject;

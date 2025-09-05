@@ -46,7 +46,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/mmParameter/MmParameter';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="PhaseLockSetting" href="PhaseLockSetting.html" />
+    <link rel="next" title="RoiSetting" href="RoiSetting.html" />
     <link rel="prev" title="ListList" href="ListList.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -156,6 +156,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
@@ -164,26 +171,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">hardware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">mmParameter</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="AcquisitionConfig.html">AcquisitionConfig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecExpConfig.html">BecExpConfig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecExpParameterUnit.html">BecExpParameterUnit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ComputerConfig.html">ComputerConfig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="DatabaseConfig.html">DatabaseConfig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="DatabaseServerConfig.html">DatabaseServerConfig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="HardwareList.html">HardwareList</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ListList.html">ListList</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">MmParameter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="PhaseLockSetting.html">PhaseLockSetting</a></li>
-<li class="toctree-l3"><a class="reference internal" href="RoiConfig.html">RoiConfig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ScopeSetting.html">ScopeSetting</a></li>
-<li class="toctree-l3"><a class="reference internal" href="VariableList.html">VariableList</a></li>
-<li class="toctree-l3"><a class="reference internal" href="WaveformGeneratorConfig.html">WaveformGeneratorConfig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="WaveformGeneratorSetting.html">WaveformGeneratorSetting</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generateParameter.html">generateParameter</a></li>
-</ul>
-</details></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">mmParameter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -461,7 +449,7 @@ named according to <a class="reference internal" href="#MmParameter.DataBaseName
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="MmParameter.DataTypeMapping">
-<span class="sig-name descname"><span class="pre">DataTypeMapping</span></span><em class="property"> <span class="pre">=</span> <span class="pre">dictionary([&quot;int64&quot;,&quot;double&quot;,&quot;logical&quot;,&quot;string&quot;,&quot;doubleMatrix&quot;,&quot;logicalMatrix&quot;,&quot;stringMatrix&quot;],</span> <span class="pre">...</span> <span class="pre">[&quot;INT&quot;,&quot;REAL&quot;,&quot;INTEGER&quot;,&quot;TEXT&quot;,&quot;TEXT&quot;,&quot;TEXT&quot;,&quot;TEXT&quot;])</span></em><a class="headerlink" href="#MmParameter.DataTypeMapping" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">DataTypeMapping</span></span><em class="property"> <span class="pre">=</span> <span class="pre">dictionary([&quot;int64&quot;,&quot;double&quot;,&quot;logical&quot;,&quot;string&quot;,&quot;doubleMatrix&quot;,&quot;logicalMatrix&quot;,&quot;stringMatrix&quot;,&quot;struct&quot;,&quot;table&quot;],</span> <span class="pre">...</span> <span class="pre">[&quot;INTEGER&quot;,&quot;REAL&quot;,&quot;INTEGER&quot;,&quot;TEXT&quot;,&quot;TEXT&quot;,&quot;TEXT&quot;,&quot;TEXT&quot;,&quot;TEXT&quot;,&quot;TEXT&quot;])</span></em><a class="headerlink" href="#MmParameter.DataTypeMapping" title="Link to this definition">#</a></dt>
 <dd><p>Map MATLAB types to database types</p>
 </dd></dl>
 
@@ -469,12 +457,6 @@ named according to <a class="reference internal" href="#MmParameter.DataBaseName
 <dt class="sig sig-object mat" id="MmParameter.DefaultEntry">
 <span class="sig-name descname"><span class="pre">DefaultEntry</span></span><em class="property"> <span class="pre">table</span></em><a class="headerlink" href="#MmParameter.DefaultEntry" title="Link to this definition">#</a></dt>
 <dd><p>Default entries for initial setup</p>
-</dd></dl>
-
-<dl class="mat attribute">
-<dt class="sig sig-object mat" id="MmParameter.DefaultKey">
-<span class="sig-name descname"><span class="pre">DefaultKey</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">string</span></em><a class="headerlink" href="#MmParameter.DefaultKey" title="Link to this definition">#</a></dt>
-<dd><p>The default key string will be the name of the first column after ID</p>
 </dd></dl>
 
 <dl class="mat attribute">
@@ -489,6 +471,24 @@ named according to <a class="reference internal" href="#MmParameter.DataBaseName
 <dd></dd></dl>
 
 <dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.FirstColumn">
+<span class="sig-name descname"><span class="pre">FirstColumn</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">string</span></em><a class="headerlink" href="#MmParameter.FirstColumn" title="Link to this definition">#</a></dt>
+<dd><p>The default key string will be the name of the first column after ID</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.ForeignKey">
+<span class="sig-name descname"><span class="pre">ForeignKey</span></span><em class="property"> <span class="pre">table</span></em><a class="headerlink" href="#MmParameter.ForeignKey" title="Link to this definition">#</a></dt>
+<dd><p>ParentTable, KeyChild, KeyParent</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.IsFirstColumnUnique">
+<span class="sig-name descname"><span class="pre">IsFirstColumnUnique</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">true</span></em><a class="headerlink" href="#MmParameter.IsFirstColumnUnique" title="Link to this definition">#</a></dt>
+<dd><p>Determine if we want ot make the first column unique or not</p>
+</dd></dl>
+
+<dl class="mat attribute">
 <dt class="sig sig-object mat" id="MmParameter.IsIncludeDefaultEntry">
 <span class="sig-name descname"><span class="pre">IsIncludeDefaultEntry</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">false</span></em><a class="headerlink" href="#MmParameter.IsIncludeDefaultEntry" title="Link to this definition">#</a></dt>
 <dd><p>Determine if we want to automatically include the default entries into the table</p>
@@ -501,21 +501,21 @@ named according to <a class="reference internal" href="#MmParameter.DataBaseName
 </dd></dl>
 
 <dl class="mat attribute">
-<dt class="sig sig-object mat" id="MmParameter.IsTriggerJoinOnJoinTable">
-<span class="sig-name descname"><span class="pre">IsTriggerJoinOnJoinTable</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">false</span></em><a class="headerlink" href="#MmParameter.IsTriggerJoinOnJoinTable" title="Link to this definition">#</a></dt>
-<dd><p>Determine if we want to trigger the join automatically when the join table is updated or inserted</p>
-</dd></dl>
-
-<dl class="mat attribute">
-<dt class="sig sig-object mat" id="MmParameter.IsTriggerJoinOnSelf">
-<span class="sig-name descname"><span class="pre">IsTriggerJoinOnSelf</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">false</span></em><a class="headerlink" href="#MmParameter.IsTriggerJoinOnSelf" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object mat" id="MmParameter.IsTriggerJoinOnLeft">
+<span class="sig-name descname"><span class="pre">IsTriggerJoinOnLeft</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">false</span></em><a class="headerlink" href="#MmParameter.IsTriggerJoinOnLeft" title="Link to this definition">#</a></dt>
 <dd><p>Determine if we want to trigger the join automatically when this table is updated or inserted</p>
 </dd></dl>
 
 <dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.IsTriggerJoinOnRight">
+<span class="sig-name descname"><span class="pre">IsTriggerJoinOnRight</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">false</span></em><a class="headerlink" href="#MmParameter.IsTriggerJoinOnRight" title="Link to this definition">#</a></dt>
+<dd><p>Determine if we want to trigger the join automatically when the join table is updated or inserted</p>
+</dd></dl>
+
+<dl class="mat attribute">
 <dt class="sig sig-object mat" id="MmParameter.JoinCondition">
-<span class="sig-name descname"><span class="pre">JoinCondition</span></span><em class="property"> <span class="pre">dictionary</span> <span class="pre">=</span> <span class="pre">dictionary([],[])</span></em><a class="headerlink" href="#MmParameter.JoinCondition" title="Link to this definition">#</a></dt>
-<dd><p>{[Table,KeyColumn]} -&gt;{[DataColumn1,DataColumn2,…]}</p>
+<span class="sig-name descname"><span class="pre">JoinCondition</span></span><em class="property"> <span class="pre">table</span></em><a class="headerlink" href="#MmParameter.JoinCondition" title="Link to this definition">#</a></dt>
+<dd><p>TableRight, KeyLeft,KeyRight,ColumnLeft,ColumnRight</p>
 </dd></dl>
 
 <dl class="mat attribute">
@@ -541,6 +541,11 @@ named according to <a class="reference internal" href="#MmParameter.DataBaseName
 <span class="sig-name descname"><span class="pre">TableName</span></span><em class="property"> <span class="pre">(1,1)</span> <span class="pre">string</span></em><a class="headerlink" href="#MmParameter.TableName" title="Link to this definition">#</a></dt>
 <dd><p>Table name is consistent with the subclass name</p>
 </dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="MmParameter.UniqueConstraint">
+<span class="sig-name descname"><span class="pre">UniqueConstraint</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#MmParameter.UniqueConstraint" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
@@ -598,7 +603,7 @@ from the stored one, an automatic schema migration is performed.</p>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="MmParameter.convertOutputTable">
-<span class="sig-name descname"><span class="pre">convertOutputTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">t</span></em>, <em class="sig-param"><span class="pre">IsHideSerial</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.convertOutputTable" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">convertOutputTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">t</span></em>, <em class="sig-param"><span class="pre">IsHideId</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.convertOutputTable" title="Link to this definition">#</a></dt>
 <dd><p>Convert SQLite-stored values back to MATLAB types.</p>
 <p>Converts matrix-encoded strings and logical columns to their corresponding
 MATLAB representations based on <a class="reference internal" href="#MmParameter.TableColumn" title="MmParameter.TableColumn"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TableColumn</span></code></a>.</p>
@@ -625,7 +630,7 @@ value of data columns to mirror, this will:</p>
 <li><p>Add missing columns to this table</p></li>
 <li><p>Populate them once from the join table</p></li>
 <li><p>Create triggers to keep them updated on INSERT/UPDATE of either table,
-according to <a class="reference internal" href="#MmParameter.IsTriggerJoinOnJoinTable" title="MmParameter.IsTriggerJoinOnJoinTable"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">IsTriggerJoinOnJoinTable</span></code></a> and <a class="reference internal" href="#MmParameter.IsTriggerJoinOnSelf" title="MmParameter.IsTriggerJoinOnSelf"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">IsTriggerJoinOnSelf</span></code></a>.</p></li>
+according to <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">IsTriggerJoinOnJoinTable</span></code> and <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">IsTriggerJoinOnSelf</span></code>.</p></li>
 </ul>
 <p>Called from <a class="reference internal" href="#MmParameter.checkTable" title="MmParameter.checkTable"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">checkTable()</span></code></a> after ensuring the base table exists.</p>
 </dd></dl>
@@ -637,6 +642,16 @@ according to <a class="reference internal" href="#MmParameter.IsTriggerJoinOnJoi
 <p>Uses <a class="reference internal" href="#MmParameter.TableColumn" title="MmParameter.TableColumn"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TableColumn</span></code></a> and <a class="reference internal" href="#MmParameter.DataTypeMapping" title="MmParameter.DataTypeMapping"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DataTypeMapping</span></code></a> to generate the CREATE TABLE
 statement, writes default entries if provided, and updates schema metadata.
 Create the table with current schema</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.createView">
+<span class="sig-name descname"><span class="pre">createView</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.createView" title="Link to this definition">#</a></dt>
+<dd><p>Hook for subclasses to create auxiliary SQL views.</p>
+<p>Default implementation is a no-op. Subclasses may override to
+create helper views that support richer queries (e.g., JSON
+expansion). Keep implementations idempotent by checking for
+view existence before creating.</p>
 </dd></dl>
 
 <dl class="mat method">
@@ -654,8 +669,18 @@ Create the table with current schema</p>
 </dd></dl>
 
 <dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.duplicateEntry">
+<span class="sig-name descname"><span class="pre">duplicateEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">keyColumnValue</span></em>, <em class="sig-param"><span class="pre">firstColumnValue</span></em>, <em class="sig-param"><span class="pre">keyColumnName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.duplicateEntry" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.getLastID">
+<span class="sig-name descname"><span class="pre">getLastID</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.getLastID" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
 <dt class="sig sig-object mat" id="MmParameter.prepareInputTable">
-<span class="sig-name descname"><span class="pre">prepareInputTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">t</span></em>, <em class="sig-param"><span class="pre">isAllColumnsRequired</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.prepareInputTable" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">prepareInputTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">t</span></em>, <em class="sig-param"><span class="pre">isAllColumnsRequired</span></em>, <em class="sig-param"><span class="pre">isIgnoreId</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.prepareInputTable" title="Link to this definition">#</a></dt>
 <dd><p>Validate and normalize input rows against the schema.</p>
 <p>Ensures column names and MATLAB types match <a class="reference internal" href="#MmParameter.TableColumn" title="MmParameter.TableColumn"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TableColumn</span></code></a> regardless
 of the input column order. Partial inputs are allowed unless
@@ -677,8 +702,18 @@ empty strings in string matrices.</p>
 </dd></dl>
 
 <dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.prepareInputValue">
+<span class="sig-name descname"><span class="pre">prepareInputValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">updateColumnName</span></em>, <em class="sig-param"><span class="pre">value</span></em>, <em class="sig-param"><span class="pre">isScalar</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.prepareInputValue" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.readColumn">
+<span class="sig-name descname"><span class="pre">readColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">readColumnName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.readColumn" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
 <dt class="sig sig-object mat" id="MmParameter.readEntry">
-<span class="sig-name descname"><span class="pre">readEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">keyColumnValue</span></em>, <em class="sig-param"><span class="pre">keyColumnName</span></em>, <em class="sig-param"><span class="pre">IsHideSerial</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.readEntry" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">readEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">keyColumnValue</span></em>, <em class="sig-param"><span class="pre">keyColumnName</span></em>, <em class="sig-param"><span class="pre">IsHideId</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.readEntry" title="Link to this definition">#</a></dt>
 <dd><p>Read entries filtered by a key column and specific values.</p>
 <p>Filtering is supported for base table columns.</p>
 <dl class="field-list simple">
@@ -699,7 +734,7 @@ empty strings in string matrices.</p>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="MmParameter.readTable">
-<span class="sig-name descname"><span class="pre">readTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">IsHideSerial</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.readTable" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">readTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">IsHideId</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.readTable" title="Link to this definition">#</a></dt>
 <dd><p>Read the entire table and convert columns to MATLAB types.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -714,6 +749,30 @@ empty strings in string matrices.</p>
 <dl class="mat method">
 <dt class="sig sig-object mat" id="MmParameter.readValue">
 <span class="sig-name descname"><span class="pre">readValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">keyColumnValue</span></em>, <em class="sig-param"><span class="pre">readColumnName</span></em>, <em class="sig-param"><span class="pre">keyColumnName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.readValue" title="Link to this definition">#</a></dt>
+<dd><p>Read one or more columns filtered by a key column and values.</p>
+<p>When a single column is requested, a vector is returned instead of a table.</p>
+<p>Attention: the output order is not guarenteed to match the
+keyColumnValue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keyColumnName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Column to filter on</p></li>
+<li><p><strong>keyColumnValue</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">vector</span></code></span>) – Key values to match (vector)</p></li>
+<li><p><strong>readColumnName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span> <span class="pre">or</span> <span class="pre">string</span> <span class="pre">vector</span></code></span>) – Column name(s) to return</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Table of selected columns, or a vector when a single column is requested</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>table or vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.readValueTwoKey">
+<span class="sig-name descname"><span class="pre">readValueTwoKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">keyColumnValue</span></em>, <em class="sig-param"><span class="pre">keyColumnValue2</span></em>, <em class="sig-param"><span class="pre">readColumnName</span></em>, <em class="sig-param"><span class="pre">keyColumnName</span></em>, <em class="sig-param"><span class="pre">keyColumnName2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.readValueTwoKey" title="Link to this definition">#</a></dt>
 <dd><p>Read one or more columns filtered by a key column and values.</p>
 <p>When a single column is requested, a vector is returned instead of a table.</p>
 <dl class="field-list simple">
@@ -748,6 +807,16 @@ Recreate table with current schema (for removing columns or changing types)</p>
 <dd></dd></dl>
 
 <dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.throwError">
+<span class="sig-name descname"><span class="pre">throwError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">me</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.throwError" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.updateColumn">
+<span class="sig-name descname"><span class="pre">updateColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">updateColumnName</span></em>, <em class="sig-param"><span class="pre">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.updateColumn" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
 <dt class="sig sig-object mat" id="MmParameter.updateDefaultEntry">
 <span class="sig-name descname"><span class="pre">updateDefaultEntry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.updateDefaultEntry" title="Link to this definition">#</a></dt>
 <dd><p>Insert default entries into the table if present.</p>
@@ -771,6 +840,11 @@ Insert default entries if provided and not empty</p>
 </dd></dl>
 
 <dl class="mat method">
+<dt class="sig sig-object mat" id="MmParameter.updateMatrixElement">
+<span class="sig-name descname"><span class="pre">updateMatrixElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">keyColumnValue</span></em>, <em class="sig-param"><span class="pre">updateColumnName</span></em>, <em class="sig-param"><span class="pre">value</span></em>, <em class="sig-param"><span class="pre">index</span></em>, <em class="sig-param"><span class="pre">keyColumnName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.updateMatrixElement" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
 <dt class="sig sig-object mat" id="MmParameter.updateSchemaMetadata">
 <span class="sig-name descname"><span class="pre">updateSchemaMetadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.updateSchemaMetadata" title="Link to this definition">#</a></dt>
 <dd><p>Update or insert the current schema hash into the metadata table.</p>
@@ -781,11 +855,11 @@ Uses INSERT OR REPLACE to handle both new entries and updates</p>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="MmParameter.updateTable">
-<span class="sig-name descname"><span class="pre">updateTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.updateTable" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">updateTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">t</span></em>, <em class="sig-param"><span class="pre">isRequireAll</span></em><span class="sig-paren">)</span><a class="headerlink" href="#MmParameter.updateTable" title="Link to this definition">#</a></dt>
 <dd><p>Overwrite the entire database table with validated content.</p>
 <blockquote>
 <div><p>Drops and recreates the table according to the current schema, then
-upserts rows from <code class="docutils literal notranslate"><span class="pre">t</span></code> using <a class="reference internal" href="#MmParameter.DefaultKey" title="MmParameter.DefaultKey"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DefaultKey</span></code></a>, and finally inserts
+upserts rows from <code class="docutils literal notranslate"><span class="pre">t</span></code> using <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DefaultKey</span></code>, and finally inserts
 the configured default entries.</p>
 <dl class="field-list simple">
 <dt class="field-odd">param t<span class="colon">:</span></dt>
@@ -870,11 +944,11 @@ Update table schema to match current definition</p>
       </div>
     </a>
     <a class="right-next"
-       href="PhaseLockSetting.html"
+       href="RoiSetting.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">PhaseLockSetting</p>
+        <p class="prev-next-title">RoiSetting</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

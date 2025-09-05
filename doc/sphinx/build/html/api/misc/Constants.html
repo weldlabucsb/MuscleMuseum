@@ -43,6 +43,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/misc/Constants';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -156,6 +157,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
@@ -163,14 +171,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../field/index.html">field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">hardware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">misc</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="Chart.html">Chart</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Constants</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Gui.html">Gui</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -394,9 +396,10 @@ document.write(`
 <dl class="mat class">
 <dt class="sig sig-object mat" id="Constants">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Constants</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/misc/Constants.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Constants" title="Link to this definition">#</a></dt>
-<dd><p><a class="reference internal" href="#Constants" title="Constants"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Constants</span></code></a> provides a subset of physical constants and unit helpers.</p>
+<dd><p><a class="reference internal" href="#Constants" title="Constants"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Constants</span></code></a> subset of physical constants and unit helpers.</p>
 <p>Values are SI by default and accessible via <a class="reference internal" href="#Constants.SI" title="Constants.SI"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">SI()</span></code></a>. For convenience,
-<a class="reference internal" href="#Constants.Micro" title="Constants.Micro"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">Micro()</span></code></a> loads a scaled set useful for micron-microsecond-kilogram units.</p>
+<a class="reference internal" href="#Constants.Micro" title="Constants.Micro"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">Micro()</span></code></a> loads a scaled set for micron–microsecond–kilogram contexts.
+All values are scalars in base SI unless otherwise stated.</p>
 <p><strong>Example:</strong></p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">hbar</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Constants</span><span class="p">.</span><span class="n">SI</span><span class="p">(</span><span class="s">&quot;hbar&quot;</span><span class="p">);</span>
 <span class="n">Constants</span><span class="p">.</span><span class="n">SI</span><span class="p">();</span><span class="w">    </span><span class="c">% load named constants into caller</span>
@@ -408,77 +411,73 @@ document.write(`
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="Constants.BohrMagneton">
 <span class="sig-name descname"><span class="pre">BohrMagneton</span></span><em class="property"> <span class="pre">=</span> <span class="pre">9.27400915e-24</span></em><a class="headerlink" href="#Constants.BohrMagneton" title="Link to this definition">#</a></dt>
-<dd><p>muB.</p>
+<dd><p><span class="math notranslate nohighlight">\(\mu_B\)</span> [J/T].</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Constants.BohrRadius">
 <span class="sig-name descname"><span class="pre">BohrRadius</span></span><em class="property"> <span class="pre">=</span> <span class="pre">0.52917720859e-10</span></em><a class="headerlink" href="#Constants.BohrRadius" title="Link to this definition">#</a></dt>
-<dd><p>a0.</p>
+<dd><p><span class="math notranslate nohighlight">\(a_0\)</span> [m].</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Constants.BoltzmannConstant">
 <span class="sig-name descname"><span class="pre">BoltzmannConstant</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1.3806504e-23</span></em><a class="headerlink" href="#Constants.BoltzmannConstant" title="Link to this definition">#</a></dt>
-<dd><p>kB.</p>
+<dd><p><span class="math notranslate nohighlight">\(k_B\)</span> [J/K].</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Constants.ElectronGFactor">
 <span class="sig-name descname"><span class="pre">ElectronGFactor</span></span><em class="property"> <span class="pre">=</span> <span class="pre">2.0023193043622</span></em><a class="headerlink" href="#Constants.ElectronGFactor" title="Link to this definition">#</a></dt>
-<dd><p>gS.</p>
+<dd><p><span class="math notranslate nohighlight">\(g_S\)</span>.</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Constants.ElectronMass">
 <span class="sig-name descname"><span class="pre">ElectronMass</span></span><em class="property"> <span class="pre">=</span> <span class="pre">9.10938215e-31</span></em><a class="headerlink" href="#Constants.ElectronMass" title="Link to this definition">#</a></dt>
-<dd><p>me.</p>
+<dd><p><span class="math notranslate nohighlight">\(m_e\)</span> [kg].</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Constants.ElectronSpin">
 <span class="sig-name descname"><span class="pre">ElectronSpin</span></span><em class="property"> <span class="pre">=</span> <span class="pre">0.5</span></em><a class="headerlink" href="#Constants.ElectronSpin" title="Link to this definition">#</a></dt>
-<dd><p>Se.</p>
+<dd><p><span class="math notranslate nohighlight">\(S_e\)</span>.</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Constants.ElementaryCharge">
 <span class="sig-name descname"><span class="pre">ElementaryCharge</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1.602176487e-19</span></em><a class="headerlink" href="#Constants.ElementaryCharge" title="Link to this definition">#</a></dt>
-<dd><ol class="loweralpha simple" start="5">
-<li></li>
-</ol>
+<dd><p><span class="math notranslate nohighlight">\(e\)</span> [C].</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Constants.ReducedPlanckConstant">
 <span class="sig-name descname"><span class="pre">ReducedPlanckConstant</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1.054571628e-34</span></em><a class="headerlink" href="#Constants.ReducedPlanckConstant" title="Link to this definition">#</a></dt>
-<dd><p>hbar.</p>
+<dd><p><span class="math notranslate nohighlight">\(\hbar\)</span> [J·s].</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Constants.SpeedOfLight">
 <span class="sig-name descname"><span class="pre">SpeedOfLight</span></span><em class="property"> <span class="pre">=</span> <span class="pre">2.99792458e8</span></em><a class="headerlink" href="#Constants.SpeedOfLight" title="Link to this definition">#</a></dt>
-<dd><ol class="loweralpha simple" start="3">
-<li></li>
-</ol>
+<dd><p>c [m/s].</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Constants.VacuumImpedance">
 <span class="sig-name descname"><span class="pre">VacuumImpedance</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1/Constants.VacuumPermittivity/Constants.SpeedOfLight</span></em><a class="headerlink" href="#Constants.VacuumImpedance" title="Link to this definition">#</a></dt>
-<dd><p>Z0.</p>
+<dd><p><span class="math notranslate nohighlight">\(Z_0\)</span> [Ohm].</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Constants.VacuumPermeability">
 <span class="sig-name descname"><span class="pre">VacuumPermeability</span></span><em class="property"> <span class="pre">=</span> <span class="pre">4*pi*1e-7</span></em><a class="headerlink" href="#Constants.VacuumPermeability" title="Link to this definition">#</a></dt>
-<dd><p>mu0.</p>
+<dd><p><span class="math notranslate nohighlight">\(\mu_0\)</span> [H/m].</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Constants.VacuumPermittivity">
 <span class="sig-name descname"><span class="pre">VacuumPermittivity</span></span><em class="property"> <span class="pre">=</span> <span class="pre">8.854187817e-12</span></em><a class="headerlink" href="#Constants.VacuumPermittivity" title="Link to this definition">#</a></dt>
-<dd><p>epsilon0.</p>
+<dd><p><span class="math notranslate nohighlight">\(\epsilon_0\)</span> [F/m].</p>
 </dd></dl>
 
 </dd>

@@ -5,6 +5,17 @@ classdef TriangleFit1D < FitData1D
     % experimental data. The function consists of linear rise and fall segments
     % with specified period and phase.
     %
+    % - **Formula**:
+    %
+    %   :math:`u = (x + \phi) \bmod T`
+    %
+    %   :math:`y(u) = \begin{cases}
+    %   A_{\min} + (A_{\max} - A_{\min})\, \dfrac{u}{T_r}, & 0 \le u < T_r \\
+    %   A_{\max} - (A_{\max} - A_{\min})\, \dfrac{u - T_r}{T - T_r}, & T_r \le u < T
+    %   \end{cases}`
+    %
+    % - **Coefficients**: :math:`A_{\max}`, :math:`A_{\min}`, :math:`\phi`, :math:`T`, :math:`T_r`
+    %
     % **Example1:**
     %
     % .. code-block:: matlab
@@ -54,10 +65,6 @@ classdef TriangleFit1D < FitData1D
 
         function setFormula(obj)
             % Set the triangle wave fit formula.
-            %
-            % Formula: Piecewise linear function with rise and fall segments
-            % Parameters: Amax (max amplitude), Amin (min amplitude), phi (phase),
-            % T (period), Tr (rise time)
             %
             obj.Func = fittype(['(mod((x + phi), T) < Tr) .* (Amin + (Amax - Amin) .* mod((x + phi), T) / Tr) +' ...
                 '(mod((x + phi), T) >= Tr) .* (Amax -  (Amax - Amin) .* (mod((x + phi), T) - Tr) / (T - Tr))'],'independent', {'x'},...

@@ -30,17 +30,17 @@ classdef TrapezoidalSinePulse < PartialPeriodicWaveform
         function obj = TrapezoidalSinePulse(options)
             %Construct a TrapezoidalSinePulse object.
             %
-            % :param samplingRate: Sampling rate in Hz (default: inherited)
+            % :param samplingRate: Sampling rate in Hz (default: [])
             % :type samplingRate: double, optional
             % :param startTime: Start time in seconds (default: 0)
             % :type startTime: double, optional
-            % :param duration: Duration in seconds (default: inherited)
+            % :param duration: Duration in seconds (default: [])
             % :type duration: double, optional
-            % :param amplitude: Peak-to-peak amplitude (default: inherited)
+            % :param amplitude: Peak-to-peak amplitude (default: [])
             % :type amplitude: double, optional
             % :param offset: DC offset (default: 0)
             % :type offset: double, optional
-            % :param frequency: Frequency in Hz (default: inherited)
+            % :param frequency: Frequency in Hz (default: [])
             % :type frequency: double, optional
             % :param phase: Initial phase in radians (default: 0)
             % :type phase: double, optional
@@ -49,12 +49,6 @@ classdef TrapezoidalSinePulse < PartialPeriodicWaveform
             % :param fallTime: Fall transition time in seconds (default: 0)
             % :type fallTime: double, optional
             %
-            % **Example:**
-            %
-            % .. code-block:: matlab
-            %
-            %     pulse = TrapezoidalSinePulse(amplitude = 2.0, frequency = 1000, ...
-            %                                  riseTime = 0.001, fallTime = 0.001);
             arguments
                 options.samplingRate double = [];
                 options.startTime double = 0;

@@ -1,24 +1,24 @@
 classdef PchipRamp < PchipPulse
-    %:class:`LinearRamp` generates a linear ramp waveform.
+    %:class:`PchipRamp` generates a ramp with PCHIP-shaped edges.
     %
-    % Creates a waveform that linearly transitions from a start value to a stop
-    % value over a specified ramp time. Inherits from :class:`TrapezoidalPulse`
-    % with zero fall time to create a pure ramp.
+    % Creates a waveform that transitions from a start value to a stop
+    % value over a specified ramp time, with smooth PCHIP transitions on
+    % the edges. Inherits from :class:`PchipPulse`.
     %
     % **Example1:**
     %
     % .. code-block:: matlab
     %
-    %     % Basic linear ramp
-    %     ramp = LinearRamp(startValue = 0, stopValue = 5, rampTime = 0.01);
+    %     % Basic PCHIP ramp
+    %     ramp = PchipRamp(startValue = 0, stopValue = 5, rampTime = 0.01);
     %     ramp.plot();
     %
     % **Example2:**
     %
     % .. code-block:: matlab
     %
-    %     % Negative ramp
-    %     ramp = LinearRamp(startValue = 10, stopValue = 0, rampTime = 0.005);
+    %     % Negative PCHIP ramp
+    %     ramp = PchipRamp(startValue = 10, stopValue = 0, rampTime = 0.005);
     %     ramp.plot();
     
     properties
@@ -29,13 +29,13 @@ classdef PchipRamp < PchipPulse
     
     methods
         function obj = PchipRamp(options)
-            %Construct a LinearRamp object.
+            %Construct a :class:`PchipRamp` object.
             %
-            % :param samplingRate: Sampling rate in Hz (default: inherited)
+            % :param samplingRate: Sampling rate in Hz (default: [])
             % :type samplingRate: double, optional
             % :param startTime: Start time in seconds (default: 0)
             % :type startTime: double, optional
-            % :param duration: Total duration in seconds (default: inherited)
+            % :param duration: Total duration in seconds (default: [])
             % :type duration: double, optional
             % :param startValue: Initial ramp value (default: 0)
             % :type startValue: double, optional
@@ -44,11 +44,6 @@ classdef PchipRamp < PchipPulse
             % :param rampTime: Ramp duration in seconds (default: 0)
             % :type rampTime: double, optional
             %
-            % **Example:**
-            %
-            % .. code-block:: matlab
-            %
-            %     ramp = LinearRamp(startValue = 0, stopValue = 10, rampTime = 0.01);
             arguments
                 options.samplingRate double = [];
                 options.startTime double = 0;

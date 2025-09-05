@@ -12,5 +12,12 @@ MuscleMuseum
    intro/install
    intro/quick
    main/waveform
+   main/waveform_generator
+   main/fitData
+   main/lasers_magnetic_fields
+   main/atomic_calculations
+   main/atom_field_interactions
+   main/trial
+   main/becexp
    api/index
    sup/support

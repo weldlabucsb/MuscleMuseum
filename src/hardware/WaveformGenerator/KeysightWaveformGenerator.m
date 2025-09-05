@@ -32,6 +32,10 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
 
         function set(obj)
             % Configure channels (sample rate, voltage levels, trigger, mode, load).
+            %
+            % Applies settings per channel: :attr:`SamplingRate`, trigger
+            % source/slope, output mode/load, and voltage limits. Clears volatile
+            % memory before upload and ensures LSB byte order for binary blocks.
             obj.check;
             v = obj.VisaDevice;
             v.ByteOrder = "little-endian";
@@ -90,6 +94,10 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
 
         function upload(obj)
             % Upload prepared waveforms to the device and start output if enabled.
+            %
+            % Sequences each channel's :attr:`WaveformList` by inserting leading
+            % and trailing zeros for clean triggering, scales to peak-to-peak, and
+            % writes segments + sequence tables via SCPI binary block transfers.
             %% Check connection to the device
             obj.check;
             v = obj.VisaDevice;
@@ -220,6 +228,9 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
     
         function status = check(obj)
             % Query device error status.
+            %
+            % :return: True when the device reports no error via :code:`SYST:ERR?`
+            % :rtype: logical
             status = false;
             if isempty(obj.VisaDevice)
                 error("VISA device is not connected.")

@@ -1,36 +1,66 @@
 classdef Chart < handle
-    %CHART Summary of this class goes here
-    %   Detailed explanation goes here
+    % :class:`Chart` utility to create, position, show, and save figures.
+    %
+    % Manages figure creation across multiple monitors, supports logical
+    % positioning and sizing (fractions or presets), and saving to ``.fig``
+    % /``.png`` or opening a ``.gif`` instead when :attr:`IsGif` is true.
+    %
+    % **Examples:**
+    %
+    % .. code-block:: matlab
+    %
+    %    ch = Chart(name="Spectrum", num=2, fpath="C:/tmp/spectrum", ...
+    %               loc=[0.05,0.1], size=[0.5,0.4], isGif=false);
+    %    fig = ch.initialize();
+    %    plot(rand(100,1)); drawnow;
+    %    ch.save();
+    %    ch.close();
 
     properties (SetAccess = protected)
-        Name string
-        Number double
-        Path string
-        Location
-        Size
-        IsGif logical = false
+        Name string % Human-readable figure name (window title)
+        Number double % Figure number/ID (used for reuse)
+        Path string % File path without extension for saving/reading
+        Location % Logical location [xFrac,yFrac] or preset string (e.g. "eastnorthwest")
+        Size % Logical size [wFrac,hFrac] or preset string: "small","medium","large","largetall","full"
+        IsGif logical = false % If true, treat target as GIF and open it via :meth:`showGif`
     end
 
     properties
-        IsEnabled logical = true
-        Monitor double = 1
+        IsEnabled logical = true % Master switch to disable all operations
+        Monitor double = 1 % Target monitor index (1 is primary)
     end
 
     properties (Transient)
-        Figure matlab.ui.Figure
+        Figure matlab.ui.Figure % Handle to the managed figure (created in :meth:`initialize`)
     end
 
     properties (Hidden)
-        IsBrowser logical = false
+        IsBrowser logical = false % Use browser-mode numbering offset when true
     end
 
     properties (Constant,Hidden)
-        NumberOffset = 1064
+        NumberOffset = 1064 % Offset added to figure number in browser mode
     end
 
     methods
 
         function obj = Chart(NameValueArgs)
+            % Construct a :class:`Chart` from name-value arguments.
+            %
+            % :param name: Figure window title
+            % :type name: string
+            % :param num: Figure number/ID
+            % :type num: double
+            % :param fpath: Save/load path without extension
+            % :type fpath: string
+            % :param loc: Location preset string or [xFrac,yFrac] in (0,1)
+            % :type loc: string or double
+            % :param size: Size preset string or [wFrac,hFrac] in (0,1)
+            % :type size: string or double
+            % :param isGif: Treat target as GIF for :meth:`showGif`
+            % :type isGif: logical optional
+            % :param isEnabled: If false, all operations are no-ops
+            % :type isEnabled: logical optional
             arguments
                 NameValueArgs.name
                 NameValueArgs.num
@@ -50,6 +80,13 @@ classdef Chart < handle
         end
 
         function fig = initialize(obj)
+            % Create or reuse the figure, position and size it, and return its handle.
+            %
+            % Uses monitor geometry from ``sortMonitor`` and supports both preset
+            % strings and fractional coordinates/sizes in (0,1).
+            %
+            % :returns: fig — Figure handle; if :attr:`IsEnabled` is false returns ``{1}``.
+            % :rtype: matlab.ui.Figure or cell
             if ~obj.IsEnabled
                 fig = {1};
                 return
@@ -122,6 +159,10 @@ classdef Chart < handle
         end
 
         function save(obj)
+            % Save figure to ``.fig`` (if size is reasonable) and ``.png``.
+            %
+            % Checks existence and image data size to avoid extremely large
+            % ``.fig`` files, then writes PNG unconditionally.
             if ~obj.IsEnabled
                 return
             end
@@ -151,6 +192,10 @@ classdef Chart < handle
         end
 
         function show(obj)
+            % Show a previously saved ``.fig`` in a managed figure window.
+            %
+            % Creates the window via :meth:`initialize` and clones the saved
+            % content using ``copyobj`` if the figure file exists.
             if ~obj.IsEnabled
                 return
             end
@@ -168,6 +213,7 @@ classdef Chart < handle
         end
 
         function showGif(obj)
+            % Open the target ``.gif`` in the system viewer when :attr:`IsGif` is true.
             if ~obj.IsEnabled
                 return
             end
@@ -180,6 +226,7 @@ classdef Chart < handle
         end
     
         function close(obj)
+            % Close the managed figure window if it exists.
             if ~obj.IsEnabled
                 return
             end

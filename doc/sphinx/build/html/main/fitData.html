@@ -1,0 +1,900 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Fit Curves or Surfaces Using FitData &#8212; MuscleMuseum 0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=2149b5ce"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'main/fitData';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lasers and magnetic fields" href="lasers_magnetic_fields.html" />
+    <link rel="prev" title="Waveform and WaveformList" href="waveform.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MuscleMuseum 0.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../intro/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/install.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/quick.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lasers_magnetic_fields.html">Lasers and magnetic fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sup/support.html">Support</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/main/fitData.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/issues/new?title=Issue%20on%20page%20%2Fmain/fitData.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Fit Curves or Surfaces Using FitData</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage-workflow">Basic Usage Workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-classes">Core Classes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fitdata-abstract-base">FitData (Abstract Base)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fitdata1d-abstract-base">FitData1D (Abstract Base)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#available-fit-types">Available Fit Types</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-and-polynomial-fits">Linear and Polynomial Fits</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-and-peak-fits">Gaussian and Peak Fits</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#oscillatory-fits">Oscillatory Fits</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specialized-physics-fits">Specialized Physics Fits</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-usage">Advanced Usage</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-override-system">Parameter Override System</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-settings">Optimization Settings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-processing">Batch Processing</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integration-with-experimental-workflows">Integration with Experimental Workflows</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bec-experiment-analysis">BEC Experiment Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-fit-development">Custom Fit Development</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="fit-curves-or-surfaces-using-fitdata">
+<h1>Fit Curves or Surfaces Using FitData<a class="headerlink" href="#fit-curves-or-surfaces-using-fitdata" title="Link to this heading">#</a></h1>
+<p>The <strong>FitData</strong> framework provides a comprehensive object-oriented approach to fitting mathematical functions to experimental data in MATLAB. Built on top of MATLAB’s Curve Fitting Toolbox, it offers automatic parameter estimation, customizable bounds, and robust optimization settings for a wide variety of common fitting scenarios in atomic, molecular, and optical (AMO) physics.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>The <a class="reference internal" href="../api/math/FitData.html#FitData" title="FitData"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData</span></code></a> system follows a hierarchical design pattern where abstract base classes define the common interface and concrete implementations handle specific mathematical functions. The framework supports:</p>
+<ul class="simple">
+<li><p><strong>Automatic parameter estimation</strong> from data characteristics</p></li>
+<li><p><strong>Customizable fit bounds</strong> and starting points</p></li>
+<li><p><strong>Robust optimization settings</strong> with configurable tolerances</p></li>
+<li><p><strong>Built-in plotting capabilities</strong> for visualization</p></li>
+<li><p><strong>Extensible architecture</strong> for adding new fit functions</p></li>
+</ul>
+<p>The class hierarchy is shown in the following diagram:</p>
+<a class="reference internal image-reference" href="../_images/fitdata_class_diagram.svg"><img alt="../_images/fitdata_class_diagram.svg" class="align-center" src="../_images/fitdata_class_diagram.svg" style="width: 100%;" /></a>
+</section>
+<section id="basic-usage-workflow">
+<h2>Basic Usage Workflow<a class="headerlink" href="#basic-usage-workflow" title="Link to this heading">#</a></h2>
+<p>The typical workflow for using FitData follows these steps:</p>
+<a class="reference internal image-reference" href="../_images/fitdata_workflow.svg"><img alt="../_images/fitdata_workflow.svg" class="align-center" src="../_images/fitdata_workflow.svg" style="width: 80%;" /></a>
+</section>
+<section id="core-classes">
+<h2>Core Classes<a class="headerlink" href="#core-classes" title="Link to this heading">#</a></h2>
+<section id="fitdata-abstract-base">
+<h3>FitData (Abstract Base)<a class="headerlink" href="#fitdata-abstract-base" title="Link to this heading">#</a></h3>
+<p>The <a class="reference internal" href="../api/math/FitData.html#FitData" title="FitData"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData</span></code></a> abstract base class provides the foundation for all fitting operations. It handles:</p>
+<ul class="simple">
+<li><p><strong>Data validation</strong> and preprocessing</p></li>
+<li><p><strong>Parameter management</strong> with automatic guessing and override capabilities</p></li>
+<li><p><strong>Optimization settings</strong> (tolerance, maximum iterations, function evaluations)</p></li>
+<li><p><strong>Result storage</strong> and access methods</p></li>
+</ul>
+<p><strong>Key Properties:</strong></p>
+<ul class="simple">
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">RawData</span></code>: Input experimental data</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">IsOverride</span></code>: Flag to enable parameter overrides</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StartPointOverride</span></code>, <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">LowerOverride</span></code>, <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">UpperOverride</span></code>: Custom parameter bounds</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Coefficient</span></code>: Fitted coefficients after <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">do()</span></code> is called</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Result</span></code>: MATLAB fitobject containing full fit results</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Gof</span></code>: Goodness of fit statistics</p></li>
+</ul>
+</section>
+<section id="fitdata1d-abstract-base">
+<h3>FitData1D (Abstract Base)<a class="headerlink" href="#fitdata1d-abstract-base" title="Link to this heading">#</a></h3>
+<p>The <a class="reference internal" href="../api/math/FitData1D.html#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a> class extends <a class="reference internal" href="../api/math/FitData.html#FitData" title="FitData"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData</span></code></a> for one-dimensional curve fitting. It adds:</p>
+<ul class="simple">
+<li><p><strong>Standardized data format</strong> validation (n×2 matrix of [x,y] coordinates)</p></li>
+<li><p><strong>Plotting capabilities</strong> with automatic curve generation</p></li>
+<li><p><strong>Fit evaluation</strong> at arbitrary x-coordinates via <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">evaluateFit()</span></code></p></li>
+</ul>
+<p><strong>Key Methods:</strong></p>
+<ul class="simple">
+<li><p><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">plot()</span></code>: Visualize raw data and fitted curve</p></li>
+<li><p><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">evaluateFit(x)()</span></code>: Evaluate fitted function at specified x values</p></li>
+<li><p><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">do()</span></code>: Execute the fitting procedure</p></li>
+</ul>
+</section>
+</section>
+<section id="available-fit-types">
+<h2>Available Fit Types<a class="headerlink" href="#available-fit-types" title="Link to this heading">#</a></h2>
+<p>The FitData framework provides implementations for a wide variety of mathematical functions commonly encountered in experimental physics:</p>
+<a class="reference internal image-reference" href="../_images/fitdata_formulas.svg"><img alt="../_images/fitdata_formulas.svg" class="align-center" src="../_images/fitdata_formulas.svg" style="width: 100%;" /></a>
+<section id="linear-and-polynomial-fits">
+<h3>Linear and Polynomial Fits<a class="headerlink" href="#linear-and-polynomial-fits" title="Link to this heading">#</a></h3>
+<p><strong>LinearFit1D</strong></p>
+<p>Fits linear functions of the form <span class="math notranslate nohighlight">\(y = ax + b\)</span>.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Example: Linear fit to noisy data</span>
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">);</span>
+<span class="n">y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.1</span><span class="o">*</span><span class="nb">randn</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">x</span><span class="p">));</span>
+<span class="n">data</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">x</span><span class="o">&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">&#39;</span><span class="p">];</span>
+
+<span class="n">linearFit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">LinearFit1D</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="n">linearFit</span><span class="p">.</span><span class="n">do</span><span class="p">();</span>
+<span class="n">linearFit</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+
+<span class="c">% Access results</span>
+<span class="n">slope</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">linearFit</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w">      </span><span class="c">% coefficient &#39;a&#39;</span>
+<span class="n">intercept</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">linearFit</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w">  </span><span class="c">% coefficient &#39;b&#39;</span>
+</pre></div>
+</div>
+<p><strong>ParabolicFit1D</strong></p>
+<p>Fits parabolic functions of the form <span class="math notranslate nohighlight">\(y = ax^2 + bx + c\)</span>.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Example: Parabolic fit</span>
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+<span class="n">y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.5</span><span class="o">*</span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.1</span><span class="o">*</span><span class="nb">randn</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">x</span><span class="p">));</span>
+<span class="n">data</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">x</span><span class="o">&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">&#39;</span><span class="p">];</span>
+
+<span class="n">parabolicFit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ParabolicFit1D</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="n">parabolicFit</span><span class="p">.</span><span class="n">do</span><span class="p">();</span>
+<span class="n">parabolicFit</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="gaussian-and-peak-fits">
+<h3>Gaussian and Peak Fits<a class="headerlink" href="#gaussian-and-peak-fits" title="Link to this heading">#</a></h3>
+<p><strong>GaussianFit1D</strong></p>
+<p>Fits Gaussian functions of the form <span class="math notranslate nohighlight">\(y = A e^{-(x-x_0)^2/(2\sigma^2)} + C\)</span>.</p>
+<p><strong>Coefficients:</strong>
+- <span class="math notranslate nohighlight">\(A\)</span>: amplitude
+- <span class="math notranslate nohighlight">\(x_0\)</span>: center position
+- <span class="math notranslate nohighlight">\(\sigma\)</span>: width parameter
+- <span class="math notranslate nohighlight">\(C\)</span>: baseline offset</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Example: Gaussian fit to experimental peak</span>
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">);</span>
+<span class="n">y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.^</span><span class="mi">2</span><span class="o">/</span><span class="mf">0.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.05</span><span class="o">*</span><span class="nb">randn</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">x</span><span class="p">));</span>
+<span class="n">data</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">x</span><span class="o">&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">&#39;</span><span class="p">];</span>
+
+<span class="n">gaussianFit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">GaussianFit1D</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="n">gaussianFit</span><span class="p">.</span><span class="n">do</span><span class="p">();</span>
+<span class="n">gaussianFit</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+
+<span class="c">% Extract physical parameters</span>
+<span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gaussianFit</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">center</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gaussianFit</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">sigma</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gaussianFit</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">offset</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gaussianFit</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+
+<span class="c">% Calculate FWHM</span>
+<span class="n">fwhm</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="nb">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nb">log</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="n">sigma</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="oscillatory-fits">
+<h3>Oscillatory Fits<a class="headerlink" href="#oscillatory-fits" title="Link to this heading">#</a></h3>
+<p><strong>SineFit1D</strong></p>
+<p>Fits sinusoidal functions of the form <span class="math notranslate nohighlight">\(y = A \sin(2\pi f x + \phi) + C\)</span>.</p>
+<p><strong>Coefficients:</strong>
+- <span class="math notranslate nohighlight">\(A\)</span>: amplitude
+- <span class="math notranslate nohighlight">\(f\)</span>: frequency
+- <span class="math notranslate nohighlight">\(\phi\)</span>: phase
+- <span class="math notranslate nohighlight">\(C\)</span>: offset</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Example: Sine wave fit with automatic frequency estimation</span>
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">);</span>
+<span class="n">y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="nb">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nb">pi</span><span class="o">*</span><span class="mf">0.5</span><span class="o">*</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.1</span><span class="o">*</span><span class="nb">randn</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">x</span><span class="p">));</span>
+<span class="n">data</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">x</span><span class="o">&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">&#39;</span><span class="p">];</span>
+
+<span class="n">sineFit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineFit1D</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="n">sineFit</span><span class="p">.</span><span class="n">do</span><span class="p">();</span>
+<span class="n">sineFit</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+
+<span class="c">% Access oscillation parameters</span>
+<span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sineFit</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sineFit</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">phase</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sineFit</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">offset</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sineFit</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>TriangleFit1D</strong></p>
+<p>Fits triangle wave functions with customizable rise and fall times.</p>
+<p><strong>Formula:</strong></p>
+<p><span class="math notranslate nohighlight">\(u = (x + \phi) \bmod T\)</span></p>
+<p><span class="math notranslate nohighlight">\(y(u) = \begin{cases}
+A_{\min} + (A_{\max} - A_{\min})\, \dfrac{u}{T_r}, &amp; 0 \le u &lt; T_r \\
+A_{\max} - (A_{\max} - A_{\min})\, \dfrac{u - T_r}{T - T_r}, &amp; T_r \le u &lt; T
+\end{cases}\)</span></p>
+<p><strong>Coefficients:</strong>
+- <span class="math notranslate nohighlight">\(A_{\max}\)</span>, <span class="math notranslate nohighlight">\(A_{\min}\)</span>: maximum and minimum amplitudes
+- <span class="math notranslate nohighlight">\(\phi\)</span>: phase offset
+- <span class="math notranslate nohighlight">\(T\)</span>: period
+- <span class="math notranslate nohighlight">\(T_r\)</span>: rise time</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Example: Triangle wave fit</span>
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">);</span>
+<span class="n">y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sawtooth</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nb">pi</span><span class="o">*</span><span class="mf">0.2</span><span class="o">*</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.1</span><span class="o">*</span><span class="nb">randn</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">x</span><span class="p">));</span>
+<span class="n">data</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">x</span><span class="o">&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">&#39;</span><span class="p">];</span>
+
+<span class="n">triangleFit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">TriangleFit1D</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="n">triangleFit</span><span class="p">.</span><span class="n">do</span><span class="p">();</span>
+<span class="n">triangleFit</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="specialized-physics-fits">
+<h3>Specialized Physics Fits<a class="headerlink" href="#specialized-physics-fits" title="Link to this heading">#</a></h3>
+<p><strong>BosonicBimodalFit1D</strong></p>
+<p>Fits atomic density profiles with both Thomas-Fermi (condensate) and thermal (bosonic) components. This is particularly useful for analyzing Bose-Einstein condensate experiments.</p>
+<p><strong>Formula:</strong></p>
+<p><span class="math notranslate nohighlight">\(y = A\,\max\{0,1-((x-x_0)/R)^2\}^{3/2} + B\,\mathrm{Bose}(e^{-(x-x_g)^2/(2\sigma_g^2)};2.5) + C\)</span></p>
+<p><strong>Coefficients:</strong>
+- Thomas-Fermi: <span class="math notranslate nohighlight">\(A\)</span> (amplitude), <span class="math notranslate nohighlight">\(x_0\)</span> (center), <span class="math notranslate nohighlight">\(R\)</span> (radius)
+- Thermal: <span class="math notranslate nohighlight">\(B\)</span> (amplitude), <span class="math notranslate nohighlight">\(x_g\)</span> (center), <span class="math notranslate nohighlight">\(\sigma_g\)</span> (width)
+- <span class="math notranslate nohighlight">\(C\)</span>: baseline offset</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Example: Bimodal fit for BEC analysis</span>
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">201</span><span class="p">)</span><span class="o">&#39;</span><span class="p">;</span>
+
+<span class="c">% Simulate TF + thermal components</span>
+<span class="n">tf_component</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">((</span><span class="n">x</span><span class="o">-</span><span class="mf">0.2</span><span class="p">)</span><span class="o">/</span><span class="mf">1.2</span><span class="p">)</span><span class="o">.^</span><span class="mi">2</span><span class="p">)</span><span class="o">.^</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">thermal_component</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.6</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">boseFunctionApprox</span><span class="p">(</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mf">0.4</span><span class="p">)</span><span class="o">.^</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="mf">0.8</span>^<span class="mi">2</span><span class="p">)),</span><span class="w"> </span><span class="mf">2.5</span><span class="p">);</span>
+<span class="n">y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">tf_component</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">thermal_component</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.05</span><span class="p">;</span>
+
+<span class="n">data</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">];</span>
+<span class="n">fitObj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">BosonicBimodalFit1D</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="n">fitObj</span><span class="p">.</span><span class="n">do</span><span class="p">();</span>
+<span class="n">fitObj</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+
+<span class="c">% Extract condensate and thermal parameters</span>
+<span class="n">tf_amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">fitObj</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">tf_center</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">fitObj</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">tf_radius</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">fitObj</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">thermal_amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">fitObj</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>BosonicGaussianFit1D</strong></p>
+<p>Fits thermal atomic distributions using bosonic statistics corrections.</p>
+<p><strong>SqrtParabolicFit1D</strong></p>
+<p>Fits square-root parabolic profiles, often used for Thomas-Fermi distributions in trapped atomic gases.</p>
+</section>
+</section>
+<section id="advanced-usage">
+<h2>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Link to this heading">#</a></h2>
+<section id="parameter-override-system">
+<h3>Parameter Override System<a class="headerlink" href="#parameter-override-system" title="Link to this heading">#</a></h3>
+<p>For challenging fits or when automatic parameter estimation fails, you can override the initial guesses and bounds:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Example: Custom parameter override</span>
+<span class="n">fitObj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">GaussianFit1D</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+
+<span class="c">% Enable override mode</span>
+<span class="n">fitObj</span><span class="p">.</span><span class="n">IsOverride</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="c">% Set custom starting points [amplitude, center, sigma, offset]</span>
+<span class="n">fitObj</span><span class="p">.</span><span class="n">StartPointOverride</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.1</span><span class="p">];</span>
+
+<span class="c">% Set custom bounds</span>
+<span class="n">fitObj</span><span class="p">.</span><span class="n">LowerOverride</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">];</span>
+<span class="n">fitObj</span><span class="p">.</span><span class="n">UpperOverride</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
+
+<span class="c">% Execute fit with custom parameters</span>
+<span class="n">fitObj</span><span class="p">.</span><span class="n">do</span><span class="p">();</span>
+<span class="n">fitObj</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>You can also use convenience methods:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Set default overrides based on current automatic estimates</span>
+<span class="n">fitObj</span><span class="p">.</span><span class="n">setDefaultOverride</span><span class="p">();</span>
+
+<span class="c">% Clear all overrides and return to automatic mode</span>
+<span class="n">fitObj</span><span class="p">.</span><span class="n">clearOverride</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="optimization-settings">
+<h3>Optimization Settings<a class="headerlink" href="#optimization-settings" title="Link to this heading">#</a></h3>
+<p>Fine-tune the optimization process for difficult fits:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">fitObj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineFit1D</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+
+<span class="c">% Adjust optimization tolerances</span>
+<span class="n">fitObj</span><span class="p">.</span><span class="n">TolFun</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-12</span><span class="p">;</span><span class="w">        </span><span class="c">% Function tolerance</span>
+<span class="n">fitObj</span><span class="p">.</span><span class="n">MaxFunEvals</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5000</span><span class="p">;</span><span class="w">    </span><span class="c">% Maximum function evaluations</span>
+<span class="n">fitObj</span><span class="p">.</span><span class="n">MaxIter</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3000</span><span class="p">;</span><span class="w">        </span><span class="c">% Maximum iterations</span>
+
+<span class="n">fitObj</span><span class="p">.</span><span class="n">do</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="batch-processing">
+<h3>Batch Processing<a class="headerlink" href="#batch-processing" title="Link to this heading">#</a></h3>
+<p>Process multiple datasets efficiently:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Example: Fit multiple Gaussian peaks</span>
+<span class="n">datasets</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="n">data1</span><span class="p">,</span><span class="w"> </span><span class="n">data2</span><span class="p">,</span><span class="w"> </span><span class="n">data3</span><span class="p">,</span><span class="w"> </span><span class="n">data4</span><span class="p">};</span><span class="w">  </span><span class="c">% Cell array of [x,y] data</span>
+<span class="n">fits</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">cell</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">datasets</span><span class="p">));</span>
+
+<span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span>
+<span class="w">    </span><span class="n">fits</span><span class="p">{</span><span class="nb">i</span><span class="p">}</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">GaussianFit1D</span><span class="p">(</span><span class="n">datasets</span><span class="p">{</span><span class="nb">i</span><span class="p">});</span>
+<span class="w">    </span><span class="n">fits</span><span class="p">{</span><span class="nb">i</span><span class="p">}.</span><span class="n">do</span><span class="p">();</span>
+<span class="k">end</span>
+
+<span class="c">% Extract all amplitudes</span>
+<span class="n">amplitudes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">cellfun</span><span class="p">(@(</span><span class="n">fit</span><span class="p">)</span><span class="w"> </span><span class="n">fit</span><span class="p">.</span><span class="n">Coefficient</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">fits</span><span class="p">);</span>
+
+<span class="c">% Plot all fits</span>
+<span class="nb">figure</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">fits</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="nb">i</span><span class="p">);</span>
+<span class="w">    </span><span class="n">fits</span><span class="p">{</span><span class="nb">i</span><span class="p">}.</span><span class="n">plot</span><span class="p">(</span><span class="nb">gca</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">    </span><span class="nb">title</span><span class="p">(</span><span class="nb">sprintf</span><span class="p">(</span><span class="s">&#39;Dataset %d&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">i</span><span class="p">));</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="integration-with-experimental-workflows">
+<h2>Integration with Experimental Workflows<a class="headerlink" href="#integration-with-experimental-workflows" title="Link to this heading">#</a></h2>
+<p>The FitData framework integrates seamlessly with the broader MuscleMuseum experimental ecosystem:</p>
+<section id="bec-experiment-analysis">
+<h3>BEC Experiment Analysis<a class="headerlink" href="#bec-experiment-analysis" title="Link to this heading">#</a></h3>
+<p>In BEC experiments, density fitting is automatically handled by the <a class="reference internal" href="../api/trial/DensityFit.html#DensityFit" title="DensityFit"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">DensityFit</span></code></a> class:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Example integration with BecExp</span>
+<span class="n">becExp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">BecExp</span><span class="p">(</span><span class="s">&quot;MyExperiment&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ConfigName&quot;</span><span class="p">);</span>
+<span class="n">becExp</span><span class="p">.</span><span class="n">run</span><span class="p">();</span><span class="w">  </span><span class="c">% Collect experimental data</span>
+
+<span class="c">% Automatic density fitting</span>
+<span class="n">densityFit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">DensityFit</span><span class="p">(</span><span class="n">becExp</span><span class="p">);</span>
+<span class="n">densityFit</span><span class="p">.</span><span class="n">FitMethod</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;GaussianFit1D&quot;</span><span class="p">;</span><span class="w">  </span><span class="c">% or &quot;BosonicGaussianFit1D&quot;</span>
+<span class="n">densityFit</span><span class="p">.</span><span class="n">buildFit</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">);</span><span class="w">  </span><span class="c">% Fit runs 1-10</span>
+
+<span class="c">% Access fit results for all runs</span>
+<span class="n">xSizes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">densityFit</span><span class="p">.</span><span class="n">getSigmaX</span><span class="p">();</span>
+<span class="n">ySizes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">densityFit</span><span class="p">.</span><span class="n">getSigmaY</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="custom-fit-development">
+<h2>Custom Fit Development<a class="headerlink" href="#custom-fit-development" title="Link to this heading">#</a></h2>
+<p>To create new fit types, inherit from <a class="reference internal" href="../api/math/FitData1D.html#FitData1D" title="FitData1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData1D</span></code></a> and implement the required abstract methods:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">classdef</span><span class="w"> </span><span class="n">MyCustomFit1D</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">FitData1D</span>
+<span class="w">    </span><span class="k">methods</span>
+<span class="w">        </span><span class="k">function</span><span class="w"> </span>obj<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">MyCustomFit1D</span><span class="p">(</span>rawData<span class="p">)</span>
+<span class="w">            </span><span class="n">obj</span><span class="p">@</span><span class="n">FitData1D</span><span class="p">(</span><span class="n">rawData</span><span class="p">);</span>
+<span class="w">        </span><span class="k">end</span>
+
+<span class="w">        </span><span class="k">function</span><span class="w"> </span><span class="nf">setFormula</span><span class="p">(</span>obj<span class="p">)</span>
+<span class="w">            </span><span class="c">% Define your custom fit function</span>
+<span class="w">            </span><span class="n">obj</span><span class="p">.</span><span class="n">Func</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">fittype</span><span class="p">(</span><span class="s">&#39;A*exp(-x/tau) + C&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="s">&#39;independent&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;x&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="s">&#39;coefficients&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s">&#39;A&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;tau&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;C&#39;</span><span class="p">});</span>
+<span class="w">        </span><span class="k">end</span>
+
+<span class="w">        </span><span class="k">function</span><span class="w"> </span><span class="nf">guessCoefficient</span><span class="p">(</span>obj<span class="p">)</span>
+<span class="w">            </span><span class="c">% Implement parameter estimation logic</span>
+<span class="w">            </span><span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">RawData</span><span class="p">(:,</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">            </span><span class="n">y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">RawData</span><span class="p">(:,</span><span class="mi">2</span><span class="p">);</span>
+
+<span class="w">            </span><span class="c">% Your estimation algorithm here</span>
+<span class="w">            </span><span class="n">A_guess</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+<span class="w">            </span><span class="n">tau_guess</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="w">            </span><span class="n">C_guess</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+
+<span class="w">            </span><span class="n">obj</span><span class="p">.</span><span class="n">StartPoint</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">A_guess</span><span class="p">,</span><span class="w"> </span><span class="n">tau_guess</span><span class="p">,</span><span class="w"> </span><span class="n">C_guess</span><span class="p">];</span>
+<span class="w">            </span><span class="n">obj</span><span class="p">.</span><span class="n">Lower</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)];</span>
+<span class="w">            </span><span class="n">obj</span><span class="p">.</span><span class="n">Upper</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">A_guess</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">tau_guess</span><span class="p">,</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)];</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading">#</a></h2>
+<p><strong>Data Quality</strong>
+- Ensure sufficient data points (at least 3× the number of fit parameters)
+- Remove obvious outliers before fitting
+- Consider data preprocessing (smoothing, baseline correction) for noisy data</p>
+<p><strong>Parameter Estimation</strong>
+- Start with automatic parameter estimation before using overrides
+- Use physical intuition to set reasonable parameter bounds
+- For oscillatory data, ensure sufficient sampling to resolve the frequency</p>
+<p><strong>Fit Validation</strong>
+- Always examine residuals and goodness-of-fit statistics
+- Use <span class="math notranslate nohighlight">\(R^2\)</span>, RMSE, and visual inspection to assess fit quality
+- Consider alternative fit functions if residuals show systematic patterns</p>
+<p><strong>Performance</strong>
+- For batch processing, consider parallel execution with MATLAB’s Parallel Computing Toolbox
+- Cache fit objects when processing similar datasets repeatedly
+- Use appropriate optimization tolerances (tighter for critical fits, looser for screening)</p>
+<p><strong>Error Handling</strong>
+- Implement try-catch blocks for automated fitting pipelines
+- Log failed fits for later manual inspection
+- Consider fallback fit types for robust automated analysis</p>
+<p>The FitData framework provides a powerful, extensible foundation for quantitative analysis in AMO physics experiments, combining ease of use with the flexibility needed for specialized applications.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="waveform.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Waveform and WaveformList</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="lasers_magnetic_fields.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Lasers and magnetic fields</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage-workflow">Basic Usage Workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-classes">Core Classes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fitdata-abstract-base">FitData (Abstract Base)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fitdata1d-abstract-base">FitData1D (Abstract Base)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#available-fit-types">Available Fit Types</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-and-polynomial-fits">Linear and Polynomial Fits</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-and-peak-fits">Gaussian and Peak Fits</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#oscillatory-fits">Oscillatory Fits</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specialized-physics-fits">Specialized Physics Fits</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-usage">Advanced Usage</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-override-system">Parameter Override System</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-settings">Optimization Settings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-processing">Batch Processing</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integration-with-experimental-workflows">Integration with Experimental Workflows</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bec-experiment-analysis">BEC Experiment Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-fit-development">Custom Fit Development</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Weld Lab
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Weld Lab.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

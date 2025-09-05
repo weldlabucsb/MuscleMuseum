@@ -1,48 +1,56 @@
 classdef AtomNumber < BecAnalysis
-    %OD Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`AtomNumber` compute and plot atom number components vs scan.
+    %
+    % Integrates AD density over ROI/sub-ROIs to obtain raw counts and, when
+    % density fits are available, separates thermal/condensate contributions.
+    % Supports normalized sub-ROI fractions and 1D/2D visualizations.
+    %
+    % **Associated Charts:**
+    %   - Chart(1): "Atom number" - Error bar plots of atom number vs parameter
     
     properties (SetAccess = protected)
-       Raw
-       Thermal
-       Condensate
+       Raw % Integrated atomic column density per run/subROI [m^{-2}]
+       Thermal % Thermal cloud component from density fits per run/subROI [m^{-2}]
+       Condensate % Condensate component from bimodal fits per run/subROI [m^{-2}]
     end
 
     properties (Dependent)
-        Total
+        Total % Total atom number as sum of thermal and condensate components [m^{-2}]
     end
 
     properties (Constant)
-        Unit = 10^6;
+        Unit = 10^6; % Display scale factor for atom number plots (millions of atoms)
     end
 
     properties (SetObservable)
-        YLim double = [0,30];
-        IsShowRaw logical = true;
-        IsShowThermal logical = true;
-        IsShowCondensate logical = true;
-        IsShowTotal logical = true;
+        YLim double = [0,30]; % Y-axis limits for 1D plots in units of :attr:`Unit` [millions]
+        IsShowRaw logical = true; % Flag to show/hide raw integrated atom number series
+        IsShowThermal logical = true; % Flag to show/hide thermal component series
+        IsShowCondensate logical = true; % Flag to show/hide condensate component series
+        IsShowTotal logical = true; % Flag to show/hide total atom number series
     end
 
     properties 
-        IsShowNormalized logical = true;
-        FitMethod string = "None"
-        FitDataRaw
-        FitDataThermal
-        FitDataCondensate
+        IsShowNormalized logical = true; % Flag to normalize sub-ROI fractions by total atom number
+        FitMethod string = "None" % Optional fit model name for atom number vs parameter trends
+        FitDataRaw % Fit object results for raw integrated atom number trends
+        FitDataThermal % Fit object results for thermal component trends
+        FitDataCondensate % Fit object results for condensate component trends
     end
 
     properties (Hidden,Transient)
-        RawLine matlab.graphics.chart.primitive.ErrorBar
-        ThermalLine matlab.graphics.chart.primitive.ErrorBar
-        CondensateLine matlab.graphics.chart.primitive.ErrorBar
-        TotalLine matlab.graphics.chart.primitive.ErrorBar
+        RawLine matlab.graphics.chart.primitive.ErrorBar % Errorbar plot handles for raw atom number series
+        ThermalLine matlab.graphics.chart.primitive.ErrorBar % Errorbar plot handles for thermal component series
+        CondensateLine matlab.graphics.chart.primitive.ErrorBar % Errorbar plot handles for condensate component series
+        TotalLine matlab.graphics.chart.primitive.ErrorBar % Errorbar plot handles for total atom number series
     end
     
     methods
         function obj = AtomNumber(becExp)
-            %OD Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct :class:`AtomNumber` analyzer.
+            %
+            % :param becExp: Owning experiment
+            % :type becExp: :class:`BecExp`
             obj@BecAnalysis(becExp)
             obj.Chart(1) = Chart(...
                 name = "Atom number",...
@@ -54,6 +62,7 @@ classdef AtomNumber < BecAnalysis
         end
         
         function initialize(obj)
+            % Initialize plots, listeners, and internal data containers.
             becExp = obj.BecExp;
             fig = obj.Chart(1).initialize;
             nSub = becExp.Roi.NSub;
@@ -203,6 +212,13 @@ classdef AtomNumber < BecAnalysis
         end
 
         function updateData(obj,runIdx)
+            % Compute atom number components for a given run.
+            %
+            % Integrates AD density over ROI or sub-ROIs and, if available,
+            % computes thermal contribution from :class:`DensityFit`.
+            %
+            % :param runIdx: Run index to process
+            % :type runIdx: double
             becExp = obj.BecExp;
             nSub = becExp.Roi.NSub;
             nSub(nSub == 0) = 1;
@@ -235,6 +251,7 @@ classdef AtomNumber < BecAnalysis
         end
 
         function updateFigure(obj,~)
+            % Update figure for 1D or 2D scans based on current data.
             if ishandle(obj.Chart(1).Figure)
                 fig = figure(obj.Chart(1).Figure);
             else
@@ -256,6 +273,13 @@ classdef AtomNumber < BecAnalysis
         end
         
         function updateFigure1D(obj, fig, nSub)
+            % Render 1D scan results with error bars.
+            %
+            % :param fig: Figure handle
+            % :type fig: matlab.ui.Figure
+            % :param nSub: Number of sub-ROIs
+            % :type nSub: double
+
             %% Parameters. Use sorted list for plotting
             becExp = obj.BecExp;
             varList = becExp.ScannedVariableList;
@@ -318,6 +342,13 @@ classdef AtomNumber < BecAnalysis
         end
         
         function updateFigure2D(obj, fig, nSub)
+            % Render 2D density plots of selected components.
+            %
+            % :param fig: Figure handle
+            % :type fig: matlab.ui.Figure
+            % :param nSub: Number of sub-ROIs
+            % :type nSub: double
+
             %% 2D density plot logic
             becExp = obj.BecExp;
             
@@ -374,12 +405,22 @@ classdef AtomNumber < BecAnalysis
         end
         
         function val = get.Total(obj)
+            % Dependent property: total atom number (thermal + condensate).
+            %
+            % :return: Total atom number array
+            % :rtype: double
             val = obj.Thermal + obj.Condensate;
         end
     end
 
     methods (Static)
         function handlePropEvents(src,evnt)
+            % Handle graphics updates when display properties change.
+            %
+            % :param src: Property metadata
+            % :type src: meta.property
+            % :param evnt: Event object carrying affected instance
+            % :type evnt: event.EventData
             obj = evnt.AffectedObject;
             if isempty(obj.Chart(1).Figure) || ~ishandle(obj.Chart(1).Figure)
                 return

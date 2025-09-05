@@ -1,4 +1,11 @@
 function d = strontiumDME
+% Compute reduced dipole matrix element for Sr blue line from lifetime.
+%
+% Uses literature lifetime to infer reduced DME and converts to atomic units,
+% then adjusts to Steck-like conventions via Wigner symbols.
+%
+% :return: Reduced dipole matrix element (atomic units)
+% :rtype: double
 arc = py.importlib.import_module('arc');
 l2 = 1;
 l1 = 0;

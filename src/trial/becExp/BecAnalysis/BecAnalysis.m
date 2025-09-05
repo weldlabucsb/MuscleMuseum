@@ -1,18 +1,36 @@
 classdef (Abstract) BecAnalysis < handle & matlab.mixin.SetGetExactNames
-    %BECANALYSIS Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`BecAnalysis` abstract base for BEC experiment analysis modules.
+    %
+    % Provides a common lifecycle API (:meth:`initialize`, :meth:`update`,
+    % :meth:`finalize`, :meth:`save`, :meth:`show`, :meth:`refresh`, :meth:`close`)
+    % and helpers for 2D scans (reshape, validation, axis data). Subclasses
+    % implement :meth:`updateData` and :meth:`updateFigure`.
+    %
+    % **Example:**
+    %
+    % .. code-block:: matlab
+    %
+    %    bx = BecExp("Test");
+    %    an = Od(bx);  % :class:`Od` is a :class:`BecAnalysis`
+    %    an.initialize();
+    %    an.update(1);
+    %    an.finalize();
 
     properties 
-        Chart Chart
-        Gui Gui
+        Chart Chart % One or more :class:`Chart` figure instances managed by this analysis module
+        Gui Gui % One or more :class:`Gui` panel or app instances managed by this analysis module
     end
     
     properties (SetAccess = protected)
-        BecExp BecExp
+        BecExp BecExp % Owning :class:`BecExp` trial instance that contains this analysis module
     end
     
     methods 
         function obj = BecAnalysis(becExp)
+            % Construct :class:`BecAnalysis` base analyzer.
+            %
+            % :param becExp: Owning experiment trial
+            % :type becExp: :class:`BecExp`
             obj.BecExp = becExp;
         end
     end
@@ -20,6 +38,10 @@ classdef (Abstract) BecAnalysis < handle & matlab.mixin.SetGetExactNames
     methods
         
         function initialize(obj)
+            % Initialize charts and GUI panels.
+            %
+            % Calls :meth:`Chart.initialize` and :meth:`Gui.initialize` for all
+            % registered objects.
             for ii = 1:numel(obj.Chart)
                 obj.Chart(ii).initialize;
             end
@@ -29,29 +51,56 @@ classdef (Abstract) BecAnalysis < handle & matlab.mixin.SetGetExactNames
         end
 
         function update(obj,runIdx)
+            % Process and render data for a specific run.
+            %
+            % :param runIdx: Run index to process
+            % :type runIdx: double
             obj.updateData(runIdx);
             obj.updateFigure(runIdx);
         end
 
         function updateData(obj,runIdx)
-            % Override in subclasses for specific data processing
+            % Override in subclasses for specific data processing.
+            %
+            % Implement analysis-specific data computation and storage in subclasses.
+            % This method is called for each new run to process raw data.
+            %
+            % :param runIdx: Run index to process
+            % :type runIdx: double
         end
 
         function updateFigure(obj,runIdx)
-            % Override in subclasses for specific plotting
+            % Override in subclasses for specific plotting and visualization.
+            %
+            % Implement analysis-specific figure updates in subclasses. This method
+            % is called after data processing to refresh visual displays.
+            %
+            % :param runIdx: Run index to render
+            % :type runIdx: double
         end
 
         function finalize(obj)
-            % Override in subclasses for final processing
+            % Override in subclasses for final processing after all runs.
+            %
+            % Implement any post-processing steps that require all run data
+            % to be available, such as final plots or summary calculations.
         end
 
         function save(obj)
+            % Save all charts associated with this analysis module.
+            %
+            % Calls the save method on each :class:`Chart` instance to persist
+            % figures to disk in the trial's analysis directory.
             for ii = 1:numel(obj.Chart)
                 obj.Chart(ii).save;
             end
         end
 
         function show(obj)
+            % Display GUI panels and chart windows.
+            %
+            % Initializes and shows all GUI panels and chart figures associated
+            % with this analysis module on the current monitor.
             for ii = 1:numel(obj.Gui)
                 obj.Gui(ii).initialize(obj.BecExp);
             end
@@ -61,6 +110,11 @@ classdef (Abstract) BecAnalysis < handle & matlab.mixin.SetGetExactNames
         end
         
         function browserShow(obj)
+            % Display charts and GUIs in browser-style layout across monitors.
+            %
+            % Arranges analysis windows on secondary monitor (if available) in
+            % browser-like tiled layout for multi-monitor workflows. Falls back
+            % to primary monitor if control panel is not running on secondary.
             mp = sortMonitor;
             monitorIndex = 1;
             if size(mp,1) > 1
@@ -82,6 +136,10 @@ classdef (Abstract) BecAnalysis < handle & matlab.mixin.SetGetExactNames
         end
 
         function refresh(obj)
+            % Recompute data for all runs and refresh visualization.
+            %
+            % Reinitializes the analysis, reprocesses all completed runs,
+            % updates figures with the latest run, and performs finalization.
             obj.initialize
             for runIdx = 1:obj.BecExp.NCompletedRun
                 obj.updateData(runIdx)
@@ -91,6 +149,13 @@ classdef (Abstract) BecAnalysis < handle & matlab.mixin.SetGetExactNames
         end
 
         function toggle(obj,isEnabled)
+            % Enable or disable all GUIs and charts in this analysis module.
+            %
+            % Controls the enabled state of all associated GUI panels and chart
+            % figures, affecting their visibility and interaction capabilities.
+            %
+            % :param isEnabled: Flag to enable (true) or disable (false) components
+            % :type isEnabled: logical
             for ii = 1:numel(obj.Gui)
                 obj.Gui(ii).IsEnabled = isEnabled;
             end
@@ -100,6 +165,10 @@ classdef (Abstract) BecAnalysis < handle & matlab.mixin.SetGetExactNames
         end
 
         function close(obj)
+            % Close all GUI panels and chart windows.
+            %
+            % Properly closes and cleans up all GUI panels and chart figures
+            % associated with this analysis module.
             for ii = 1:numel(obj.Gui)
                 obj.Gui(ii).close;
             end
@@ -113,15 +182,21 @@ classdef (Abstract) BecAnalysis < handle & matlab.mixin.SetGetExactNames
     methods (Access = protected)
         
         function data2D = reshapeDataTo2D(obj, data1D)
-            % Reshape 1D data to 2D grid based on parameter values
-            % Handles repeats by averaging data points with the same parameter combination
-            % Optimized version using vectorized operations
+            % Reshape 1D series to 2D grid using scanned parameters.
+            %
+            % Converts run-indexed data to a 2D parameter grid for 2D scans.
+            % Multiple measurements at the same parameter point are averaged.
+            %
+            % :param data1D: Vector of measurement values per run
+            % :type data1D: double
+            % :return: 2D matrix indexed by [secondary, primary] variables
+            % :rtype: double
             if ~obj.BecExp.Is2DScan
                 data2D = data1D;
                 return
             end
             
-            paraList = obj.BecExp.ScannedParameterList;
+            paraList = obj.BecExp.ScannedVariableList;
             if isempty(paraList) || size(paraList, 1) ~= 2
                 data2D = data1D;
                 return
@@ -157,14 +232,20 @@ classdef (Abstract) BecAnalysis < handle & matlab.mixin.SetGetExactNames
         end
         
         function [xData, yData] = get2DPlotData(obj)
-            % Get x and y data for 2D plots
+            % Get unique axis values for 2D parameter plots.
+            %
+            % Extracts sorted unique values for both scanned parameters
+            % to create axis arrays for 2D visualization.
+            %
+            % :return: Unique primary (x) and secondary (y) parameter values
+            % :rtype: double, double
             if ~obj.BecExp.Is2DScan
-                xData = obj.BecExp.ScannedParameterList;
+                xData = obj.BecExp.ScannedVariableList;
                 yData = [];
                 return
             end
             
-            paraList = obj.BecExp.ScannedParameterList;
+            paraList = obj.BecExp.ScannedVariableList;
             if isempty(paraList) || size(paraList, 1) ~= 2
                 xData = [];
                 yData = [];
@@ -179,13 +260,21 @@ classdef (Abstract) BecAnalysis < handle & matlab.mixin.SetGetExactNames
         end
         
         function isValid2D = validate2DData(obj, data1D)
-            % Validate that 2D data can be properly reshaped
+            % Validate grid completeness for 2D parameter scans.
+            %
+            % Checks if the data covers a complete rectangular grid in
+            % parameter space, which is required for proper 2D visualization.
+            %
+            % :param data1D: Vector of measurement values per run
+            % :type data1D: double
+            % :return: True if data covers a complete rectangular parameter grid
+            % :rtype: logical
             if ~obj.BecExp.Is2DScan
                 isValid2D = true;
                 return
             end
             
-            paraList = obj.BecExp.ScannedParameterList;
+            paraList = obj.BecExp.ScannedVariableList;
             if isempty(paraList) || size(paraList, 1) ~= 2
                 isValid2D = false;
                 return
@@ -208,16 +297,22 @@ classdef (Abstract) BecAnalysis < handle & matlab.mixin.SetGetExactNames
         end
         
         function [data2D, std2D] = reshapeDataTo2DWithStd(obj, data1D)
-            % Reshape 1D data to 2D grid with standard deviation for repeats
-            % Returns both the averaged data and the standard deviation
-            % Optimized version using vectorized operations
+            % Reshape 1D series to 2D grid with per-cell standard deviation.
+            %
+            % Converts run-indexed data to 2D parameter grid and computes
+            % standard deviation for repeated measurements at each grid point.
+            %
+            % :param data1D: Vector of measurement values per run
+            % :type data1D: double
+            % :return: Averaged 2D data matrix and corresponding standard deviation matrix
+            % :rtype: double, double
             if ~obj.BecExp.Is2DScan
                 data2D = data1D;
                 std2D = zeros(size(data1D));
                 return
             end
             
-            paraList = obj.BecExp.ScannedParameterList;
+            paraList = obj.BecExp.ScannedVariableList;
             if isempty(paraList) || size(paraList, 1) ~= 2
                 data2D = data1D;
                 std2D = zeros(size(data1D));

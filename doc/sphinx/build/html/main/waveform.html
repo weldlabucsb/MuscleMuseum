@@ -47,7 +47,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'main/waveform';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="API Documentation" href="../api/index.html" />
+    <link rel="next" title="Waveform Generator" href="waveform_generator.html" />
     <link rel="prev" title="Quick Start" href="../intro/quick.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -157,6 +157,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sup/support.html">Support</a></li>
 </ul>
@@ -372,10 +377,27 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#waveform">Waveform</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#periodicwaveform">PeriodicWaveform</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partialperiodicwaveform">PartialPeriodicWaveform</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modulatedwaveform">ModulatedWaveform</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#randomwaveform">RandomWaveform</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#periodicwaveform">PeriodicWaveform</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sinewave">SineWave</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#squarewave">SquareWave</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#constantwave">ConstantWave</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partialperiodicwaveform">PartialPeriodicWaveform</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#linearramp">LinearRamp</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#trapezoidalpulse">TrapezoidalPulse</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#smooth-transitions">Smooth Transitions</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modulatedwaveform">ModulatedWaveform</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sinewavemodulated">SineWaveModulated</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#randomwaveform">RandomWaveform</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniformrandom">UniformRandom</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussianrandom">GaussianRandom</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#waveformlist">WaveformList</a><ul class="nav section-nav flex-column">
@@ -443,24 +465,354 @@ Their inheritance relationship is shown in the following class diagram:</p>
 <img alt="../_images/waveform.svg" src="../_images/waveform.svg" />
 <section id="periodicwaveform">
 <h3>PeriodicWaveform<a class="headerlink" href="#periodicwaveform" title="Link to this heading">#</a></h3>
+<p>The <a class="reference internal" href="../api/math/PeriodicWaveform.html#PeriodicWaveform" title="PeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PeriodicWaveform</span></code></a> abstract class extends <a class="reference internal" href="../api/math/Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a> to provide specialized functionality for waveforms that repeat with a defined frequency and period. This class serves as the foundation for common periodic signals like sine waves, square waves, and other repeating patterns.</p>
+<p><strong>Key Properties:</strong></p>
+<ul class="simple">
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Amplitude</span></code>: Peak-to-peak amplitude, typically in Volts</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Offset</span></code>: DC offset value</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Frequency</span></code>: Repetition frequency <span class="math notranslate nohighlight">\(f\)</span> in Hz</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Phase</span></code>: Phase offset <span class="math notranslate nohighlight">\(\phi\)</span> in radians</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Period</span></code>: Time period <span class="math notranslate nohighlight">\(T = 1/f\)</span> of one complete cycle</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">NPeriod</span></code>: Number of complete periods in the waveform duration</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">NRepeat</span></code>: Number of times the cycle segment repeats</p></li>
+</ul>
+<p><strong>Concrete Implementations:</strong></p>
+<section id="sinewave">
+<h4>SineWave<a class="headerlink" href="#sinewave" title="Link to this heading">#</a></h4>
+<p>Generates sinusoidal waveforms with the mathematical form:</p>
+<div class="math notranslate nohighlight">
+\[f(t) = \mathbb{1}_{[t_0,t_0+T]}(t) \cdot \left(\frac{A}{2} \sin(2\pi f (t-t_0) + \phi) + \text{offset}\right)\]</div>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Basic sine wave</span>
+<span class="n">sine</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="n">sine</span><span class="p">.</span><span class="n">SamplingRate</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10000</span><span class="p">;</span>
+<span class="n">sine</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+
+<span class="c">% Sine wave with phase offset</span>
+<span class="n">sinePhase</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">phase</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">pi</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.02</span><span class="p">);</span>
+<span class="n">sinePhase</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="squarewave">
+<h4>SquareWave<a class="headerlink" href="#squarewave" title="Link to this heading">#</a></h4>
+<p>Generates square wave signals with configurable duty cycle:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Standard 50% duty cycle square wave</span>
+<span class="n">square</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SquareWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">3.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="n">square</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+
+<span class="c">% 25% duty cycle square wave for PWM applications</span>
+<span class="n">pwm</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SquareWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">5.0</span><span class="p">,</span><span class="w"> </span><span class="n">dutyCycle</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.25</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.02</span><span class="p">);</span>
+<span class="n">pwm</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="constantwave">
+<h4>ConstantWave<a class="headerlink" href="#constantwave" title="Link to this heading">#</a></h4>
+<p>Creates constant (DC) waveforms:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Simple constant voltage</span>
+<span class="n">constant</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ConstantWave</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.5</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="n">constant</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+
+<span class="c">% Constant with offset</span>
+<span class="n">constOffset</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ConstantWave</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">3.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.005</span><span class="p">);</span>
+<span class="n">constOffset</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Cycle-Based Optimization:</strong></p>
+<p>Periodic waveforms support hardware-optimized generation using cycle repetition:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">sine</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">);</span>
+<span class="n">sine</span><span class="p">.</span><span class="n">NPeriodPerCycle</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">  </span><span class="c">% Use 5 periods per hardware cycle</span>
+
+<span class="c">% Access cycle-based properties</span>
+<span class="n">oneCycle</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sine</span><span class="p">.</span><span class="n">SampleOneCycle</span><span class="p">;</span><span class="w">    </span><span class="c">% Samples for one cycle segment</span>
+<span class="n">nRepeats</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sine</span><span class="p">.</span><span class="n">NRepeat</span><span class="p">;</span><span class="w">           </span><span class="c">% Number of times to repeat the cycle</span>
+<span class="n">cycleDuration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sine</span><span class="p">.</span><span class="n">DurationOneCycle</span><span class="p">;</span><span class="w">  </span><span class="c">% Duration of one cycle segment</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="partialperiodicwaveform">
 <h3>PartialPeriodicWaveform<a class="headerlink" href="#partialperiodicwaveform" title="Link to this heading">#</a></h3>
+<p>The <a class="reference internal" href="../api/math/PartialPeriodicWaveform.html#PartialPeriodicWaveform" title="PartialPeriodicWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">PartialPeriodicWaveform</span></code></a> abstract class extends <a class="reference internal" href="../api/math/Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a> to handle waveforms that have periodic behavior during part of their duration, with additional non-periodic segments before and/or after the periodic section. This is particularly useful for ramps, pulses, and complex control sequences.</p>
+<p><strong>Key Features:</strong></p>
+<ul class="simple">
+<li><p><strong>Before segment</strong>: Non-periodic waveform before the periodic section</p></li>
+<li><p><strong>Periodic segment</strong>: Repeating waveform with defined cycles</p></li>
+<li><p><strong>After segment</strong>: Non-periodic waveform after the periodic section</p></li>
+<li><p><strong>Flexible transitions</strong>: Smooth connections between segments</p></li>
+</ul>
+<p><strong>Common Implementations:</strong></p>
+<section id="linearramp">
+<h4>LinearRamp<a class="headerlink" href="#linearramp" title="Link to this heading">#</a></h4>
+<p>Creates linear transitions between values:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Basic linear ramp from 0 to 5V over 10ms</span>
+<span class="n">ramp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">LinearRamp</span><span class="p">(</span><span class="n">startValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">stopValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">rampTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="n">ramp</span><span class="p">.</span><span class="n">SamplingRate</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10000</span><span class="p">;</span>
+<span class="n">ramp</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+
+<span class="c">% Negative ramp with longer duration</span>
+<span class="n">downRamp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">LinearRamp</span><span class="p">(</span><span class="n">startValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">stopValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">rampTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.02</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.05</span><span class="p">);</span>
+<span class="n">downRamp</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="trapezoidalpulse">
+<h4>TrapezoidalPulse<a class="headerlink" href="#trapezoidalpulse" title="Link to this heading">#</a></h4>
+<p>Generates trapezoidal pulses with configurable rise, hold, and fall times:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Trapezoidal pulse with 2ms rise, 5ms hold, 1ms fall</span>
+<span class="n">trapPulse</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">TrapezoidalPulse</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">3.0</span><span class="p">,</span><span class="w"> </span><span class="n">riseTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.002</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                             </span><span class="n">holdTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.005</span><span class="p">,</span><span class="w"> </span><span class="n">fallTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.001</span><span class="p">);</span>
+<span class="n">trapPulse</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="smooth-transitions">
+<h4>Smooth Transitions<a class="headerlink" href="#smooth-transitions" title="Link to this heading">#</a></h4>
+<p>For applications requiring smooth derivatives, several smooth transition classes are available:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Hyperbolic tangent pulse for smooth edges</span>
+<span class="n">tanhPulse</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">TanhPulse</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="n">riseTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.001</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                      </span><span class="n">holdTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">,</span><span class="w"> </span><span class="n">fallTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.001</span><span class="p">);</span>
+<span class="n">tanhPulse</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+
+<span class="c">% PCHIP (Piecewise Cubic Hermite) interpolated pulse</span>
+<span class="n">pchipPulse</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">PchipPulse</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">riseTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.002</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                        </span><span class="n">holdTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.008</span><span class="p">,</span><span class="w"> </span><span class="n">fallTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.002</span><span class="p">);</span>
+<span class="n">pchipPulse</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Segment Access:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">trapPulse</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">TrapezoidalPulse</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="n">riseTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.001</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                             </span><span class="n">holdTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.005</span><span class="p">,</span><span class="w"> </span><span class="n">fallTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.001</span><span class="p">);</span>
+
+<span class="c">% Access individual segments</span>
+<span class="n">beforeSamples</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">trapPulse</span><span class="p">.</span><span class="n">SampleBefore</span><span class="p">;</span><span class="w">    </span><span class="c">% Rise portion</span>
+<span class="n">cycleSamples</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">trapPulse</span><span class="p">.</span><span class="n">SampleOneCycle</span><span class="p">;</span><span class="w">   </span><span class="c">% Hold portion (periodic)</span>
+<span class="n">afterSamples</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">trapPulse</span><span class="p">.</span><span class="n">SampleAfter</span><span class="p">;</span><span class="w">      </span><span class="c">% Fall portion</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="modulatedwaveform">
 <h3>ModulatedWaveform<a class="headerlink" href="#modulatedwaveform" title="Link to this heading">#</a></h3>
+<p>The <a class="reference internal" href="../api/math/ModulatedWaveform.html#ModulatedWaveform" title="ModulatedWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">ModulatedWaveform</span></code></a> abstract class extends <a class="reference internal" href="../api/math/Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a> to provide advanced signal modulation capabilities. This class enables amplitude modulation (AM), frequency modulation (FM), and phase modulation (PM) using other waveforms as modulation sources.</p>
+<p><strong>Key Properties:</strong></p>
+<ul class="simple">
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">AmplitudeModulation</span></code>: Waveform for amplitude modulation</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">FrequencyModulation</span></code>: Waveform for frequency modulation</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">PhaseModulation</span></code>: Waveform for phase modulation</p></li>
+<li><p><strong>Carrier parameters</strong>: Base frequency, amplitude, and phase</p></li>
+</ul>
+<p><strong>Concrete Implementations:</strong></p>
+<section id="sinewavemodulated">
+<h4>SineWaveModulated<a class="headerlink" href="#sinewavemodulated" title="Link to this heading">#</a></h4>
+<p>Creates modulated sine waves with flexible modulation schemes:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Amplitude modulation example</span>
+<span class="n">carrier</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">);</span>
+<span class="n">modulator</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">);</span>
+
+<span class="n">amWave</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWaveModulated</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">);</span>
+<span class="n">amWave</span><span class="p">.</span><span class="n">AmplitudeModulation</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">WaveformList</span><span class="p">(</span><span class="s">&quot;AM_mod&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">waveformOrigin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="n">modulator</span><span class="p">});</span>
+<span class="n">amWave</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Frequency Modulation:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Frequency modulation for frequency sweeps</span>
+<span class="n">fmModulator</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">LinearRamp</span><span class="p">(</span><span class="n">startValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="o">-</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="n">stopValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="n">rampTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.05</span><span class="p">);</span>
+
+<span class="n">fmWave</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWaveModulated</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.05</span><span class="p">);</span>
+<span class="n">fmWave</span><span class="p">.</span><span class="n">FrequencyModulation</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">WaveformList</span><span class="p">(</span><span class="s">&quot;FM_mod&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">waveformOrigin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="n">fmModulator</span><span class="p">});</span>
+<span class="n">fmWave</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Combined Modulation:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Simultaneous AM and FM</span>
+<span class="n">ampMod</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.2</span><span class="p">);</span>
+<span class="n">freqMod</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.2</span><span class="p">);</span>
+
+<span class="n">complexWave</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWaveModulated</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.2</span><span class="p">);</span>
+<span class="n">complexWave</span><span class="p">.</span><span class="n">AmplitudeModulation</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">WaveformList</span><span class="p">(</span><span class="s">&quot;AM&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">waveformOrigin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="n">ampMod</span><span class="p">});</span>
+<span class="n">complexWave</span><span class="p">.</span><span class="n">FrequencyModulation</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">WaveformList</span><span class="p">(</span><span class="s">&quot;FM&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">waveformOrigin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="n">freqMod</span><span class="p">});</span>
+<span class="n">complexWave</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Applications:</strong></p>
+<ul class="simple">
+<li><p><strong>Chirped signals</strong>: For radar and sonar applications</p></li>
+<li><p><strong>Communication signals</strong>: AM/FM radio simulation</p></li>
+<li><p><strong>Control system testing</strong>: Variable frequency drive simulation</p></li>
+<li><p><strong>Spectroscopy</strong>: Frequency-modulated spectroscopy signals</p></li>
+</ul>
+</section>
 </section>
 <section id="randomwaveform">
 <h3>RandomWaveform<a class="headerlink" href="#randomwaveform" title="Link to this heading">#</a></h3>
+<p>The <a class="reference internal" href="../api/math/RandomWaveform.html#RandomWaveform" title="RandomWaveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">RandomWaveform</span></code></a> abstract class extends <a class="reference internal" href="../api/math/Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a> to provide random and pseudo-random signal generation capabilities. This is useful for noise generation, system testing, and stochastic signal simulation.</p>
+<p><strong>Concrete Implementations:</strong></p>
+<section id="uniformrandom">
+<h4>UniformRandom<a class="headerlink" href="#uniformrandom" title="Link to this heading">#</a></h4>
+<p>Generates uniformly distributed random values:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Uniform random noise between -1 and +1</span>
+<span class="n">uniformNoise</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">UniformRandom</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="n">uniformNoise</span><span class="p">.</span><span class="n">SamplingRate</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10000</span><span class="p">;</span>
+<span class="n">uniformNoise</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+
+<span class="c">% Offset uniform random signal</span>
+<span class="n">offsetUniform</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">UniformRandom</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.5</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.02</span><span class="p">);</span>
+<span class="n">offsetUniform</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="gaussianrandom">
+<h4>GaussianRandom<a class="headerlink" href="#gaussianrandom" title="Link to this heading">#</a></h4>
+<p>Generates normally distributed random values:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Gaussian white noise</span>
+<span class="n">gaussianNoise</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">GaussianRandom</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="n">gaussianNoise</span><span class="p">.</span><span class="n">SamplingRate</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">20000</span><span class="p">;</span>
+<span class="n">gaussianNoise</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+
+<span class="c">% Gaussian noise with DC offset</span>
+<span class="n">gaussianOffset</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">GaussianRandom</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.05</span><span class="p">);</span>
+<span class="n">gaussianOffset</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Applications:</strong></p>
+<ul class="simple">
+<li><p><strong>System testing</strong>: Adding noise to test signal processing algorithms</p></li>
+<li><p><strong>Channel simulation</strong>: Modeling communication channel noise</p></li>
+<li><p><strong>Monte Carlo methods</strong>: Random input generation for simulations</p></li>
+<li><p><strong>Dithering</strong>: Improving ADC/DAC performance with controlled noise</p></li>
+</ul>
+<p><strong>Random Seed Control:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Reproducible random sequences</span>
+<span class="nb">rng</span><span class="p">(</span><span class="mi">12345</span><span class="p">);</span><span class="w">  </span><span class="c">% Set random seed</span>
+<span class="n">noise1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">UniformRandom</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+
+<span class="nb">rng</span><span class="p">(</span><span class="mi">12345</span><span class="p">);</span><span class="w">  </span><span class="c">% Reset to same seed</span>
+<span class="n">noise2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">UniformRandom</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="c">% noise1 and noise2 will be identical</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 <section id="waveformlist">
 <h2>WaveformList<a class="headerlink" href="#waveformlist" title="Link to this heading">#</a></h2>
+<p>The <a class="reference internal" href="../api/math/WaveformList.html#WaveformList" title="WaveformList"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">WaveformList</span></code></a> class manages collections of waveforms to create complex sequences and combinations. It supports two primary modes of operation: sequential concatenation and simultaneous superposition of multiple waveforms.</p>
+<p><strong>Key Properties:</strong></p>
+<ul class="simple">
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">ConcatMethod</span></code>: “Sequential” or “Simultaneous” combination method</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">PatchMethod</span></code>: “Continue” or “Constant” for gap filling</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">WaveformOrigin</span></code>: Cell array of waveform objects to combine</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">SamplingRate</span></code>: Common sampling rate for all waveforms</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">IsTriggerAdvance</span></code>: Hardware trigger-advance mode support</p></li>
+</ul>
 <section id="sequential-waveformlist">
 <h3>Sequential WaveformList<a class="headerlink" href="#sequential-waveformlist" title="Link to this heading">#</a></h3>
+<p>Sequential mode concatenates waveforms one after another in time, creating a single composite waveform sequence.</p>
+<p><strong>Basic Sequential Combination:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Create individual waveforms</span>
+<span class="n">sine1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">);</span>
+<span class="n">const</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ConstantWave</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.5</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.005</span><span class="p">);</span>
+<span class="n">ramp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">LinearRamp</span><span class="p">(</span><span class="n">startValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">stopValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">rampTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.008</span><span class="p">);</span>
+
+<span class="c">% Combine sequentially</span>
+<span class="n">seqList</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">WaveformList</span><span class="p">(</span><span class="s">&quot;SequentialDemo&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                       </span><span class="n">concatMethod</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Sequential&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                       </span><span class="n">waveformOrigin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="n">sine1</span><span class="p">,</span><span class="w"> </span><span class="n">const</span><span class="p">,</span><span class="w"> </span><span class="n">ramp</span><span class="p">},</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                       </span><span class="n">samplingRate</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10000</span><span class="p">);</span>
+<span class="n">seqList</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Hardware-Optimized Sequences:</strong></p>
+<p>For efficient hardware generation, periodic waveforms can be optimized using cycle repetition:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Long sine wave optimized for hardware</span>
+<span class="n">longSine</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">);</span>
+
+<span class="n">seqOptimized</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">WaveformList</span><span class="p">(</span><span class="s">&quot;HardwareOptimized&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                            </span><span class="n">waveformOrigin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="n">longSine</span><span class="p">},</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                            </span><span class="n">nPeriodPerCycle</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                            </span><span class="n">isTriggerAdvance</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+
+<span class="c">% Access hardware-ready segments</span>
+<span class="n">preparedTable</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">seqOptimized</span><span class="p">.</span><span class="n">WaveformPrepared</span><span class="p">;</span>
+<span class="c">% Table contains: Sample, PlayMode, NRepeat columns</span>
+</pre></div>
+</div>
+<p><strong>Complex Control Sequences:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Multi-stage experimental sequence</span>
+<span class="n">initRamp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">LinearRamp</span><span class="p">(</span><span class="n">startValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">stopValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">rampTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">);</span>
+<span class="n">holdConst</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ConstantWave</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">5.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">);</span>
+<span class="n">modulated</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">);</span>
+<span class="n">finalRamp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">LinearRamp</span><span class="p">(</span><span class="n">startValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">stopValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">rampTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.2</span><span class="p">);</span>
+
+<span class="n">experiment</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">WaveformList</span><span class="p">(</span><span class="s">&quot;ExperimentSequence&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                          </span><span class="n">waveformOrigin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="n">initRamp</span><span class="p">,</span><span class="w"> </span><span class="n">holdConst</span><span class="p">,</span><span class="w"> </span><span class="n">modulated</span><span class="p">,</span><span class="w"> </span><span class="n">finalRamp</span><span class="p">},</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                          </span><span class="n">samplingRate</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">50000</span><span class="p">);</span>
+<span class="n">experiment</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
 </section>
 <section id="simultaneous-waveformlist">
 <h3>Simultaneous WaveformList<a class="headerlink" href="#simultaneous-waveformlist" title="Link to this heading">#</a></h3>
+<p>Simultaneous mode superimposes multiple waveforms that may have different timing, creating composite signals with overlapping components.</p>
+<p><strong>Basic Simultaneous Combination:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Overlapping waveforms with different start times</span>
+<span class="n">sine1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.02</span><span class="p">,</span><span class="w"> </span><span class="n">startTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="n">sine2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1500</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.015</span><span class="p">,</span><span class="w"> </span><span class="n">startTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.005</span><span class="p">);</span>
+<span class="n">pulse</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">TrapezoidalPulse</span><span class="p">(</span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="n">riseTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.001</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                         </span><span class="n">holdTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">,</span><span class="w"> </span><span class="n">fallTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.001</span><span class="p">,</span><span class="w"> </span><span class="n">startTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.008</span><span class="p">);</span>
+
+<span class="n">simultaneous</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">WaveformList</span><span class="p">(</span><span class="s">&quot;SimultaneousDemo&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                            </span><span class="n">concatMethod</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Simultaneous&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                            </span><span class="n">waveformOrigin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="n">sine1</span><span class="p">,</span><span class="w"> </span><span class="n">sine2</span><span class="p">,</span><span class="w"> </span><span class="n">pulse</span><span class="p">},</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                            </span><span class="n">samplingRate</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">20000</span><span class="p">);</span>
+<span class="n">simultaneous</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<p><strong>Gap Filling Options:</strong></p>
+<p>When waveforms don’t completely overlap, gaps can be handled in different ways:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Using constant gap filling</span>
+<span class="n">gapFilled</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">WaveformList</span><span class="p">(</span><span class="s">&quot;GapFilled&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                         </span><span class="n">concatMethod</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Simultaneous&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                         </span><span class="n">patchMethod</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Constant&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                         </span><span class="n">patchConstant</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                         </span><span class="n">waveformOrigin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="n">sine1</span><span class="p">,</span><span class="w"> </span><span class="n">sine2</span><span class="p">});</span>
+
+<span class="c">% Using continuation gap filling</span>
+<span class="n">continued</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">WaveformList</span><span class="p">(</span><span class="s">&quot;Continued&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                         </span><span class="n">concatMethod</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Simultaneous&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                         </span><span class="n">patchMethod</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Continue&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                         </span><span class="n">waveformOrigin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="n">sine1</span><span class="p">,</span><span class="w"> </span><span class="n">sine2</span><span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>Multi-Channel Applications:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Synchronized multi-channel output</span>
+<span class="n">channelA</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SineWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">);</span>
+<span class="n">channelB</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SquareWave</span><span class="p">(</span><span class="n">frequency</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="n">amplitude</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="nb">duration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">);</span>
+<span class="n">channelC</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">LinearRamp</span><span class="p">(</span><span class="n">startValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">stopValue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">rampTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">);</span>
+
+<span class="n">multiChannel</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">WaveformList</span><span class="p">(</span><span class="s">&quot;MultiChannel&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                            </span><span class="n">concatMethod</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Simultaneous&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                            </span><span class="n">waveformOrigin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="n">channelA</span><span class="p">,</span><span class="w"> </span><span class="n">channelB</span><span class="p">,</span><span class="w"> </span><span class="n">channelC</span><span class="p">});</span>
+
+<span class="c">% Generate synchronized samples for hardware output</span>
+<span class="n">samples</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">multiChannel</span><span class="p">.</span><span class="n">Sample</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Advanced Features:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Access time function for mathematical operations</span>
+<span class="n">timeFunc</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">simultaneous</span><span class="p">.</span><span class="n">TimeFunc</span><span class="p">();</span>
+<span class="n">t</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span><span class="mf">0.0001</span><span class="p">:</span><span class="mf">0.025</span><span class="p">;</span>
+<span class="nb">values</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">timeFunc</span><span class="p">(</span><span class="n">t</span><span class="p">);</span>
+
+<span class="c">% Hardware compatibility</span>
+<span class="n">preparedWaveforms</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">simultaneous</span><span class="p">.</span><span class="n">WaveformPrepared</span><span class="p">;</span>
+<span class="n">totalSamples</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">simultaneous</span><span class="p">.</span><span class="n">NSample</span><span class="p">;</span>
+
+<span class="c">% Plotting with automatic downsampling for large datasets</span>
+<span class="n">simultaneous</span><span class="p">.</span><span class="n">plot</span><span class="p">();</span><span class="w">  </span><span class="c">% Automatically handles large sample counts</span>
+</pre></div>
+</div>
 </section>
 </section>
 </section>
@@ -486,11 +838,11 @@ Their inheritance relationship is shown in the following class diagram:</p>
       </div>
     </a>
     <a class="right-next"
-       href="../api/index.html"
+       href="waveform_generator.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">API Documentation</p>
+        <p class="prev-next-title">Waveform Generator</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -511,10 +863,27 @@ Their inheritance relationship is shown in the following class diagram:</p>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#waveform">Waveform</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#periodicwaveform">PeriodicWaveform</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partialperiodicwaveform">PartialPeriodicWaveform</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modulatedwaveform">ModulatedWaveform</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#randomwaveform">RandomWaveform</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#periodicwaveform">PeriodicWaveform</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sinewave">SineWave</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#squarewave">SquareWave</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#constantwave">ConstantWave</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partialperiodicwaveform">PartialPeriodicWaveform</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#linearramp">LinearRamp</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#trapezoidalpulse">TrapezoidalPulse</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#smooth-transitions">Smooth Transitions</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modulatedwaveform">ModulatedWaveform</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sinewavemodulated">SineWaveModulated</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#randomwaveform">RandomWaveform</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniformrandom">UniformRandom</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussianrandom">GaussianRandom</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#waveformlist">WaveformList</a><ul class="nav section-nav flex-column">

@@ -43,6 +43,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/math/TriangleFit1D';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -156,54 +157,22 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../database/index.html">database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../field/index.html">field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">hardware</a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">math</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="BosonicBimodalFit1D.html">BosonicBimodalFit1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BosonicGaussianFit1D.html">BosonicGaussianFit1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ConstantTop.html">ConstantTop</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ConstantWave.html">ConstantWave</a></li>
-<li class="toctree-l3"><a class="reference internal" href="FitData.html">FitData</a></li>
-<li class="toctree-l3"><a class="reference internal" href="FitData1D.html">FitData1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="FitOverride.html">FitOverride</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GaussianFit1D.html">GaussianFit1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GaussianRandom.html">GaussianRandom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LinearFit1D.html">LinearFit1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LinearFrequencyRamp.html">LinearFrequencyRamp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LinearRamp.html">LinearRamp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ModulatedWaveform.html">ModulatedWaveform</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ParabolicFit1D.html">ParabolicFit1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="PartialPeriodicWaveform.html">PartialPeriodicWaveform</a></li>
-<li class="toctree-l3"><a class="reference internal" href="PchipSinePulse.html">PchipSinePulse</a></li>
-<li class="toctree-l3"><a class="reference internal" href="PeriodicWaveform.html">PeriodicWaveform</a></li>
-<li class="toctree-l3"><a class="reference internal" href="RandomWaveform.html">RandomWaveform</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Roi.html">Roi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SineFit1D.html">SineFit1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SineWave.html">SineWave</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SineWaveModulated.html">SineWaveModulated</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SqrtParabolicFit1D.html">SqrtParabolicFit1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SquareWave.html">SquareWave</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TanhSinePulse.html">TanhSinePulse</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TrapezoidalPulse.html">TrapezoidalPulse</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TrapezoidalSinePulse.html">TrapezoidalSinePulse</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">TriangleFit1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="UniformRandom.html">UniformRandom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Waveform.html">Waveform</a></li>
-<li class="toctree-l3"><a class="reference internal" href="WaveformEditor.html">WaveformEditor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="WaveformList.html">WaveformList</a></li>
-<li class="toctree-l3"><a class="reference internal" href="WaveformListEditor.html">WaveformListEditor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getAllFitData.html">getAllFitData</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getAllFitData1D.html">getAllFitData1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getAllWaveform.html">getAllWaveform</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -432,6 +401,16 @@ document.write(`
 <p>Fits a triangle wave function with customizable rise and fall times to
 experimental data. The function consists of linear rise and fall segments
 with specified period and phase.</p>
+<ul>
+<li><p><strong>Formula</strong>:</p>
+<p><span class="math notranslate nohighlight">\(u = (x + \phi) \bmod T\)</span></p>
+<p><span class="math notranslate nohighlight">\(y(u) = \begin{cases}
+A_{\min} + (A_{\max} - A_{\min})\, \dfrac{u}{T_r}, &amp; 0 \le u &lt; T_r \\
+A_{\max} - (A_{\max} - A_{\min})\, \dfrac{u - T_r}{T - T_r}, &amp; T_r \le u &lt; T
+\end{cases}\)</span></p>
+</li>
+<li><p><strong>Coefficients</strong>: <span class="math notranslate nohighlight">\(A_{\max}\)</span>, <span class="math notranslate nohighlight">\(A_{\min}\)</span>, <span class="math notranslate nohighlight">\(\phi\)</span>, <span class="math notranslate nohighlight">\(T\)</span>, <span class="math notranslate nohighlight">\(T_r\)</span></p></li>
+</ul>
 <p><strong>Example1:</strong></p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Fit triangle wave to experimental data</span>
 <span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">);</span>
@@ -484,9 +463,6 @@ based on data characteristics and zero-crossing analysis.</p>
 <dt class="sig sig-object mat" id="TriangleFit1D.setFormula">
 <span class="sig-name descname"><span class="pre">setFormula</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TriangleFit1D.setFormula" title="Link to this definition">#</a></dt>
 <dd><p>Set the triangle wave fit formula.</p>
-<p>Formula: Piecewise linear function with rise and fall segments
-Parameters: Amax (max amplitude), Amin (min amplitude), phi (phase),
-T (period), Tr (rise time)</p>
 </dd></dl>
 
 </dd>

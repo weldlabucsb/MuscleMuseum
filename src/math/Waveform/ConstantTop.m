@@ -18,7 +18,7 @@ classdef (Abstract) ConstantTop < handle
     % .. code-block:: matlab
     %
     %     % Create a constant-top sine pulse
-    %     pulse = SinePulse(amplitude = 1.0, frequency = 1000, duration = 0.01);
+    %     pulse = TrapezoidalSinePulse(amplitude = 1.0, frequency = 1000, duration = 0.01);
     %     pulse.plot();
     
     properties

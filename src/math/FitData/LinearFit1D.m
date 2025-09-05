@@ -1,8 +1,11 @@
 classdef LinearFit1D < FitData1D
     % Linear function fit for one-dimensional data.
     %
-    % Fits a linear function of the form y = ax + b to experimental data.
+    % Fits a linear function of the form :math:`y = a\,x + b` to experimental data.
     % Uses MATLAB's built-in poly1 fit type for efficient linear regression.
+    %
+    % - **Formula**: :math:`y = a\,x + b`
+    % - **Coefficients**: :math:`a` (slope), :math:`b` (intercept)
     %
     % **Example1:**
     %
@@ -38,21 +41,11 @@ classdef LinearFit1D < FitData1D
             % :param rawData: Input data as n x 2 matrix [x, y]
             % :type rawData: double array
             %
-            % **Example:**
-            %
-            % .. code-block:: matlab
-            %
-            %     data = [1:10; randn(1,10)].';
-            %     linearFit = LinearFit1D(data);
-            %
             obj@FitData1D(rawData)
         end
         
         function setFormula(obj)
             % Set the linear fit formula.
-            %
-            % Formula: y = ax + b (poly1)
-            % Parameters: a (slope), b (intercept)
             %
             obj.Func = fittype('poly1');
         end

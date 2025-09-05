@@ -1,8 +1,9 @@
 classdef Alkali < Atom
-    %:class:`Alkali` deals with Alkali atoms' data and calculations. When
-    %constructed, it calculates some :class:`AtomManifold` and transition
-    %properties, e.g. D1, D2 structures, Cycling and repumping transition
-    %prameters.
+    %:class:`Alkali` utilities for alkali atoms and D-line transitions.
+    %
+    % On construction, computes D1/D2 manifolds, ground/excited :class:`AtomManifold`
+    % objects, and key transition properties (cycling/repump frequencies,
+    % saturation intensities, and cross-sections).
     
     properties(SetAccess=protected)
         D1 TwoJManifold % Alkali D1 manifold: :math:`(L=0,J=1/2) \leftrightarrow (L=1,J=1/2)`.
@@ -25,6 +26,11 @@ classdef Alkali < Atom
     
     methods
         function obj = Alkali(atomName)
+            % Construct an :class:`Alkali` atom and compute D-line manifolds.
+            %
+            % :param atomName: Atom/isotope name (ARC-known), e.g., "Lithium7"
+            % :type atomName: string
+
             %% Set atomic properties
             obj@Atom(atomName)
             if obj.Type ~= "Alkali"

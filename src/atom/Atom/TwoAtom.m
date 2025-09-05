@@ -1,14 +1,22 @@
 classdef TwoAtom
-    %:class:`TwoAtom` coupled two-atom helper with separate manifolds.
+    %:class:`TwoAtom` helper for coupled atoms with separate manifolds.
+    %
+    % **Examples:**
+    %
+    % .. code-block:: matlab
+    %
+    %    % Example1: Two rubidium atoms, D2 manifolds
+    %    T = TwoAtom("Rubidium87","Rubidium87","D2","D2");
+    %    H = T.HamiltonianAtom();
     
     properties (SetAccess = protected)
-        Atom1
-        Atom2
+        Atom1 % First :class:`Atom` instance
+        Atom2 % Second :class:`Atom` instance
     end
 
     properties
-        Manifold1
-        Manifold2
+        Manifold1 % Manifold of atom1 (e.g., :class:`OneJManifold`, :class:`TwoJManifold`)
+        Manifold2 % Manifold of atom2 (e.g., :class:`OneJManifold`, :class:`TwoJManifold`)
     end
     
     methods
@@ -19,9 +27,9 @@ classdef TwoAtom
             % :type atomName1: string
             % :param atomName2: Second atom name
             % :type atomName2: string
-            % :param manifoldName1: Optional manifold property name for atom1
+            % :param manifoldName1: Manifold property name for atom1
             % :type manifoldName1: string, optional
-            % :param manifoldName2: Optional manifold property name for atom2
+            % :param manifoldName2: Manifold property name for atom2
             % :type manifoldName2: string, optional
             arguments
                 atomName1 string
@@ -40,13 +48,17 @@ classdef TwoAtom
         end
         
         function Ha = HamiltonianAtom(obj,fRot,U)
-            % Build two-atom Hamiltonian (sum) at rotation frequency :math:`f_\mathrm{rot}`.
+            % Build two-atom Hamiltonian (block-sum) at rotation frequency :math:`f_\mathrm{rot}`.
+            %
+            % .. math::
+            %
+            %    H = H_1 \otimes I_2 + I_1 \otimes H_2
             %
             % :param fRot: Rotation frequency [Hz]
             % :type fRot: double, optional
-            % :param U: Optional basis transform
+            % :param U: Basis transform
             % :type U: double matrix, optional
-            % :return: Block-sum Hamiltonian :math:`H_1 \oplus H_2`
+            % :return: Two-atom Hamiltonian [Hz] (Kronecker-sum form)
             % :rtype: double matrix
             arguments
                 obj TwoAtom

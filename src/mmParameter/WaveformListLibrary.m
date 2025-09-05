@@ -1,9 +1,68 @@
 classdef WaveformListLibrary < MmParameter
-    %:class:`VariableList` stores named scalar variables and expressions.
+    %:class:`WaveformListLibrary` stores named :class:`WaveformList` presets.
     %
-    % Each row defines :attr:`Name`, numeric :attr:`Value`, a reference
-    % :attr:`List` name, an :attr:`Equation` string and its evaluated
-    % :attr:`EquationValue` for caching.
+    % Each row defines a waveform list preset with sampling rate and list-level
+    % behaviors such as concatenation and patching methods, and holds
+    % :attr:`WaveformOrigin` IDs pointing into :class:`WaveformLibrary`.
+    %
+    % **Schema (columns, types, defaults):**
+    %
+    % .. list-table::
+    %    :widths: 30 18 28
+    %    :header-rows: 1
+    %
+    %    * - Column
+    %      - Type
+    %      - Default
+    %    * - Name
+    %      - string
+    %      - DefaultWaveformList
+    %    * - SamplingRate
+    %      - double
+    %      - 1000
+    %    * - ConcatMethod
+    %      - string
+    %      - Sequential
+    %    * - PatchMethod
+    %      - string
+    %      - Continue
+    %    * - PatchConstant
+    %      - double
+    %      - 0
+    %    * - IsTriggerAdvance
+    %      - logical
+    %      - 0
+    %    * - NPeriodPerCycle
+    %      - double
+    %      - 10
+    %    * - WaveformOrigin
+    %      - doubleMatrix
+    %      - []
+    %
+    % **Foreign keys:**
+    %
+    % (none)
+    %
+    % **Join conditions:**
+    %
+    % (none)
+    %
+    % **Flags:**
+    %
+    % .. list-table::
+    %    :widths: 38 14
+    %    :header-rows: 1
+    %
+    %    * - Property
+    %      - Value
+    %    * - IsIncludeDefaultEntry
+    %      - false
+    %    * - IsFirstColumnUnique
+    %      - true
+    %    * - IsTriggerJoinOnRight
+    %      - false
+    %    * - IsTriggerJoinOnLeft
+    %      - false
 
     properties
 
@@ -40,7 +99,17 @@ classdef WaveformListLibrary < MmParameter
         end
 
         function wfl = loadEntry(obj,nameOrID)
-            % Load a WaveformList object from the database
+            % Load a :class:`WaveformList` object from the database.
+            %
+            % Resolves by numeric ``ID`` or string ``Name`` and constructs a
+            % :class:`WaveformList` with its :attr:`WaveformOrigin` items
+            % instantiated from :class:`WaveformLibrary`. Remaining properties
+            % are copied from the row.
+            %
+            % :param nameOrID: Row ID or logical name
+            % :type nameOrID: double or string
+            % :return: Loaded waveform list (empty if not found)
+            % :rtype: :class:`WaveformList`
             if isnumeric(nameOrID)
                 wflPara = obj.readEntry(nameOrID);
             else
@@ -50,7 +119,7 @@ classdef WaveformListLibrary < MmParameter
                 wfl = WaveformList.empty;
                 return
             end
-            % Read and load WavformOrigin fomr WaveformLibrary
+            % Read and load :attr:`WaveformOrigin` from :class:`WaveformLibrary`
             p = WaveformLibrary;
             wfo = arrayfun(@(x) p.loadEntry(x),wflPara.WaveformOrigin,'UniformOutput',false);
             wfl = WaveformList(wflPara.Name,waveformOrigin=wfo);
@@ -64,7 +133,15 @@ classdef WaveformListLibrary < MmParameter
         end
 
         function wflID = saveEntry(obj,wfl)
-            % Save a WaveformList object into the database
+            % Save a :class:`WaveformList` object into the database.
+            %
+            % Upserts the list row by ``Name`` and synchronizes
+            % :attr:`WaveformOrigin` children in :class:`WaveformLibrary`.
+            %
+            % :param wfl: Waveform list to persist
+            % :type wfl: :class:`WaveformList`
+            % :return: Row ID of the waveform list
+            % :rtype: double
             arguments
                 obj
                 wfl WaveformList
@@ -82,7 +159,7 @@ classdef WaveformListLibrary < MmParameter
                 return
             end
 
-            % Update WaveformLibrary
+            % Update :class:`WaveformLibrary`
             p = WaveformLibrary;
             if ~isempty(wfo)
                 p.deleteEntry(wfo)
@@ -95,6 +172,16 @@ classdef WaveformListLibrary < MmParameter
         end
 
         function wflID = duplicateEntry(obj,keyColumnValue,name,keyColumnName)
+            % Duplicate a row and its :attr:`WaveformOrigin` subtree.
+            %
+            % :param keyColumnValue: Source row key value
+            % :type keyColumnValue: double
+            % :param name: New ``Name`` for the duplicated list
+            % :type name: string
+            % :param keyColumnName: Key column name (default ``ID``)
+            % :type keyColumnName: string, optional
+            % :return: New row ID of the duplicated list
+            % :rtype: double
             arguments
                 obj
                 keyColumnValue (1,1) %Key column value. Can be an array
@@ -105,7 +192,7 @@ classdef WaveformListLibrary < MmParameter
                 obj.throwError("The keyColumnName does not match any database table column name.")
             end
 
-            % Duplicate the entry in WaveformListLibrary
+            % Duplicate the entry in :class:`WaveformListLibrary`
             s = obj.readEntry(keyColumnValue,keyColumnName,true);
             if ~isempty(name)
                 s.(obj.FirstColumn) = name;
@@ -116,7 +203,7 @@ classdef WaveformListLibrary < MmParameter
             wflID = obj.getLastID;
             wfo = s.WaveformOrigin;
 
-            % Write WaveformOrigin into WaveformLibrary
+            % Write :attr:`WaveformOrigin` into :class:`WaveformLibrary`
             p = WaveformLibrary;
             wfID = zeros(1,numel(wfo));
             for ii = 1:numel(wfo)

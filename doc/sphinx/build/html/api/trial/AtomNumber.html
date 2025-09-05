@@ -46,7 +46,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/trial/AtomNumber';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="BecAnalysis" href="BecAnalysis.html" />
+    <link rel="next" title="AtomPreviewer" href="AtomPreviewer.html" />
     <link rel="prev" title="AdPreviewer" href="AdPreviewer.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -156,6 +156,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
@@ -165,86 +172,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">trial</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="Ad.html">Ad</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AdPreviewer.html">AdPreviewer</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">AtomNumber</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecAnalysis.html">BecAnalysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecBrowser.html">BecBrowser</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecControlPanel.html">BecControlPanel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecExp.html">BecExp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="CenterFit.html">CenterFit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="DensityFit.html">DensityFit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="DensityFitDisplay.html">DensityFitDisplay</a></li>
-<li class="toctree-l3"><a class="reference internal" href="DiffusionProfile.html">DiffusionProfile</a></li>
-<li class="toctree-l3"><a class="reference internal" href="FokkerPlanck.html">FokkerPlanck</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ForceProfile.html">ForceProfile</a></li>
-<li class="toctree-l3"><a class="reference internal" href="FringeRemoval.html">FringeRemoval</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GPE.html">GPE</a></li>
-<li class="toctree-l3"><a class="reference internal" href="HardwareAssociation.html">HardwareAssociation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Imaging.html">Imaging</a></li>
-<li class="toctree-l3"><a class="reference internal" href="InitialCondition.html">InitialCondition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="KapitzaDirac.html">KapitzaDirac</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LatticeFourierSeSim1D.html">LatticeFourierSeSim1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LatticeFourierSeSim1DRun.html">LatticeFourierSeSim1DRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LatticeSeSim1D.html">LatticeSeSim1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="MeSim.html">MeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="MeSimRun.html">MeSimRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Od.html">Od</a></li>
-<li class="toctree-l3"><a class="reference internal" href="OdPreviewer.html">OdPreviewer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ScopeValue.html">ScopeValue</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SeSim1D.html">SeSim1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SeSim1DRun.html">SeSim1DRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Sim.html">Sim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SimRun.html">SimRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SpaceSim.html">SpaceSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SpaceSimRun.html">SpaceSimRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SpaceTimeSim.html">SpaceTimeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TimeSim.html">TimeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TimeSimRun.html">TimeSimRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Tof.html">Tof</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Trial.html">Trial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="absorption2Od.html">absorption2Od</a></li>
-<li class="toctree-l3"><a class="reference internal" href="acceleration.html">acceleration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="angdist.html">angdist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cgcoefficient.html">cgcoefficient</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cmd_rmdir.html">cmd_rmdir</a></li>
-<li class="toctree-l3"><a class="reference internal" href="computeAbsorption.html">computeAbsorption</a></li>
-<li class="toctree-l3"><a class="reference internal" href="computeFloquetHamiltonian.html">computeFloquetHamiltonian</a></li>
-<li class="toctree-l3"><a class="reference internal" href="convertidx.html">convertidx</a></li>
-<li class="toctree-l3"><a class="reference internal" href="decompfactor.html">decompfactor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deleteBecExp.html">deleteBecExp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deleteMeSim.html">deleteMeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deleteTrial.html">deleteTrial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="diffu.html">diffu</a></li>
-<li class="toctree-l3"><a class="reference internal" href="fixPhase.html">fixPhase</a></li>
-<li class="toctree-l3"><a class="reference internal" href="fixPhase2.html">fixPhase2</a></li>
-<li class="toctree-l3"><a class="reference internal" href="fluxdist.html">fluxdist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="force.html">force</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gaussian_gen.html">gaussian_gen</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gaussian_grad.html">gaussian_grad</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gaussian_prof.html">gaussian_prof</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gaussiantr.html">gaussiantr</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gfactor.html">gfactor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="hamiltonian_al.html">hamiltonian_al</a></li>
-<li class="toctree-l3"><a class="reference internal" href="hamiltonian_al_a.html">hamiltonian_al_a</a></li>
-<li class="toctree-l3"><a class="reference internal" href="histoplot.html">histoplot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadBecExp.html">loadBecExp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadMeSim.html">loadMeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadTrial.html">loadTrial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pinky.html">pinky</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rabi.html">rabi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rabiMatrix.html">rabiMatrix</a></li>
-<li class="toctree-l3"><a class="reference internal" href="randpdf.html">randpdf</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rhodot.html">rhodot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rhodot_a.html">rhodot_a</a></li>
-<li class="toctree-l3"><a class="reference internal" href="runLocalTest.html">runLocalTest</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so3.html">so3</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sortBecAnalysis.html">sortBecAnalysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="wignersixj.html">wignersixj</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">trial</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../sup/support.html">Support</a></li>
@@ -468,124 +396,186 @@ document.write(`
 <dt class="sig sig-object mat" id="AtomNumber">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">AtomNumber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/BecAnalysis/AtomNumber.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#AtomNumber" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="BecAnalysis.html#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
-<p>OD Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#AtomNumber" title="AtomNumber"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">AtomNumber</span></code></a> compute and plot atom number components vs scan.</p>
+<p>Integrates AD density over ROI/sub-ROIs to obtain raw counts and, when
+density fits are available, separates thermal/condensate contributions.
+Supports normalized sub-ROI fractions and 1D/2D visualizations.</p>
+<dl class="simple">
+<dt><strong>Associated Charts:</strong></dt><dd><ul class="simple">
+<li><p>Chart(1): “Atom number” - Error bar plots of atom number vs parameter</p></li>
+</ul>
+</dd>
+</dl>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="AtomNumber.AtomNumber">
 <span class="sig-name descname"><span class="pre">AtomNumber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AtomNumber.AtomNumber" title="Link to this definition">#</a></dt>
-<dd><p>OD Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct <a class="reference internal" href="#AtomNumber" title="AtomNumber"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">AtomNumber</span></code></a> analyzer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>becExp</strong> (<a class="reference internal" href="BecExp.html#BecExp" title="BecExp"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecExp</span></code></a>) – Owning experiment</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomNumber.Condensate">
 <span class="sig-name descname"><span class="pre">Condensate</span></span><a class="headerlink" href="#AtomNumber.Condensate" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Condensate component from bimodal fits per run/subROI [m^{-2}]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomNumber.FitDataCondensate">
 <span class="sig-name descname"><span class="pre">FitDataCondensate</span></span><a class="headerlink" href="#AtomNumber.FitDataCondensate" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Fit object results for condensate component trends</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomNumber.FitDataRaw">
 <span class="sig-name descname"><span class="pre">FitDataRaw</span></span><a class="headerlink" href="#AtomNumber.FitDataRaw" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Fit object results for raw integrated atom number trends</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomNumber.FitDataThermal">
 <span class="sig-name descname"><span class="pre">FitDataThermal</span></span><a class="headerlink" href="#AtomNumber.FitDataThermal" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Fit object results for thermal component trends</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomNumber.FitMethod">
 <span class="sig-name descname"><span class="pre">FitMethod</span></span><em class="property"> <span class="pre">string</span> <span class="pre">=</span> <span class="pre">&quot;None&quot;</span></em><a class="headerlink" href="#AtomNumber.FitMethod" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Optional fit model name for atom number vs parameter trends</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomNumber.IsShowCondensate">
 <span class="sig-name descname"><span class="pre">IsShowCondensate</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">true</span></em><a class="headerlink" href="#AtomNumber.IsShowCondensate" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Flag to show/hide condensate component series</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomNumber.IsShowNormalized">
 <span class="sig-name descname"><span class="pre">IsShowNormalized</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">true</span></em><a class="headerlink" href="#AtomNumber.IsShowNormalized" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Flag to normalize sub-ROI fractions by total atom number</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomNumber.IsShowRaw">
 <span class="sig-name descname"><span class="pre">IsShowRaw</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">true</span></em><a class="headerlink" href="#AtomNumber.IsShowRaw" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Flag to show/hide raw integrated atom number series</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomNumber.IsShowThermal">
 <span class="sig-name descname"><span class="pre">IsShowThermal</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">true</span></em><a class="headerlink" href="#AtomNumber.IsShowThermal" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Flag to show/hide thermal component series</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomNumber.IsShowTotal">
 <span class="sig-name descname"><span class="pre">IsShowTotal</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">true</span></em><a class="headerlink" href="#AtomNumber.IsShowTotal" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Flag to show/hide total atom number series</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomNumber.Raw">
 <span class="sig-name descname"><span class="pre">Raw</span></span><a class="headerlink" href="#AtomNumber.Raw" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Integrated atomic column density per run/subROI [m^{-2}]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomNumber.Thermal">
 <span class="sig-name descname"><span class="pre">Thermal</span></span><a class="headerlink" href="#AtomNumber.Thermal" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Thermal cloud component from density fits per run/subROI [m^{-2}]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomNumber.Total">
 <span class="sig-name descname"><span class="pre">Total</span></span><a class="headerlink" href="#AtomNumber.Total" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Total atom number as sum of thermal and condensate components [m^{-2}]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomNumber.Unit">
 <span class="sig-name descname"><span class="pre">Unit</span></span><em class="property"> <span class="pre">=</span> <span class="pre">10^6</span></em><a class="headerlink" href="#AtomNumber.Unit" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Display scale factor for atom number plots (millions of atoms)</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomNumber.YLim">
 <span class="sig-name descname"><span class="pre">YLim</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[0,30]</span></em><a class="headerlink" href="#AtomNumber.YLim" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Y-axis limits for 1D plots in units of <a class="reference internal" href="#AtomNumber.Unit" title="AtomNumber.Unit"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Unit</span></code></a> [millions]</p>
+</dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat staticmethod">
 <dt class="sig sig-object mat" id="AtomNumber.handlePropEvents">
 <em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">handlePropEvents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">src</span></em>, <em class="sig-param"><span class="pre">evnt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AtomNumber.handlePropEvents" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Handle graphics updates when display properties change.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">meta.property</span></code></span>) – Property metadata</p></li>
+<li><p><strong>evnt</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">event.EventData</span></code></span>) – Event object carrying affected instance</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="AtomNumber.initialize">
 <span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AtomNumber.initialize" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Initialize plots, listeners, and internal data containers.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="AtomNumber.updateData">
 <span class="sig-name descname"><span class="pre">updateData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AtomNumber.updateData" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Compute atom number components for a given run.</p>
+<p>Integrates AD density over ROI or sub-ROIs and, if available,
+computes thermal contribution from <a class="reference internal" href="DensityFit.html#DensityFit" title="DensityFit"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">DensityFit</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>runIdx</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Run index to process</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="AtomNumber.updateFigure">
 <span class="sig-name descname"><span class="pre">updateFigure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">~</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AtomNumber.updateFigure" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Update figure for 1D or 2D scans based on current data.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="AtomNumber.updateFigure1D">
 <span class="sig-name descname"><span class="pre">updateFigure1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fig</span></em>, <em class="sig-param"><span class="pre">nSub</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AtomNumber.updateFigure1D" title="Link to this definition">#</a></dt>
-<dd><p>Parameters. Use sorted list for plotting</p>
+<dd><p>Render 1D scan results with error bars.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fig</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">matlab.ui.Figure</span></code></span>) – Figure handle</p></li>
+<li><p><strong>nSub</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Number of sub-ROIs</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="AtomNumber.updateFigure2D">
 <span class="sig-name descname"><span class="pre">updateFigure2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fig</span></em>, <em class="sig-param"><span class="pre">nSub</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AtomNumber.updateFigure2D" title="Link to this definition">#</a></dt>
-<dd><p>2D density plot logic</p>
+<dd><p>Render 2D density plots of selected components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fig</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">matlab.ui.Figure</span></code></span>) – Figure handle</p></li>
+<li><p><strong>nSub</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Number of sub-ROIs</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>
@@ -616,11 +606,11 @@ Detailed explanation goes here</p>
       </div>
     </a>
     <a class="right-next"
-       href="BecAnalysis.html"
+       href="AtomPreviewer.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">BecAnalysis</p>
+        <p class="prev-next-title">AtomPreviewer</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

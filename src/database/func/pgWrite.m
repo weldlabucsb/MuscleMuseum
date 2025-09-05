@@ -1,31 +1,32 @@
 function pgWrite(conn,tableName,data,varargin)
 % Write a MATLAB table to a PostgreSQL database table, adding columns if needed.
 %
-% :param conn: Open database connection
-% :type conn: database.relational.connection
-% :param tableName: Target table name
-% :type tableName: string | char
-% :param data: MATLAB table to write
+% Enhanced version of MATLAB's ``sqlwrite`` that handles vector-valued columns
+% and automatically adds missing columns to the database table with appropriate
+% array types (numeric[], int[], text[]).
+%
+% :param conn: Open PostgreSQL database connection
+% :type conn: database.postgre.connection
+% :param tableName: Target database table name
+% :type tableName: string
+% :param data: MATLAB table to write to database
 % :type data: table
-% :param isForceArray: Force new columns to be arrays when adding
+% :param isForceArray: Force new columns to be created as array types (default: false)
 % :type isForceArray: logical, optional
 %
 % **Notes:**
 %
-%     - Extra variables in ``data`` that do not exist in the DB table are added with inferred types.
-%     - Vector-valued cells can be mapped to array column types (numeric[]/int[]/text[]).
-%     - This function is adapted from MATLAB's ``sqlwrite`` to handle vector columns.
-%PGWRITE Write a MATLAB table to a postgresql database table
-%pgWrite(conn,tableName,data)
-%   
-%   conn: connection to pg database
-%   tableName: database table name
-%   data: input MATLAB table
-%   isForceArray: force to create new columns as arrays
-%   Writes a MATLAB table to a database table. Modified from matlab
-%   function <sqlwrite>. This function can handle vectors in the input
-%   table. Extra columns in data that are not in the database table will be
-%   created in the database table.
+%     - Extra variables in ``data`` that do not exist in the DB table are automatically added.
+%     - Vector-valued cells are mapped to PostgreSQL array column types (numeric[], int[], text[]).
+%     - Column names are case-sensitive and quoted for PostgreSQL compatibility.
+%
+% **Example:**
+%
+% .. code-block:: matlab
+%
+%    conn = createWriter("myDatabase");
+%    data = table([1; 2], ["a"; "b"], VariableNames=["id", "name"]);
+%    pgWrite(conn, "myTable", data);
 
 %Parse inputs
 p = inputParser;

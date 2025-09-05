@@ -1,28 +1,55 @@
 classdef OneJManifold < AtomManifold
-    %TWOJ Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`OneJManifold` single-:math:`J` hyperfine manifold (:math:`F,M_F`).
+    %
+    % Builds the :attr:`StateList` with energies, :math:`g`-factors and labels,
+    % and provides spin operators and Zeeman Hamiltonians.
+    %
+    % **Examples:**
+    %
+    % .. code-block:: matlab
+    %
+    %    % Example1: Use prebuilt manifold from an Alkali atom
+    %    alk = Alkali("Rubidium87");
+    %    mani = alk.DGround;                 % :class:`OneJManifold` for ground state
+    %    B   = MagneticField(bias=[0;0;1e-4]);
+    %    Hz  = mani.HamiltonianAtomBiasField(B); % Zeeman Hamiltonian [Hz]
+    %
+    % .. code-block:: matlab
+    %
+    %    % Example2: Construct directly with (n,L,J)
+    %    alk = Alkali("Rubidium87");
+    %    mani = OneJManifold(alk, n=alk.groundStateN, l=0, j=1/2);
+    %    Ha   = mani.HamiltonianAtom();      % Diagonal hyperfine Hamiltonian
 
     properties (SetAccess = protected)
-        N int32
-        L int32
-        J double
-        F double
-        MF double
-        HFSCoefficient %[A,B]
-        Energy double
-        LandegJ double
-        LandegI double
-        LandegF double
-        StateList table
-        JOperator cell
-        IOperator cell
-        FOperator cell
+        N int32 % Principal quantum number
+        L int32 % Orbital angular momentum :math:`L`
+        J double % Total electronic angular momentum :math:`J`
+        F double % Hyperfine :math:`F` values
+        MF double % Magnetic sublevels :math:`M_F`
+        HFSCoefficient %[A,B] hyperfine coefficients (Hz)
+        Energy double % Hyperfine energy shifts [Hz]
+        LandegJ double % Landé :math:`g_J`
+        LandegI double % Nuclear :math:`g_I`
+        LandegF double % Landé :math:`g_F` per :math:`F`
+        StateList table % Basis state table with labels
+        JOperator cell % Electronic spin operators :math:`J_{x,y,z}`
+        IOperator cell % Nuclear spin operators :math:`I_{x,y,z}`
+        FOperator cell % Hyperfine spin operators :math:`F_{x,y,z}`
     end
 
     methods
         function obj = OneJManifold(atom,n,l,j)
-            %TWOJ Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`OneJManifold`.
+            %
+            % :param atom: Atom context
+            % :type atom: :class:`Atom`
+            % :param n: Principal quantum number
+            % :type n: int32
+            % :param l: Orbital angular momentum
+            % :type l: int32
+            % :param j: Total electronic angular momentum
+            % :type j: double
 
             %% Set quantum numbers N,L,J
             obj@AtomManifold(atom)
@@ -117,6 +144,19 @@ classdef OneJManifold < AtomManifold
         end
 
         function Ha = HamiltonianAtom(obj,U)
+            % Diagonal hyperfine Hamiltonian; applies optional basis change.
+            %
+            % :param obj: Hyperfine manifold object.
+            % :type obj: :class:`OneJManifold`
+            % :param U: Basis-change unitary. Use 1 to keep current basis.
+            % :type U: double optional
+            % :returns: Ha — atomic Hamiltonian [Hz].
+            % :rtype: double
+            %
+            % .. math::
+            %
+            %    H_a = U^\dagger \operatorname{diag}(E)\, U
+            %
             arguments
                 obj OneJManifold
                 U double = 1
@@ -129,6 +169,21 @@ classdef OneJManifold < AtomManifold
         end
 
         function Ham = HamiltonianAtomBiasField(obj,B,U)
+            % Zeeman Hamiltonian in a static bias field.
+            %
+            % :param obj: Hyperfine manifold object.
+            % :type obj: :class:`OneJManifold`
+            % :param B: Magnetic field [T].
+            % :type B: :class:`MagneticField`
+            % :param U: Basis-change unitary. Use 1 to keep current basis.
+            % :type U: double optional
+            % :returns: Ham — Zeeman Hamiltonian [Hz].
+            % :rtype: double
+            %
+            % .. math::
+            %
+            %    H_Z = \mu_B \big( g_J \mathbf{J} + g_I \mathbf{I} \big) \cdot \mathbf{B} / h
+            %
              arguments
                 obj OneJManifold
                 B MagneticField
@@ -145,6 +200,22 @@ classdef OneJManifold < AtomManifold
         end
 
         function [dressedStateList,U,brMap] = BiasDressedStateList(obj,B,isPlot,options)
+            % Compute bias-field dressed states and optional dispersion map.
+            %
+            % :param obj: Hyperfine manifold object.
+            % :type obj: :class:`OneJManifold`
+            % :param B: Bias magnetic field [T], aligned with quantization axis.
+            % :type B: :class:`MagneticField`
+            % :param isPlot: Plot dressed energies vs bias field.
+            % :type isPlot: logical optional
+            % :param samplingSize: Number of samples along B.
+            % :type samplingSize: double optional
+            % :returns:
+            %   - dressedStateList — table with indices, energies, dressed states
+            %   - U — unitary to the dressed basis
+            %   - brMap — {Bz [T], eigenvalue matrix [Hz]}
+            % :rtype: table, double, cell
+            %
             arguments
                 obj OneJManifold
                 B MagneticField
@@ -213,6 +284,19 @@ classdef OneJManifold < AtomManifold
             end
         end
         function [dressedStateList,U] = BiasDressedStateListTest(obj,B,isPlot)
+            % Test variant of bias-field dressed states (alternate indexing).
+            %
+            % :param obj: Hyperfine manifold object.
+            % :type obj: :class:`OneJManifold`
+            % :param B: Bias magnetic field [T], aligned with quantization axis.
+            % :type B: :class:`MagneticField`
+            % :param isPlot: Plot dressed energies vs bias field.
+            % :type isPlot: logical optional
+            % :returns:
+            %   - dressedStateList — table with indices, energies, dressed states
+            %   - U — unitary to the dressed basis
+            % :rtype: table, double
+            %
             arguments
                 obj OneJManifold
                 B MagneticField
@@ -272,6 +356,15 @@ classdef OneJManifold < AtomManifold
             end
         end
         function mimjList = getMIMJ(obj,isPlot)
+            % Map zero-field states to uncoupled projections (M_I, M_J) by adiabatic following.
+            %
+            % :param obj: Hyperfine manifold object.
+            % :type obj: :class:`OneJManifold`
+            % :param isPlot: Plot energies and labels with (M_I, M_J).
+            % :type isPlot: logical optional
+            % :returns: mimjList — table with columns MI and MJ per basis state.
+            % :rtype: table
+            %
             arguments
                 obj OneJManifold
                 isPlot logical = false

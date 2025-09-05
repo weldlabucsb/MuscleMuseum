@@ -43,6 +43,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/atom/uncoupledSpinMatrices';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -156,30 +157,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">atom</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="Alkali.html">Alkali</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Atom.html">Atom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AtomManifold.html">AtomManifold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Divalent.html">Divalent</a></li>
-<li class="toctree-l3"><a class="reference internal" href="OneFManifold.html">OneFManifold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="OneJManifold.html">OneJManifold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TwoAtom.html">TwoAtom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TwoJManifold.html">TwoJManifold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TwoJManifoldDivalent.html">TwoJManifoldDivalent</a></li>
-<li class="toctree-l3"><a class="reference internal" href="angularMomentumList.html">angularMomentumList</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getAtom.html">getAtom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lithiumDME.html">lithiumDME</a></li>
-<li class="toctree-l3"><a class="reference internal" href="magneticAngularMomentum.html">magneticAngularMomentum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="saveAtom.html">saveAtom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="spinMatrices.html">spinMatrices</a></li>
-<li class="toctree-l3"><a class="reference internal" href="strontiumDME.html">strontiumDME</a></li>
-<li class="toctree-l3"><a class="reference internal" href="totalAngularMomentum.html">totalAngularMomentum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="uncoupledSpinBasis.html">uncoupledSpinBasis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="uncoupledSpinBasisTransformation.html">uncoupledSpinBasisTransformation</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">uncoupledSpinMatrices</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../database/index.html">database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../field/index.html">field</a></li>
@@ -187,7 +173,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -411,8 +396,21 @@ document.write(`
 <dl class="mat function">
 <dt class="sig sig-object mat" id="uncoupledSpinMatrices">
 <span class="sig-name descname"><span class="pre">uncoupledSpinMatrices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">j1</span></em>, <em class="sig-param"><span class="pre">j2</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/func/uncoupledSpinMatrices.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#uncoupledSpinMatrices" title="Link to this definition">#</a></dt>
-<dd><p>j1 and j2 couple to get j3. Get the uncoupled angular
-momentum spin matrices under the j3 basis</p>
+<dd><p>Build uncoupled spin operators <span class="math notranslate nohighlight">\(\mathbf{J}_1,\mathbf{J}_2\)</span> in the coupled basis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>j1</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – First total spin <span class="math notranslate nohighlight">\(j_1\)</span></p></li>
+<li><p><strong>j2</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Second total spin <span class="math notranslate nohighlight">\(j_2\)</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Cells of 3 matrices for each spin (x,y,z) in the <span class="math notranslate nohighlight">\(|j,m\rangle\)</span> basis</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>cell, cell</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

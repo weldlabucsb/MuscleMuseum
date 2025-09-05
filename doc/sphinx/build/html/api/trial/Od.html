@@ -43,6 +43,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/trial/Od';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -156,6 +157,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
@@ -165,86 +173,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">trial</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="Ad.html">Ad</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AdPreviewer.html">AdPreviewer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AtomNumber.html">AtomNumber</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecAnalysis.html">BecAnalysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecBrowser.html">BecBrowser</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecControlPanel.html">BecControlPanel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecExp.html">BecExp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="CenterFit.html">CenterFit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="DensityFit.html">DensityFit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="DensityFitDisplay.html">DensityFitDisplay</a></li>
-<li class="toctree-l3"><a class="reference internal" href="DiffusionProfile.html">DiffusionProfile</a></li>
-<li class="toctree-l3"><a class="reference internal" href="FokkerPlanck.html">FokkerPlanck</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ForceProfile.html">ForceProfile</a></li>
-<li class="toctree-l3"><a class="reference internal" href="FringeRemoval.html">FringeRemoval</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GPE.html">GPE</a></li>
-<li class="toctree-l3"><a class="reference internal" href="HardwareAssociation.html">HardwareAssociation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Imaging.html">Imaging</a></li>
-<li class="toctree-l3"><a class="reference internal" href="InitialCondition.html">InitialCondition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="KapitzaDirac.html">KapitzaDirac</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LatticeFourierSeSim1D.html">LatticeFourierSeSim1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LatticeFourierSeSim1DRun.html">LatticeFourierSeSim1DRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LatticeSeSim1D.html">LatticeSeSim1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="MeSim.html">MeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="MeSimRun.html">MeSimRun</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Od</a></li>
-<li class="toctree-l3"><a class="reference internal" href="OdPreviewer.html">OdPreviewer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ScopeValue.html">ScopeValue</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SeSim1D.html">SeSim1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SeSim1DRun.html">SeSim1DRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Sim.html">Sim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SimRun.html">SimRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SpaceSim.html">SpaceSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SpaceSimRun.html">SpaceSimRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SpaceTimeSim.html">SpaceTimeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TimeSim.html">TimeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TimeSimRun.html">TimeSimRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Tof.html">Tof</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Trial.html">Trial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="absorption2Od.html">absorption2Od</a></li>
-<li class="toctree-l3"><a class="reference internal" href="acceleration.html">acceleration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="angdist.html">angdist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cgcoefficient.html">cgcoefficient</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cmd_rmdir.html">cmd_rmdir</a></li>
-<li class="toctree-l3"><a class="reference internal" href="computeAbsorption.html">computeAbsorption</a></li>
-<li class="toctree-l3"><a class="reference internal" href="computeFloquetHamiltonian.html">computeFloquetHamiltonian</a></li>
-<li class="toctree-l3"><a class="reference internal" href="convertidx.html">convertidx</a></li>
-<li class="toctree-l3"><a class="reference internal" href="decompfactor.html">decompfactor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deleteBecExp.html">deleteBecExp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deleteMeSim.html">deleteMeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deleteTrial.html">deleteTrial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="diffu.html">diffu</a></li>
-<li class="toctree-l3"><a class="reference internal" href="fixPhase.html">fixPhase</a></li>
-<li class="toctree-l3"><a class="reference internal" href="fixPhase2.html">fixPhase2</a></li>
-<li class="toctree-l3"><a class="reference internal" href="fluxdist.html">fluxdist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="force.html">force</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gaussian_gen.html">gaussian_gen</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gaussian_grad.html">gaussian_grad</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gaussian_prof.html">gaussian_prof</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gaussiantr.html">gaussiantr</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gfactor.html">gfactor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="hamiltonian_al.html">hamiltonian_al</a></li>
-<li class="toctree-l3"><a class="reference internal" href="hamiltonian_al_a.html">hamiltonian_al_a</a></li>
-<li class="toctree-l3"><a class="reference internal" href="histoplot.html">histoplot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadBecExp.html">loadBecExp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadMeSim.html">loadMeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadTrial.html">loadTrial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pinky.html">pinky</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rabi.html">rabi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rabiMatrix.html">rabiMatrix</a></li>
-<li class="toctree-l3"><a class="reference internal" href="randpdf.html">randpdf</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rhodot.html">rhodot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rhodot_a.html">rhodot_a</a></li>
-<li class="toctree-l3"><a class="reference internal" href="runLocalTest.html">runLocalTest</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so3.html">so3</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sortBecAnalysis.html">sortBecAnalysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="wignersixj.html">wignersixj</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">trial</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../sup/support.html">Support</a></li>
@@ -468,126 +397,190 @@ document.write(`
 <dt class="sig sig-object mat" id="Od">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Od</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/BecAnalysis/Od.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Od" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="BecAnalysis.html#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
-<p>OD Calculate and plot optical depth
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#Od" title="Od"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Od</span></code></a> compute optical depth (OD) and related plots per run.</p>
+<p>Reads ROI images (atom/light/dark), computes absorption and OD, applies
+optional fringe removal, and renders OD mix and GIF animations. Also
+stores background-subtracted light for downstream imaging analysis.</p>
+<dl class="simple">
+<dt><strong>Associated Charts:</strong></dt><dd><ul class="simple">
+<li><p>Chart(1): “OdMix” - Horizontal mosaic or 2D density plot of OD</p></li>
+<li><p>Chart(2): “OdAnimation” - Animated GIF showing OD evolution</p></li>
+</ul>
+</dd>
+<dt><strong>Associated GUIs:</strong></dt><dd><ul class="simple">
+<li><p>Gui(1): “FringeRemoval” - Interface for fringe removal configuration</p></li>
+</ul>
+</dd>
+</dl>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Od.Od">
 <span class="sig-name descname"><span class="pre">Od</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Od.Od" title="Link to this definition">#</a></dt>
-<dd><p>OD Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct <a class="reference internal" href="#Od" title="Od"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Od</span></code></a> analyzer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>becExp</strong> (<a class="reference internal" href="BecExp.html#BecExp" title="BecExp"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecExp</span></code></a>) – Owning experiment</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="Od.CLim">
 <span class="sig-name descname"><span class="pre">CLim</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[0,4]</span></em><a class="headerlink" href="#Od.CLim" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Color axis limits for optical depth plots [OD_min, OD_max]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Od.CameraLightData">
 <span class="sig-name descname"><span class="pre">CameraLightData</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Od.CameraLightData" title="Link to this definition">#</a></dt>
-<dd><p>For calculating cross section. Background subtracted. Fringe removed.</p>
+<dd><p>Background-subtracted light images after fringe removal processing</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Od.Colormap">
 <span class="sig-name descname"><span class="pre">Colormap</span></span><em class="property"> <span class="pre">=</span> <span class="pre">jet</span></em><a class="headerlink" href="#Od.Colormap" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Colormap function handle for optical depth visualization</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Od.FringeRemovalMask">
 <span class="sig-name descname"><span class="pre">FringeRemovalMask</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Od.FringeRemovalMask" title="Link to this definition">#</a></dt>
-<dd><p>2*N array. First column is y coordinate. Second column is x coordinate.</p>
+<dd><p>Background region coordinates as 2×N matrix [<span class="math notranslate nohighlight">\(y\)</span>; <span class="math notranslate nohighlight">\(x\)</span>] in pixels</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Od.FringeRemovalMethod">
 <span class="sig-name descname"><span class="pre">FringeRemovalMethod</span></span><em class="property"> <span class="pre">string</span> <span class="pre">=</span> <span class="pre">&quot;LSR&quot;</span></em><a class="headerlink" href="#Od.FringeRemovalMethod" title="Link to this definition">#</a></dt>
-<dd><p>Least square regression</p>
+<dd><p>Fringe removal algorithm: “LSR” (least squares regression) or “None”</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Od.ImageRatio">
 <span class="sig-name descname"><span class="pre">ImageRatio</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Od.ImageRatio" title="Link to this definition">#</a></dt>
-<dd><p>Calculated Ratio of post-subtracted Atom and Light Imaging for PCI</p>
+<dd><p>Atom-to-light intensity ratio <span class="math notranslate nohighlight">\(I_\mathrm{atom}/I_\mathrm{light}\)</span> for phase contrast imaging</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Od.OdData">
 <span class="sig-name descname"><span class="pre">OdData</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Od.OdData" title="Link to this definition">#</a></dt>
-<dd><p>Calculated OdData</p>
+<dd><p>Optical depth maps <span class="math notranslate nohighlight">\(\mathrm{OD} = -\ln(I_\mathrm{atom}/I_\mathrm{light})\)</span> per run</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Od.RoiData">
 <span class="sig-name descname"><span class="pre">RoiData</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Od.RoiData" title="Link to this definition">#</a></dt>
-<dd><p>Raw RoiData, including atom/light/dark.</p>
+<dd><p>Raw ROI image stack with shape (<span class="math notranslate nohighlight">\(N_y\)</span>, <span class="math notranslate nohighlight">\(N_x\)</span>, <span class="math notranslate nohighlight">\(N_\mathrm{run}\)</span>, [atom, light, dark])</p>
 </dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Od.doFringeRemoval">
 <span class="sig-name descname"><span class="pre">doFringeRemoval</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Od.doFringeRemoval" title="Link to this definition">#</a></dt>
-<dd><p>First calculate atom and light with background subtraction</p>
+<dd><p>Perform optional fringe removal and update processed data.</p>
+<p>Applies fringe removal algorithm (if configured) to reduce systematic
+intensity variations. Updates optical depth, image ratio, and camera
+light data with the corrected values.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Od.finalize">
 <span class="sig-name descname"><span class="pre">finalize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Od.finalize" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Apply fringe removal and generate final OD visualizations.</p>
+<p>Performs fringe removal processing (if configured), then creates
+the OD mosaic plot and animated GIF showing temporal evolution.</p>
+</dd></dl>
 
 <dl class="mat staticmethod">
 <dt class="sig sig-object mat" id="Od.handlePropEvents">
 <em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">handlePropEvents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">src</span></em>, <em class="sig-param"><span class="pre">evnt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Od.handlePropEvents" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Listener callback to propagate CLim changes.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Od.initialize">
 <span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Od.initialize" title="Link to this definition">#</a></dt>
-<dd><p>Initialize matrices</p>
+<dd><p>Initialize internal data arrays and property change listeners.</p>
+<p>Sets up storage arrays for ROI data, optical depth maps, image ratios,
+and processed light images. Establishes listener for color limit changes.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Od.plotOdAnimation">
 <span class="sig-name descname"><span class="pre">plotOdAnimation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Od.plotOdAnimation" title="Link to this definition">#</a></dt>
-<dd><p>Initialize figure</p>
+<dd><p>Generate animated GIF showing OD evolution across parameter values.</p>
+<p>Creates an animated visualization with the main OD image and
+cross-sectional profiles, stepping through parameter values
+to show temporal or parametric evolution.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Od.plotOdMix">
 <span class="sig-name descname"><span class="pre">plotOdMix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Od.plotOdMix" title="Link to this definition">#</a></dt>
-<dd><p>Initialize figure</p>
+<dd><p>Generate OD mosaic plot for 1D scans or 2D parameter map.</p>
+<p>Creates either a horizontal mosaic of OD images (for 1D parameter
+scans) or a 2D density map (for 2D parameter scans) showing the
+spatial distribution of optical depth.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Od.plotOdMix1D">
 <span class="sig-name descname"><span class="pre">plotOdMix1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fig</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Od.plotOdMix1D" title="Link to this definition">#</a></dt>
-<dd><p>1D plotting logic (original implementation)
-BecExp parameters</p>
+<dd><p>Create horizontal mosaic of OD images for 1D parameter scans.</p>
+<p>Concatenates OD images from all runs side-by-side, sorted by
+parameter value, with proper axis labeling and colorbar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fig</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">matlab.ui.Figure</span></code></span>) – Target figure handle</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Od.plotOdMix2D">
 <span class="sig-name descname"><span class="pre">plotOdMix2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fig</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Od.plotOdMix2D" title="Link to this definition">#</a></dt>
-<dd><p>2D plotting logic</p>
+<dd><p>Create 2D parameter density map from OD data.</p>
+<p>Generates a 2D density plot showing OD variation across the
+two-dimensional parameter space, using a representative slice
+through the ROI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fig</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">matlab.ui.Figure</span></code></span>) – Target figure handle</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Od.refresh">
 <span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Od.refresh" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Reload all ROI data from disk and regenerate OD analysis.</p>
+<p>Clears temporary data, reloads all run images from disk, and
+recomputes the complete OD analysis including fringe removal
+and visualization.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Od.show">
 <span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Od.show" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Display OD mosaic and animation charts with property listeners.</p>
+<p>Makes the OD visualization charts visible and establishes property
+change listeners for real-time color limit updates.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Od.update">
 <span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Od.update" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Read run data and compute optical depth without fringe removal.</p>
+<p>Loads raw images for the specified run, computes optical depth using
+the absorption-to-OD conversion, and updates camera light data for
+downstream analysis modules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>runIdx</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Run index to process</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd>
 </dl>

@@ -1,6 +1,20 @@
 function deleteBecExp(serialNumber,isForceDelete)
-%LOADBECEX Summary of this function goes here
-%   Detailed explanation goes here
+% Delete a :class:`BecExp` trial from the database (and optionally files).
+%
+% Removes the database entry for a given trial serial number. When
+% ``isForceDelete`` is true, also deletes associated folders/files as
+% defined by the trial deletion routine.
+%
+% :param serialNumber: Trial serial identifier
+% :type serialNumber: double|string
+% :param isForceDelete: Also remove associated files/folders (default: false)
+% :type isForceDelete: logical, optional
+%
+% **Example:**
+%
+% .. code-block:: matlab
+%
+%    deleteBecExp(1234, true);
 arguments
     serialNumber
     isForceDelete = false

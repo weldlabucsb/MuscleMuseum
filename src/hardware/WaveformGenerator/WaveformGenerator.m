@@ -1,67 +1,34 @@
 classdef (Abstract) WaveformGenerator < Hardware
-    %:class:`WaveformGenerator` abstract base for arbitrary waveform generators.
+    %:class:`WaveformGenerator` abstract base for arbitrary waveform generators (AWGs).
     %
-    % Defines common properties (:attr:`SamplingRate`, :attr:`TriggerSource`,
-    % :attr:`TriggerSlope`, :attr:`OutputMode`, :attr:`IsOutput`, :attr:`OutputLoad`,
-    % :attr:`WaveformList`, :attr:`OutputLimit`) and abstract methods for device
-    % control (:meth:`connect`, :meth:`set`, :meth:`upload`, :meth:`close`, :meth:`check`).
+    % Provides common configuration for sampling, triggering, output mode/load,
+    % and per-channel waveform lists. Subclasses (e.g., :class:`KeysightWaveformGenerator`,
+    % :class:`SpectrumWaveformGenerator`) implement vendor-specific SCPI/driver logic.
     %
-    % Concrete subclasses (e.g., :class:`KeysightWaveformGenerator`) implement the
-    % hardware-specific logic.
-    %Generalized class for AWGs, with some additional parameters and
-    %generic functions defined.
-    %Properties:
-    %
-    %       SamplingRate: sample rate of waveform to be uploaded
-    %       TriggerSource: String that describes the trigger used for the
-    %       waveform, can be 'External', 'Software', or 'Immediate'.
-    %       Default is 'External'
-    %       TriggerSlope: Whether trigger happens on rise or fall of pulse,
-    %       options are 'Rise' and 'Fall', default 'Rise'
-    %       OutputMode: Tells whether the AWG outputs the full waveform or
-    %       turns off when the trigger is off, option is 'Normal' and
-    %       'Gated', default 'Normal
-    %       IsOutput: A logical array that tells which of the NChannels are
-    %       enabled or not.
-    %       OutputLoad: Tells whether the output load is infinite or 50ohm.
-    %       Options are '50' and 'Infinity', default '50'.
-    %       WaveformList: Cell that stores the waveformlist object for each
-    %       channel
-    %       OutputLimit: (1,2) array telling the lower and upper limit
-    %       values of the waveform being inputed
-    %
-    %Abstract Methods:
-    %
-    %       connect(obj):
-    %           Initializes connection to specific device
-    %       set(obj):
-    %           Setup device settings?
-    %       upload(obj):
-    %           Upload waveform to device
-    %       close(obj):
-    %           Terminate connection to device
-    %       status=check(obj):
-    %           Pings device for status and returns a given string or other
-    %           method of notification.
-    %
-    
+    % - **Typical workflow**: :meth:`connect` → :meth:`set` → :meth:`upload` → :meth:`check` → :meth:`close`
     properties
-        SamplingRate double
-        TriggerSource string {mustBeMember(TriggerSource,{'External','Software','Immediate'})} = "External"
-        TriggerSlope string {mustBeMember(TriggerSlope,{'Rise','Fall'})} = "Rise"
-        OutputMode string {mustBeMember(OutputMode,{'Gated','Normal'})} = "Normal"
-        IsOutput logical
-        OutputLoad string {mustBeMember(OutputLoad,{'50','Infinity'})} = "50"
-        WaveformList cell
+        SamplingRate double % Sampling rate per channel [Hz]
+        TriggerSource string {mustBeMember(TriggerSource,{"External","Software","Immediate"})} = "External" % Trigger source
+        TriggerSlope string {mustBeMember(TriggerSlope,{"Rise","Fall"})} = "Rise" % Trigger edge
+        OutputMode string {mustBeMember(OutputMode,{"Gated","Normal"})} = "Normal" % Output mode
+        IsOutput logical % Per-channel output enables
+        OutputLoad string {mustBeMember(OutputLoad,{"50","Infinity"})} = "50" % Output load selection
+        WaveformList cell % Per-channel waveform list objects
     end
 
     properties (SetAccess=protected)
-        SamplingRateLimit (1,1) double
-        OutputLimit (1,2) double % [lower,upper], At 50 Ohm
+        SamplingRateLimit (1,1) double % Maximum supported sampling rate [Hz]
+        OutputLimit (1,2) double % [lower, upper] output amplitude at 50 Ω
     end
     
     methods
         function obj = WaveformGenerator(resourceName,name)
+            % Construct a :class:`WaveformGenerator`.
+            %
+            % :param resourceName: Connection resource for the device
+            % :type resourceName: string
+            % :param name: Device nickname (default: [])
+            % :type name: string, optional
             arguments
                 resourceName string
                 name string = string.empty
@@ -73,10 +40,15 @@ classdef (Abstract) WaveformGenerator < Hardware
 
     methods (Abstract)
         connect(obj)
+        % Establish a connection/session to the AWG.
         set(obj)
+        % Apply sampling/trigger/output configurations.
         upload(obj)
+        % Upload waveforms/sequences for playback.
         close(obj)
+        % Close the session.
         status = check(obj)
+        % Return true if instrument reports no error.
     end
 end
 

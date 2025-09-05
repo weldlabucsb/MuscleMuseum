@@ -41,21 +41,21 @@ classdef Laser < matlab.mixin.Heterogeneous & handle
         function obj = Laser(options)
             % Construct a :class:`Laser`.
             %
-            % :param frequency: Linear frequency :math:`f` in [Hz] (sets :math:`\lambda`)
+            % :param frequency: Linear frequency :math:`f` [Hz] (sets :math:`\lambda`)
             % :type frequency: double, optional
-            % :param wavelength: Wavelength :math:`\lambda` in [m] (sets :math:`f`)
+            % :param wavelength: Wavelength :math:`\lambda` [m] (sets :math:`f`)
             % :type wavelength: double, optional
             % :param polarization: Jones vector :math:`(E_x,E_y,E_z)`
             % :type polarization: double(3,1), optional
-            % :param phase: Optical phase :math:`\phi` in [rad]
+            % :param phase: Optical phase :math:`\phi` [rad]
             % :type phase: double, optional
             % :param direction: Propagation direction unit vector :math:`(x,y,z)`
             % :type direction: double(3,1), optional
-            % :param angle: Spherical angles :math:`(\theta,\phi)` in [rad]
+            % :param angle: Spherical angles :math:`(\theta,\phi)` [rad]
             % :type angle: double(1,2), optional
-            % :param intensity: Intensity :math:`I` in [W/m^2]
+            % :param intensity: Intensity :math:`I` [W/m^2]
             % :type intensity: double, optional
-            % :param power: Power :math:`P` in [W]
+            % :param power: Power :math:`P` [W]
             % :type power: double, optional
             arguments
                 options.frequency = NaN

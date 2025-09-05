@@ -30,22 +30,17 @@ classdef GaussianRandom < RandomWaveform
         function obj = GaussianRandom(options)
             %Construct a GaussianRandom object.
             %
-            % :param samplingRate: Sampling rate in Hz (default: inherited)
+            % :param samplingRate: Sampling rate in Hz (default: [])
             % :type samplingRate: double, optional
             % :param startTime: Start time in seconds (default: 0)
             % :type startTime: double, optional
-            % :param duration: Duration in seconds (default: inherited)
+            % :param duration: Duration in seconds (default: [])
             % :type duration: double, optional
             % :param mean: Mean of Gaussian distribution (default: 0)
             % :type mean: double, optional
             % :param standardDeviation: Standard deviation of Gaussian distribution (default: 1)
             % :type standardDeviation: double, optional
             %
-            % **Example:**
-            %
-            % .. code-block:: matlab
-            %
-            %     gaussian = GaussianRandom(mean = 1, standardDeviation = 0.5, duration = 0.01);
             arguments
                 options.samplingRate double = [];
                 options.startTime double = 0;
