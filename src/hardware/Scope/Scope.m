@@ -21,12 +21,12 @@ classdef (Abstract) Scope < Hardware
     properties
         Duration double {mustBePositive} = 0.1 % Total record length [s]
         NSample double {mustBeInteger,mustBePositive} = 2500 % Number of samples to acquire
-        TriggerMode string {mustBeMember(TriggerMode,{"Normal","Auto","Software"})} = "Normal" % Trigger mode
+        TriggerMode string {mustBeMember(TriggerMode,{'Normal','Auto','Software'})} = "Normal" % Trigger mode
         TriggerSource string = "External" % Trigger source identifier
-        TriggerSlope string {mustBeMember(TriggerSlope,{"Rise","Fall"})} = "Rise" % Trigger edge
+        TriggerSlope string {mustBeMember(TriggerSlope,{'Rise','Fall'})} = "Rise" % Trigger edge
         TriggerLevel double = 0.1 % Trigger threshold (in :attr:`SampleUnit`)
         IsEnabled logical % Per-channel enable flags
-        VerticalCoupling string {mustBeMember(VerticalCoupling,{"DC","AC"})} = "DC" % Input coupling per channel
+        VerticalCoupling string {mustBeMember(VerticalCoupling,{'DC','AC'})} = "DC" % Input coupling per channel
         VerticalOffset double = 0 % Vertical offset per channel (in :attr:`SampleUnit`)
         VerticalRange double = 10 % Vertical range per channel (in :attr:`SampleUnit`)
     end
