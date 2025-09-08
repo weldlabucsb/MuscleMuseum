@@ -8,11 +8,11 @@ classdef (Abstract) WaveformGenerator < Hardware
     % - **Typical workflow**: :meth:`connect` → :meth:`set` → :meth:`upload` → :meth:`check` → :meth:`close`
     properties
         SamplingRate double % Sampling rate per channel [Hz]
-        TriggerSource string {mustBeMember(TriggerSource,{"External","Software","Immediate"})} = "External" % Trigger source
-        TriggerSlope string {mustBeMember(TriggerSlope,{"Rise","Fall"})} = "Rise" % Trigger edge
-        OutputMode string {mustBeMember(OutputMode,{"Gated","Normal"})} = "Normal" % Output mode
+        TriggerSource string {mustBeMember(TriggerSource,{'External','Software','Immediate'})} = "External" % Trigger source
+        TriggerSlope string {mustBeMember(TriggerSlope,{'Rise','Fall'})} = "Rise" % Trigger edge
+        OutputMode string {mustBeMember(OutputMode,{'Gated','Normal'})} = "Normal" % Output mode
         IsOutput logical % Per-channel output enables
-        OutputLoad string {mustBeMember(OutputLoad,{"50","Infinity"})} = "50" % Output load selection
+        OutputLoad string {mustBeMember(OutputLoad,{'50','Infinity'})} = "50" % Output load selection
         WaveformList cell % Per-channel waveform list objects
         IsDDSCompatible logical = 0 % Determines whether the given AWG is also compatible with DDS operation.
         IsDDSEnabled logical = 0 %Determines whether to use DDS mode or not in the AWG.
