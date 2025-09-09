@@ -78,8 +78,8 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
 
             % Checks that Device has DDS option installed
             try
-            dds_featureMask = bitor (mRegs('SPCM_FEAT_EXTFW_DDS20'), mRegs('SPCM_FEAT_EXTFW_DDS50'));
-            if (bitand (obj.Device.extFeatureMap, dds_featureMask) == 1)
+            dds_featureMask = bitor (obj.RegMap('SPCM_FEAT_EXTFW_DDS20'), obj.RegMap('SPCM_FEAT_EXTFW_DDS50'));
+            if (bitand (obj.Device.featureMap, dds_featureMask) == 1)
                 obj.IsDDSCompatible=1;
             end
             catch
@@ -466,7 +466,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
 
             %% Enable DDS
 
-            errorCode = spcm_dwSetParam_i64 (cardInfo.hDrv, mRegs('SPC_CARDMODE'),    mRegs('SPC_REP_STD_DDS')); % DDS mode
+            errorCode = spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_CARDMODE'),    obj.RegMap('SPC_REP_STD_DDS')); % DDS mode
             
                 %Need to figure out how to calculate this
             if obj.OutputLoad(1) == "50"
@@ -475,7 +475,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                     [~,obj.Device] = spcMSetupAnalogOutputChannel(obj.Device, 0, amp(1)/2*1e3, 0, 0, obj.RegMap('SPCM_STOPLVL_ZERO'), 0, 0);
             end
         
-            errorCode = spcm_dwSetParam_i64 (cardInfo.hDrv, mRegs('SPC_M2CMD'), mRegs('M2CMD_CARD_WRITESETUP'));
+            errorCode = spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_M2CMD'), obj.RegMap('M2CMD_CARD_WRITESETUP'));
             if (errorCode ~= 0)
                 [success, cardInfo] = spcMCheckSetError (errorCode, cardInfo);
                 spcMErrorMessageStdOut (cardInfo, 'Error: spcm_dwSetParam_i64:\n\t', true);
@@ -483,34 +483,34 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             end
 
             %% Reset DDS and setup DMA
-            errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, mRegs('SPC_DDS_CMD'), mRegs('SPCM_DDS_CMD_RESET'));
-            errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, mRegs('SPC_DDS_DATA_TRANSFER_MODE'),mRegs('SPCM_DDS_DTM_DMA')); %Run right after reset
+            errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_RESET'));
+            errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_DATA_TRANSFER_MODE'),obj.RegMap('SPCM_DDS_DTM_DMA')); %Run right after reset
             if sum(isPhaseMod)>0
-                errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, mRegs('SPC_DDS_PHASE_BEHAVIOUR'),mRegs('SPCM_DDS_PHASE_SHIFT')); %Run right after reset
+                errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_PHASE_BEHAVIOUR'),obj.RegMap('SPCM_DDS_PHASE_SHIFT')); %Run right after reset
             end
-            errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, mRegs('SPC_DDS_CMD'), mRegs('SPCM_DDS_CMD_WRITE_TO_CARD')); %  write all dds settings to card
+            errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_WRITE_TO_CARD')); %  write all dds settings to card
 
 
             %% Setup Cores, Set Initial Frequency and Triggers
             for ii=1:corecount
-                errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, mRegs('SPC_DDS_CORES_ON_CH0'), mRegs('SPCM_DDS_CORE0')+ii-1);
-                errorCode= spcm_dwSetParam_d64 (cardInfo.hDrv, mRegs('SPC_DDS_CORE0_AMP')+ii-1, AmpModWaveform{ii}(1)); %Amps are normalized to 1.
-                errorCode= spcm_dwSetParam_d64 (cardInfo.hDrv, mRegs('SPC_DDS_CORE0_FREQ'), frequency+FreqModWaveform{ii}(1));
+                errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORES_ON_CH0'), obj.RegMap('SPCM_DDS_CORE0')+ii-1);
+                errorCode= spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP')+ii-1, AmpModWaveform{ii}(1)); %Amps are normalized to 1.
+                errorCode= spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_FREQ'), frequency+FreqModWaveform{ii}(1));
             end
             
             switch obj.TriggerSource(1)
                 case "External"
-                    errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, mRegs('SPC_DDS_TRG_SRC'), mRegs('SPCM_DDS_TRG_SRC_CARD'));
-                    errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, mRegs('SPC_DDS_CMD'), mRegs('SPCM_DDS_CMD_EXEC_AT_TRG')); % execute at trigger to check that first trigger works
-                    errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, mRegs('SPC_DDS_CMD'), mRegs('SPCM_DDS_CMD_WRITE_TO_CARD')); %  write all dds settings to card
+                    errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_TRG_SRC'), obj.RegMap('SPCM_DDS_TRG_SRC_CARD'));
+                    errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_EXEC_AT_TRG')); % execute at trigger to check that first trigger works
+                    errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_WRITE_TO_CARD')); %  write all dds settings to card
                 case "Immediate"
                 otherwise
             end
             
             %% Setup Timer for Step Advance in sequence
-            errorCode= spcm_dwSetParam_d64 (cardInfo.hDrv, mRegs('SPC_DDS_TRG_TIMER'), TimeStep);
-            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, mRegs('SPC_DDS_TRG_SRC'), mRegs('SPCM_DDS_TRG_SRC_TIMER'));
-            errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, mRegs('SPC_DDS_CMD'), mRegs('SPCM_DDS_CMD_EXEC_AT_TRG')); % execute at trigger to check that first trigger works
+            errorCode= spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_TRG_TIMER'), TimeStep);
+            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_TRG_SRC'), obj.RegMap('SPCM_DDS_TRG_SRC_TIMER'));
+            errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_EXEC_AT_TRG')); % execute at trigger to check that first trigger works
             %% Write Each Advance in Frequency, Phase, and Mod for each core
             tracktime=0;
             for ii=1:length(tvec)-1
@@ -518,12 +518,12 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                 for jj=1:corecount
                     if tvec(ii)<StartTimes(jj) && (tvec(ii+1)>=StartTimes(jj))
                         ampslope=(AmpModWaveform{jj}(ii+1)-AmpModWaveform{jj}(ii+1))/Timestep;
-                        errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, mRegs('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, ampslope);
+                        errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, ampslope);
 
                     end
                     if ii>2
                         if tvec(ii-1)<StartTimes(jj) && (tvec(ii)>=StartTimes(jj)) && ~isAmpMod(jj)
-                            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, mRegs('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, 0);
+                            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, 0);
    
                             %Turn off ampmod if not modulating amp after
                             %starting waveform.
@@ -534,48 +534,48 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                         %%Add FrequencyMod if available
                         if isFreqMod(jj)
                             freqslope=(FreqModWaveform{jj}(ii+1)-FreqModWaveform{jj}(ii+1))/Timestep;
-                            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, mRegs('SPC_DDS_CORE0_FREQ_SLOPE')+jj-1, freqslope);
+                            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_FREQ_SLOPE')+jj-1, freqslope);
                         end
                     
                     %%Add AmpMod if available or if delay is late
                         if isAmpMod(jj)
                             ampslope=(AmpModWaveform{jj}(ii+1)-AmpModWaveform{jj}(ii+1))/Timestep;
-                            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, mRegs('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, ampslope);
+                            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, ampslope);
                         end
                     %%Add PhaseMod if available if 
                         if isPhaseMod(jj)
                             phaseshift=(PhaseModWaveform{jj}(ii+1)-PhaseModWaveform{jj}(ii+1));
-                            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, mRegs('SPC_DDS_CORE0_PHASE')+jj-1, phaseshift);
+                            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_PHASE')+jj-1, phaseshift);
                         end
                     end
                     if tvec(ii)<EndTimes(jj) && tvec(ii+1)>=EndTimes(jj)
                        %Turn off amp, amp slope, and frequency at 0.
                         if isAmpMod(jj)
-                            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, mRegs('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, 0);
+                            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, 0);
                         end
                         if isFreqMod(jj)
-                            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, mRegs('SPC_DDS_CORE0_FREQ_SLOPE')+jj-1, 0);
+                            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_FREQ_SLOPE')+jj-1, 0);
                         end
-                        errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, mRegs('SPC_DDS_CORE0_AMP')+jj-1, 0);
+                        errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP')+jj-1, 0);
                        
                     end
                 end
-                error=spcm_dwSetParam_i64 (cardInfo.hDrv, mRegs('SPC_DDS_CMD'), mRegs('SPCM_DDS_CMD_EXEC_AT_TRG'));
+                error=spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_EXEC_AT_TRG'));
             end
 
             %% Turn off all frequency ramps and set amplitude to 0
             for jj=1:corecount
                 %Turn off amp, amp slope, and frequency at 0.
                 if isAmpMod(jj)
-                    errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, mRegs('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, 0);
+                    errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, 0);
                 end
                 if isFreqMod(jj)
-                    errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, mRegs('SPC_DDS_CORE0_FREQ_SLOPE')+jj-1, 0);
+                    errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_FREQ_SLOPE')+jj-1, 0);
                 end
-                errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, mRegs('SPC_DDS_CORE0_AMP')+jj-1, 0);
+                errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP')+jj-1, 0);
             end
-            error=spcm_dwSetParam_i64 (cardInfo.hDrv, mRegs('SPC_DDS_CMD'), mRegs('SPCM_DDS_CMD_EXEC_AT_TRG'));
-            error= spcm_dwSetParam_i64 (cardInfo.hDrv, mRegs('SPC_DDS_CMD'), mRegs('SPCM_DDS_CMD_WRITE_TO_CARD')); %  write all dds settings to card
+            error=spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_EXEC_AT_TRG'));
+            error= spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_WRITE_TO_CARD')); %  write all dds settings to card
 
 
         
@@ -598,7 +598,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             end
 
             % Force Trigger
-            errorCode = spcm_dwSetParam_i64 (cardInfo.hDrv, mRegs('SPC_M2CMD'), mRegs('M2CMD_CARD_FORCETRIGGER'));
+            errorCode = spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_M2CMD'), obj.RegMap('M2CMD_CARD_FORCETRIGGER'));
             %First trigger must be a force trigger to set up other trigger types.
 
             state=1;
