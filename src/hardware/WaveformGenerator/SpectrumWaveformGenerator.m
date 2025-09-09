@@ -79,7 +79,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             % Checks that Device has DDS option installed
             try
             dds_featureMask = bitor (obj.RegMap('SPCM_FEAT_EXTFW_DDS20'), obj.RegMap('SPCM_FEAT_EXTFW_DDS50'));
-            if (bitand (obj.Device.featureMap, dds_featureMask) == 1)
+            if ~(bitand (obj.Device.extFeatureMap, dds_featureMask) == 0)
                 obj.IsDDSCompatible=1;
             end
             catch
@@ -156,7 +156,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             obj.connectSpec;
             obj.setSpec;
 
-            if obj.isDDSEnabled
+            if obj.IsDDSEnabled
                 state=obj.uploadDDS;
                 if state
                     obj.closeSpec;
