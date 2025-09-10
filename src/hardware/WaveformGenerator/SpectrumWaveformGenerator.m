@@ -157,11 +157,16 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             obj.setSpec;
 
             if obj.IsDDSEnabled
+                disp("Using DDS for upload")
                 state=obj.uploadDDS;
                 if state
                     obj.closeSpec;
+                    disp(obj.Name + " channel" + num2str(1) + " uploaded [" + obj.WaveformList{1}.Name +"] successfully.")
                     return
+                else
+                    disp("DDS Upload Failed, using normal AWG operation.")
                 end
+                
             end
 
             %% Get the minimum segment size
@@ -344,9 +349,10 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             %     obj.WaveformList{enabledChannel(ii)}.NPeriodPerCycle = 0; % For spectrum AWG, we don't want to split a periodic waveform into parts and upload
             %     t{ii} = obj.WaveformList{enabledChannel(ii)}.WaveformPrepared; % Load the prepared waveforms
             % end
-            Timestep=1/obj.SamplingRate;
+            TimeStep=1/obj.SamplingRate(1);
 
-            waveformprep=obj.WaveformList;
+            waveformprep=obj.WaveformList{1};
+            waveformprep.SamplingRate=obj.SamplingRate(1);
             corecount=length(waveformprep.WaveformOrigin); %Number of cores
 
             if corecount>20
@@ -368,7 +374,6 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             %%amp mod
             for ii=1:corecount
                 worigin=waveformprep.WaveformOrigin{ii};
-                worigin.SamplingRate=waveformprep.SamplingRate;
                 if ~isempty(worigin.AmplitudeModulation)
                     isAmpMod(ii)=1;
                 end
@@ -379,10 +384,10 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                     isFreqMod(ii)=1;
                 end
 
-                [ampModfunc,freqModfunc,phaseModfunc] = worigin.getModulation(obj);
+                [ampModfunc,freqModfunc,phaseModfunc] = worigin.getModulation();
                 t=0 : worigin.TimeStep : worigin.EndTime;
                 t0=worigin.StartTime;
-                td = obj.Duration;
+                td = worigin.Duration;
                 
 
                 AmpModWaveform{ii} = (t>=t0 & t<=(t0+td)) .* (worigin.Amplitude+ampModfunc(t-t0)) ./2;
@@ -429,11 +434,17 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                 return
             end
 
+            if length(tvec)>4000
+                state=0;
+                disp('Sampling Rate is too high')
+                return
+            end
+
             %% Check that amplitude of all waveforms is within limits, calculate max amp
             maxamp=zeros(1, corecount);
             coreamp=zeros(1,corecount);
             for ii=1:corecount
-                maxamp(ii)=max(AmpModWaveform(ii));
+                maxamp(ii)=max(AmpModWaveform{ii});
                 coreamp(ii)=waveformprep.WaveformOrigin{ii}.Amplitude;
             end
 
@@ -466,16 +477,16 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
 
             %% Enable DDS
 
-            errorCode = spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_CARDMODE'),    obj.RegMap('SPC_REP_STD_DDS')); % DDS mode
+            errorCode = spcm_dwSetParam_i64 (obj.Device.hDrv, obj.RegMap('SPC_CARDMODE'),    obj.RegMap('SPC_REP_STD_DDS')); % DDS mode
             
                 %Need to figure out how to calculate this
             if obj.OutputLoad(1) == "50"
-                    [~,obj.Device] = spcMSetupAnalogOutputChannel(obj.Device, 0, amp(1)*1e3, 0, 0, obj.RegMap('SPCM_STOPLVL_ZERO'), 0, 0);
+                    [~,obj.Device] = spcMSetupAnalogOutputChannel(obj.Device, 0, ampsum*1e3, 0, 0, obj.RegMap('SPCM_STOPLVL_ZERO'), 0, 0);
                 else
-                    [~,obj.Device] = spcMSetupAnalogOutputChannel(obj.Device, 0, amp(1)/2*1e3, 0, 0, obj.RegMap('SPCM_STOPLVL_ZERO'), 0, 0);
+                    [~,obj.Device] = spcMSetupAnalogOutputChannel(obj.Device, 0, ampsum/2*1e3, 0, 0, obj.RegMap('SPCM_STOPLVL_ZERO'), 0, 0);
             end
         
-            errorCode = spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_M2CMD'), obj.RegMap('M2CMD_CARD_WRITESETUP'));
+            errorCode = spcm_dwSetParam_i64 (obj.Device.hDrv, obj.RegMap('SPC_M2CMD'), obj.RegMap('M2CMD_CARD_WRITESETUP'));
             if (errorCode ~= 0)
                 [success, cardInfo] = spcMCheckSetError (errorCode, cardInfo);
                 spcMErrorMessageStdOut (cardInfo, 'Error: spcm_dwSetParam_i64:\n\t', true);
@@ -483,47 +494,48 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             end
 
             %% Reset DDS and setup DMA
-            errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_RESET'));
-            errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_DATA_TRANSFER_MODE'),obj.RegMap('SPCM_DDS_DTM_DMA')); %Run right after reset
+            errorCode= spcm_dwSetParam_i64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_RESET'));
+            errorCode= spcm_dwSetParam_i64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_DATA_TRANSFER_MODE'),obj.RegMap('SPCM_DDS_DTM_DMA')); %Run right after reset
             if sum(isPhaseMod)>0
-                errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_PHASE_BEHAVIOUR'),obj.RegMap('SPCM_DDS_PHASE_SHIFT')); %Run right after reset
+                errorCode= spcm_dwSetParam_i64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_PHASE_BEHAVIOUR'),obj.RegMap('SPCM_DDS_PHASE_SHIFT')); %Run right after reset
             end
-            errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_WRITE_TO_CARD')); %  write all dds settings to card
+            errorCode= spcm_dwSetParam_i64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_WRITE_TO_CARD')); %  write all dds settings to card
 
 
             %% Setup Cores, Set Initial Frequency and Triggers
             for ii=1:corecount
-                errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORES_ON_CH0'), obj.RegMap('SPCM_DDS_CORE0')+ii-1);
-                errorCode= spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP')+ii-1, AmpModWaveform{ii}(1)); %Amps are normalized to 1.
-                errorCode= spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_FREQ'), frequency+FreqModWaveform{ii}(1));
+                frequency=waveformprep.WaveformOrigin{ii}.Frequency;
+                errorCode= spcm_dwSetParam_i64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CORES_ON_CH0'), obj.RegMap('SPCM_DDS_CORE0')+ii-1);
+                errorCode= spcm_dwSetParam_d64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP')+ii-1, AmpModWaveform{ii}(1)); %Amps are normalized to 1.
+                errorCode= spcm_dwSetParam_d64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CORE0_FREQ'), frequency+FreqModWaveform{ii}(1));
             end
             
             switch obj.TriggerSource(1)
                 case "External"
-                    errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_TRG_SRC'), obj.RegMap('SPCM_DDS_TRG_SRC_CARD'));
-                    errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_EXEC_AT_TRG')); % execute at trigger to check that first trigger works
-                    errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_WRITE_TO_CARD')); %  write all dds settings to card
+                    errorCode=spcm_dwSetParam_d64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_TRG_SRC'), obj.RegMap('SPCM_DDS_TRG_SRC_CARD'));
+                    errorCode= spcm_dwSetParam_i64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_EXEC_AT_TRG')); % execute at trigger to check that first trigger works
+                    errorCode= spcm_dwSetParam_i64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_WRITE_TO_CARD')); %  write all dds settings to card
                 case "Immediate"
                 otherwise
             end
             
             %% Setup Timer for Step Advance in sequence
-            errorCode= spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_TRG_TIMER'), TimeStep);
-            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_TRG_SRC'), obj.RegMap('SPCM_DDS_TRG_SRC_TIMER'));
-            errorCode= spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_EXEC_AT_TRG')); % execute at trigger to check that first trigger works
+            errorCode= spcm_dwSetParam_d64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_TRG_TIMER'), TimeStep);
+            errorCode=spcm_dwSetParam_d64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_TRG_SRC'), obj.RegMap('SPCM_DDS_TRG_SRC_TIMER'));
+            errorCode= spcm_dwSetParam_i64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_EXEC_AT_TRG')); % execute at trigger to check that first trigger works
             %% Write Each Advance in Frequency, Phase, and Mod for each core
             tracktime=0;
             for ii=1:length(tvec)-1
-                tracktime=tracktime+timestep;
+                tracktime=tracktime+TimeStep;
                 for jj=1:corecount
                     if tvec(ii)<StartTimes(jj) && (tvec(ii+1)>=StartTimes(jj))
-                        ampslope=(AmpModWaveform{jj}(ii+1)-AmpModWaveform{jj}(ii+1))/Timestep;
-                        errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, ampslope);
+                        ampslope=(AmpModWaveform{jj}(ii+1)-AmpModWaveform{jj}(ii+1))/TimeStep;
+                        errorCode=spcm_dwSetParam_d64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, ampslope);
 
                     end
                     if ii>2
                         if tvec(ii-1)<StartTimes(jj) && (tvec(ii)>=StartTimes(jj)) && ~isAmpMod(jj)
-                            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, 0);
+                            errorCode=spcm_dwSetParam_d64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, 0);
    
                             %Turn off ampmod if not modulating amp after
                             %starting waveform.
@@ -533,49 +545,49 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                     if tvec(ii)>=StartTimes(jj) && ((tvec(ii+1))<EndTimes(jj))
                         %%Add FrequencyMod if available
                         if isFreqMod(jj)
-                            freqslope=(FreqModWaveform{jj}(ii+1)-FreqModWaveform{jj}(ii+1))/Timestep;
-                            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_FREQ_SLOPE')+jj-1, freqslope);
+                            freqslope=(FreqModWaveform{jj}(ii+1)-FreqModWaveform{jj}(ii+1))/TimeStep;
+                            errorCode=spcm_dwSetParam_d64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CORE0_FREQ_SLOPE')+jj-1, freqslope);
                         end
                     
                     %%Add AmpMod if available or if delay is late
                         if isAmpMod(jj)
-                            ampslope=(AmpModWaveform{jj}(ii+1)-AmpModWaveform{jj}(ii+1))/Timestep;
-                            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, ampslope);
+                            ampslope=(AmpModWaveform{jj}(ii+1)-AmpModWaveform{jj}(ii+1))/TimeStep;
+                            errorCode=spcm_dwSetParam_d64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, ampslope);
                         end
                     %%Add PhaseMod if available if 
                         if isPhaseMod(jj)
                             phaseshift=(PhaseModWaveform{jj}(ii+1)-PhaseModWaveform{jj}(ii+1));
-                            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_PHASE')+jj-1, phaseshift);
+                            errorCode=spcm_dwSetParam_d64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CORE0_PHASE')+jj-1, phaseshift);
                         end
                     end
                     if tvec(ii)<EndTimes(jj) && tvec(ii+1)>=EndTimes(jj)
                        %Turn off amp, amp slope, and frequency at 0.
                         if isAmpMod(jj)
-                            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, 0);
+                            errorCode=spcm_dwSetParam_d64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, 0);
                         end
                         if isFreqMod(jj)
-                            errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_FREQ_SLOPE')+jj-1, 0);
+                            errorCode=spcm_dwSetParam_d64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CORE0_FREQ_SLOPE')+jj-1, 0);
                         end
-                        errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP')+jj-1, 0);
+                        errorCode=spcm_dwSetParam_d64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP')+jj-1, 0);
                        
                     end
                 end
-                error=spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_EXEC_AT_TRG'));
+                error=spcm_dwSetParam_i64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_EXEC_AT_TRG'));
             end
 
             %% Turn off all frequency ramps and set amplitude to 0
             for jj=1:corecount
                 %Turn off amp, amp slope, and frequency at 0.
                 if isAmpMod(jj)
-                    errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, 0);
+                    errorCode=spcm_dwSetParam_d64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP_SLOPE')+jj-1, 0);
                 end
                 if isFreqMod(jj)
-                    errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_FREQ_SLOPE')+jj-1, 0);
+                    errorCode=spcm_dwSetParam_d64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CORE0_FREQ_SLOPE')+jj-1, 0);
                 end
-                errorCode=spcm_dwSetParam_d64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP')+jj-1, 0);
+                errorCode=spcm_dwSetParam_d64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CORE0_AMP')+jj-1, 0);
             end
-            error=spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_EXEC_AT_TRG'));
-            error= spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_WRITE_TO_CARD')); %  write all dds settings to card
+            error=spcm_dwSetParam_i64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_EXEC_AT_TRG'));
+            error= spcm_dwSetParam_i64 (obj.Device.hDrv, obj.RegMap('SPC_DDS_CMD'), obj.RegMap('SPCM_DDS_CMD_WRITE_TO_CARD')); %  write all dds settings to card
 
 
         
@@ -598,7 +610,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             end
 
             % Force Trigger
-            errorCode = spcm_dwSetParam_i64 (cardInfo.hDrv, obj.RegMap('SPC_M2CMD'), obj.RegMap('M2CMD_CARD_FORCETRIGGER'));
+            errorCode = spcm_dwSetParam_i64 (obj.Device.hDrv, obj.RegMap('SPC_M2CMD'), obj.RegMap('M2CMD_CARD_FORCETRIGGER'));
             %First trigger must be a force trigger to set up other trigger types.
 
             state=1;
@@ -644,12 +656,12 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                 targetoutput=targetoutput';
             end
             targetoutput(1)=1;
-            matchchannel=(targetoutput==app.IsOutput);
+            matchchannel=(targetoutput==obj.IsOutput);
             waveform=obj.WaveformList{1};
             matchconcatmethod=strcmp(waveform.ConcatMethod, 'Simultaneous');
             matchwaveformtype=1;
             for ii=1:length(waveform.WaveformOrigin)
-                if ~isa(wavform.WaveformOrigin{ii},'SineWaveModulated')
+                if ~isa(waveform.WaveformOrigin{ii},'SineWaveModulated')
                     matchwaveformtype=0;
                 end
             end
