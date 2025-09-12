@@ -740,6 +740,29 @@ follows Steck’s convention.</p>
 </dd></dl>
 
 <dl class="mat method">
+<dt class="sig sig-object mat" id="TwoJManifold.HamiltonianAtomLaserOrigin">
+<span class="sig-name descname"><span class="pre">HamiltonianAtomLaserOrigin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">fRot</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.HamiltonianAtomLaserOrigin" title="Link to this definition">#</a></dt>
+<dd><p>Atom-light interaction Hamiltonian <span class="math notranslate nohighlight">\(H_\mathrm{AL}(t=0,r=0)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[H_{\mathrm{AL}}(t) = \sum_{q=-1}^{+1} \frac{\Omega^*}{2}\, e_q\, \Sigma_q\, e^{i\Delta t} + \mathrm{h.c.}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>laser</strong> (<a class="reference internal" href="../field/Laser.html#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a>) – Driving field</p></li>
+<li><p><strong>fRot</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Rotating-frame frequency [Hz]</p></li>
+<li><p><strong>U</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Basis transform</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Function handle H(r,t) [Hz]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function_handle</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
 <dt class="sig sig-object mat" id="TwoJManifold.LaserDressedStateListLargeDetuning">
 <span class="sig-name descname"><span class="pre">LaserDressedStateListLargeDetuning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">laser</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.LaserDressedStateListLargeDetuning" title="Link to this definition">#</a></dt>
 <dd><p>Compute laser-dressed states for large detuning limit.</p>
@@ -768,6 +791,43 @@ frequency and indexed after ground states.</p>
 <p>The method creates separate <a class="reference internal" href="OneJManifold.html#OneJManifold" title="OneJManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OneJManifold</span></code></a> objects for ground and
 excited states, computes their individual AC Stark shifts, then combines
 them with proper energy referencing and state indexing.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="TwoJManifold.LaserDressedStateListSmallDetuning">
+<span class="sig-name descname"><span class="pre">LaserDressedStateListSmallDetuning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">isPlot</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.LaserDressedStateListSmallDetuning" title="Link to this definition">#</a></dt>
+<dd><p>Compute laser-dressed states for small detuning regime using exact diagonalization.</p>
+<p>Calculates AC Stark-shifted energy levels by exactly diagonalizing the combined
+atomic and atom-laser interaction Hamiltonians. Valid in the small detuning regime
+where the laser detuning is comparable to or smaller than the hyperfine splitting,
+allowing application of the rotating wave approximation. Uses adiabatic continuation
+via <code class="xref mat mat-func docutils literal notranslate"><span class="pre">eigenshuffle()</span></code> to track eigenstate evolution with laser intensity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>laser</strong> (<span><a class="reference internal" href="../field/Laser.html#Laser" title="Laser"><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">Laser</span></code></a></span>) – <a class="reference internal" href="../field/Laser.html#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a> object specifying field parameters</p></li>
+<li><p><strong>isPlot</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">logical,</span> <span class="pre">optional</span></code></span>) – Flag to generate AC Stark shift plot vs intensity</p></li>
+<li><p><strong>samplingSize</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Number of intensity points for adiabatic continuation (default: 1000)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dressed state table, unitary transformation matrix, and AC Stark map</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(table, double, cell)</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<ul class="simple">
+<li><p><strong>dressedStateList</strong>: Table with <a class="reference internal" href="#TwoJManifold.StateList" title="TwoJManifold.StateList"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StateList</span></code></a> columns plus <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">EnergyShift</span></code> [Hz] and <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DressedState</span></code> eigenvectors</p></li>
+<li><p><strong>U</strong>: Unitary transformation matrix connecting bare to dressed states</p></li>
+<li><p><strong>acMap</strong>: Cell array <code class="docutils literal notranslate"><span class="pre">{intensityList,</span> <span class="pre">energyMatrix}</span></code> for plotting AC Stark shifts vs intensity</p></li>
+</ul>
+<p><strong>Notes:</strong></p>
+<p>The method constructs the total Hamiltonian <span class="math notranslate nohighlight">\(H = H_{\text{atom}} + \sqrt{s} H_{\text{AL}}\)</span>
+where <span class="math notranslate nohighlight">\(s\)</span> ranges from 0 to 1, corresponding to laser intensities from 0 to the full
+intensity. The <code class="xref mat mat-func docutils literal notranslate"><span class="pre">eigenshuffle()</span></code> algorithm ensures consistent eigenstate tracking
+during the adiabatic sweep, preventing level crossings from scrambling state assignments.</p>
 </dd></dl>
 
 <dl class="mat method">
