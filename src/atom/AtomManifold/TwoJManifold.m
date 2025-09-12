@@ -417,6 +417,7 @@ classdef TwoJManifold < AtomManifold
                 h = h + h';
             end
         end
+
         function Ham = HamiltonianAtomBiasField(obj,B,U)
             % Zeeman Hamiltonian from :class:`OneJManifold` blocks.
             %
@@ -445,6 +446,7 @@ classdef TwoJManifold < AtomManifold
             Ham = U'*Ham*U;
             Ham = (Ham + Ham')/2;
         end
+        
         function [dressedStateList,U,brMap] = BiasDressedStateList(obj,B,isPlot,options)
             % Compute dressed states versus bias field and assemble blocks.
             %

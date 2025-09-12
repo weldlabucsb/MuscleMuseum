@@ -17,7 +17,7 @@ classdef Laser < matlab.mixin.Heterogeneous & handle
     properties
         Wavelength (1,1) double = NaN % Wavelength :math:`\lambda` in [m]
         Frequency (1,1) double = NaN % Linear frequency :math:`f` in [Hz]
-        Polarization (3,1) double = [NaN;NaN;NaN] % Jones polarization vector :math:`(E_x,E_y,E_z)`
+        Polarization (3,1) double = [NaN;NaN;NaN] % Jones polarization vector :math:`(E_x,E_y,E_z)`. The definition here is the conjugate of wiki's
         Phase (1,1) double = 0 % Optical phase :math:`\phi` in [rad]
         Direction (3,1) double = [NaN;NaN;NaN] % Propagation unit vector :math:`\hat{\mathbf{k}} = (x,y,z)`
         Angle (1,2) double = [NaN,NaN] % Spherical angles :math:`(\theta,\phi)` in [rad]
