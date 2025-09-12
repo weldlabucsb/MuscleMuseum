@@ -740,6 +740,37 @@ follows Steck’s convention.</p>
 </dd></dl>
 
 <dl class="mat method">
+<dt class="sig sig-object mat" id="TwoJManifold.LaserDressedStateListLargeDetuning">
+<span class="sig-name descname"><span class="pre">LaserDressedStateListLargeDetuning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">laser</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.LaserDressedStateListLargeDetuning" title="Link to this definition">#</a></dt>
+<dd><p>Compute laser-dressed states for large detuning limit.</p>
+<p>Calculates the AC Stark-shifted energy levels for both ground and excited
+state manifolds in the presence of a laser field. The method combines
+dressed states from separate ground and excited manifolds, properly
+indexing and energy-shifting the excited states by the transition frequency.
+Valid in the large detuning limit where laser detuning exceeds hyperfine
+splitting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>laser</strong> (<span><a class="reference internal" href="../field/Laser.html#Laser" title="Laser"><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">Laser</span></code></a></span>) – <a class="reference internal" href="../field/Laser.html#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a> object specifying field parameters</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Combined state table with AC Stark energy shifts</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>table</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<p>Table with columns from <a class="reference internal" href="#TwoJManifold.StateList" title="TwoJManifold.StateList"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StateList</span></code></a> plus <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">EnergyShift</span></code> containing
+AC Stark shifts [Hz]. Excited states are energy-shifted by the transition
+frequency and indexed after ground states.</p>
+<p><strong>Notes:</strong></p>
+<p>The method creates separate <a class="reference internal" href="OneJManifold.html#OneJManifold" title="OneJManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OneJManifold</span></code></a> objects for ground and
+excited states, computes their individual AC Stark shifts, then combines
+them with proper energy referencing and state indexing.</p>
+</dd></dl>
+
+<dl class="mat method">
 <dt class="sig sig-object mat" id="TwoJManifold.LoweringOperator">
 <span class="sig-name descname"><span class="pre">LoweringOperator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.LoweringOperator" title="Link to this definition">#</a></dt>
 <dd><p>Spherical lowering operator (see Steck Eq. 7.407).</p>

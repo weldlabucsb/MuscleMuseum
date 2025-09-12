@@ -616,6 +616,37 @@ and provides spin operators and Zeeman Hamiltonians.</p>
 </dd></dl>
 
 <dl class="mat method">
+<dt class="sig sig-object mat" id="OneJManifold.LaserDressedStateListLargeDetuning">
+<span class="sig-name descname"><span class="pre">LaserDressedStateListLargeDetuning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">laser</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OneJManifold.LaserDressedStateListLargeDetuning" title="Link to this definition">#</a></dt>
+<dd><p>Compute laser-dressed states for large detuning limit.</p>
+<p>Calculates AC Stark energy shifts for all hyperfine states in the manifold
+due to a laser field. The method computes the total AC Stark shift including
+scalar, vector, and tensor contributions for each <span class="math notranslate nohighlight">\(|F,M_F\rangle\)</span> state.
+Valid in the large detuning limit where the laser detuning is much larger
+than the hyperfine splitting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>laser</strong> (<span><a class="reference internal" href="../field/Laser.html#Laser" title="Laser"><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">Laser</span></code></a></span>) – <a class="reference internal" href="../field/Laser.html#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a> object specifying field parameters (frequency, intensity, polarization, direction)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>State table with AC Stark energy shifts</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>table</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<p>Table identical to <a class="reference internal" href="#OneJManifold.StateList" title="OneJManifold.StateList"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StateList</span></code></a> with additional <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">EnergyShift</span></code> column
+containing the AC Stark shift <span class="math notranslate nohighlight">\(\Delta E\)</span> [Hz] for each state. The shift
+includes scalar (<span class="math notranslate nohighlight">\(\propto I\)</span>), vector (<span class="math notranslate nohighlight">\(\propto I \cdot M_F\)</span>), and
+tensor (<span class="math notranslate nohighlight">\(\propto I \cdot (3M_F^2 - F(F+1))\)</span>) contributions.</p>
+<p><strong>Notes:</strong></p>
+<p>The quantization axis is assumed to be aligned with the <span class="math notranslate nohighlight">\(z\)</span>-axis.
+For each state, the method calls <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">Atom.AcStarkShiftLargeDetuning()</span></code>
+with quantum numbers <span class="math notranslate nohighlight">\((n,\ell,j,f,m_f)\)</span> extracted from the state table.</p>
+</dd></dl>
+
+<dl class="mat method">
 <dt class="sig sig-object mat" id="OneJManifold.getMIMJ">
 <span class="sig-name descname"><span class="pre">getMIMJ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">isPlot</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OneJManifold.getMIMJ" title="Link to this definition">#</a></dt>
 <dd><p>Map zero-field states to uncoupled projections (M_I, M_J) by adiabatic following.</p>

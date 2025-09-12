@@ -447,6 +447,42 @@ classdef TwoJManifold < AtomManifold
             Ham = (Ham + Ham')/2;
         end
         
+        function dressedStateList = LaserDressedStateListLargeDetuning(obj,laser)
+            % Compute laser-dressed states for large detuning limit.
+            %
+            % Calculates the AC Stark-shifted energy levels for both ground and excited
+            % state manifolds in the presence of a laser field. The method combines
+            % dressed states from separate ground and excited manifolds, properly
+            % indexing and energy-shifting the excited states by the transition frequency.
+            % Valid in the large detuning limit where laser detuning exceeds hyperfine
+            % splitting.
+            %
+            % :param laser: :class:`Laser` object specifying field parameters
+            % :type laser: Laser
+            % :return: Combined state table with AC Stark energy shifts
+            % :rtype: table
+            %
+            % **Returns:**
+            %
+            % Table with columns from :attr:`StateList` plus :attr:`EnergyShift` containing
+            % AC Stark shifts [Hz]. Excited states are energy-shifted by the transition
+            % frequency and indexed after ground states.
+            %
+            % **Notes:**
+            %
+            % The method creates separate :class:`OneJManifold` objects for ground and
+            % excited states, computes their individual AC Stark shifts, then combines
+            % them with proper energy referencing and state indexing.
+            
+            maniG = OneJManifold(obj.Atom,obj.NGround,obj.LGround,obj.JGround);
+            maniE = OneJManifold(obj.Atom,obj.NExcited,obj.LExcited,obj.JExcited);
+            dSListG = maniG.LaserDressedStateListLargeDetuning(laser);
+            dSListE = maniE.LaserDressedStateListLargeDetuning(laser);
+            dSListG.Index = dSListG.Index + numel(obj.MFExcited);
+            dSListE.Energy = dSListE.Energy + obj.Frequency;
+            dressedStateList = [dSListE;dSListG];
+        end
+
         function [dressedStateList,U,brMap] = BiasDressedStateList(obj,B,isPlot,options)
             % Compute dressed states versus bias field and assemble blocks.
             %
