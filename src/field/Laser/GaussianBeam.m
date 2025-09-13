@@ -48,9 +48,9 @@ classdef GaussianBeam < Laser
                 options1.center = [0;0;0]
                 options2.frequency = NaN
                 options2.wavelength = NaN
-                options2.polarization = [NaN;NaN;NaN]
+                options2.polarization = [1;0;0]
                 options2.phase = 0
-                options2.direction = [NaN;NaN;NaN]
+                options2.direction = [0;0;1]
                 options2.intensity = NaN
                 options2.power = NaN
             end

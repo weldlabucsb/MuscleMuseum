@@ -67,17 +67,9 @@ classdef OpticalLattice < OpticalPotential
                 atom (1,1) Atom
                 laser Laser
                 name string = string.empty
-                options.manifold string = "DGround"
-                options.stateIndex double = []
+                options.atomicState = struct.empty
             end
-            obj@OpticalPotential(atom,laser,name);
-            obj.Manifold = options.manifold;
-            if ~isempty(options.stateIndex)
-                obj.StateIndex = options.stateIndex;
-            else
-                % By default, pick the lowest magnetic trappable state
-                obj.StateIndex = atom.(obj.Manifold).StateList.Index(end);
-            end
+            obj@OpticalPotential(atom,laser,name,atomicState = options.atomicState);
         end
 
         function a0 = get.LatticeSpacing(obj)
@@ -93,7 +85,14 @@ classdef OpticalLattice < OpticalPotential
             %
             % :return: Depth :math:`V_0` in [Hz]
             % :rtype: double
-            v0 =  4 * abs(obj.ScalarPolarizabilityGround * abs(obj.Laser.ElectricFieldAmplitude)^2 / 4);
+            atom = obj.Atom;
+            v0 = 4 * abs(atom.AcStarkShiftLargeDetuning(...
+                obj.Laser,...
+                obj.AtomicState.N,...
+                obj.AtomicState.L,...
+                obj.AtomicState.J,...
+                obj.AtomicState.F,...
+                obj.AtomicState.MF));
         end
 
         function fZ = get.AxialFrequencyLaser(obj)

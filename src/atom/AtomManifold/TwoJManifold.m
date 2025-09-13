@@ -568,7 +568,7 @@ classdef TwoJManifold < AtomManifold
             end
             [V,D] = eigenshuffle(HMatrix);
 
-            EnergyShift = D(:,end);
+            EnergyShift = D(:,end) - diag(Ha);
             dressedState = V(:,:,end);
             DressedState = cell(numel(EnergyShift),1);
             for ii = 1:numel(EnergyShift)
@@ -579,7 +579,6 @@ classdef TwoJManifold < AtomManifold
             dressedStateList = table(Index,EnergyShift,DressedState);
             dressedStateList = sortrows(dressedStateList,"Index");
             dressedStateList = join(obj.StateList,dressedStateList);
-            dressedStateList.EnergyShift = dressedStateList.EnergyShift - dressedStateList.Energy;
             U = dressedStateList.DressedState;
             U = horzcat(U{:}); %Unitary operator the connect to the dressed states
 

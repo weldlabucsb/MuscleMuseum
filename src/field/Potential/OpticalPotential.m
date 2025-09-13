@@ -22,11 +22,10 @@ classdef (Abstract) OpticalPotential < Potential & matlab.mixin.Heterogeneous
         RecoilVelocity double % :math:`v_r = p_r/m` (m/s)
         RecoilEnergy double % :math:`E_r/h` in Hz
         RecoilTemperature double % :math:`T_r = 2 E_r h / k_B` in Kelvin
-        ScalarPolarizabilityGround double % Scalar polarizability :math:`\alpha_0` (Hz / (V/m)^2)
     end
     
     methods
-        function obj = OpticalPotential(atom,laser,name)
+        function obj = OpticalPotential(atom,laser,name,options)
             % Construct an :class:`OpticalPotential`.
             %
             % :param atom: Atomic species and structure context
@@ -39,8 +38,9 @@ classdef (Abstract) OpticalPotential < Potential & matlab.mixin.Heterogeneous
                 atom (1,1) Atom
                 laser Laser
                 name string = string.empty
+                options.atomicState = struct.empty
             end
-            obj@Potential(atom,name);
+            obj@Potential(atom,name,atomicState = options.atomicState);
             obj.Laser = laser;
         end
 
@@ -71,22 +71,6 @@ classdef (Abstract) OpticalPotential < Potential & matlab.mixin.Heterogeneous
             % :return: Recoil temperature [K]
             % :rtype: double
             tr = 2*obj.RecoilEnergy.*Constants.SI("hbar")*2*pi./Constants.SI("kB"); %Notice the factor of 2
-        end
-        function alpha0 = get.ScalarPolarizabilityGround(obj)
-            % Get ground-state scalar polarizability :math:`\alpha_0` (D1, D2 contributions).
-            %
-            % :return: Scalar polarizability [Hz/(V/m)^2]
-            % :rtype: double
-            omegaD1 = 2 * pi * obj.Atom.D1.Frequency;
-            omegaD2 = 2 * pi * obj.Atom.D2.Frequency;
-            omegaL = obj.Laser.AngularFrequency;
-            dipoleD1 = obj.Atom.D1.ReducedDipoleMatrixElement;
-            dipoleD2 = obj.Atom.D2.ReducedDipoleMatrixElement;
-            hbar = Constants.SI("hbar");
-
-            alpha0 = 2/3/hbar * (omegaD1 * abs(dipoleD1)^2 / (omegaD1^2 - omegaL^2) +...
-                omegaD2 * abs(dipoleD2)^2 / (omegaD2^2 - omegaL^2));
-            alpha0 = alpha0 / hbar / 2 / pi;
         end
     end
 end

@@ -16,12 +16,11 @@ classdef (Abstract) Potential < handle
     end
 
     properties
-        Manifold string % Atomic manifold identifier (e.g., "DGround")
-        StateIndex double % State index within manifold (e.g., Zeeman sublevel)
+        AtomicState struct % Quantum state of the atom. Including quantum numbers like N,L,J...
     end
     
     methods
-        function obj = Potential(atom,name)
+        function obj = Potential(atom,name,options)
             % Construct a :class:`Potential`.
             %
             % :param atom: Atom context for computing derived quantities
@@ -31,9 +30,22 @@ classdef (Abstract) Potential < handle
             arguments
                 atom Atom
                 name string
+                options.atomicState = struct.empty
             end
             obj.Atom = atom;
             obj.Name = name;
+
+            if ~isempty(options.atomicState)
+                obj.AtomicState = options.atomicState;
+            else
+                % Assign default atomic state as the ground state
+                s.N = atom.groundStateN;
+                s.L = 0;
+                s.J = 1/2;
+                s.F = min(totalAngularMomentum(1/2,atom.I));
+                s.MF = -s.F;
+                obj.AtomicState = s;
+            end
         end
         
     end
