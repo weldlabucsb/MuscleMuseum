@@ -270,11 +270,13 @@ classdef Andor < Acquisition
                                     case 32
                                         mData = uint32(mData);
                                 end
-
-                                [ret] = StartAcquisition();
-                                CheckWarning(ret);
                                 send(cdq,mData)
                         end
+
+                        [ret] = FreeInternalMemory();
+                        CheckWarning(ret);
+                        [ret] = StartAcquisition();
+                        CheckWarning(ret);
                     end
                     
                     %% Stop
