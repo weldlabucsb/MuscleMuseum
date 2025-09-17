@@ -88,17 +88,17 @@ classdef TriangleFit1D < FitData1D
             amp = max(y) - min(y);
 
             % Period guess
-            guessPeriod = mean(diff(xSort(abs(diff(ySort)) > 0.5 * amp)));
+            % guessPeriod = mean(diff(xSort(abs(diff(ySort)) > 0.5 * amp)));
 
 
-            % n = numel(x);
-            % xUnit = max(x)/n;
-            % yFT = nufft(y,x/xUnit);
-            % yFT(1) = 0;
-            % yFT = yFT(1:floor(n/2));
-            % fList = (0:floor(n/2)-1)/n / xUnit;
-            % [~,idx] = max(abs(yFT));
-            % guessPeriod = 1 / fList(idx(1));
+            n = numel(x);
+            xUnit = max(x)/n;
+            yFT = nufft(y,x/xUnit);
+            yFT(1) = 0;
+            yFT = yFT(1:floor(n/2));
+            fList = (0:floor(n/2)-1)/n / xUnit;
+            [~,idx] = max(abs(yFT));
+            guessPeriod = 1 / fList(idx(1));
 
             % Rise time guess
             guessRise = 0.5 *  guessPeriod;
