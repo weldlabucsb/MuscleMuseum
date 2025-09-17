@@ -38,6 +38,9 @@ classdef ScopeValue < BecAnalysis
 
         function initialize(obj)
             % Initialize chart and series for scope values.
+            %
+            % Sets up errorbar plots for each scope measurement identifier in
+            % :attr:`FullValueName`. Creates legend, axis labels, and plot styling.
             
             %% Check if we can plot scope values
             if isempty(obj.FullValueName)
@@ -108,6 +111,12 @@ classdef ScopeValue < BecAnalysis
 
         function updateFigure(obj,~)
             % Update errorbar series for each selected scope value.
+            %
+            % Reads scope data from :attr:`BecExp.ScopeData` and updates
+            % plot series with averaged values and error bars.
+            %
+            % :param ~: Unused run index placeholder
+            % :type ~: double
             becExp = obj.BecExp;
             paraList = becExp.ScannedParameterList;
             fig = obj.Chart(1).Figure;

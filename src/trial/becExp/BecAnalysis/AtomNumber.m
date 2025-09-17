@@ -68,6 +68,9 @@ classdef AtomNumber < BecAnalysis
 
         function initialize(obj)
             % Initialize plots, listeners, and internal data containers.
+            %
+            % Sets up 1D or 2D plotting layouts, creates data storage arrays,
+            % configures plot properties, and establishes property listeners.
             becExp = obj.BecExp;
             fig = obj.Chart(1).initialize;
             nSub = becExp.Roi.NSub;

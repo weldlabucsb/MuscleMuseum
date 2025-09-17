@@ -431,6 +431,8 @@ and displays them as errorbar plots, one series per entry in
 <dt class="sig sig-object mat" id="ScopeValue.initialize">
 <span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ScopeValue.initialize" title="Link to this definition">#</a></dt>
 <dd><p>Initialize chart and series for scope values.</p>
+<p>Sets up errorbar plots for each scope measurement identifier in
+<a class="reference internal" href="#ScopeValue.FullValueName" title="ScopeValue.FullValueName"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">FullValueName</span></code></a>. Creates legend, axis labels, and plot styling.</p>
 </dd></dl>
 
 <dl class="mat method">
@@ -456,6 +458,13 @@ and displays them as errorbar plots, one series per entry in
 <dt class="sig sig-object mat" id="ScopeValue.updateFigure">
 <span class="sig-name descname"><span class="pre">updateFigure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">~</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ScopeValue.updateFigure" title="Link to this definition">#</a></dt>
 <dd><p>Update errorbar series for each selected scope value.</p>
+<p>Reads scope data from <a class="reference internal" href="BecExp.html#BecExp.ScopeData" title="BecExp.ScopeData"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">BecExp.ScopeData</span></code></a> and updates
+plot series with averaged values and error bars.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>~</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Unused run index placeholder</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>

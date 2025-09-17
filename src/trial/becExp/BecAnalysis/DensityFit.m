@@ -60,6 +60,9 @@ classdef DensityFit < BecAnalysis
 
         function initialize(obj)
             % Initialize fit objects, data containers, and plots.
+            %
+            % Sets up 1D profile fit objects, creates data storage arrays,
+            % initializes GUI and chart components, and configures plot layouts.
             becExp = obj.BecExp;
             nSub = becExp.Roi.NSub;
             nSub(nSub == 0) = 1;

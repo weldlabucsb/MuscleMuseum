@@ -421,6 +421,11 @@ Supports normalized sub-ROI fractions and 1D/2D visualizations.</p>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="AtomNumber.Colormap">
+<span class="sig-name descname"><span class="pre">Colormap</span></span><em class="property"> <span class="pre">=</span> <span class="pre">sky</span></em><a class="headerlink" href="#AtomNumber.Colormap" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomNumber.Condensate">
 <span class="sig-name descname"><span class="pre">Condensate</span></span><a class="headerlink" href="#AtomNumber.Condensate" title="Link to this definition">#</a></dt>
 <dd><p>Condensate component from bimodal fits per run/subROI [m^{-2}]</p>
@@ -529,7 +534,14 @@ Supports normalized sub-ROI fractions and 1D/2D visualizations.</p>
 <dt class="sig sig-object mat" id="AtomNumber.initialize">
 <span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AtomNumber.initialize" title="Link to this definition">#</a></dt>
 <dd><p>Initialize plots, listeners, and internal data containers.</p>
+<p>Sets up 1D or 2D plotting layouts, creates data storage arrays,
+configures plot properties, and establishes property listeners.</p>
 </dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="AtomNumber.initializeImage">
+<span class="sig-name descname"><span class="pre">initializeImage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">tabGroupObj</span></em>, <em class="sig-param"><span class="pre">titleStr</span></em>, <em class="sig-param"><span class="pre">nSub</span></em>, <em class="sig-param"><span class="pre">xLabel</span></em>, <em class="sig-param"><span class="pre">yLabel</span></em>, <em class="sig-param"><span class="pre">idx</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">isError</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AtomNumber.initializeImage" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="AtomNumber.updateData">

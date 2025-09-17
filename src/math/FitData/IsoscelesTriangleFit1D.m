@@ -1,30 +1,31 @@
 classdef IsoscelesTriangleFit1D < FitData1D
-    % Triangle wave function fit for one-dimensional data.
+    %:class:`IsoscelesTriangleFit1D` fits isosceles triangle wave functions to 1D data.
     %
-    % Fits a triangle wave function with customizable rise and fall times to
-    % experimental data. The function consists of linear rise and fall segments
-    % with specified period and phase.
+    % Fits symmetric triangle wave functions where rise and fall times are equal
+    % (isosceles triangles) to experimental data. The function consists of linear
+    % rise and fall segments with specified period and phase. Inherits from
+    % :class:`FitData1D`.
     %
-    % - **Formula**:
+    % **Formula:**
     %
     %   :math:`u = (x + \phi) \bmod T`
     %
     %   :math:`y(u) = \begin{cases}
-    %   A_{\min} + (A_{\max} - A_{\min})\, \dfrac{u}{T_r}, & 0 \le u < T_r \\
-    %   A_{\max} - (A_{\max} - A_{\min})\, \dfrac{u - T_r}{T - T_r}, & T_r \le u < T
+    %   A_{\min} + (A_{\max} - A_{\min})\, \dfrac{u}{T/2}, & 0 \le u < T/2 \\
+    %   A_{\max} - (A_{\max} - A_{\min})\, \dfrac{u - T/2}{T/2}, & T/2 \le u < T
     %   \end{cases}`
     %
-    % - **Coefficients**: :math:`A_{\max}`, :math:`A_{\min}`, :math:`\phi`, :math:`T`, :math:`T_r`
+    % **Coefficients:** :math:`A_{\max}`, :math:`A_{\min}`, :math:`\phi`, :math:`T`
     %
     % **Example1:**
     %
     % .. code-block:: matlab
     %
-    %     % Fit triangle wave to experimental data
+    %     % Fit isosceles triangle wave to experimental data
     %     x = linspace(0, 20, 200);
     %     y = sawtooth(2*pi*0.2*x, 0.5) + 0.1*randn(size(x));
     %     data = [x', y'];
-    %     triangleFit = TriangleFit1D(data);
+    %     triangleFit = IsoscelesTriangleFit1D(data);
     %     triangleFit.do();
     %     triangleFit.plot();
     %
@@ -32,14 +33,13 @@ classdef IsoscelesTriangleFit1D < FitData1D
     %
     % .. code-block:: matlab
     %
-    %     % Access fit parameters
-    %     triangleFit = TriangleFit1D(data);
+    %     % Access fit coefficients
+    %     triangleFit = IsoscelesTriangleFit1D(data);
     %     triangleFit.do();
     %     amax = triangleFit.Coefficient(1); % maximum amplitude
     %     amin = triangleFit.Coefficient(2); % minimum amplitude
     %     phi = triangleFit.Coefficient(3);  % phase
     %     T = triangleFit.Coefficient(4);    % period
-    %     Tr = triangleFit.Coefficient(5);   % rise time
     %
 
     properties
@@ -48,23 +48,18 @@ classdef IsoscelesTriangleFit1D < FitData1D
 
     methods
         function obj = IsoscelesTriangleFit1D(rawData)
-            % Constructor for TriangleFit1D class.
+            % Construct an :class:`IsoscelesTriangleFit1D` object.
             %
             % :param rawData: Input data as n x 2 matrix [x, y]
             % :type rawData: double array
-            %
-            % **Example:**
-            %
-            % .. code-block:: matlab
-            %
-            %     data = [1:10; randn(1,10)].';
-            %     triangleFit = TriangleFit1D(data);
-            %
             obj@FitData1D(rawData)
         end
 
         function setFormula(obj)
-            % Set the triangle wave fit formula.
+            % Set the isosceles triangle wave fit formula.
+            %
+            % Configures the :attr:`Func` property with an isosceles triangle function
+            % where rise time equals fall time (T/2 each).
             %
             obj.Func = fittype(['(mod((x + phi), T) < T/2) .* (Amin + (Amax - Amin) .* mod((x + phi), T) / (T/2)) +' ...
                 '(mod((x + phi), T) >= T/2) .* (Amax -  (Amax - Amin) .* (mod((x + phi), T) - (T/2)) / (T/2))'],'independent', {'x'},...
@@ -72,10 +67,11 @@ classdef IsoscelesTriangleFit1D < FitData1D
         end
 
         function guessCoefficient(obj)
-            % Automatically estimate initial fit parameters from data.
+            % Automatically estimate initial fit coefficients from data.
             %
-            % Estimates maximum/minimum amplitudes, period, rise time, and phase
-            % based on data characteristics and zero-crossing analysis.
+            % Estimates maximum/minimum amplitudes, period, and phase based on
+            % data characteristics and Fourier analysis. Uses isosceles assumption
+            % with equal rise and fall times.
             %
             if isempty(obj.DataSize) || obj.DataSize < obj.MinimumDataSize
                 return

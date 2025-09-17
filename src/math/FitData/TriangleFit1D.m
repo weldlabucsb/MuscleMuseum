@@ -1,11 +1,11 @@
 classdef TriangleFit1D < FitData1D
-    % Triangle wave function fit for one-dimensional data.
+    %:class:`TriangleFit1D` fits asymmetric triangle wave functions to 1D data.
     %
-    % Fits a triangle wave function with customizable rise and fall times to
+    % Fits triangle wave functions with customizable rise and fall times to
     % experimental data. The function consists of linear rise and fall segments
-    % with specified period and phase.
+    % with specified period, phase, and rise time. Inherits from :class:`FitData1D`.
     %
-    % - **Formula**:
+    % **Formula:**
     %
     %   :math:`u = (x + \phi) \bmod T`
     %
@@ -14,7 +14,7 @@ classdef TriangleFit1D < FitData1D
     %   A_{\max} - (A_{\max} - A_{\min})\, \dfrac{u - T_r}{T - T_r}, & T_r \le u < T
     %   \end{cases}`
     %
-    % - **Coefficients**: :math:`A_{\max}`, :math:`A_{\min}`, :math:`\phi`, :math:`T`, :math:`T_r`
+    % **Coefficients:** :math:`A_{\max}`, :math:`A_{\min}`, :math:`\phi`, :math:`T`, :math:`T_r`
     %
     % **Example1:**
     %
@@ -22,7 +22,7 @@ classdef TriangleFit1D < FitData1D
     %
     %     % Fit triangle wave to experimental data
     %     x = linspace(0, 20, 200);
-    %     y = sawtooth(2*pi*0.2*x, 0.5) + 0.1*randn(size(x));
+    %     y = sawtooth(2*pi*0.2*x, 0.3) + 0.1*randn(size(x));
     %     data = [x', y'];
     %     triangleFit = TriangleFit1D(data);
     %     triangleFit.do();
@@ -32,7 +32,7 @@ classdef TriangleFit1D < FitData1D
     %
     % .. code-block:: matlab
     %
-    %     % Access fit parameters
+    %     % Access fit coefficients
     %     triangleFit = TriangleFit1D(data);
     %     triangleFit.do();
     %     amax = triangleFit.Coefficient(1); % maximum amplitude
@@ -48,23 +48,18 @@ classdef TriangleFit1D < FitData1D
 
     methods
         function obj = TriangleFit1D(rawData)
-            % Constructor for TriangleFit1D class.
+            % Construct a :class:`TriangleFit1D` object.
             %
             % :param rawData: Input data as n x 2 matrix [x, y]
             % :type rawData: double array
-            %
-            % **Example:**
-            %
-            % .. code-block:: matlab
-            %
-            %     data = [1:10; randn(1,10)].';
-            %     triangleFit = TriangleFit1D(data);
-            %
             obj@FitData1D(rawData)
         end
 
         function setFormula(obj)
-            % Set the triangle wave fit formula.
+            % Set the asymmetric triangle wave fit formula.
+            %
+            % Configures the :attr:`Func` property with a triangle function having
+            % independent rise time :math:`T_r` and fall time :math:`T - T_r`.
             %
             obj.Func = fittype(['(mod((x + phi), T) < Tr) .* (Amin + (Amax - Amin) .* mod((x + phi), T) / Tr) +' ...
                 '(mod((x + phi), T) >= Tr) .* (Amax -  (Amax - Amin) .* (mod((x + phi), T) - Tr) / (T - Tr))'],'independent', {'x'},...
@@ -72,10 +67,11 @@ classdef TriangleFit1D < FitData1D
         end
 
         function guessCoefficient(obj)
-            % Automatically estimate initial fit parameters from data.
+            % Automatically estimate initial fit coefficients from data.
             %
             % Estimates maximum/minimum amplitudes, period, rise time, and phase
-            % based on data characteristics and zero-crossing analysis.
+            % based on data characteristics and Fourier analysis. Rise time is
+            % initially set to half the period.
             %
             if isempty(obj.DataSize) || obj.DataSize < obj.MinimumDataSize
                 return

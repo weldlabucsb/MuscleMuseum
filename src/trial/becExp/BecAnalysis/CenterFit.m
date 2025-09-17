@@ -60,6 +60,11 @@ classdef CenterFit < BecAnalysis
         end
 
         function initialize(obj)
+            % Initialize plots, fit objects, and parameter table.
+            %
+            % Sets up dual-axis plots for x/y center trajectories, initializes
+            % fit objects based on :attr:`FitMethod`, and creates parameter table.
+            % Requires :class:`DensityFit` in analysis pipeline.
             becExp = obj.BecExp;
             %% Check if we have DensityFit and Sub-ROIs
             if ~ismember("DensityFit",obj.BecExp.AnalysisMethod)
