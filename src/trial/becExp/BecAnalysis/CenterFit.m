@@ -249,7 +249,7 @@ classdef CenterFit < BecAnalysis
                                     data{9,3} = '1/VarUnit';
                                     data{10,3} = '1/VarUnit';
                                 end
-                            case "TriangleFit1D"
+                            case {"TriangleFit1D","IsoscelesTriangleFit1D"}
                                 obj.MinimumFitNumber = 5;
                                 data{5,1} = 'Thermal Cloud Center Slosh Amplitude in x';
                                 data{5,2} = '';
@@ -362,7 +362,7 @@ classdef CenterFit < BecAnalysis
                                     obj.ThermalCloudCenterSloshFrequency = ...
                                         [obj.FitDataThermal(1).Coefficient(2);obj.FitDataThermal(2).Coefficient(2)];
                                 end
-                            case "TriangleFit1D"
+                            case {"TriangleFit1D","IsoscelesTriangleFit1D"}
                                 %% Sine Fit
                                 for xx = 1:2
                                     obj.FitDataThermal(xx).RawData = [varList,becExp.DensityFit.ThermalCloudCenter(xx,:).'];
@@ -449,7 +449,7 @@ classdef CenterFit < BecAnalysis
                                     obj.ParaTable.Data{5,2} = num2str(obj.ThermalCloudCenterAcceleration(1)/px);
                                     obj.ParaTable.Data{6,2} = num2str(obj.ThermalCloudCenterAcceleration(2)/px);
                                 end
-                            case {"SineFit1D","TriangleFit1D"}
+                            case {"SineFit1D","TriangleFit1D","IsoscelesTriangleFit1D"}
                                 obj.ParaTable.Data{5,2} = num2str(obj.ThermalCloudCenterSloshAmplitude(1)/px);
                                 obj.ParaTable.Data{6,2} = num2str(obj.ThermalCloudCenterSloshAmplitude(2)/px);
                                 obj.ParaTable.Data{7,2} = num2str(obj.ThermalCloudCenterSloshOffset(1)/px);
