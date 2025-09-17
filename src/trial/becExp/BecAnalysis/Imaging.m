@@ -225,7 +225,7 @@ classdef Imaging < BecAnalysis
             
             % Create density plot for saturation parameter
             imagesc(ax1, xData, yData, sat2D);
-            ax1.Colormap = jet;
+            ax1.Colormap = sky;
             colorbar(ax1);
             ax1.XLabel.String = becExp.XLabel;
             ax1.XLabel.Interpreter = "latex";
@@ -244,7 +244,7 @@ classdef Imaging < BecAnalysis
             % Create combined plot (light - dark)
             combined2D = light2D - dark2D;
             imagesc(ax2, xData, yData, combined2D);
-            ax2.Colormap = jet;
+            ax2.Colormap = sky;
             colorbar(ax2);
             ax2.XLabel.String = becExp.XLabel;
             ax2.XLabel.Interpreter = "latex";

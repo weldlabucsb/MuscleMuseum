@@ -86,6 +86,9 @@ classdef DensityFit < BecAnalysis
 
             %% Initialize plots
             obj.Gui(1).initialize(becExp)
+            if becExp.Is2DScan
+                obj.Chart(1).IsEnabled = false;
+            end
             fig = obj.Chart(1).initialize;
 
             %% Initialize cloud size plots

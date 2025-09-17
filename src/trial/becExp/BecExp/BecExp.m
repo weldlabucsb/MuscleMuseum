@@ -63,12 +63,12 @@ classdef BecExp < Trial
     end
 
     properties (Dependent,Hidden)
-        ScannedVariableList % 1D array or 2×N matrix of scanned parameter values across runs
-        RunListSorted % Run indices sorted by ascending scanned parameter value(s)
-        ScannedVariableListSorted % Scanned parameter values sorted in ascending order
+        ScannedVariableList % 1D array or 2×N matrix of scanned variable values across runs
+        RunListSorted % Run indices sorted by ascending scanned variable value(s)
+        ScannedVariableListSorted % Scanned variable values sorted in ascending order
         XLabel % LaTeX-formatted axis label with units for primary scanned variable
         YLabel % LaTeX-formatted y-axis label with units for secondary variable (2D scans only)
-        VariableGrid % Meshgrid structure containing X, Y grids for 2D parameter scans
+        VariableGrid % Meshgrid structure containing X, Y grids for 2D variable scans
     end
 
     properties (Constant,Hidden)
@@ -121,7 +121,7 @@ classdef BecExp < Trial
             % Analysis settings
             if ~isLoad
                 obj.AnalysisMethod = rmmissing(["Od";"Imaging";"Ad";...
-                    obj.AnalysisMethod]);
+                    obj.AnalysisMethod(:)]);
                 obj.AnalysisMethod(obj.AnalysisMethod == "None") = [];
                 obj.addAnalysis(obj.AnalysisMethod);
             end
@@ -199,65 +199,9 @@ classdef BecExp < Trial
             % :return: Parameter values per run - 1D array or 2×N matrix
             % :rtype: double
             if obj.Is2DScan
-                % For 2D scans, return a 2xN matrix with both parameters
-                var1 = obj.ScannedVariable;
-                var2 = obj.ScannedVariable2;
-                
-                % Get first parameter values
-                switch var1
-                    case "RunIndex"
-                        varList1 = double(1:obj.NCompletedRun);
-                    case "CiceroLogTime"
-                        if ~isempty(obj.CiceroLogTime)
-                            varList1 = obj.CiceroLogTime;
-                            varList1 = varList1 - varList1(1);
-                            varList1 = seconds(varList1);
-                        else
-                            varList1 = [];
-                        end
-                    otherwise
-                        if isfield(obj.CiceroData,var1)
-                            varList1 = obj.CiceroData.(var1);
-                        elseif isfield(obj.HardwareData,var1)
-                            varList1 = obj.HardwareData.(var1);
-                        else
-                            obj.updateScopeData
-                            if isfield(obj.ScopeData,var1)
-                                varList1 = obj.ScopeData.(var1);
-                            else
-                                varList1 = [];
-                            end
-                        end
-                end
-                
-                % Get second parameter values
-                switch var2
-                    case "RunIndex"
-                        varList2 = double(1:obj.NCompletedRun);
-                    case "CiceroLogTime"
-                        if ~isempty(obj.CiceroLogTime)
-                            varList2 = obj.CiceroLogTime;
-                            varList2 = varList2 - varList2(1);
-                            varList2 = seconds(varList2);
-                        else
-                            varList2 = [];
-                        end
-                    otherwise
-                        if isfield(obj.CiceroData,var2)
-                            varList2 = obj.CiceroData.(var2);
-                        elseif isfield(obj.HardwareData,var2)
-                            varList2 = obj.HardwareData.(var2);
-                        else
-                            obj.updateScopeData
-                            if isfield(obj.ScopeData,var2)
-                                varList2 = obj.ScopeData.(var2);
-                            else
-                                varList2 = [];
-                            end
-                        end
-                end
-                
-                % Return 2xN matrix
+                % For 2D scans, return a 2xN matrix with both parameters             
+                varList1 = obj.getVariableList(obj.ScannedVariable);
+                varList2 = obj.getVariableList(obj.ScannedVariable2);
                 if ~isempty(varList1) && ~isempty(varList2)
                     varList = [varList1; varList2];
                 else
@@ -265,31 +209,37 @@ classdef BecExp < Trial
                 end
             else
                 % 1D scan - original logic
-                switch obj.ScannedVariable
-                    case "RunIndex"
-                        varList = double(1:obj.NCompletedRun);
-                    case "CiceroLogTime"
-                        if ~isempty(obj.CiceroLogTime)
-                            varList = obj.CiceroLogTime;
-                            varList = varList - varList(1);
-                            varList = seconds(varList);
+                varList = obj.getVariableList(obj.ScannedVariable);
+            end
+        end
+
+        function varList = getVariableList(obj,varName)
+            switch varName
+                case "None"
+                    varList = [];
+                case "RunIndex"
+                    varList = double(1:obj.NCompletedRun);
+                case "CiceroLogTime"
+                    if ~isempty(obj.CiceroLogTime)
+                        varList = obj.CiceroLogTime;
+                        varList = varList - varList(1);
+                        varList = seconds(varList);
+                    else
+                        varList = [];
+                    end
+                otherwise
+                    if isfield(obj.CiceroData,varName)
+                        varList = obj.CiceroData.(varName);
+                    elseif isfield(obj.HardwareData,varName)
+                        varList = obj.HardwareData.(varName);
+                    else
+                        obj.updateScopeData
+                        if isfield(obj.ScopeData,varName)
+                            varList = obj.ScopeData.(varName);
                         else
                             varList = [];
                         end
-                    otherwise
-                        if isfield(obj.CiceroData,obj.ScannedVariable)
-                            varList = obj.CiceroData.(obj.ScannedVariable);
-                        elseif isfield(obj.HardwareData,obj.ScannedVariable)
-                            varList = obj.HardwareData.(obj.ScannedVariable);
-                        else
-                            obj.updateScopeData
-                            if isfield(obj.ScopeData,obj.ScannedVariable)
-                                varList = obj.ScopeData.(obj.ScannedVariable);
-                            else
-                                varList = [];
-                            end
-                        end
-                end
+                    end
             end
         end
 
@@ -337,10 +287,10 @@ classdef BecExp < Trial
             
             sP = obj.ScannedVariable2;
             sP = strrep(sP,'_','\_');
-            if obj.ScannedVariable2Unit == "None"
+            if obj.ScannedVariableUnit2 == "None"
                 yLabel = sP;
             else
-                yLabel = sP + "~[$\mathrm{" + obj.ScannedVariable2Unit + "}$]";
+                yLabel = sP + "~[$\mathrm{" + obj.ScannedVariableUnit2 + "}$]";
             end
         end
 
@@ -421,9 +371,6 @@ classdef BecExp < Trial
                 drp = obj.DeletedRunVariableList(~ismember(obj.DeletedRunVariableList,obj.ScannedVariableList));
             end
         end
-    end
-
-    methods
 
         function setAnalyzer(obj)
             % Set up event listener for automated analysis upon run completion.
