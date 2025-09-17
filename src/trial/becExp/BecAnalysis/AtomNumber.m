@@ -365,9 +365,9 @@ classdef AtomNumber < BecAnalysis
             rawTotal = sum(obj.Raw,3);
             for ii = 1:nSub
                 if nSub > 1 && obj.IsShowNormalized
-                    [xRaw,yRaw,stdRaw] = computeStd(varList,obj.Raw(1,:,ii) ./ rawTotal, becExp.AveragingMethod);
+                    [xRaw,yRaw,stdRaw] = computeAveErr(varList,obj.Raw(1,:,ii) ./ rawTotal, becExp.AveragingMethod);
                 else
-                    [xRaw,yRaw,stdRaw] = computeStd(varList,obj.Raw(1,:,ii) / obj.Unit, becExp.AveragingMethod);
+                    [xRaw,yRaw,stdRaw] = computeAveErr(varList,obj.Raw(1,:,ii) / obj.Unit, becExp.AveragingMethod);
                 end
                 obj.RawLine(ii).XData = xRaw;
                 obj.RawLine(ii).YData = yRaw;
@@ -382,9 +382,9 @@ classdef AtomNumber < BecAnalysis
                         thermalTotal = sum(obj.Thermal,3);
                         for ii = 1:nSub
                             if nSub > 1 && obj.IsShowNormalized
-                                [xThermal,yThermal,stdThermal] = computeStd(varList,obj.Thermal(1,:,ii) ./ thermalTotal, becExp.AveragingMethod);
+                                [xThermal,yThermal,stdThermal] = computeAveErr(varList,obj.Thermal(1,:,ii) ./ thermalTotal, becExp.AveragingMethod);
                             else
-                                [xThermal,yThermal,stdThermal] = computeStd(varList,obj.Thermal(1,:,ii) / obj.Unit, becExp.AveragingMethod);
+                                [xThermal,yThermal,stdThermal] = computeAveErr(varList,obj.Thermal(1,:,ii) / obj.Unit, becExp.AveragingMethod);
                             end
                             obj.ThermalLine(ii).XData = xThermal;
                             obj.ThermalLine(ii).YData = yThermal;
@@ -434,9 +434,9 @@ classdef AtomNumber < BecAnalysis
             rawTotal = sum(obj.Raw,3);
             for ii = 1:nSub
                 if nSub > 1 && obj.IsShowNormalized
-                    [xRaw,yRaw,dataRaw,errorRaw] = computeStd2D(varList(1,:),varList(2,:),obj.Raw(1,:,ii) ./ rawTotal, becExp.AveragingMethod);
+                    [xRaw,yRaw,dataRaw,errorRaw] = computeAveErr2D(varList(1,:),varList(2,:),obj.Raw(1,:,ii) ./ rawTotal, becExp.AveragingMethod);
                 else
-                    [xRaw,yRaw,dataRaw,errorRaw] = computeStd2D(varList(1,:),varList(2,:),obj.Raw(1,:,ii) / obj.Unit, becExp.AveragingMethod);
+                    [xRaw,yRaw,dataRaw,errorRaw] = computeAveErr2D(varList(1,:),varList(2,:),obj.Raw(1,:,ii) / obj.Unit, becExp.AveragingMethod);
                 end
                 updateImageData(obj.RawLine(ii),xRaw,yRaw,dataRaw);
                 updateImageData(obj.RawError(ii),xRaw,yRaw,errorRaw);
@@ -449,9 +449,9 @@ classdef AtomNumber < BecAnalysis
                         thermalTotal = sum(obj.Thermal,3);
                         for ii = 1:nSub
                             if nSub > 1 && obj.IsShowNormalized
-                                [xThermal,yThermal,dataThermal,errorThermal] = computeStd2D(varList(1,:),varList(2,:),obj.Thermal(1,:,ii) ./ thermalTotal, becExp.AveragingMethod);
+                                [xThermal,yThermal,dataThermal,errorThermal] = computeAveErr2D(varList(1,:),varList(2,:),obj.Thermal(1,:,ii) ./ thermalTotal, becExp.AveragingMethod);
                             else
-                                [xThermal,yThermal,dataThermal,errorThermal] = computeStd2D(varList(1,:),varList(2,:),obj.Thermal(1,:,ii) / obj.Unit, becExp.AveragingMethod);
+                                [xThermal,yThermal,dataThermal,errorThermal] = computeAveErr2D(varList(1,:),varList(2,:),obj.Thermal(1,:,ii) / obj.Unit, becExp.AveragingMethod);
                             end
                             obj.ThermalLine(ii).XData = xThermal;
                             obj.ThermalLine(ii).YData = yThermal;

@@ -167,9 +167,9 @@ classdef Imaging < BecAnalysis
             ax = findobj(fig,'Type','Axes');
 
             % Find x, y, and error plot data
-            [xLight,yLight,stdLight] = computeStd(varList,obj.LightMean);
-            [xDark,yDark,stdDark] = computeStd(varList,obj.DarkMean);
-            [xSat,ySat,stdSat] = computeStd(varList,obj.SaturationParameterMean);
+            [xLight,yLight,stdLight] = computeAveErr(varList,obj.LightMean);
+            [xDark,yDark,stdDark] = computeAveErr(varList,obj.DarkMean);
+            [xSat,ySat,stdSat] = computeAveErr(varList,obj.SaturationParameterMean);
 
             % Update imaging counts plots
             l = findobj(ax(1),'Type','ErrorBar');

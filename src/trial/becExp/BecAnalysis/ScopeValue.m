@@ -117,7 +117,7 @@ classdef ScopeValue < BecAnalysis
             end
             
             for ii = 1:numel(obj.FullValueName)
-                [x,y,std] = computeStd(paraList, becExp.ScopeData.(obj.FullValueName(ii)), becExp.AveragingMethod);
+                [x,y,std] = computeAveErr(paraList, becExp.ScopeData.(obj.FullValueName(ii)), becExp.AveragingMethod);
                 obj.ScopeLine(ii).XData = x;
                 obj.ScopeLine(ii).YData = y;
                 obj.ScopeLine(ii).YNegativeDelta = std;

@@ -1,5 +1,5 @@
-function [xUni,yAve,yError] = computeStd(x,y, method)
-%computeSde Summary of this function goes here
+function [xUni,yAve,yError] = computeAveErr(x,y, method)
+%computeAveErr Summary of this function goes here
 %   computeSde has inputs [x] and [y] as plotting data. x and y must have
 %   the same dimension. It returns the independent variable list [xUni]
 %   without duplications. [yAve] is the dependent variable list that has

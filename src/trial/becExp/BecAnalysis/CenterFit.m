@@ -417,8 +417,8 @@ classdef CenterFit < BecAnalysis
                     elseif becExp.NCompletedRun >= obj.MinimumFitNumber
                         rawXT = obj.FitDataThermal(1).RawData;
                         rawYT = obj.FitDataThermal(2).RawData;
-                        [xRawXT,yRawXT,stdRawXT] = computeStd(rawXT(:,1),rawXT(:,2) / px, becExp.AveragingMethod);
-                        [xRawYT,yRawYT,stdRawYT] = computeStd(rawYT(:,1),rawYT(:,2) / px, becExp.AveragingMethod);
+                        [xRawXT,yRawXT,stdRawXT] = computeAveErr(rawXT(:,1),rawXT(:,2) / px, becExp.AveragingMethod);
+                        [xRawYT,yRawYT,stdRawYT] = computeAveErr(rawYT(:,1),rawYT(:,2) / px, becExp.AveragingMethod);
 
                         obj.ThermalXLine.XData = xRawXT;
                         obj.ThermalXLine.YData = yRawXT;

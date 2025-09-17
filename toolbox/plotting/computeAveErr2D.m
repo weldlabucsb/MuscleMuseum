@@ -1,6 +1,6 @@
-function [xUni,yUni,dataAve,dataError] = computeStd2D(x,y,data, method)
+function [xUni,yUni,dataAve,dataError] = computeAveErr2D(x,y,data, method)
 %computeSde Summary of this function goes here
-%   computeSde has inputs [x] and [y] as plotting data. x and y must have
+%   computeAveErr2D has inputs [x] and [y] as plotting data. x and y must have
 %   the same dimension. It returns the independent variable list [xUni]
 %   without duplications. [yAve] is the dependent variable list that has
 %   been averaged accordingly. [yError] is the corresponding standard
