@@ -311,14 +311,21 @@ classdef Ad < BecAnalysis
             ax = gca;
 
             %% Plot AD Data
-            nRun = obj.BecExp.NCompletedRun;
-            cData = cell(1,nRun);
-            runList = obj.BecExp.RunListSorted;
             if isempty(adData)
                 adData = obj.AdData;
             end
-            for ii = 1:nRun
-                cData{ii} = adData(:,:,runList(ii));
+            if ~obj.BecExp.IsDensityAverage
+                xTick = obj.BecExp.ScannedVariableListSorted;
+                adData = adData(:,:,obj.BecExp.RunListSorted);
+            else
+                [xTick,adData] = computeAveErr(obj.BecExp.ScannedVariableList,adData);
+            end
+
+            nRun = numel(xTick);
+            cData = cell(1,nRun);
+
+            for ii = 1:numel(xTick)
+                cData{ii} = adData(:,:,ii);
             end
             mData = horzcat(cData{:}) / obj.Unit;
             img = imagesc(ax,mData);
@@ -367,7 +374,7 @@ classdef Ad < BecAnalysis
             ax.TickDir = "out";
             tickSpace = roiSize(2);
             ax.XTick = (tickSpace/2):tickSpace:(tickSpace*double(nRun)-tickSpace/2);
-            ax.XTickLabel = string(obj.BecExp.ScannedVariableListSorted);
+            ax.XTickLabel = string(xTick);
             set(ax,'box','off')
             ax.Units = "pixels";
             outerpos = ax.OuterPosition;
@@ -382,58 +389,74 @@ classdef Ad < BecAnalysis
             % :type fig: matlab.ui.Figure
             % :param adData: Optional AD to plot; defaults to :attr:`AdData`
             % :type adData: double, optional
-            becExp = obj.BecExp;
-            roi = becExp.Roi;
-            roiSize = roi.CenterSize(3:4);
-            
-            % Get 2D plot data
-            [xData, yData] = obj.get2DPlotData();
-            
-            if isempty(xData) || isempty(yData)
-                % Fallback to 1D plotting if 2D data is not available
-                obj.plotAdMix1D(fig, adData);
-                return;
-            end
-            
-            % Clear figure and create new axes
-            clf(fig);
-            ax = axes(fig);
-            
-            % Use provided adData or default to obj.AdData
+            %% Plot OD Data
+            ax = gca;
             if isempty(adData)
                 adData = obj.AdData;
             end
-            
-            % Create 2D density plot for a representative slice (middle of ROI)
-            midSlice = round(roiSize(1)/2);
-            adSlice = squeeze(adData(midSlice, :, :));
-            
-            % Reshape to 2D grid
-            ad2D = obj.reshapeDataTo2D(adSlice / obj.Unit);
-            
-            % Create density plot
-            imagesc(ax, xData, yData, ad2D);
-            ax.Colormap = obj.Colormap;
-            ax.CLim = obj.CLim;
-            
-            % Add labels and title
-            ax.XLabel.String = becExp.XLabel;
-            ax.XLabel.Interpreter = "latex";
-            ax.XLabel.FontSize = 12;
-            ax.YLabel.String = becExp.YLabel;
-            ax.YLabel.Interpreter = "latex";
-            ax.YLabel.FontSize = 12;
-            ax.Title.String = "TrialName: " + obj.BecExp.Name + ...
-                ", Trial \#" + num2str(obj.BecExp.SerialNumber) + ...
-                " (AD at y=" + num2str(midSlice) + ")";
-            ax.Title.Interpreter = "latex";
-            ax.Title.FontSize = 12;
-            
-            % Add colorbar
+            adData = flip(adData,1) / obj.Unit;
+            [xTick,yTick,adData] = computeAveErr2D(...
+                obj.BecExp.ScannedVariableList(1,:), ...
+                obj.BecExp.ScannedVariableList(2,:), ...
+                adData,"None");
+            [r, c, ny, nx] = size(adData);
+            mData = reshape(permute(adData, [1, 3, 2, 4]), r*ny, c*nx);
+            img = imagesc(ax,mData);
+
+            %% Render
+            fz = 20;
             cb = colorbar(ax);
+            clim(obj.CLim)
+            colormap(ax,obj.Colormap)
+            
             cb.Label.Interpreter = "Latex";
             cb.Label.String = "AD [$\times 10^{" + string(log(obj.Unit)/log(10))+"} ~ \mathrm{m}^{-2}$]";
-            cb.Label.FontSize = 12;
+            cb.Label.FontSize = fz;
+            roiSize = obj.BecExp.Roi.CenterSize(3:4);
+            yxBoundary = obj.BecExp.Roi.YXBoundary;
+            aspect = double(nx)*roiSize(2)/(roiSize(1) * double(ny));
+            figPos = fig.InnerPosition;
+            targetWidth = figPos(3)*0.85;
+            targetHeight = figPos(4)*0.8;
+            ax.Units = "pixels";
+            if targetWidth > targetHeight * aspect
+                ax.Position(4) = targetHeight;
+                ax.Position(3) = targetHeight * aspect;
+            else
+                ax.Position(3) = targetWidth;
+                ax.Position(4) = targetWidth / aspect;
+            end
+            ax.Position(1:2) = [figPos(3)/2 - ax.Position(3)/2,...
+                figPos(4)/2 - ax.Position(4)/2];
+            pbaspect(ax,[aspect,1,1])
+
+            ax.Units = "normalized";
+            ax.XLabel.String = obj.BecExp.XLabel;
+            ax.XLabel.Interpreter = "latex";
+            ax.XLabel.FontSize = fz;
+            ax.YLabel.String = obj.BecExp.YLabel;
+            ax.YLabel.Interpreter = "latex";
+            ax.YLabel.FontSize = fz;
+            ax.Title.String = "TrialName: " + obj.BecExp.Name + ...
+                ", Trial \#" + num2str(obj.BecExp.SerialNumber);
+            ax.Title.Interpreter = "latex";
+            ax.Title.FontSize = fz;
+            ax.FontSize = fz;
+            ax.YDir = "normal";
+
+            renderTicks(img,[1,2],yxBoundary(1):yxBoundary(2))
+            ax.TickDir = "out";
+            tickSpace = roiSize(2);
+            ax.XTick = (tickSpace/2):tickSpace:(tickSpace*double(nx)-tickSpace/2);
+            ax.XTickLabel = string(xTick);
+            tickSpace = roiSize(1);
+            ax.YTick = (tickSpace/2):tickSpace:(tickSpace*double(ny)-tickSpace/2);
+            ax.YTickLabel = string(yTick);
+            set(ax,'box','off')
+            ax.Units = "pixels";
+            outerpos = ax.OuterPosition;
+            fig.Position(4) = fig.Position(3) * outerpos(4)/outerpos(3)*1.05;
+            ax.OuterPosition(2) = 0;
         end
 
         function plotAdAnimation(obj)
@@ -443,6 +466,9 @@ classdef Ad < BecAnalysis
             % color scaling and ROI mid-slice profiles.
             
             %% Initialize figure
+            if obj.BecExp.Is2DScan
+                obj.Chart(2).IsEnabled = false;
+            end
             fig = obj.Chart(2).initialize;
             if ishandle(fig)
                 figure(fig)
@@ -461,11 +487,16 @@ classdef Ad < BecAnalysis
             roi = becExp.Roi;
             yxBoundary = roi.YXBoundary;
             roiSize = roi.CenterSize(3:4);
-            nRun = becExp.NCompletedRun;
-            runList = obj.BecExp.RunListSorted;
             varName = becExp.ScannedVariable;
-            varListSorted = becExp.ScannedVariableListSorted;
-            varUnit = becExp.ScannedVariable;
+            varUnit = becExp.ScannedVariableUnit;
+            adData = obj.AdData / obj.Unit;
+            if ~obj.BecExp.IsDensityAverage
+                varListSorted = becExp.ScannedVariableListSorted;
+                adData = adData(:,:,becExp.RunListSorted);
+            else
+                [varListSorted,adData] = computeAveErr(becExp.ScannedVariableList,adData);
+            end
+            nRun = numel(varListSorted);
 
             %% Initialize plots
             roiAspect = roiSize(2)/roiSize(1);
@@ -537,9 +568,9 @@ classdef Ad < BecAnalysis
                 for ii = 1:nRun
 
                     % Update plots
-                    img.CData = obj.AdData(:,:,runList(ii)) / obj.Unit;
-                    xLine.YData = squeeze(obj.AdData(round(roiSize(1)/2),:,runList(ii))) / obj.Unit;
-                    yLine.XData = squeeze(obj.AdData(:,round(roiSize(2)/2),runList(ii))) / obj.Unit;
+                    img.CData = adData(:,:,ii);
+                    xLine.YData = squeeze(adData(round(roiSize(1)/2),:,ii));
+                    yLine.XData = squeeze(adData(:,round(roiSize(2)/2),ii));
 
                     % Update title
                     if ismissing(varUnit)

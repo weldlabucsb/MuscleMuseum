@@ -31,7 +31,7 @@ classdef Andor < Acquisition
     %    cam.startCamera(); pause(1); cam.stopCamera();
     properties (SetAccess=protected,Transient)
         CallbackFunc function_handle % Client-side callback: @(data,event)
-        Future parallel.FevalFuture % Handle to the worker task running andorLoop
+        Future parallel.FevalFuture % Handle to the worker task running :meth:`andorLoop`
         ClientDataQueue parallel.pool.DataQueue % Queue to receive data from worker
         ClientQueue parallel.pool.PollableDataQueue % Queue to receive the worker queue handle
         WorkerQueue parallel.pool.PollableDataQueue % Queue to send commands to worker

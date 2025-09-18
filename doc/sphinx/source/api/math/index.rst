@@ -13,6 +13,7 @@ math
    FitOverride
    GaussianFit1D
    GaussianRandom
+   IsoscelesTriangleFit1D
    LinearFit1D
    LinearFrequencyRamp
    LinearRamp

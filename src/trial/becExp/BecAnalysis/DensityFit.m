@@ -60,6 +60,9 @@ classdef DensityFit < BecAnalysis
 
         function initialize(obj)
             % Initialize fit objects, data containers, and plots.
+            %
+            % Sets up 1D profile fit objects, creates data storage arrays,
+            % initializes GUI and chart components, and configures plot layouts.
             becExp = obj.BecExp;
             nSub = becExp.Roi.NSub;
             nSub(nSub == 0) = 1;
@@ -86,6 +89,9 @@ classdef DensityFit < BecAnalysis
 
             %% Initialize plots
             obj.Gui(1).initialize(becExp)
+            if becExp.Is2DScan
+                obj.Chart(1).IsEnabled = false;
+            end
             fig = obj.Chart(1).initialize;
 
             %% Initialize cloud size plots
@@ -298,8 +304,8 @@ classdef DensityFit < BecAnalysis
             switch obj.FitMethod
                 case {"GaussianFit1D","BosonicGaussianFit1D"}
                     for ii = 1:nSub
-                        [xThermalX,yThermalX,stdThermalX] = computeStd(varList,obj.ThermalCloudSize(1,:,ii) * 1e6, becExp.AveragingMethod);
-                        [xThermalY,yThermalY,stdThermalY] = computeStd(varList,obj.ThermalCloudSize(2,:,ii) * 1e6, becExp.AveragingMethod);
+                        [xThermalX,yThermalX,stdThermalX] = computeAveErr(varList,obj.ThermalCloudSize(1,:,ii) * 1e6, becExp.AveragingMethod);
+                        [xThermalY,yThermalY,stdThermalY] = computeAveErr(varList,obj.ThermalCloudSize(2,:,ii) * 1e6, becExp.AveragingMethod);
                         obj.ThermalXLine(ii).XData = xThermalX;
                         obj.ThermalXLine(ii).YData = yThermalX;
                         obj.ThermalXLine(ii).YNegativeDelta = stdThermalX;

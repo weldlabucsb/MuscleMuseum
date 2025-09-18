@@ -31,7 +31,7 @@ classdef Chart < handle
     end
 
     properties (Transient)
-        Figure matlab.ui.Figure % Handle to the managed figure (created in :meth:`initialize`)
+        Figure % Handle to the managed figure (created in :meth:`initialize`)
     end
 
     properties (Hidden)
@@ -91,7 +91,8 @@ classdef Chart < handle
                 fig = {1};
                 return
             end
-            
+
+            % Initialize the figure
             if ~obj.IsBrowser
                 obj.Figure = figure(obj.Number);
             else
@@ -100,9 +101,11 @@ classdef Chart < handle
             clf(obj.Figure);
             obj.Figure.Visible = 'off';
 
+            % Get monitor position and sizes
             mp = sortMonitor;
             ss = mp(1,:);
 
+            % Compute figure wdith and height
             if isstring(obj.Size)
                 switch obj.Size
                     case "small"
@@ -126,6 +129,7 @@ classdef Chart < handle
                 fHeight = obj.Size(2) * ss(4);
             end
 
+            % Compute figure location
             if isstring(obj.Location)
                 switch obj.Location
                     case "eastnorthwest"
@@ -137,6 +141,7 @@ classdef Chart < handle
                 loc = [obj.Location(1) * ss(3),obj.Location(2) * ss(4)];
             end
 
+            % Set figure location and size
             if isstring(loc)
                 obj.Figure.OuterPosition = [200,600,fWidth,fHeight];
                 movegui(obj.Figure,loc);
@@ -174,7 +179,7 @@ classdef Chart < handle
                         " It might have been closed.")
                     return
                 end
-                % Check if image is too large
+                % Check if image is too large and save fig
                 img = findobj(obj.Figure,'type','image');
                 nEle = 0;
                 for ii = 1:numel(img)
@@ -187,7 +192,19 @@ classdef Chart < handle
                     warning("Image size too large. " + ...
                         "Figure [" + obj.Name+"]" + " was not saved as .fig")
                 end
-                saveas(obj.Figure,obj.Path,'png')
+
+                % Check for tabs and save png
+                [deepestTab, tabLabel] = findDeepestTab(obj.Figure);
+                if isempty(deepestTab)
+                    saveas(obj.Figure,obj.Path,'png')
+                else
+                    for ii = 1:numel(deepestTab)
+                        ax = findobj(deepestTab(ii),'Type','Axes');
+                        if ~isempty(ax)
+                            exportgraphics(ax,obj.Path + "_" + tabLabel(ii) + '.png')
+                        end
+                    end
+                end
             end
         end
 
@@ -224,7 +241,7 @@ classdef Chart < handle
                 end
             end
         end
-    
+
         function close(obj)
             % Close the managed figure window if it exists.
             if ~obj.IsEnabled
