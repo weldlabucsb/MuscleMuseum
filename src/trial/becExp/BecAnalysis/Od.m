@@ -303,50 +303,72 @@ classdef Od < BecAnalysis
             %
             % :param fig: Target figure handle
             % :type fig: matlab.ui.Figure
-            becExp = obj.BecExp;
-            roi = becExp.Roi;
-            roiSize = roi.CenterSize(3:4);
+            %% Plot OD Data
+            ax = gca;
+            odData = obj.OdData;
+            odData = flip(odData,1);
+            [xTick,yTick,odData] = computeAveErr2D(...
+                obj.BecExp.ScannedVariableList(1,:), ...
+                obj.BecExp.ScannedVariableList(2,:), ...
+                odData,"None");
+            [r, c, ny, nx] = size(odData);
+            mData = reshape(permute(odData, [1, 3, 2, 4]), r*ny, c*nx);
+            img = imagesc(ax,mData);
 
-            % Get 2D plot data
-            [xData, yData] = obj.get2DPlotData();
-
-            if isempty(xData) || isempty(yData)
-                % Fallback to 1D plotting if 2D data is not available
-                obj.plotOdMix1D(fig);
-                return;
+            %% Render
+            fz = 20;
+            cb = colorbar(ax);
+            clim(obj.CLim)
+            colormap(ax,obj.Colormap)
+            
+            cb.Label.Interpreter = "Latex";
+            cb.Label.String = "OD";
+            cb.Label.FontSize = fz;
+            roiSize = obj.BecExp.Roi.CenterSize(3:4);
+            yxBoundary = obj.BecExp.Roi.YXBoundary;
+            aspect = double(nx)*roiSize(2)/(roiSize(1) * double(ny));
+            figPos = fig.InnerPosition;
+            targetWidth = figPos(3)*0.85;
+            targetHeight = figPos(4)*0.8;
+            ax.Units = "pixels";
+            if targetWidth > targetHeight * aspect
+                ax.Position(4) = targetHeight;
+                ax.Position(3) = targetHeight * aspect;
+            else
+                ax.Position(3) = targetWidth;
+                ax.Position(4) = targetWidth / aspect;
             end
+            ax.Position(1:2) = [figPos(3)/2 - ax.Position(3)/2,...
+                figPos(4)/2 - ax.Position(4)/2];
+            pbaspect(ax,[aspect,1,1])
 
-            % Clear figure and create new axes
-            clf(fig);
-            ax = axes(fig);
-
-            % Create 2D density plot for a representative slice (middle of ROI)
-            midSlice = round(roiSize(1)/2);
-            odSlice = squeeze(obj.OdData(midSlice, :, :));
-
-            % Reshape to 2D grid
-            od2D = obj.reshapeDataTo2D(odSlice);
-
-            % Create density plot
-            imagesc(ax, xData, yData, od2D);
-            ax.Colormap = obj.Colormap;
-            ax.CLim = obj.CLim;
-
-            % Add labels and title
-            ax.XLabel.String = becExp.XLabel;
+            ax.Units = "normalized";
+            ax.XLabel.String = obj.BecExp.XLabel;
             ax.XLabel.Interpreter = "latex";
-            ax.XLabel.FontSize = 12;
-            ax.YLabel.String = becExp.YLabel;
+            ax.XLabel.FontSize = fz;
+            ax.YLabel.String = obj.BecExp.YLabel;
             ax.YLabel.Interpreter = "latex";
-            ax.YLabel.FontSize = 12;
+            ax.YLabel.FontSize = fz;
             ax.Title.String = "TrialName: " + obj.BecExp.Name + ...
-                ", Trial \#" + num2str(obj.BecExp.SerialNumber) + ...
-                " (OD at y=" + num2str(midSlice) + ")";
+                ", Trial \#" + num2str(obj.BecExp.SerialNumber);
             ax.Title.Interpreter = "latex";
-            ax.Title.FontSize = 12;
+            ax.Title.FontSize = fz;
+            ax.FontSize = fz;
+            ax.YDir = "normal";
 
-            % Add colorbar
-            colorbar(ax);
+            renderTicks(img,[1,2],yxBoundary(1):yxBoundary(2))
+            ax.TickDir = "out";
+            tickSpace = roiSize(2);
+            ax.XTick = (tickSpace/2):tickSpace:(tickSpace*double(nx)-tickSpace/2);
+            ax.XTickLabel = string(xTick);
+            tickSpace = roiSize(1);
+            ax.YTick = (tickSpace/2):tickSpace:(tickSpace*double(ny)-tickSpace/2);
+            ax.YTickLabel = string(yTick);
+            set(ax,'box','off')
+            ax.Units = "pixels";
+            outerpos = ax.OuterPosition;
+            fig.Position(4) = fig.Position(3) * outerpos(4)/outerpos(3)*1.05;
+            ax.OuterPosition(2) = 0;
         end
 
         function plotOdAnimation(obj)
@@ -357,6 +379,9 @@ classdef Od < BecAnalysis
             % to show temporal or parametric evolution.
             
             %% Initialize figure
+            if obj.BecExp.Is2DScan
+                obj.Chart(2).IsEnabled = false;
+            end
             fig = obj.Chart(2).initialize;
             if ishandle(fig)
                 figure(fig)
@@ -375,11 +400,16 @@ classdef Od < BecAnalysis
             roi = becExp.Roi;
             yxBoundary = roi.YXBoundary;
             roiSize = roi.CenterSize(3:4);
-            nRun = becExp.NCompletedRun;
-            runList = obj.BecExp.RunListSorted;
             varName = becExp.ScannedVariable;
-            varListSorted = becExp.ScannedVariableListSorted;
             varUnit = becExp.ScannedVariableUnit;
+            odData = obj.OdData;
+            if ~obj.BecExp.IsDensityAverage
+                varListSorted = becExp.ScannedVariableListSorted;
+                odData = odData(:,:,becExp.RunListSorted);
+            else
+                [varListSorted,odData] = computeAveErr(becExp.ScannedVariableList,odData);
+            end
+            nRun = numel(varListSorted);
 
             %% Initialize plots
             roiAspect = roiSize(2)/roiSize(1);
@@ -451,9 +481,9 @@ classdef Od < BecAnalysis
                 for ii = 1:nRun
 
                     % Update plots
-                    img.CData = obj.OdData(:,:,runList(ii));
-                    xLine.YData = squeeze(obj.OdData(round(roiSize(1)/2),:,runList(ii)));
-                    yLine.XData = squeeze(obj.OdData(:,round(roiSize(2)/2),runList(ii)));
+                    img.CData = odData(:,:,ii);
+                    xLine.YData = squeeze(odData(round(roiSize(1)/2),:,ii));
+                    yLine.XData = squeeze(odData(:,round(roiSize(2)/2),ii));
 
                     % Update title
                     if varUnit == "None" || ismissing(varUnit)
