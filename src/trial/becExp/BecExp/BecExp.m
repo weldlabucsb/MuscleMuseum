@@ -20,6 +20,7 @@ classdef BecExp < Trial
         AnalysisMethod string % Ordered list of active analysis module names
         CloudCenter double % Cloud center coordinates [:math:`y_0`, :math:`x_0`] from previous measurement [pixels]
         AveragingMethod string = "StdErr" % Data averaging method: "None"|"StdErr"|"Std"
+        IsDensityAverage logical = false % Flag to control averaging when saving Od and Ad data and figures
     end
 
     properties(Dependent)

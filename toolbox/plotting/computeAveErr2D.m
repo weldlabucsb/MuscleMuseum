@@ -24,13 +24,12 @@ if ~(numel(x)==sz && numel(y)==sz)
 end
 
 %% Compute indices
-xUni = sort(unique(x));
-yUni = sort(unique(y));
+% Note: unique() returns sorted values by default in MATLAB
+[xUni, ~, xIndices] = unique(x);
+[yUni, ~, yIndices] = unique(y);
 nx = numel(xUni);
 ny = numel(yUni);
 
-[~, xIndices] = ismember(x, xUni);
-[~, yIndices] = ismember(y, yUni);
 linearIndices = sub2ind([ny, nx], yIndices, xIndices);
 linearIndices = linearIndices(:);
 
