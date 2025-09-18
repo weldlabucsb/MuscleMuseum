@@ -1,4 +1,50 @@
 function [xUni,dataAve,dataError] = computeAveErr(x,data, method)
+% :meth:`computeAveErr` Compute grouped averages and errors for repeated x values.
+%
+% Computes the average and an error metric of :math:`\text{data}` grouped by
+% repeated entries in :math:`x`. The input :attr:`x` must be a vector with
+% :math:`N` samples. The input :attr:`data` can be either a vector of length
+% :math:`N`, or an N-D array whose last dimension has size :math:`N` (samples
+% along the last axis). Grouping is performed by unique values of :attr:`x`.
+%
+% The error is controlled by :attr:`method`:
+%
+% - **"None"**: return grouped means with zero-valued errors.
+% - **"StdDev"**: return the (unbiased) sample standard deviation per group.
+% - **"StdErr"**: return the standard error of the mean per group,
+%   :math:`\mathrm{SE}=\sigma/\sqrt{n}`.
+%
+% Internally, for N-D inputs a sparse-selection strategy is used to compute
+% group sums and counts efficiently. Variance is computed via
+% :math:`\mathrm{Var}(X)=\mathbb{E}[X^2]-\mathbb{E}[X]^2` with the unbiased
+% correction :math:`n/(n-1)` for groups with :math:`n>1`; singletons have zero
+% variance and zero error.
+%
+% **Parameters:**
+%
+% - **x** (double): Vector of independent values of length :math:`N`.
+% - **data** (double): Measured values; either a vector of length :math:`N`,
+%   or an array with size ``[..., N]`` where the last dimension indexes samples.
+% - **method** (string, optional): One of ``"None"``, ``"StdDev"``, ``"StdErr"``;
+%   default is ``"StdErr"``.
+%
+% **Returns:**
+%
+% - **xUni** (double): Sorted unique values of :attr:`x`, length :math:`G`.
+% - **dataAve** (double): Grouped means with size ``[..., G]`` matching
+%   :attr:`data` except that the last dimension is :math:`G`.
+% - **dataError** (double): Grouped error (per :attr:`method`) with the same
+%   size as :attr:`dataAve`.
+%
+% **Examples:**
+%
+% - **Example1 (vector data):**
+%   ``[xUni, yAve, yErr] = computeAveErr([1 1 2 2 3], [5 7 1 2 9], method="StdErr");``
+%
+% - **Example2 (N-D data, samples on last dim):**
+%   ``data = rand(4,5,100); x = repelem(1:10,10);``
+%   ``[xUni, mAve, mErr] = computeAveErr(x, data, method="StdDev");``
+%
 arguments
     x double {mustBeVector}
     data double
@@ -25,7 +71,6 @@ elseif nSample ~= size(data, dataDim)
     error('The number of elements in x must match the size of the last dimension of data.');
 end
 
-x = x(:); % Ensure x is a column vector
 
 % --- Find unique x values and group indices ---
 [xUni, ~, indices] = unique(x);
@@ -38,8 +83,8 @@ if method == "None" || nSample == nGroup
         dataAve = data(sortOrder);
     else
         % Reorder the last dimension of the matrix
-        colon_indices = repmat({':'}, 1, dataDim - 1);
-        dataAve = data(colon_indices{:}, sortOrder);
+        colonIndice = repmat({':'}, 1, dataDim - 1);
+        dataAve = data(colonIndice{:}, sortOrder);
     end
     dataError = zeros(size(xUni));
     return;
@@ -48,19 +93,28 @@ end
 % --- Averaging and Error Calculation ---
 if isVector
     % --- Method 1: Vector data (use simple accumarray) ---
-    data = data(:); % Ensure data is a column vector
     dataAve = accumarray(indices, data, [nGroup, 1], @mean);
+    if size(data,1) == 1
+        dataAve = dataAve.';
+    end
+    if nargout < 3
+        return
+    end
 
-    if strcmp(method, "StdDev")
+    if method == "StdDev"
         % Standard deviation
         dataError = accumarray(indices, data, [nGroup, 1], @std, 0);
-    elseif strcmp(method, "StdErr")
+    elseif method == "StdErr"
         % Standard error (std/sqrt(n))
         groupCount = accumarray(indices, 1, [nGroup, 1]);
         stdDev = accumarray(indices, data, [nGroup, 1], @std, 0);
         dataError = stdDev ./ sqrt(groupCount);
     else
         error("Invalid method. Use 'None', 'StdDev', or 'StdErr'.");
+    end
+
+    if size(data,1) == 1
+        dataError = dataError.';
     end
 
 else
@@ -75,29 +129,33 @@ else
     S = sparse(indices, 1:nSample, 1, nGroup, nSample);
 
     % Calculate group sums and counts
-    groupSum2D = data2D * S';
-    groupCount = sum(S, 2); % This is a column vector
+    groupSum2D = full(data2D * S.');
+    groupCount = full(sum(S, 2).'); % This is a column vector
 
     % Calculate average
-    dataAve2D = groupSum2D ./ groupCount'; % Transpose counts for broadcasting
+    dataAve2D = groupSum2D ./ groupCount; % Transpose counts for broadcasting
+    outputSize = [dataSizeOther, nGroup];
+    dataAve = reshape(dataAve2D, outputSize);
+    if nargout < 3
+        return
+    end
 
     % Calculate error
-    if strcmp(method, "StdDev") || strcmp(method, "StdErr")
+    if method == "StdDev" || method == "StdErr"
         % To get std, we use Var(X) = E[X^2] - (E[X])^2
-        meanOfSquares2D = (data2D.^2 * S') ./ groupCount';
+        meanOfSquares2D = (data2D.^2 * S') ./ groupCount;
         variance2D = meanOfSquares2D - dataAve2D.^2;
 
         % Correct for sample variance (n-1 denominator) vs population variance (n)
         % and handle groups with a single member (variance is 0)
-        isSingleMember = (groupCount' <= 1);
-        correctionFactor = groupCount' ./ (groupCount' - 1);
+        isSingleMember = (groupCount <= 1);
+        correctionFactor = groupCount ./ max(groupCount - 1, 1);
         correctionFactor(isSingleMember) = 0; % Avoid division by zero, std is 0
 
-        stdDev2D = sqrt(variance2D .* correctionFactor);
-        stdDev2D(stdDev2D < 0) = 0; % Correct for potential floating point inaccuracies
+        stdDev2D = sqrt(max(variance2D .* correctionFactor,0));
 
-        if strcmp(method, "StdErr")
-            dataError2D = stdDev2D ./ sqrt(groupCount');
+        if method == "StdErr"
+            dataError2D = stdDev2D ./ sqrt(groupCount);
         else
             dataError2D = stdDev2D;
         end
@@ -106,9 +164,8 @@ else
     end
 
     % Reshape results back to original N-D structure
-    outputSize = [dataSizeOther, nGroup];
-    dataAve = reshape(full(dataAve2D), outputSize);
-    dataError = reshape(full(dataError2D), outputSize);
+
+    dataError = reshape(dataError2D, outputSize);
 end
 
 end

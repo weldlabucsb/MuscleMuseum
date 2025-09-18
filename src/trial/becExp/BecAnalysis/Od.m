@@ -224,13 +224,20 @@ classdef Od < BecAnalysis
             % :type fig: matlab.ui.Figure
             ax = gca;
 
-            %% Plot AD Data
-            nRun = obj.BecExp.NCompletedRun;
-            cData = cell(1,nRun);
-            runList = obj.BecExp.RunListSorted;
+            %% Plot OD Data
             odData = obj.OdData;
-            for ii = 1:nRun
-                cData{ii} = odData(:,:,runList(ii));
+            if ~obj.BecExp.IsDensityAverage
+                xTick = obj.BecExp.ScannedVariableListSorted;
+                odData = odData(:,:,obj.BecExp.RunListSorted);
+            else
+                [xTick,odData] = computeAveErr(obj.BecExp.ScannedVariableList,odData);
+            end
+
+            nRun = numel(xTick);
+            cData = cell(1,nRun);
+
+            for ii = 1:numel(xTick)
+                cData{ii} = odData(:,:,ii);
             end
             mData = horzcat(cData{:});
             img = imagesc(ax,mData);
@@ -279,7 +286,7 @@ classdef Od < BecAnalysis
             ax.TickDir = "out";
             tickSpace = roiSize(2);
             ax.XTick = (tickSpace/2):tickSpace:(tickSpace*double(nRun)-tickSpace/2);
-            ax.XTickLabel = string(obj.BecExp.ScannedVariableListSorted);
+            ax.XTickLabel = string(xTick);
             set(ax,'box','off')
             ax.Units = "pixels";
             outerpos = ax.OuterPosition;

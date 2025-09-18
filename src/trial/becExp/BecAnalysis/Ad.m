@@ -311,14 +311,19 @@ classdef Ad < BecAnalysis
             ax = gca;
 
             %% Plot AD Data
-            nRun = obj.BecExp.NCompletedRun;
-            cData = cell(1,nRun);
-            runList = obj.BecExp.RunListSorted;
-            if isempty(adData)
-                adData = obj.AdData;
+            adData = obj.AdData;
+            if ~obj.BecExp.IsDensityAverage
+                xTick = obj.BecExp.ScannedVariableListSorted;
+                adData = adData(:,:,obj.BecExp.RunListSorted);
+            else
+                [xTick,adData] = computeAveErr(obj.BecExp.ScannedVariableList,adData);
             end
-            for ii = 1:nRun
-                cData{ii} = adData(:,:,runList(ii));
+
+            nRun = numel(xTick);
+            cData = cell(1,nRun);
+
+            for ii = 1:numel(xTick)
+                cData{ii} = adData(:,:,ii);
             end
             mData = horzcat(cData{:}) / obj.Unit;
             img = imagesc(ax,mData);
@@ -367,7 +372,7 @@ classdef Ad < BecAnalysis
             ax.TickDir = "out";
             tickSpace = roiSize(2);
             ax.XTick = (tickSpace/2):tickSpace:(tickSpace*double(nRun)-tickSpace/2);
-            ax.XTickLabel = string(obj.BecExp.ScannedVariableListSorted);
+            ax.XTickLabel = string(xTick);
             set(ax,'box','off')
             ax.Units = "pixels";
             outerpos = ax.OuterPosition;
