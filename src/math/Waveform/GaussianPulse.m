@@ -1,4 +1,4 @@
-classdef GaussianPulse < PartialPeriodicWaveform
+classdef GaussianPulse < Waveform
     %GAUSSIANPULSE Pure Gaussian envelope (no carrier)
     %   The envelope is exp(-0.5 * ((t - tc)/sigma)^2), gated to [t0, te].
     
