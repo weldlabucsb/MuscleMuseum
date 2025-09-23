@@ -1,4 +1,4 @@
-classdef GaussianSinePulse < PartialPeriodicWaveform
+classdef GaussianSinePulse < Waveform
     %GAUSSIANSINEPULSE Gaussian envelope with a sine carrier
     %   The envelope is exp(-0.5 * ((t - tc)/sigma)^2), gated to [t0, te].
     %   Carrier is sin(2*pi*freq*(t - t0) + phi).

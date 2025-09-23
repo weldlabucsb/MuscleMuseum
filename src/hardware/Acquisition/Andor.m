@@ -135,6 +135,7 @@ classdef Andor < Acquisition
             % the running :attr:`Future`, and deletes :attr:`ClientListener`.
             data.Message = "Stop";
             send(obj.WorkerQueue,data);
+            pause(0.2)
             obj.checkError;
             cancel(obj.Future)
             delete(obj.ClientListener)
@@ -175,6 +176,10 @@ classdef Andor < Acquisition
             send(cq,wq);
 
             % Initialize the Andor SDK library
+            try
+                AndorShutDown();
+            catch
+            end
             try
                 ret=AndorInitialize('');
                 CheckError(ret);
@@ -236,6 +241,8 @@ classdef Andor < Acquisition
                     [data,datarcvd] = poll(wq,10);
                     if datarcvd && data.Message == "Start"
                         %% Start acquisition
+                        [ret] = FreeInternalMemory();
+                        CheckWarning(ret);
                         [ret] = StartAcquisition();
                         CheckWarning(ret);
                         isAcq = true;
@@ -282,6 +289,7 @@ classdef Andor < Acquisition
                     %% Stop
                     [data,datarcvd] = poll(wq);
                     if datarcvd && data.Message == "Stop"
+                        disp("stopping camera")
                         [ret] = AbortAcquisition();
                         CheckWarning(ret);
                         [ret]=SetShutter(1, 2, 1, 1);
