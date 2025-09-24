@@ -133,7 +133,7 @@ classdef (Abstract) PartialPeriodicWaveform < Waveform
             %
             % :return: Vector of sample values for one cycle
             % :rtype: double
-            if obj.NRepeat == 1 && isempty(obj.SampleExtra)
+            if obj.NRepeat == 1 && isempty(obj.SampleExtra) && obj.PeriodicStartTime ~= obj.PeriodicEndTime
                 tFunc = obj.TimeFunc;
                 t = obj.PeriodicStartTime : obj.TimeStep : (obj.PeriodicEndTime -  - obj.TimeStep);
                 s = tFunc(t);
