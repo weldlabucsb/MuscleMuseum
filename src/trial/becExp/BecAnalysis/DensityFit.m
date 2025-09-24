@@ -270,6 +270,11 @@ classdef DensityFit < BecAnalysis
 
             %% Assign values to properties
             for ii = runIdx
+                if isempty(becExp.Roi.SubRoi)
+                    adData = becExp.Ad.AdData(:,:,runIdx(ii));
+                else
+                    adData = becExp.Roi.selectSub(becExp.Ad.AdData(:,:,runIdx(ii)));
+                end
                 for jj = 1:nSub
                     switch obj.FitMethod
                         case "GaussianFit1D"
