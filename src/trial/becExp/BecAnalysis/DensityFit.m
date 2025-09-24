@@ -346,7 +346,7 @@ classdef DensityFit < BecAnalysis
             varList = becExp.ScannedVariableList;
 
             switch obj.FitMethod
-                case {"GaussianFit1D","BosonicGaussianFit1D"}
+                case {"GaussianFit1D","BosonicGaussianFit1D", "WeightedMean"}
                     for ii = 1:nSub
                         [xThermalX,yThermalX,stdThermalX] = computeAveErr(varList,obj.ThermalCloudSize(1,:,ii) * 1e6, becExp.AveragingMethod);
                         [xThermalY,yThermalY,stdThermalY] = computeAveErr(varList,obj.ThermalCloudSize(2,:,ii) * 1e6, becExp.AveragingMethod);
