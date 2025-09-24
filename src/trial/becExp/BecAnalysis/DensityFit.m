@@ -13,7 +13,7 @@ classdef DensityFit < BecAnalysis
     %   - Gui(1): "DensityFitDisplay" - Interactive profile fitting interface
 
     properties
-        FitMethod string = "BosonicGaussianFit1D" % 1D profile fit model: \"GaussianFit1D\" or \"BosonicGaussianFit1D\"
+        FitMethod string = "BosonicGaussianFit1D" % 1D profile fit model: \"GaussianFit1D\" or \"BosonicGaussianFit1D\" or "\WeightedMean"
         FitData % Fit objects array with dimensions (x/y direction, run, subROI)
         DensityLimX double = [0,1] % X-direction density plot limits [min, max] automatically updated during fitting
         DensityLimY double = [0,1] % Y-direction density plot limits [min, max] automatically updated during fitting
@@ -84,6 +84,8 @@ classdef DensityFit < BecAnalysis
                     obj.FitData = GaussianFit1D([1,1]);
                 case "BosonicGaussianFit1D"
                     obj.FitData = BosonicGaussianFit1D([1,1]);
+                case "WeightedMean"
+                    obj.FitData = BosonicGaussianFit1D([1,1]); %Defaulting to BosonicGaussianFit1D for anything that requires the FitData object
             end
             obj.FitData = repmat(obj.FitData,2,1,nSub);
 
@@ -112,7 +114,7 @@ classdef DensityFit < BecAnalysis
             hold(ax2,'on')
             % Initialize thermal and condensate plots
                 switch obj.FitMethod
-                    case {"GaussianFit1D","BosonicGaussianFit1D"}
+                    case {"GaussianFit1D","BosonicGaussianFit1D", "WeightedMean"}
                         for ii = 1:nSub
                             obj.ThermalXLine(ii) = errorbar(ax1,1,1,[]);
                             obj.ThermalXLine(ii).Marker = mOrder(ii);
@@ -187,6 +189,8 @@ classdef DensityFit < BecAnalysis
                     fitData = GaussianFit1D([1,1]);
                 case "BosonicGaussianFit1D"
                     fitData = BosonicGaussianFit1D([1,1]);
+                case "WeightedMean"
+                    fitData = BosonicGaussianFit1D([1,1]);
             end
             fitData = repmat(fitData,2,nRun,nSub);
 
@@ -214,6 +218,9 @@ classdef DensityFit < BecAnalysis
                             fitData(1,ii,jj) = GaussianFit1D([xList,xRaw]);
                             fitData(2,ii,jj) = GaussianFit1D([yList,yRaw]);
                         case "BosonicGaussianFit1D"
+                            fitData(1,ii,jj) = BosonicGaussianFit1D([xList,xRaw]);
+                            fitData(2,ii,jj) = BosonicGaussianFit1D([yList,yRaw]);
+                        case "WeightedMean"
                             fitData(1,ii,jj) = BosonicGaussianFit1D([xList,xRaw]);
                             fitData(2,ii,jj) = BosonicGaussianFit1D([yList,yRaw]);
                     end
@@ -281,6 +288,38 @@ classdef DensityFit < BecAnalysis
                                 obj.FitData(2,ii,jj).Coefficient(2)];
                             obj.ThermalCloudSize(:,ii,jj) = sqrt(2) * px * ...
                                 [obj.FitData(1,ii,jj).Coefficient(3);obj.FitData(2,ii,jj).Coefficient(3)];
+                            obj.ThermalCloudCentralDensity(1,ii,jj) = ...
+                                mean(amp*boseFunction(1,2)/sqrt(pi)./flip(obj.ThermalCloudSize(:,ii,jj)));
+
+                        case "WeightedMean"
+
+                            if isempty(becExp.Roi.SubRoi)
+                                xList = obj.BecExp.Roi.XList;
+                                yList = obj.BecExp.Roi.YList;
+                                xRaw = sum(adData,1).'*px;
+                                yRaw = sum(adData,2)*px;
+                            else
+                                xList = obj.BecExp.Roi.SubRoi(jj).XList;
+                                yList = obj.BecExp.Roi.SubRoi(jj).YList;
+                                xRaw = sum(adData{jj},1).'*px;
+                                yRaw = sum(adData{jj},2)*px;
+                            end
+                            amp = [obj.FitData(1,ii,jj).Coefficient(1);...
+                                obj.FitData(2,ii,jj).Coefficient(1)];
+
+                            %Calculate mean position based on xList and
+                            %yRaw
+                            meanxpos=sum(dot(xList, xRaw))/sum(xRaw);
+                            meanypos=sum(dot(yList, yRaw))/sum(yRaw);
+                            obj.ThermalCloudCenter(1,ii,jj) = px * sum(dot(xList, xRaw))/sum(xRaw);
+                            obj.ThermalCloudCenter(2,ii,jj) = px * sum(dot(yList, yRaw))/sum(yRaw);
+                            
+                            obj.ThermalCloudSize(1,ii,jj) = px * ...
+                                sqrt(sum(dot((xList-meanxpos).^2, xRaw))/(((length(xList)-1)/length(xList))*sum(xRaw)));
+                            obj.ThermalCloudSize(2,ii,jj) = px * ...
+                                sqrt(sum(dot((yList-meanypos).^2, yRaw))/(((length(yList)-1)/length(yList))*sum(yRaw)));
+
+
                             obj.ThermalCloudCentralDensity(1,ii,jj) = ...
                                 mean(amp*boseFunction(1,2)/sqrt(pi)./flip(obj.ThermalCloudSize(:,ii,jj)));
                     end
