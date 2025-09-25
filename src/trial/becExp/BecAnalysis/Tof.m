@@ -1,37 +1,48 @@
 classdef Tof < BecAnalysis
-    %OD Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`Tof` time-of-flight expansion analysis for thermal clouds.
+    %
+    % For scans with :attr:`BecExp.ScannedVariable` == ``"TOF"``, fits
+    % :math:`R^2` vs :math:`t_{\mathrm{TOF}}^2` along x/y to extract
+    % temperature :math:`T`, in-situ radii, trap frequencies, and phase-space
+    % density. Displays fit lines and a parameter table.
+    %
+    % **Associated Charts:**
+    %   - Chart(1): "Time of flight" - R² vs t²_TOF plots with thermodynamic parameter table
 
     properties
-        FitDataThermal
-        FitDataCondensate
+        FitDataThermal % Linear fit objects for :math:`R^2` vs :math:`t_\mathrm{TOF}^2` analysis along x/y axes
+        FitDataCondensate % Reserved for future condensate time-of-flight analysis
     end
 
     properties (SetAccess = protected)
-        TofTime double
-        Temperature double
-        TrappingFrequency double %[omega_x;omega_y]
-        ThermalCloudSizeInSitu double
-        ThermalCloudCentralDensityInSitu double
+        TofTime double % Time-of-flight values per run [s]
+        Temperature double % Fitted cloud temperature from expansion analysis [K]
+        TrappingFrequency double % Trap frequencies [:math:`\omega_x`; :math:`\omega_y`] [Hz]
+        ThermalCloudSizeInSitu double % In-situ cloud radii before expansion [m]
+        ThermalCloudCentralDensityInSitu double % In-situ central column density [m^{-2}]
+        PhaseSpaceDensity double % Peak phase-space density :math:`n\lambda_\mathrm{dB}^3` [dimensionless]
     end
 
     properties (Hidden,Transient)
-        ThermalXLine
-        ThermalXFitLine
-        ThermalYLine
-        ThermalYFitLine
-        CondensateXLine
-        CondensateXFitLine
-        CondensateYLine
-        CondensateYFitLine
-        ParaTable
-        kBoverM
+        ThermalXLine % Plot handle for thermal x-radius data points
+        ThermalXFitLine % Plot handle for thermal x-radius fit line
+        ThermalYLine % Plot handle for thermal y-radius data points
+        ThermalYFitLine % Plot handle for thermal y-radius fit line
+        CondensateXLine % Reserved for condensate x-radius data points
+        CondensateXFitLine % Reserved for condensate x-radius fit line
+        CondensateYLine % Reserved for condensate y-radius data points
+        CondensateYFitLine % Reserved for condensate y-radius fit line
+        ParaTable % UI table handle for thermodynamic parameters
+        kBoverM % Boltzmann constant divided by atomic mass [J/kg/K]
+        lambdaDBPrefator % de Broglie wavelength prefactor :math:`\hbar\sqrt{2\pi/(mk_B)}` [m·K^{1/2}]
     end
 
     methods
         function obj = Tof(becExp)
-            %OD Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct :class:`Tof` analyzer.
+            %
+            % :param becExp: Owning experiment
+            % :type becExp: :class:`BecExp`
             obj@BecAnalysis(becExp)
             obj.Chart(1) = Chart(...
                 name = "Time of flight",...
@@ -43,9 +54,11 @@ classdef Tof < BecAnalysis
         end
 
         function initialize(obj)
+            % Prepare figure and parameter table; validate prerequisites.
+
             %% Check if we can do TOF analysis
-            if obj.BecExp.ScannedParameter ~= "TOF"
-                warning("Scanned Parameter is not TOF. Can not do TOF analysis")
+            if obj.BecExp.ScannedVariable ~= "TOF"
+                warning("Scanned Variable is not TOF. Can not do TOF analysis")
                 return
             elseif ~ismember("DensityFit",obj.BecExp.AnalysisMethod)
                 warning("No DensityFit. Can not do TOF analysis")
@@ -65,7 +78,10 @@ classdef Tof < BecAnalysis
             obj.FitDataThermal = LinearFit1D([1,1]);
             obj.FitDataThermal = repmat(obj.FitDataThermal,2,1);
             obj.TofTime = 0;
-            obj.kBoverM = Constants.SI("kB") / obj.BecExp.Atom.mass;
+            m = obj.BecExp.Atom.mass;
+            kB = Constants.SI("kB");
+            obj.kBoverM = kB/m;
+            obj.lambdaDBPrefator = Constants.SI("hbar") * sqrt(2 * pi / m / kB);
 
             %% Initialize plots
             fig = obj.Chart(1).initialize;
@@ -108,6 +124,9 @@ classdef Tof < BecAnalysis
             data{6,1} = 'Trapping frequency in y';
             data{6,2} = '';
             data{6,3} = 'Hz';
+            data{7,1} = 'Maximum Phase Space Density';
+            data{7,2} = '';
+            data{7,3} = '';
 
             obj.ParaTable.Data = data;
             obj.ParaTable.FontSize = 12;
@@ -153,13 +172,14 @@ classdef Tof < BecAnalysis
         end
 
         function updateData(obj,~)
+            % Fit R^2 vs t_TOF^2 and derive thermodynamic parameters.
             becExp = obj.BecExp;
-            if becExp.ScannedParameter ~= "TOF" || becExp.NCompletedRun < 2 ||...
+            if becExp.ScannedVariable ~= "TOF" || becExp.NCompletedRun < 2 ||...
                     ~ismember("DensityFit",obj.BecExp.AnalysisMethod) ||...
                     ~isempty(obj.BecExp.Roi.SubRoi)
                 return
             end
-            obj.TofTime = becExp.ScannedParameterList * unit2SI(becExp.ScannedParameterUnit);
+            obj.TofTime = becExp.ScannedVariableList * unit2SI(becExp.ScannedVariableUnit);
             wt = obj.BecExp.DensityFit.ThermalCloudSize;
             obj.FitDataThermal = [LinearFit1D([(obj.TofTime.^2).',(wt(1,:).^2).']);...
                 LinearFit1D([(obj.TofTime.^2).',(wt(2,:).^2).'])];
@@ -173,12 +193,17 @@ classdef Tof < BecAnalysis
             obj.ThermalCloudSizeInSitu = sqrt([obj.FitDataThermal(1).Coefficient(2);obj.FitDataThermal(2).Coefficient(2)]);
             obj.ThermalCloudCentralDensityInSitu = max(becExp.AtomNumber.Thermal) / ...
                 pi / prod(obj.ThermalCloudSizeInSitu) / boseFunction(1,3) * boseFunction(1,2);
+            lambdaDB = obj.lambdaDBPrefator * sqrt(1./obj.Temperature);
+            sigma = sqrt(prod(obj.ThermalCloudSizeInSitu));
+            n3D = obj.ThermalCloudCentralDensityInSitu / sigma / sqrt(2 * pi) / boseFunction(1,2);
+            obj.PhaseSpaceDensity = n3D * lambdaDB^3;
         end
 
         function updateFigure(obj,~)
+            % Update R^2 vs t_TOF^2 plots and parameter table.
             becExp = obj.BecExp;
             fig = obj.Chart(1).Figure;
-            if becExp.ScannedParameter ~= "TOF" || becExp.NCompletedRun < 2 ...
+            if becExp.ScannedVariable ~= "TOF" || becExp.NCompletedRun < 2 ...
                     || (isempty(fig) || ~ishandle(fig)) || ~ismember("DensityFit",obj.BecExp.AnalysisMethod) ||...
                     ~isempty(obj.BecExp.Roi.SubRoi)
                 return
@@ -205,12 +230,14 @@ classdef Tof < BecAnalysis
                     obj.ParaTable.Data{4,2} = obj.ThermalCloudCentralDensityInSitu;
                     obj.ParaTable.Data{5,2} = obj.TrappingFrequency(1);
                     obj.ParaTable.Data{6,2} = obj.TrappingFrequency(2);
+                    obj.ParaTable.Data{7,2} = obj.PhaseSpaceDensity;
             end
             lg = findobj(fig,"Type","Legend");
             lg.Location = "best";
         end
 
         function refresh(obj)
+            % Recompute TOF fits and refresh figure.
             obj.initialize;
             obj.updateData(obj.BecExp.NCompletedRun)
             obj.updateFigure(obj.BecExp.NCompletedRun)

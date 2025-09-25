@@ -36,9 +36,11 @@ for ii = 1:numel(transformedData) %Convert array to pg array form
             transformedData{ii} = "{"+regexprep(num2str(transformedData{ii}),'\s+',',')+"}";
         elseif isa(transformedData{ii},"string")
             transformedData{ii} = "{" + strjoin(arrayfun(@(x) """" + x + """",transformedData{ii}),",") + "}";
+            transformedData{ii} = strrep(transformedData{ii},"'","''");
         end
     else
         transformedData{ii} = string(transformedData{ii});
+        transformedData{ii} = strrep(transformedData{ii},"'","''");
     end
 end
 transformedData = string(transformedData);

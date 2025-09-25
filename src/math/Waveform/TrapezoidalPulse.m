@@ -1,6 +1,26 @@
 classdef TrapezoidalPulse < PartialPeriodicWaveform & ConstantTop
-    %SINEWAVE Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`TrapezoidalPulse` generates trapezoidal pulse signals with rise and fall transitions.
+    %
+    % Creates pulse signals with linear rise and fall transitions and a constant
+    % amplitude plateau. Useful for smooth pulse generation with controlled
+    % transition times. Inherits from :class:`PartialPeriodicWaveform` and :class:`ConstantTop`.
+    %
+    % **Example1:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Create a trapezoidal pulse with rise and fall times
+    %     pulse = TrapezoidalPulse(amplitude = 2.0, duration = 0.01, ...
+    %                              riseTime = 0.001, fallTime = 0.001);
+    %     pulse.plot();
+    %
+    % **Example2:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Create a pulse with only rise time
+    %     pulse = TrapezoidalPulse(amplitude = 1.0, duration = 0.01, riseTime = 0.002);
+    %     pulse.plot();
     
     properties
 
@@ -8,8 +28,23 @@ classdef TrapezoidalPulse < PartialPeriodicWaveform & ConstantTop
     
     methods
         function obj = TrapezoidalPulse(options)
-            %SINEWAVE Construct an instance of this class
-            %   Detailed explanation goes here
+            %Construct a TrapezoidalPulse object.
+            %
+            % :param samplingRate: Sampling rate in Hz (default: [])
+            % :type samplingRate: double, optional
+            % :param startTime: Start time in seconds (default: 0)
+            % :type startTime: double, optional
+            % :param duration: Duration in seconds (default: [])
+            % :type duration: double, optional
+            % :param amplitude: Peak-to-peak amplitude (default: [])
+            % :type amplitude: double, optional
+            % :param offset: DC offset (default: 0)
+            % :type offset: double, optional
+            % :param riseTime: Rise transition time in seconds (default: 0)
+            % :type riseTime: double, optional
+            % :param fallTime: Fall transition time in seconds (default: 0)
+            % :type fallTime: double, optional
+            %
             arguments
                 options.samplingRate double = [];
                 options.startTime double = 0;
@@ -29,8 +64,14 @@ classdef TrapezoidalPulse < PartialPeriodicWaveform & ConstantTop
         end
         
         function func = TimeFunc(obj)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
+            %Get the time function for the trapezoidal pulse.
+            %
+            % Creates a function handle that generates trapezoidal pulse values
+            % with linear rise and fall transitions. Implements the abstract
+            % :meth:`TimeFunc` method from :class:`Waveform`.
+            %
+            % :return: Function that takes time array and returns trapezoidal pulse values
+            % :rtype: function_handle
             amp = obj.Amplitude;
             t0 = obj.StartTime;
             te = obj.EndTime;

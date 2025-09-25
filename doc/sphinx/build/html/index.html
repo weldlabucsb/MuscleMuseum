@@ -30,15 +30,18 @@
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="_static/documentation_options.js?v=e1a75a79"></script>
+    <script src="_static/documentation_options.js?v=2149b5ce"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
@@ -154,17 +157,15 @@
 <li class="toctree-l1"><a class="reference internal" href="intro/introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro/quick.html">Quick Start</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="api/index.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/atom.html">Atom</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/field.html">Field</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/trial.html">Trial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/becexp.html">BecExp</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/sim.html">Sim</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/hardware.html">Hardware</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/math.html">Math</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/misc.html">Misc</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sup/support.html">Support</a></li>
 </ul>
 
@@ -212,6 +213,70 @@
 
 
 
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/index.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/issues/new?title=Issue%20on%20page%20%2Findex.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
 <div class="dropdown dropdown-download-buttons">
   <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
     <i class="fas fa-download"></i>
@@ -220,7 +285,7 @@
       
       
       
-      <li><a href="_sources/index.rst" target="_blank"
+      <li><a href="_sources/" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -328,15 +393,112 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="intro/quick.html#numerical-simulation">Numerical Simulation</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api/index.html">API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/atom.html">Atom</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/field.html">Field</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/trial.html">Trial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/becexp.html">BecExp</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/sim.html">Sim</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/hardware.html">Hardware</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/math.html">Math</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/misc.html">Misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main/waveform.html">Waveform and WaveformList</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main/waveform.html#waveform">Waveform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/waveform.html#waveformlist">WaveformList</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="main/waveform_generator.html">Waveform Generator</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main/waveform_generator.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/waveform_generator.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/waveform_generator.html#hardware-base-class">Hardware Base Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/waveform_generator.html#waveformgenerator-abstract-base">WaveformGenerator Abstract Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/waveform_generator.html#keysight-awg-implementation">Keysight AWG Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/waveform_generator.html#spectrum-awg-implementation">Spectrum AWG Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/waveform_generator.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/waveform_generator.html#best-practices">Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="main/fitData.html">Fit Curves or Surfaces Using FitData</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main/fitData.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/fitData.html#basic-usage-workflow">Basic Usage Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/fitData.html#core-classes">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/fitData.html#available-fit-types">Available Fit Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/fitData.html#advanced-usage">Advanced Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/fitData.html#integration-with-experimental-workflows">Integration with Experimental Workflows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/fitData.html#custom-fit-development">Custom Fit Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/fitData.html#best-practices">Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main/lasers_magnetic_fields.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/lasers_magnetic_fields.html#laser-systems">Laser Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/lasers_magnetic_fields.html#magnetic-fields">Magnetic Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/lasers_magnetic_fields.html#integration-with-optical-potential-systems">Integration with Optical Potential Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/lasers_magnetic_fields.html#laser-frequency-control">Laser Frequency Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/lasers_magnetic_fields.html#advanced-field-applications">Advanced Field Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/lasers_magnetic_fields.html#best-practices">Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="main/atomic_calculations.html">Atomic Property Calculation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main/atomic_calculations.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atomic_calculations.html#atomic-class-hierarchy">Atomic Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atomic_calculations.html#core-atom-classes">Core Atom Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atomic_calculations.html#atommanifold-system">AtomManifold System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atomic_calculations.html#magnetic-field-interactions">Magnetic Field Interactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atomic_calculations.html#specialized-manifold-classes">Specialized Manifold Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atomic_calculations.html#utility-functions">Utility Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atomic_calculations.html#atomic-data-management">Atomic Data Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atomic_calculations.html#advanced-calculations">Advanced Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atomic_calculations.html#temperature-and-energy-scales">Temperature and Energy Scales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atomic_calculations.html#transition-matrix-elements">Transition Matrix Elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atomic_calculations.html#practical-applications">Practical Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atomic_calculations.html#best-practices">Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="main/atom_field_interactions.html">Interactions Between Atom and Field</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main/atom_field_interactions.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atom_field_interactions.html#potential-system-architecture">Potential System Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atom_field_interactions.html#potential-base-class">Potential Base Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atom_field_interactions.html#optical-potentials">Optical Potentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atom_field_interactions.html#magnetic-potentials">Magnetic Potentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atom_field_interactions.html#interaction-energy-scales">Interaction Energy Scales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atom_field_interactions.html#advanced-interaction-calculations">Advanced Interaction Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atom_field_interactions.html#state-dependent-interactions">State-Dependent Interactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atom_field_interactions.html#lattice-physics-applications">Lattice Physics Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atom_field_interactions.html#interaction-dynamics">Interaction Dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atom_field_interactions.html#experimental-applications">Experimental Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/atom_field_interactions.html#best-practices">Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="main/trial.html">Manage Experimental and Simulation Trials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main/trial.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/trial.html#trial-architecture">Trial Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/trial.html#core-trial-class">Core Trial Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/trial.html#data-organization-system">Data Organization System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/trial.html#database-integration">Database Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/trial.html#file-system-monitoring">File System Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/trial.html#parameter-scanning">Parameter Scanning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/trial.html#configuration-system">Configuration System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/trial.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/trial.html#error-handling-and-recovery">Error Handling and Recovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/trial.html#best-practices">Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="main/becexp.html">Manage Cold-atom Experiments Using BecExp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main/becexp.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/becexp.html#becexp-architecture">BecExp Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/becexp.html#core-becexp-class">Core BecExp Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/becexp.html#acquisition-system">Acquisition System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/becexp.html#region-of-interest-roi-system">Region of Interest (ROI) System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/becexp.html#analysis-pipeline">Analysis Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/becexp.html#experimental-workflow">Experimental Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/becexp.html#hardware-integration">Hardware Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/becexp.html#advanced-analysis-features">Advanced Analysis Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/becexp.html#error-handling-and-recovery">Error Handling and Recovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/becexp.html#best-practices">Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/atom/index.html">atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/bec/index.html">bec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/database/index.html">database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/field/index.html">field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/hardware/index.html">hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/math/index.html">math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/misc/index.html">misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/mmParameter/index.html">mmParameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/trial/index.html">trial</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="sup/support.html">Support</a></li>
@@ -380,7 +542,7 @@ document.write(`
   <div class="footer-item">
     
 <p class="component-author">
-By Xiao Chai
+By Weld Lab
 </p>
 
   </div>
@@ -390,7 +552,7 @@ By Xiao Chai
 
   <p class="copyright">
     
-      © Copyright 2024, Xiao Chai.
+      © Copyright 2025, Weld Lab.
       <br/>
     
   </p>

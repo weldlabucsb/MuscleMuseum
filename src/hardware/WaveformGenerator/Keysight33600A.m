@@ -1,6 +1,5 @@
 classdef Keysight33600A < KeysightWaveformGenerator
-    %KEYSIGHT Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`Keysight33600A` model configuration for a 2-ch high-speed AWG.
     
     properties
         
@@ -8,8 +7,12 @@ classdef Keysight33600A < KeysightWaveformGenerator
     
     methods
         function obj = Keysight33600A(resourceName,name)
-            %KEYSIGHT Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`Keysight33600A`.
+            %
+            % :param resourceName: VISA resource name
+            % :type resourceName: string
+            % :param name: Device nickname
+            % :type name: string, optional
             arguments
                 resourceName string
                 name string = string.empty
@@ -18,9 +21,15 @@ classdef Keysight33600A < KeysightWaveformGenerator
             obj.Model = "33600A";
             obj.NChannel = 2;
             obj.IsOutput = [true,true];
+            obj.OutputLoad = ["50","50"];
+            obj.OutputMode = ["Normal","Normal"];
+            obj.TriggerSource = ["External","External"];
+            obj.TriggerSlope = ["Rise","Rise"];
             obj.Memory = 4e6;
-            obj.SamplingRate = 64e6;
+            obj.SamplingRate = [1e9,1e9];
+            obj.SamplingRateLimit = 1e9;
             obj.WaveformList = cell(1,obj.NChannel);
+            obj.OutputLimit = [10,10];
         end
     
     end

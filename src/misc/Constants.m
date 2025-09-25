@@ -1,25 +1,31 @@
 classdef Constants
-    %Constants Physical constants.
-    %   The values are taken from Daniel Steck's notes. The default values
-    %   are in SI units. Calling Constant.### can load the constants into the
-    %   caller workspace (### stands for SI, Micro). Calling Constant.###(name)
-    %   can return the value of the constant in that units. Here name is the
-    %   varialbe name string of the corresponding constant, which is listed
-    %   bellow.
-    
+    %:class:`Constants` subset of physical constants and unit helpers.
+    %
+    % Values are SI by default and accessible via :meth:`SI`. For convenience,
+    % :meth:`Micro` loads a scaled set for micron–microsecond–kilogram contexts.
+    % All values are scalars in base SI unless otherwise stated.
+    %
+    % **Example:**
+    %
+    % .. code-block:: matlab
+    %
+    %    hbar = Constants.SI("hbar");
+    %    Constants.SI();    % load named constants into caller
+    %    Constants.Micro(); % load scaled constants into caller
+    %
     properties (Constant)
-        SpeedOfLight = 2.99792458e8 % c.
-        VacuumPermeability = 4*pi*1e-7 % mu0.
-        VacuumPermittivity = 8.854187817e-12 % epsilon0.
-        ReducedPlanckConstant = 1.054571628e-34 % hbar.
-        ElementaryCharge = 1.602176487e-19 % e.
-        BohrMagneton = 9.27400915e-24 % muB.
-        ElectronMass = 9.10938215e-31 % me.
-        BohrRadius = 0.52917720859e-10 % a0.
-        BoltzmannConstant = 1.3806504e-23 % kB.
-        VacuumImpedance = 1/Constants.VacuumPermittivity/Constants.SpeedOfLight % Z0.
-        ElectronSpin = 0.5 % Se.
-        ElectronGFactor = 2.0023193043622 % gS.
+        SpeedOfLight = 2.99792458e8 % c [m/s].
+        VacuumPermeability = 4*pi*1e-7 % :math:`\mu_0` [H/m].
+        VacuumPermittivity = 8.854187817e-12 % :math:`\epsilon_0` [F/m].
+        ReducedPlanckConstant = 1.054571628e-34 % :math:`\hbar` [J·s].
+        ElementaryCharge = 1.602176487e-19 % :math:`e` [C].
+        BohrMagneton = 9.27400915e-24 % :math:`\mu_B` [J/T].
+        ElectronMass = 9.10938215e-31 % :math:`m_e` [kg].
+        BohrRadius = 0.52917720859e-10 % :math:`a_0` [m].
+        BoltzmannConstant = 1.3806504e-23 % :math:`k_B` [J/K].
+        VacuumImpedance = 1/Constants.VacuumPermittivity/Constants.SpeedOfLight % :math:`Z_0` [Ohm].
+        ElectronSpin = 0.5 % :math:`S_e`.
+        ElectronGFactor = 2.0023193043622 % :math:`g_S`.
     end
     
     properties (Constant, Hidden)
@@ -33,7 +39,12 @@ classdef Constants
     methods (Static)
         
         function constantValue = SI(constantName)
-            %Load constants in SI units into the caller workspace
+            % Load constants in SI units into the caller workspace.
+            %
+            % :param constantName: If provided, return the named constant value instead
+            % :type constantName: string, optional
+            % :return: Constant value when ``constantName`` is provided
+            % :rtype: double, optional
             vList = Constants.List;
             callerList = convertCharsToStrings(evalin('caller','who'));
             if nargin == 1
@@ -56,7 +67,12 @@ classdef Constants
         end
         
         function constantValue = Micro(constantName)
-            %Load constants in micron - micro-second - kilogram units into the caller workspace
+            % Load constants in micron–microsecond–kilogram units into caller.
+            %
+            % :param constantName: If provided, return the named constant value instead
+            % :type constantName: string, optional
+            % :return: Constant value when ``constantName`` is provided
+            % :rtype: double, optional
             vList = Constants.List;
             vList(1).Value = vList(1).Value;
             vList(2).Value = vList(2).Value*1e-6;

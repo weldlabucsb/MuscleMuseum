@@ -1,44 +1,75 @@
 classdef TwoJManifoldDivalent < AtomManifold
-    %TWOJ Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`TwoJManifoldDivalent` divalent transition manifolds (:math:`J_g\rightarrow J_e`, with :math:`S`).
+    %
+    % Provides transition frequency, natural linewidth, reduced dipole matrix
+    % element, reduced saturation intensity, and Doppler temperature for
+    % divalent-like transitions (with spin :math:`S`).
+    %
+    % **Examples:**
+    %
+    % .. code-block:: matlab
+    %
+    %    % Example1: Build a blue-line-like manifold (divalent)
+    %    at = Divalent("Strontium88");
+    %    M  = TwoJManifoldDivalent(at, nG=5, lG=0, jG=0, sG=0, ...
+    %                                 nE=5, lE=1, jE=1, sE=1);
+    %    Isat = M.ReducedSaturationIntensity;
     
     properties (SetAccess = protected)
-        NGround int32
-        LGround int32
-        JGround double
+        NGround int32 % Ground principal quantum number
+        LGround int32 % Ground :math:`L`
+        JGround double % Ground :math:`J`
         % FGround double
-        MJGround double
-        SGround double
+        MJGround double % Ground :math:`M_J`
+        SGround double % Ground spin :math:`S`
         % HFSCoefficientGround %[A,B]
-        EnergyGround double
-        LandegJGround double
-        LandegFGround double
-        NExcited int32
-        LExcited int32
-        JExcited double
+        EnergyGround double % Ground energies [Hz]
+        LandegJGround double % Ground Landé :math:`g_J`
+        LandegFGround double % Ground Landé :math:`g_F` (if applicable)
+        NExcited int32 % Excited principal quantum number
+        LExcited int32 % Excited :math:`L`
+        JExcited double % Excited :math:`J`
         % FExcited double
-        MJExcited double
-        SExcited
+        MJExcited double % Excited :math:`M_J`
+        SExcited % Excited spin :math:`S`
         % HFSCoefficientExcited %[A,B]
-        EnergyExcited double
-        LandegJExcited double
-        LandegFExcited double
-        StateList table
-        JOperator cell
-        IOperator cell
+        EnergyExcited double % Excited energies [Hz]
+        LandegJExcited double % Excited Landé :math:`g_J`
+        LandegFExcited double % Excited Landé :math:`g_F` (if applicable)
+        StateList table % State table (if constructed)
+        JOperator cell % Electronic spin operators
+        IOperator cell % Nuclear spin operators
         % FOperator cell
-        NaturalLinewidth double %One should keep in mind that there is no 2pi for consistency. e.g. for Lithium7 it is 5.8724e6 Hz
-        LifetimeExcited double
-        ReducedDipoleMatrixElement double %Following steck's convention as <Jg||d||Je>, in SI unit.
-        ReducedSaturationIntensity double %In SI unit
-        ReducedSaturationIntensityLu double %In lab unit. mW/cm^2
-        DopplerTemperature double
+        NaturalLinewidth double % Natural linewidth [Hz] (no 2π)
+        LifetimeExcited double % Excited-state lifetime [s]
+        ReducedDipoleMatrixElement double % :math:`\langle J_g\Vert d\Vert J_e\rangle` [C·m]
+        ReducedSaturationIntensity double % Reduced Isat [W/m^2]
+        ReducedSaturationIntensityLu double % Reduced Isat [mW/cm^2]
+        DopplerTemperature double % Doppler temperature [K]
     end
     
     methods
         function obj = TwoJManifoldDivalent(atom,nG,lG,jG,sG,nE,lE,jE,sE)
-            %TWOJ Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`TwoJManifoldDivalent`.
+            %
+            % :param atom: Atom context
+            % :type atom: :class:`Atom`
+            % :param nG: Ground principal quantum number
+            % :type nG: int32
+            % :param lG: Ground :math:`L`
+            % :type lG: int32
+            % :param jG: Ground :math:`J`
+            % :type jG: double
+            % :param sG: Ground spin :math:`S`
+            % :type sG: double
+            % :param nE: Excited principal quantum number
+            % :type nE: int32
+            % :param lE: Excited :math:`L`
+            % :type lE: int32
+            % :param jE: Excited :math:`J`
+            % :type jE: double
+            % :param sE: Excited spin :math:`S`
+            % :type sE: double
 
             %% Set quantum numbers N,L,J,S
             obj@AtomManifold(atom)
@@ -186,9 +217,29 @@ classdef TwoJManifoldDivalent < AtomManifold
         end
         
         function DME = DipoleMatrixElement(obj,fG,mfG,fE,mfE,q,U)
-            % Dipole Matrix element <fG,mfG|dq|fE,mfE>, in SI unit. The
-            % sign of q is reversed to accomodate to Steck's convention.
-            % Now the selection rule should be mfE + q = mfG.
+            % Dipole matrix element :math:`\langle f_G,m_F^G| d_q | f_E,m_F^E\rangle` [C·m].
+            %
+            % Selection rule: :math:`m_F^E + q = m_F^G`. Sign of :math:`q`
+            % follows Steck-like convention.
+            %
+            % .. math::
+            %
+            %    m_F^E = m_F^G + q
+            %
+            % :param fG: Ground :math:`F`
+            % :type fG: double
+            % :param mfG: Ground :math:`M_F`
+            % :type mfG: double
+            % :param fE: Excited :math:`F'`
+            % :type fE: double
+            % :param mfE: Excited :math:`M_F'`
+            % :type mfE: double
+            % :param q: Spherical component (:math:`-1,0,+1`)
+            % :type q: double
+            % :param U: Basis transform
+            % :type U: double, optional
+            % :return: Dipole matrix element [C·m]
+            % :rtype: double
             arguments
                 obj TwoJManifold
                 fG double
@@ -222,9 +273,14 @@ classdef TwoJManifoldDivalent < AtomManifold
         end
 
         function dme = DipoleMatrixElementNu(obj,fG,mfG,fE,mfE,q,U)
-            % Dipole Matrix element <fG,mfG|dq|fE,mfE>, as multiples of the
-            % ReducedDipoleMatrixElement. Same numbers as in Steck's Alkali
-            % D line Data.
+            % Dipole matrix element normalized by reduced DME.
+            %
+            % .. math::
+            %
+            %    d_\nu = \frac{\langle f_G m_F^G | d_q | f_E m_F^E \rangle}{\langle J_G \Vert d \Vert J_E \rangle}
+            %
+            % :return: Dimensionless ratio
+            % :rtype: double
             arguments
                 obj TwoJManifold
                 fG double
@@ -238,6 +294,14 @@ classdef TwoJManifoldDivalent < AtomManifold
         end
 
         function Isat = SaturationIntensity(obj,fG,mfG,fE,mfE,U)
+            % Saturation intensity for specified sublevels.
+            %
+            % .. math::
+            %
+            %    I_{\mathrm{sat}} = \frac{I_{\mathrm{sat}}^{(\mathrm{red})}}{|d_\nu|^2}
+            %
+            % :return: :math:`I_{sat}` [W/m^2]
+            % :rtype: double
             arguments
                 obj TwoJManifold
                 fG double
@@ -256,7 +320,11 @@ classdef TwoJManifoldDivalent < AtomManifold
         end
 
         function Sigma = LoweringOperator(obj,q,U)
-            %See Steck Eq. (7.407)
+            % Spherical lowering operator (Steck Eq. 7.407 analogue).
+            %
+            % .. math::
+            %
+            %    \Sigma_q = \sum_{g,e} |g\rangle\langle e|\, d_\nu(g\leftarrow e;q)
             arguments
                 obj TwoJManifold
                 q int32
@@ -277,6 +345,16 @@ classdef TwoJManifoldDivalent < AtomManifold
         end
         
         function rabi = ReducedRabiFrequency(obj,laser)
+            % Reduced Rabi frequency for linearly polarized light.
+            %
+            % .. math::
+            %
+            %    \Omega = -\sqrt{\frac{I}{2 I_{\mathrm{sat}}^{(\mathrm{red})}}}\, \Gamma
+            %
+            % :param laser: Driving field
+            % :type laser: :class:`Laser`
+            % :return: :math:`\Omega` [Hz]
+            % :rtype: double
             arguments
                 obj TwoJManifold
                 laser Laser
@@ -287,6 +365,18 @@ classdef TwoJManifoldDivalent < AtomManifold
         end
 
         function Ha = HamiltonianAtom(obj,fRot,U)
+            % Diagonal Hamiltonian with rotating-frame shift on excited states.
+            %
+            % .. math::
+            %
+            %    H_a = U^\dagger \, \operatorname{diag}\big(E - f_\mathrm{rot}\,\chi_\mathrm{exc}\big) \, U
+            %
+            % :param fRot: Rotating-frame frequency [Hz]
+            % :type fRot: double, optional
+            % :param U: Basis transform
+            % :type U: double, optional
+            % :return: Hamiltonian matrix [Hz]
+            % :rtype: double
             arguments
                 obj TwoJManifold
                 fRot double = 0
@@ -301,7 +391,20 @@ classdef TwoJManifoldDivalent < AtomManifold
         end
 
         function Hal = HamiltonianAtomLaser(obj,laser,fRot,U)
-            % In Hz
+            % Atom-light interaction Hamiltonian :math:`H_\mathrm{AL}(t)`.
+            %
+            % .. math::
+            %
+            %    H_{\mathrm{AL}}(t) = \sum_{q=-1}^{+1} \frac{\Omega^*}{2}\, e_q\, \Sigma_q\, e^{i\Delta t} + \mathrm{h.c.}
+            %
+            % :param laser: Driving field
+            % :type laser: :class:`Laser`
+            % :param fRot: Rotating-frame frequency [Hz]
+            % :type fRot: double, optional
+            % :param U: Basis transform
+            % :type U: double, optional
+            % :return: Function handle H(r,t) [Hz]
+            % :rtype: function_handle
             arguments
                 obj TwoJManifold
                 laser Laser
@@ -324,6 +427,20 @@ classdef TwoJManifoldDivalent < AtomManifold
             end
         end
         function Ham = HamiltonianAtomBiasField(obj,B,U)
+            % Zeeman Hamiltonian from :class:`OneJManifold` blocks.
+            %
+            % .. math::
+            %
+            %    H_Z = U^\dagger \, \mathrm{blkdiag}\big(H_Z^{(e)}, H_Z^{(g)}\big) \, U
+            %
+            % where each block uses :math:`H_Z = \mu_B ( g_J \mathbf{J} + g_I \mathbf{I} )\cdot\mathbf{B} / h`.
+            %
+            % :param B: Magnetic field object
+            % :type B: :class:`MagneticField`
+            % :param U: Basis transform
+            % :type U: double, optional
+            % :return: Hamiltonian matrix [Hz]
+            % :rtype: double
              arguments
                 obj TwoJManifold
                 B MagneticField
@@ -338,6 +455,16 @@ classdef TwoJManifoldDivalent < AtomManifold
             Ham = (Ham + Ham')/2;
         end
         function [dressedStateList,U,brMap] = BiasDressedStateList(obj,B,isPlot,options)
+            % Compute dressed states versus bias field and assemble blocks.
+            %
+            % :param B: Magnetic field
+            % :type B: :class:`MagneticField`
+            % :param isPlot: Plot results
+            % :type isPlot: logical, optional
+            % :param samplingSize: Number of bias samples
+            % :type samplingSize: double, optional
+            % :return: Dressed state table, unitary U, and branch map
+            % :rtype: table, double, cell
             arguments
                 obj TwoJManifold
                 B MagneticField
@@ -396,6 +523,10 @@ classdef TwoJManifoldDivalent < AtomManifold
         end
 
         function mimjList = getMIMJ(obj)
+            % Compute :math:`(M_I,M_J)` labels by adiabatic mapping.
+            %
+            % :return: Table of MI, MJ per basis state
+            % :rtype: table
             arguments
                 obj TwoJManifold
                 % isPlot logical = false

@@ -1,6 +1,5 @@
 classdef (Abstract) TimeSimRun < SimRun
-    %UNTITLED Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`TimeSimRun` abstract base for a time-discretized simulation run.
     
     properties
         InitialTime double = 0
@@ -21,6 +20,10 @@ classdef (Abstract) TimeSimRun < SimRun
     
     methods
         function obj = TimeSimRun(timeSim)
+            % Construct a :class:`TimeSimRun` from a :class:`TimeSim`.
+            %
+            % :param timeSim: Parent :class:`TimeSim` or :class:`SpaceTimeSim`
+            % :type timeSim: any, optional
             arguments
                 timeSim = []
             end
@@ -39,13 +42,16 @@ classdef (Abstract) TimeSimRun < SimRun
         end
 
         function nTimeStep = get.NTimeStep(obj)
+            % Number of time steps.
             nTimeStep = numel(obj.TimeList);
         end
 
         function tList = get.TimeList(obj)
+            % Time grid from :attr:`InitialTime` to :attr:`TotalTime`.
             tList = obj.InitialTime : obj.TimeStep : obj.TotalTime;
         end
         function tListAvg = get.TimeListAvg(obj)
+            % Subsampled time grid for averages with period :attr:`AveragePeriod`.
             aP = obj.AveragePeriod;
             tList = obj.TimeList;
             nt = obj.NTimeStep;
@@ -53,14 +59,17 @@ classdef (Abstract) TimeSimRun < SimRun
         end
 
         function nDataRow = get.NDataRow(obj)
+            % Expected number of averaged rows.
             nDataRow = floor(obj.NTimeStep / obj.AveragePeriod);
         end
 
         function nDataRowMemory = get.NDataRowMemory(obj)
+            % Number of rows per save period.
             nDataRowMemory = floor(obj.SavePeriod / obj.AveragePeriod);
         end
 
         function check(obj,isWarning)
+            % Check whether the run is completed by inspecting saved rows.
             arguments
                 obj TimeSimRun
                 isWarning logical = true

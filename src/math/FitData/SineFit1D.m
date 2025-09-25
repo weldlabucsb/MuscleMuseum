@@ -1,6 +1,37 @@
 classdef SineFit1D < FitData1D
-    %GAUSSIANFIT1D Summary of this class goes here
-    %   Detailed explanation goes here
+    % Sine function fit for one-dimensional data.
+    %
+    % Fits a sine function of the form :math:`A\,\sin(2\pi f x + \phi) + C` to experimental data.
+    % Automatically estimates amplitude, frequency, phase, and offset from the data
+    % using Fourier transform analysis.
+    %
+    % - **Formula**: :math:`y = A\,\sin(2\pi f x + \phi) + C`
+    % - **Coefficients**: :math:`A` (amplitude), :math:`f` (frequency), :math:`\phi` (phase), :math:`C` (offset)
+    %
+    % **Example1:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Fit sine function to experimental data
+    %     x = linspace(0, 10, 200);
+    %     y = 2*sin(2*pi*0.5*x + pi/4) + 1 + 0.1*randn(size(x));
+    %     data = [x', y'];
+    %     sineFit = SineFit1D(data);
+    %     sineFit.do();
+    %     sineFit.plot();
+    %
+    % **Example2:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Access fit parameters
+    %     sineFit = SineFit1D(data);
+    %     sineFit.do();
+    %     amplitude = sineFit.Coefficient(1);
+    %     frequency = sineFit.Coefficient(2);
+    %     phase = sineFit.Coefficient(3);
+    %     offset = sineFit.Coefficient(4);
+    %
 
     properties
 
@@ -8,13 +39,32 @@ classdef SineFit1D < FitData1D
 
     methods
         function obj = SineFit1D(rawData)
-            %GAUSSIANFIT1D Construct an instance of this class
-            %   Detailed explanation goes here
+            % Constructor for SineFit1D class.
+            %
+            % :param rawData: Input data as n x 2 matrix [x, y]
+            % :type rawData: double array
+            %
             obj@FitData1D(rawData)
+        end
+        
+        function setFormula(obj)
+            % Set the sine fit formula.
+            %
             obj.Func = fittype('A * sin(2 * pi * f * x + phi) + C','independent', {'x'},...
                 'coefficients', {'A', 'f', 'phi','C'});
-            x = rawData(:,1);
-            y = rawData(:,2);
+        end
+
+        function guessCoefficient(obj)
+            % Automatically estimate initial fit parameters from data.
+            %
+            % Estimates amplitude, frequency, phase, and offset using Fourier
+            % transform analysis and data characteristics.
+            %
+            if isempty(obj.DataSize) || obj.DataSize < obj.MinimumDataSize
+                return
+            end
+            x = obj.RawData(:,1);
+            y = obj.RawData(:,2);
 
             % Offset guess
             guessOffset=(max(y) + min(y))/2;
@@ -38,9 +88,7 @@ classdef SineFit1D < FitData1D
             obj.StartPoint = [guessAmplitude,guessFrequency,guessPhase,guessOffset];
             obj.Lower = [0.5 * guessAmplitude, guessFrequency / 5, 0, guessOffset - 0.3 * guessAmplitude];
             obj.Upper = [2 * guessAmplitude, 5 * guessFrequency, 2 * pi, guessOffset + 0.3 * guessAmplitude];
-
         end
-
     end
 end
 

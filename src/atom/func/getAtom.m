@@ -1,6 +1,10 @@
 function atom = getAtom(atomName)
-%GETATOM Summary of this function goes here
-%   Detailed explanation goes here
+% Construct an :class:`Atom` by trying alkali first, then divalent.
+%
+% :param atomName: Atom/isotope name (ARC-known), e.g., "Lithium7"
+% :type atomName: string
+% :return: Constructed atom object (:class:`Alkali` or :class:`Divalent`)
+% :rtype: :class:`Atom`
 arguments
     atomName string
 end

@@ -1,0 +1,666 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>WaveformLibrary &#8212; MuscleMuseum 0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=2149b5ce"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/mmParameter/WaveformLibrary';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="WaveformListLibrary" href="WaveformListLibrary.html" />
+    <link rel="prev" title="VariableList" href="VariableList.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MuscleMuseum 0.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../intro/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/index.html">database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../field/index.html">field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">mmParameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sup/support.html">Support</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/api/mmParameter/WaveformLibrary.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/issues/new?title=Issue%20on%20page%20%2Fapi/mmParameter/WaveformLibrary.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>WaveformLibrary</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="waveformlibrary">
+<h1>WaveformLibrary<a class="headerlink" href="#waveformlibrary" title="Link to this heading">#</a></h1>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="WaveformLibrary">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">WaveformLibrary</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/mmParameter/WaveformLibrary.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#WaveformLibrary" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="MmParameter.html#MmParameter" title="MmParameter"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">MmParameter</span></code></a></p>
+<p><a class="reference internal" href="#WaveformLibrary" title="WaveformLibrary"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">WaveformLibrary</span></code></a> stores serialized <a class="reference internal" href="../math/Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a> objects and their parameters.</p>
+<p>Each row represents a waveform template associated with a
+<code class="xref mat mat-attr docutils literal notranslate"><span class="pre">WaveformListID</span></code>, the waveform <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Type</span></code> (class name),
+<code class="xref mat mat-attr docutils literal notranslate"><span class="pre">SamplingRate</span></code>, JSON-encoded <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Parameter</span></code> table describing
+named parameters, and optional modulation links referencing entries in
+<a class="reference internal" href="WaveformListLibrary.html#WaveformListLibrary" title="WaveformListLibrary"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">WaveformListLibrary</span></code></a>.</p>
+<p><strong>Schema (columns, types, defaults):</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 39.5%" />
+<col style="width: 23.7%" />
+<col style="width: 36.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>WaveformListID</p></td>
+<td><p>int64</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Type</p></td>
+<td><p>string</p></td>
+<td><p>ConstantWave</p></td>
+</tr>
+<tr class="row-even"><td><p>SamplingRate</p></td>
+<td><p>double</p></td>
+<td><p>1000</p></td>
+</tr>
+<tr class="row-odd"><td><p>Parameter</p></td>
+<td><p>table</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-even"><td><p>AmplitudeModulation</p></td>
+<td><p>double</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>FrequencyModulation</p></td>
+<td><p>double</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>PhaseModulation</p></td>
+<td><p>double</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Foreign keys:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">WaveformListID</span></code> → <a class="reference internal" href="WaveformListLibrary.html#WaveformListLibrary" title="WaveformListLibrary"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">WaveformListLibrary</span></code></a> (<code class="docutils literal notranslate"><span class="pre">ID</span></code>)</p></li>
+</ul>
+<p><strong>Join conditions:</strong></p>
+<p>(none; view <code class="docutils literal notranslate"><span class="pre">WaveformParameters</span></code> is created for JSON expansion)</p>
+<p><strong>Flags:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 73.1%" />
+<col style="width: 26.9%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>IsIncludeDefaultEntry</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>IsFirstColumnUnique</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>IsTriggerJoinOnRight</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>IsTriggerJoinOnLeft</p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="WaveformLibrary.WaveformLibrary">
+<span class="sig-name descname"><span class="pre">WaveformLibrary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WaveformLibrary.WaveformLibrary" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="WaveformLibrary.checkVariableBound">
+<span class="sig-name descname"><span class="pre">checkVariableBound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varID</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WaveformLibrary.checkVariableBound" title="Link to this definition">#</a></dt>
+<dd><p>Return dependent waveform lists for a given variable ID.</p>
+<p>Scans <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> JSON for occurrences of <code class="docutils literal notranslate"><span class="pre">VariableID</span></code> and
+returns unique <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">WaveformListID</span></code> values that reference it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>varID</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Target variable ID</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dependent <code class="docutils literal notranslate"><span class="pre">WaveformListID</span></code> values</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double or []</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="WaveformLibrary.createView">
+<span class="sig-name descname"><span class="pre">createView</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WaveformLibrary.createView" title="Link to this definition">#</a></dt>
+<dd><p>Create the SQLite view used to expand JSON parameters per row.</p>
+<p>Creates/ensures the <code class="docutils literal notranslate"><span class="pre">WaveformParameters</span></code> view which flattens the
+JSON-encoded <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Parameter</span></code> column into a rowset with columns
+<code class="docutils literal notranslate"><span class="pre">ID</span></code> (pointing to this table), <code class="docutils literal notranslate"><span class="pre">Name</span></code>, <code class="docutils literal notranslate"><span class="pre">VariableID</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">DefaultValue</span></code>. Idempotent: only creates the view if it does not
+already exist. Used by <a class="reference internal" href="#WaveformLibrary.readParameter" title="WaveformLibrary.readParameter"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">readParameter()</span></code></a> to join with
+<a class="reference internal" href="VariableList.html#VariableList" title="VariableList"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">VariableList</span></code></a> and resolve current values.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="WaveformLibrary.defineSchema">
+<span class="sig-name descname"><span class="pre">defineSchema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WaveformLibrary.defineSchema" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="WaveformLibrary.loadEntry">
+<span class="sig-name descname"><span class="pre">loadEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WaveformLibrary.loadEntry" title="Link to this definition">#</a></dt>
+<dd><p>Instantiate a <a class="reference internal" href="../math/Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a> object from a database row.</p>
+<p>Calls <a class="reference internal" href="#WaveformLibrary.readParameter" title="WaveformLibrary.readParameter"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">readParameter()</span></code></a> and constructs the waveform class with
+parameter assignment, resolving optional modulation lists from
+<a class="reference internal" href="WaveformListLibrary.html#WaveformListLibrary" title="WaveformListLibrary"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">WaveformListLibrary</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Row ID to load</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Waveform instance populated from the database</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../math/Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="WaveformLibrary.readParameter">
+<span class="sig-name descname"><span class="pre">readParameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WaveformLibrary.readParameter" title="Link to this definition">#</a></dt>
+<dd><p>Read waveform parameters with variable resolution.</p>
+<p>Returns a struct combining base waveform fields with a parameter
+table where variable links are resolved against <a class="reference internal" href="VariableList.html#VariableList" title="VariableList"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">VariableList</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Row ID</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Struct with fields <code class="docutils literal notranslate"><span class="pre">Type</span></code>, <code class="docutils literal notranslate"><span class="pre">SamplingRate</span></code>, modulation
+IDs, and a <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> table containing columns
+<code class="docutils literal notranslate"><span class="pre">Name</span></code>, <code class="docutils literal notranslate"><span class="pre">DefaultValue</span></code>, <code class="docutils literal notranslate"><span class="pre">VariableID</span></code>, <code class="docutils literal notranslate"><span class="pre">Value</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>struct</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="WaveformLibrary.saveEntry">
+<span class="sig-name descname"><span class="pre">saveEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">wf</span></em>, <em class="sig-param"><span class="pre">wflID</span></em>, <em class="sig-param"><span class="pre">wfID</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WaveformLibrary.saveEntry" title="Link to this definition">#</a></dt>
+<dd><p>Save a <a class="reference internal" href="../math/Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a> object into the database.</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="VariableList.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">VariableList</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="WaveformListLibrary.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">WaveformListLibrary</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Weld Lab
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Weld Lab.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

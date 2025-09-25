@@ -1,6 +1,9 @@
 classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
-    %KEYSIGHT Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`KeysightWaveformGenerator` base for Keysight AWGs with VISA control.
+    %
+    % Provides setup, upload, triggering, and connection management for Keysight
+    % arbitrary waveform generators using :meth:`connect`, :meth:`set`, :meth:`upload`,
+    % :meth:`trigger`, :meth:`close`, and :meth:`check`.
     
     properties (SetAccess = protected,Transient)
         VisaDevice
@@ -8,8 +11,12 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
     
     methods
         function obj = KeysightWaveformGenerator(resourceName,name)
-            %KEYSIGHT Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`KeysightWaveformGenerator`.
+            %
+            % :param resourceName: VISA resource name, e.g., "TCPIP0::...::inst0::INSTR"
+            % :type resourceName: string
+            % :param name: Device nickname
+            % :type name: string, optional
             arguments
                 resourceName string
                 name string = string.empty
@@ -19,10 +26,16 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
         end
         
         function connect(obj)
+            % Open VISA connection using :attr:`ResourceName`.
             obj.VisaDevice = visadev(obj.ResourceName);
         end
 
         function set(obj)
+            % Configure channels (sample rate, voltage levels, trigger, mode, load).
+            %
+            % Applies settings per channel: :attr:`SamplingRate`, trigger
+            % source/slope, output mode/load, and voltage limits. Clears volatile
+            % memory before upload and ensures LSB byte order for binary blocks.
             obj.check;
             v = obj.VisaDevice;
             v.ByteOrder = "little-endian";
@@ -35,22 +48,24 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
                 writeline(v,outputStr + " 0") % Stop output
                 writeline(v,sourceStr + ":DATA:VOLatile:CLEar") % Clear volatile memory
                 writeline(v,"FORM:BORD SWAP") % Swaps byte order to LSB
-                writeline(v, sprintf(sourceStr + ':FUNCtion:ARBitrary:SRATe %g MHZ', obj.SamplingRate * 1e-6)); % Sampling rate
+                writeline(v, sprintf(sourceStr + ':FUNCtion:ARBitrary:SRATe %g MHZ', obj.SamplingRate(ii) * 1e-6)); % Sampling rate
                 writeline(v, sprintf(sourceStr + ':VOLTage:HIGH %g', 2.0)); % Voltage high
                 writeline(v, sprintf(sourceStr + ':VOLTage:LOW %g', -2.0)); % Voltage low
                 writeline(v, sprintf(sourceStr + ':VOLTage:OFFset %g', 0)); % Voltage offset
                 writeline(v, sprintf(sourceStr + ':FUNCtion:ARBitrary:PTPeak %g', 1)); % Set arbitray waveform p2p
                 
                 % Trigger source
-                switch obj.TriggerSource
+                switch obj.TriggerSource(ii)
                     case "External"
                         writeline(v, triggerStr + ":SOURce EXT");
-                    case "Internal"
+                    case "Software"
                         writeline(v, triggerStr + ":SOURce BUS");
+                    case "Immediate"
+                        writeline(v, triggerStr + ":SOURce IMM");
                 end
 
                 % Trigger slope
-                switch obj.TriggerSlope
+                switch obj.TriggerSlope(ii)
                     case "Rise"
                         writeline(v, triggerStr + ":SLOPe POS");
                     case "Fall"
@@ -59,7 +74,7 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
 
                 % Output mode
                 if obj.IsOutput(ii)
-                    switch obj.OutputMode
+                    switch obj.OutputMode(ii)
                         case "Normal"
                             writeline(v, outputStr + ':MODE NORMal');
                         case "Gated"
@@ -68,7 +83,7 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
                 end
 
                 % Output load
-                switch obj.OutputLoad
+                switch obj.OutputLoad(ii)
                     case "50"
                         writeline(v, outputStr + ':LOAD 50')
                     case "Infinity"
@@ -78,6 +93,11 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
         end
 
         function upload(obj)
+            % Upload prepared waveforms to the device and start output if enabled.
+            %
+            % Sequences each channel's :attr:`WaveformList` by inserting leading
+            % and trailing zeros for clean triggering, scales to peak-to-peak, and
+            % writes segments + sequence tables via SCPI binary block transfers.
             %% Check connection to the device
             obj.check;
             v = obj.VisaDevice;
@@ -94,7 +114,7 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
                 end
 
                 %% Add begining and ending zero waveforms for triggering
-                obj.WaveformList{ii}.SamplingRate = obj.SamplingRate;
+                obj.WaveformList{ii}.SamplingRate = obj.SamplingRate(ii);
                 t = obj.WaveformList{ii}.WaveformPrepared;
                 Sample = {zeros(1,35)};
                 PlayMode = "OnceWaitTrigger";
@@ -167,7 +187,24 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
             end
         end
 
+        function trigger(obj)
+            % Issue a software trigger on channels configured for BUS trigger.
+            %% Check connection to the device
+            obj.check;
+            v = obj.VisaDevice;
+
+            %% Software trigger
+            for ii = 1:obj.NChannel
+                if obj.TriggerSource(ii) == "Software"
+                    triggerStr = "TRIGger" + string(ii);
+                    writeline(v, triggerStr);
+                end
+            end
+
+        end
+
         function close(obj)
+            % Close the VISA session, ensuring device is idle.
             if isempty(obj.VisaDevice)
                 warning("VISA device is not connected.")
                 return
@@ -190,6 +227,10 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
         end
     
         function status = check(obj)
+            % Query device error status.
+            %
+            % :return: True when the device reports no error via :code:`SYST:ERR?`
+            % :rtype: logical
             status = false;
             if isempty(obj.VisaDevice)
                 error("VISA device is not connected.")

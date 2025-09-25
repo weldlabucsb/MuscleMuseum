@@ -1,14 +1,26 @@
 classdef Gui < handle
-    %GUI Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`Gui` lightweight wrapper to launch and place App Designer apps.
+    %
+    % Instantiates an app by name (via ``feval``), positions the UI figure
+    % using preset strings or fractional coordinates/sizes, allows updating via
+    % :meth:`update`, and manages lifecycle with :meth:`close`.
+    %
+    % **Example:**
+    %
+    % .. code-block:: matlab
+    %
+    %    g = Gui(name="MyApp", fpath="", loc=[0.1,0.1], size=[0.5,0.5]);
+    %   g.initialize(42); % passes 42 as an argument to app constructor
+    %    g.update();
+    %    g.close();
     
     properties
-        Name
-        Path
-        Location
-        Size
-        IsEnabled logical = true
-        Monitor double = 1
+        Name % App class name to instantiate (string)
+        Path % Unused placeholder to keep interface symmetry with :class:`Chart`
+        Location % UI position preset or [xFrac,yFrac]
+        Size % UI size preset or [wFrac,hFrac]
+        IsEnabled logical = true % Master switch to disable operations
+        Monitor double = 1 % Target monitor index (1 is primary)
     end
 
     properties (Transient)
@@ -17,8 +29,18 @@ classdef Gui < handle
     
     methods
         function obj = Gui(NameValueArgs)
-            %GUI Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`Gui` from name-value arguments.
+            %
+            % :param name: App class name (callable via ``feval``)
+            % :type name: string
+            % :param fpath: Unused
+            % :type fpath: string
+            % :param loc: Location preset string or [xFrac,yFrac]
+            % :type loc: string or double
+            % :param size: Size preset string or [wFrac,hFrac]
+            % :type size: string or double
+            % :param isEnabled: If false, initialization is a no-op
+            % :type isEnabled: logical optional
             arguments
                 NameValueArgs.name
                 NameValueArgs.fpath
@@ -34,6 +56,12 @@ classdef Gui < handle
         end
         
         function initialize(obj,varargin)
+            % Instantiate the app and place its UI figure.
+            %
+            % Additional inputs are forwarded to the app constructor.
+            %
+            % :param varargin: Arguments passed to the app constructor
+            % :type varargin: any optional
             if ~obj.IsEnabled
                 return
             end
@@ -104,12 +132,16 @@ classdef Gui < handle
         end
 
         function update(obj)
-            if obj.IsEnabled
-                obj.App.update
+            % Call the app's ``update`` method if available.
+            if obj.IsEnabled && ~isempty(obj.App)
+                if isvalid(obj.App)
+                    obj.App.update
+                end
             end
         end
 
         function close(obj)
+            % Close and delete the app instance if valid.
             if ~isempty(obj.App)
                 if isvalid(obj.App)
                     obj.App.delete

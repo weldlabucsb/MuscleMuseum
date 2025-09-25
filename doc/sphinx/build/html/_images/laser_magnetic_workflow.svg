@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="800" viewBox="0 0 1000 800">
+  <defs>
+    <style>
+      .laser-box { fill: #e3f2fd; stroke: #1976d2; stroke-width: 2; }
+      .magnetic-box { fill: #e8f5e8; stroke: #2e7d32; stroke-width: 2; }
+      .potential-box { fill: #fff3e0; stroke: #f57c00; stroke-width: 2; }
+      .modulation-box { fill: #f3e5f5; stroke: #7b1fa2; stroke-width: 2; }
+      .atom-box { fill: #ffebee; stroke: #c62828; stroke-width: 2; }
+      .text { font-family: Arial, sans-serif; font-size: 12px; text-anchor: middle; }
+      .small-text { font-family: Arial, sans-serif; font-size: 10px; text-anchor: middle; }
+      .arrow { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="500" y="30" class="text" style="font-size: 18px; font-weight: bold;">Laser and Magnetic Field System Workflow</text>
+  
+  <!-- Laser Definition -->
+  <rect x="50" y="80" width="180" height="100" class="laser-box" rx="10"/>
+  <text x="140" y="105" class="text">Define Laser</text>
+  <text x="140" y="125" class="small-text">frequency, wavelength</text>
+  <text x="140" y="140" class="small-text">polarization, direction</text>
+  <text x="140" y="155" class="small-text">intensity, power</text>
+  <text x="140" y="170" class="small-text">phase</text>
+  
+  <!-- Magnetic Field Definition -->
+  <rect x="280" y="80" width="180" height="100" class="magnetic-box" rx="10"/>
+  <text x="370" y="105" class="text">Define Magnetic Field</text>
+  <text x="370" y="125" class="small-text">bias field B₀</text>
+  <text x="370" y="140" class="small-text">gradients ∂Bᵢ/∂xⱼ</text>
+  <text x="370" y="155" class="small-text">or custom B(r)</text>
+  
+  <!-- Atom Definition -->
+  <rect x="510" y="80" width="180" height="100" class="atom-box" rx="10"/>
+  <text x="600" y="105" class="text">Define Atom</text>
+  <text x="600" y="125" class="small-text">atomic species</text>
+  <text x="600" y="140" class="small-text">hyperfine manifold</text>
+  <text x="600" y="155" class="small-text">magnetic sublevel</text>
+  
+  <!-- Modulation (Optional) -->
+  <rect x="720" y="80" width="180" height="100" class="modulation-box" rx="10"/>
+  <text x="810" y="105" class="text">Modulation (Optional)</text>
+  <text x="810" y="125" class="small-text">AOM: ±n × f_RF</text>
+  <text x="810" y="140" class="small-text">EOM: sidebands</text>
+  <text x="810" y="155" class="small-text">frequency control</text>
+  
+  <!-- Gaussian Beam Specialization -->
+  <rect x="50" y="230" width="180" height="80" class="laser-box" rx="10"/>
+  <text x="140" y="255" class="text">GaussianBeam</text>
+  <text x="140" y="275" class="small-text">waist sizes w_x, w_y</text>
+  <text x="140" y="290" class="small-text">beam center position</text>
+  
+  <!-- Potential Creation -->
+  <rect x="350" y="230" width="300" height="120" class="potential-box" rx="10"/>
+  <text x="500" y="255" class="text">Create Potentials</text>
+  <text x="500" y="280" class="small-text">OpticalLattice: band structure, Bloch states</text>
+  <text x="500" y="295" class="small-text">OpticalTrap: harmonic frequencies</text>
+  <text x="500" y="310" class="small-text">MagneticPotential: Zeeman shifts</text>
+  <text x="500" y="325" class="small-text">V(r) = α |B(r)| (low field)</text>
+  
+  <!-- Phase Functions -->
+  <rect x="50" y="380" width="200" height="100" class="laser-box" rx="10"/>
+  <text x="150" y="405" class="text">Phase Functions</text>
+  <text x="150" y="425" class="small-text">spacePhaseFunc()</text>
+  <text x="150" y="440" class="small-text">timePhaseFunc()</text>
+  <text x="150" y="455" class="small-text">spaceTimePhaseFunc()</text>
+  <text x="150" y="470" class="small-text">e^(i(ωt + φ - k·r))</text>
+  
+  <!-- Spatial Field Functions -->
+  <rect x="300" y="380" width="200" height="100" class="magnetic-box" rx="10"/>
+  <text x="400" y="405" class="text">Spatial Field Functions</text>
+  <text x="400" y="425" class="small-text">B.spaceFunc()</text>
+  <text x="400" y="440" class="small-text">B(r) = B₀ + ∇B·r</text>
+  <text x="400" y="455" class="small-text">+ quadratic terms</text>
+  
+  <!-- Trap Calculations -->
+  <rect x="550" y="380" width="200" height="100" class="potential-box" rx="10"/>
+  <text x="650" y="405" class="text">Trap Calculations</text>
+  <text x="650" y="425" class="small-text">trap frequencies</text>
+  <text x="650" y="440" class="small-text">trap depths</text>
+  <text x="650" y="455" class="small-text">energy scales</text>
+  <text x="650" y="470" class="small-text">field zeros</text>
+  
+  <!-- Applications -->
+  <rect x="200" y="530" width="600" height="120" class="potential-box" rx="10"/>
+  <text x="500" y="555" class="text" style="font-size: 14px; font-weight: bold;">Applications</text>
+  <text x="220" y="580" class="small-text">• Optical lattice experiments: band mapping, Bloch oscillations</text>
+  <text x="220" y="595" class="small-text">• Dipole traps: single atom trapping, quantum gas experiments</text>
+  <text x="220" y="610" class="small-text">• Magnetic traps: BEC formation, evaporative cooling</text>
+  <text x="220" y="625" class="small-text">• Hybrid traps: combined optical and magnetic confinement</text>
+  <text x="220" y="640" class="small-text">• Laser cooling: frequency control with AOM/EOM</text>
+  
+  <!-- Arrows showing workflow -->
+  <!-- From laser definition to Gaussian beam -->
+  <line x1="140" y1="180" x2="140" y2="230" class="arrow"/>
+  
+  <!-- From definitions to potential creation -->
+  <line x1="140" y1="310" x2="350" y2="280" class="arrow"/>
+  <line x1="370" y1="180" x2="450" y2="230" class="arrow"/>
+  <line x1="600" y1="180" x2="550" y2="230" class="arrow"/>
+  
+  <!-- From potential creation to functions -->
+  <line x1="400" y1="350" x2="400" y2="380" class="arrow"/>
+  <line x1="450" y1="350" x2="150" y2="380" class="arrow"/>
+  <line x1="550" y1="350" x2="650" y2="380" class="arrow"/>
+  
+  <!-- From functions to applications -->
+  <line x1="400" y1="480" x2="450" y2="530" class="arrow"/>
+  <line x1="650" y1="480" x2="550" y2="530" class="arrow"/>
+  
+  <!-- Modulation connection -->
+  <line x1="810" y1="180" x2="810" y2="350" stroke="#7b1fa2" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="810" y1="350" x2="250" y2="380" stroke="#7b1fa2" stroke-width="2" stroke-dasharray="5,5"/>
+  
+</svg>

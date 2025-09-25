@@ -1,0 +1,678 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Andor &#8212; MuscleMuseum 0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=2149b5ce"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/hardware/Andor';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="AndorIXon888" href="AndorIXon888.html" />
+    <link rel="prev" title="Acquisition" href="Acquisition.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MuscleMuseum 0.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../intro/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/index.html">database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../field/index.html">field</a></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sup/support.html">Support</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/api/hardware/Andor.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/issues/new?title=Issue%20on%20page%20%2Fapi/hardware/Andor.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Andor</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="andor">
+<h1>Andor<a class="headerlink" href="#andor" title="Link to this heading">#</a></h1>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="Andor">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Andor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/Acquisition/Andor.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Andor" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Acquisition.html#Acquisition" title="Acquisition"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Acquisition</span></code></a></p>
+<p><a class="reference internal" href="#Andor" title="Andor"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Andor</span></code></a> acquisition class using Andor’s proprietary SDK via a worker.</p>
+<p>Uses a parallel worker loop (<a class="reference internal" href="#Andor.andorLoop" title="Andor.andorLoop"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">andorLoop()</span></code></a>) to manage camera acquisition
+asynchronously and communicates via <code class="xref mat mat-class docutils literal notranslate"><span class="pre">parallel.pool.DataQueue</span></code>.</p>
+<ul class="simple">
+<li><p><strong>Workflow:</strong></p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#Andor.connectCamera" title="Andor.connectCamera"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">connectCamera()</span></code></a> (client): Launch worker and establish queues
+(client receives worker <code class="xref mat mat-class docutils literal notranslate"><span class="pre">parallel.pool.PollableDataQueue</span></code>).</p></li>
+<li><p><a class="reference internal" href="#Andor.setCameraParameterAbsorption" title="Andor.setCameraParameterAbsorption"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">setCameraParameterAbsorption()</span></code></a> (client→worker): Send
+<code class="docutils literal notranslate"><span class="pre">SetParameter</span></code> message with <code class="docutils literal notranslate"><span class="pre">AcquisitionMode=&quot;Absorption&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ExposureTime</span></code>, and <code class="docutils literal notranslate"><span class="pre">BitPerSample</span></code>; sets <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">ImageGroupSize=3</span></code> on client.</p></li>
+<li><p><a class="reference internal" href="#Andor.setCallback" title="Andor.setCallback"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">setCallback()</span></code></a>: Register a client callback <code class="docutils literal notranslate"><span class="pre">&#64;(data,event)</span></code> that
+handles the 3-frame group (atom, light, dark) pushed by the worker.</p></li>
+<li><p><a class="reference internal" href="#Andor.startCamera" title="Andor.startCamera"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">startCamera()</span></code></a> (client→worker): Send <code class="docutils literal notranslate"><span class="pre">Start</span></code>; worker acquires frames
+until a full group is ready, then sends data via <code class="xref mat mat-class docutils literal notranslate"><span class="pre">DataQueue</span></code>.</p></li>
+<li><p><a class="reference internal" href="#Andor.stopCamera" title="Andor.stopCamera"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">stopCamera()</span></code></a> (client→worker): Send <code class="docutils literal notranslate"><span class="pre">Stop</span></code>; worker aborts acquisition,
+closes shutter, and shuts down SDK. Client cancels <a class="reference internal" href="#Andor.Future" title="Andor.Future"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Future</span></code></a> and removes listener.</p></li>
+</ol>
+</li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">cam</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Andor</span><span class="p">(</span><span class="s">&quot;MainAndor&quot;</span><span class="p">);</span>
+<span class="n">cam</span><span class="p">.</span><span class="n">ExposureTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">;</span><span class="w">  </span><span class="c">% [s]</span>
+<span class="n">cam</span><span class="p">.</span><span class="n">BitsPerSample</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+<span class="n">cam</span><span class="p">.</span><span class="n">connectCamera</span><span class="p">();</span>
+<span class="n">cam</span><span class="p">.</span><span class="n">setCameraParameterAbsorption</span><span class="p">();</span>
+<span class="n">cam</span><span class="p">.</span><span class="n">setCallback</span><span class="p">(@(</span><span class="n">m</span><span class="p">,</span><span class="o">~</span><span class="p">)</span><span class="w"> </span><span class="nb">disp</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">m</span><span class="p">)));</span>
+<span class="n">cam</span><span class="p">.</span><span class="n">startCamera</span><span class="p">();</span><span class="w"> </span><span class="nb">pause</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="n">cam</span><span class="p">.</span><span class="n">stopCamera</span><span class="p">();</span>
+</pre></div>
+</div>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Andor.Andor">
+<span class="sig-name descname"><span class="pre">Andor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acqName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Andor.Andor" title="Link to this definition">#</a></dt>
+<dd><p>Construct an <a class="reference internal" href="#Andor" title="Andor"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Andor</span></code></a> acquisition instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>acqName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Camera config name</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="Andor.CallbackFunc">
+<span class="sig-name descname"><span class="pre">CallbackFunc</span></span><em class="property"> <span class="pre">function_handle</span></em><a class="headerlink" href="#Andor.CallbackFunc" title="Link to this definition">#</a></dt>
+<dd><p>Client-side callback: &#64;(data,event)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Andor.ClientDataQueue">
+<span class="sig-name descname"><span class="pre">ClientDataQueue</span></span><em class="property"> <span class="pre">parallel.pool.DataQueue</span></em><a class="headerlink" href="#Andor.ClientDataQueue" title="Link to this definition">#</a></dt>
+<dd><p>Queue to receive data from worker</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Andor.ClientListener">
+<span class="sig-name descname"><span class="pre">ClientListener</span></span><em class="property"> <span class="pre">event.listener</span></em><a class="headerlink" href="#Andor.ClientListener" title="Link to this definition">#</a></dt>
+<dd><p>Listener that adapts queue messages to callback signature</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Andor.ClientQueue">
+<span class="sig-name descname"><span class="pre">ClientQueue</span></span><em class="property"> <span class="pre">parallel.pool.PollableDataQueue</span></em><a class="headerlink" href="#Andor.ClientQueue" title="Link to this definition">#</a></dt>
+<dd><p>Queue to receive the worker queue handle</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Andor.Future">
+<span class="sig-name descname"><span class="pre">Future</span></span><em class="property"> <span class="pre">parallel.FevalFuture</span></em><a class="headerlink" href="#Andor.Future" title="Link to this definition">#</a></dt>
+<dd><p>Handle to the worker task running <a class="reference internal" href="#Andor.andorLoop" title="Andor.andorLoop"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">andorLoop()</span></code></a></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Andor.WorkerQueue">
+<span class="sig-name descname"><span class="pre">WorkerQueue</span></span><em class="property"> <span class="pre">parallel.pool.PollableDataQueue</span></em><a class="headerlink" href="#Andor.WorkerQueue" title="Link to this definition">#</a></dt>
+<dd><p>Queue to send commands to worker</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="Andor.andorLoop">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">andorLoop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">cq</span></em>, <em class="sig-param"><span class="pre">cdq</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Andor.andorLoop" title="Link to this definition">#</a></dt>
+<dd><p>Worker loop managing Andor SDK calls.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cq</strong> (<code class="xref mat mat-class docutils literal notranslate"><span class="pre">parallel.pool.PollableDataQueue</span></code>) – Client queue used to deliver the worker queue handle back</p></li>
+<li><p><strong>cdq</strong> (<code class="xref mat mat-class docutils literal notranslate"><span class="pre">parallel.pool.DataQueue</span></code>) – Data queue used to stream image data to the client</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Protocol:</strong></p>
+<ul class="simple">
+<li><p>Returns a worker <code class="xref mat mat-class docutils literal notranslate"><span class="pre">parallel.pool.PollableDataQueue</span></code> to client
+via <code class="docutils literal notranslate"><span class="pre">cq</span></code> for receiving messages.</p></li>
+<li><p>Message <code class="docutils literal notranslate"><span class="pre">SetParameter</span></code> with fields <code class="docutils literal notranslate"><span class="pre">AcquisitionMode</span></code>, <code class="docutils literal notranslate"><span class="pre">ExposureTime</span></code>,
+<code class="docutils literal notranslate"><span class="pre">BitPerSample</span></code> configures SDK (cooler, read mode, shutter, ROI, etc.).</p></li>
+<li><p>Message <code class="docutils literal notranslate"><span class="pre">Start</span></code> begins acquisition; worker polls for a full group
+of frames (group size set during parameter stage).</p></li>
+<li><p>When a group is ready, frames are fetched, oriented, converted to
+the specified bit depth, and sent to the client via <code class="docutils literal notranslate"><span class="pre">cdq</span></code>.</p></li>
+<li><p>Message <code class="docutils literal notranslate"><span class="pre">Stop</span></code> aborts acquisition, closes shutter, and shuts down SDK.</p></li>
+</ul>
+<p>Send the worker queue to the client</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Andor.checkError">
+<span class="sig-name descname"><span class="pre">checkError</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Andor.checkError" title="Link to this definition">#</a></dt>
+<dd><p>Throw worker errors on the client if present.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref mat mat-exc docutils literal notranslate"><span class="pre">error</span></code></span> – Re-throws <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Future.Error</span></code> when non-empty</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Andor.connectCamera">
+<span class="sig-name descname"><span class="pre">connectCamera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Andor.connectCamera" title="Link to this definition">#</a></dt>
+<dd><p>Connect by launching a worker loop and establishing queues.</p>
+<p>Spawns a background worker running <a class="reference internal" href="#Andor.andorLoop" title="Andor.andorLoop"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">andorLoop()</span></code></a>, sets up a
+<code class="xref mat mat-class docutils literal notranslate"><span class="pre">parallel.pool.DataQueue</span></code> (worker→client) and a
+<code class="xref mat mat-class docutils literal notranslate"><span class="pre">parallel.pool.PollableDataQueue</span></code> (client→worker), and stores
+the returned worker queue in <a class="reference internal" href="#Andor.WorkerQueue" title="Andor.WorkerQueue"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">WorkerQueue</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><code class="xref mat mat-exc docutils literal notranslate"><span class="pre">error</span></code></span> – When worker reports an error during startup</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Andor.pauseCamera">
+<span class="sig-name descname"><span class="pre">pauseCamera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Andor.pauseCamera" title="Link to this definition">#</a></dt>
+<dd><p>Pause camera recording (not implemented in this backend).</p>
+<p><strong>Notes:</strong></p>
+<blockquote>
+<div><p>Pausing is not supported by the current Andor worker example.
+Use <a class="reference internal" href="#Andor.stopCamera" title="Andor.stopCamera"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">stopCamera()</span></code></a> to end an acquisition.</p>
+</div></blockquote>
+<p>[ret] = AbortAcquisition();
+CheckWarning(ret);</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Andor.setCallback">
+<span class="sig-name descname"><span class="pre">setCallback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">callbackFunc</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Andor.setCallback" title="Link to this definition">#</a></dt>
+<dd><p>Set camera callback function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>callbackFunc</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">function_handle</span></code></span>) – Function handle invoked as <code class="docutils literal notranslate"><span class="pre">callbackFunc(data,</span> <span class="pre">event)</span></code></p>
+</dd>
+</dl>
+<p>The listener adapts queue payloads to the standard acquisition
+callback signature by passing an empty event struct.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Andor.setCameraParameterAbsorption">
+<span class="sig-name descname"><span class="pre">setCameraParameterAbsorption</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Andor.setCameraParameterAbsorption" title="Link to this definition">#</a></dt>
+<dd><p>Set absorption-imaging parameters on the worker.</p>
+<p>Sends a message over <a class="reference internal" href="#Andor.WorkerQueue" title="Andor.WorkerQueue"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">WorkerQueue</span></code></a> with fields:
+<code class="docutils literal notranslate"><span class="pre">Message=&quot;SetParameter&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">AcquisitionMode=&quot;Absorption&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ExposureTime</span></code>, and <code class="docutils literal notranslate"><span class="pre">BitPerSample</span></code>. Also sets
+<code class="xref mat mat-attr docutils literal notranslate"><span class="pre">ImageGroupSize</span></code> to <code class="docutils literal notranslate"><span class="pre">3</span></code> on the client for a 3-frame sequence
+(atom, light, dark).</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Andor.startCamera">
+<span class="sig-name descname"><span class="pre">startCamera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Andor.startCamera" title="Link to this definition">#</a></dt>
+<dd><p>Start acquisition on the worker.</p>
+<p>Sends <code class="docutils literal notranslate"><span class="pre">Message=&quot;Start&quot;</span></code> over <a class="reference internal" href="#Andor.WorkerQueue" title="Andor.WorkerQueue"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">WorkerQueue</span></code></a> and checks for
+pending worker errors via <a class="reference internal" href="#Andor.checkError" title="Andor.checkError"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">checkError()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Andor.stopCamera">
+<span class="sig-name descname"><span class="pre">stopCamera</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Andor.stopCamera" title="Link to this definition">#</a></dt>
+<dd><p>Stop camera recording and tear down worker-side state.</p>
+<p>Sends <code class="docutils literal notranslate"><span class="pre">Message=&quot;Stop&quot;</span></code> to the worker, checks for errors, cancels
+the running <a class="reference internal" href="#Andor.Future" title="Andor.Future"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Future</span></code></a>, and deletes <a class="reference internal" href="#Andor.ClientListener" title="Andor.ClientListener"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">ClientListener</span></code></a>.</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Acquisition.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Acquisition</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="AndorIXon888.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">AndorIXon888</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Weld Lab
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Weld Lab.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

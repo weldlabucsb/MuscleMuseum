@@ -1,6 +1,8 @@
 classdef (Abstract) PicoScope < Scope
-    %TEKTRONIXOSCILLOSCOPE Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`PicoScope` base wrapper for Pico oscilloscopes.
+    %
+    % Provides connection, configuration, readout, and close helpers using
+    % MATLAB Quick-Control Oscilloscope, analogous to :class:`TektronixScope`.
     properties (SetAccess = protected,Transient)
         Oscilloscope  % MATLAB Quick-Control Oscilloscope object
     end
@@ -12,7 +14,7 @@ classdef (Abstract) PicoScope < Scope
                 name string = string.empty
             end
             obj@Scope(resourceName,name);
-            obj.Manufacturer = "Tektronix";
+            obj.Manufacturer = "Pico";
             obj.SampleUnit = "V";
         end
 
@@ -24,6 +26,7 @@ classdef (Abstract) PicoScope < Scope
         end
 
         function set(obj)
+            % Apply acquisition/trigger and per-channel settings.
             obj.check;
             obj.Oscilloscope.AcquisitionTime = obj.Duration;
             obj.Oscilloscope.WaveformLength = obj.NSample;
@@ -53,6 +56,7 @@ classdef (Abstract) PicoScope < Scope
         end
 
         function read(obj)
+            % Read waveforms and update :attr:`Sample`.
             obj.check;
             ChannelName = obj.Oscilloscope.ChannelsEnabled;
             ChannelName = string(ChannelName.');
@@ -64,6 +68,7 @@ classdef (Abstract) PicoScope < Scope
         end
 
         function close(obj)
+            % Gracefully close the instrument session.
             if isempty(obj.Oscilloscope)
                 warning("Scope is not connected.")
                 return
@@ -79,6 +84,7 @@ classdef (Abstract) PicoScope < Scope
         end
 
         function status = check(obj)
+            % Validate instrument state and configuration limits.
             if isempty(obj.Oscilloscope)
                 error("Scope is not connected.")   
             elseif ~isvalid(obj.Oscilloscope)

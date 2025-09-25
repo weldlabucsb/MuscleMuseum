@@ -32,9 +32,11 @@ Known issues
 - The database may not be accessed through VPN for now.
 
 To use this package:
-1. Install MATLAB. I only tested my code with MATLAB 2023a. MATLAB 2023b is not compatible. Required MATLAB packages:
+1. Install MATLAB. I only tested my code with MATLAB 2023a. MATLAB 2023b is not compatible. Required MATLAB toolboxes:
     * Curve Fitting Toolbox
     * Parallel Computing Toolbox
+    * Database Toolbox
+    * Image Processing Toolbox
     * Data Acquisition Toolbox (optional, only for onsite experiments)
     * Instrument Control Toolbox (optional, only for onsite experiments)
 2. Install [Python](https://www.python.org/downloads/) that is [compatible with your MATLAB version](https://www.mathworks.com/support/requirements/python-compatibility.html). Make sure the Python path is in your environment variable. Check if you can invoke Python in command line.  

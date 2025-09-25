@@ -1,6 +1,26 @@
 classdef TanhSinePulse < PartialPeriodicWaveform
-    %SINEWAVE Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`TanhSinePulse` generates sine wave pulses with hyperbolic tangent rise and fall transitions.
+    %
+    % Creates sine wave pulses with smooth rise and fall transitions using
+    % hyperbolic tangent (tanh) functions. Provides smooth, sigmoid-like
+    % transitions for pulse shaping. Inherits from :class:`PartialPeriodicWaveform`.
+    %
+    % **Example1:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Create a tanh sine pulse with rise and fall times
+    %     pulse = TanhSinePulse(amplitude = 2.0, frequency = 1000, ...
+    %                           riseTime = 0.001, fallTime = 0.001);
+    %     pulse.plot();
+    %
+    % **Example2:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Create a pulse with only rise time
+    %     pulse = TanhSinePulse(amplitude = 1.0, frequency = 500, riseTime = 0.002);
+    %     pulse.plot();
     
     properties
 
@@ -8,8 +28,27 @@ classdef TanhSinePulse < PartialPeriodicWaveform
     
     methods
         function obj = TanhSinePulse(options)
-            %SINEWAVE Construct an instance of this class
-            %   Detailed explanation goes here
+            %Construct a TanhSinePulse object.
+            %
+            % :param samplingRate: Sampling rate in Hz (default: [])
+            % :type samplingRate: double, optional
+            % :param startTime: Start time in seconds (default: 0)
+            % :type startTime: double, optional
+            % :param duration: Duration in seconds (default: [])
+            % :type duration: double, optional
+            % :param amplitude: Peak-to-peak amplitude (default: [])
+            % :type amplitude: double, optional
+            % :param offset: DC offset (default: 0)
+            % :type offset: double, optional
+            % :param frequency: Frequency in Hz (default: [])
+            % :type frequency: double, optional
+            % :param phase: Initial phase in radians (default: 0)
+            % :type phase: double, optional
+            % :param riseTime: Rise transition time in seconds (default: 0)
+            % :type riseTime: double, optional
+            % :param fallTime: Fall transition time in seconds (default: 0)
+            % :type fallTime: double, optional
+            %
             arguments
                 options.samplingRate double = [];
                 options.startTime double = 0;
@@ -32,8 +71,14 @@ classdef TanhSinePulse < PartialPeriodicWaveform
         end
         
         function func = TimeFunc(obj)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
+            %Get the time function for the tanh sine pulse.
+            %
+            % Creates a function handle that generates sine wave pulse values
+            % with hyperbolic tangent rise and fall transitions. Implements the
+            % abstract :meth:`TimeFunc` method from :class:`Waveform`.
+            %
+            % :return: Function that takes time array and returns tanh sine pulse values
+            % :rtype: function_handle
             amp = obj.Amplitude;
             freq = obj.Frequency;
             t0 = obj.StartTime;

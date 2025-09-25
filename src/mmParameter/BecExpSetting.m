@@ -1,0 +1,311 @@
+classdef BecExpSetting < MmParameter
+    %:class:`BecExpSetting` stores configuration presets for :class:`BecExp` trials.
+    %
+    % Columns include trial descriptor fields (e.g., :attr:`TrialName`,
+    % :attr:`Description`), acquisition/ROI references (e.g., :attr:`AcquisitionName`,
+    % :attr:`RoiName`), analysis selections (e.g., :attr:`AnalysisMethod`,
+    % :attr:`DensityFitMethod`), and plotting or data export switches. Reading
+    % via :meth:`MmParameter.readTable` yields MATLAB-typed columns (matrices
+    % restored from TEXT), as handled by :meth:`MmParameter.convertOutputTable`.
+    %
+    % A join is established to :class:`BecExpConfig` on :attr:`IsLocalTest` to
+    % mirror deployment-level configuration fields (file paths, DB targets,
+    % color maps, etc.).
+    %
+    % **Schema (columns, types, defaults, default entries):**
+    %
+    % .. list-table::
+    %    :widths: 26 16 18 40
+    %    :header-rows: 1
+    %
+    %    * - Column
+    %      - Type
+    %      - Default
+    %      - DefaultEntry values
+    %    * - TrialName
+    %      - string
+    %      - Test
+    %      - (no DefaultEntry)
+    %    * - Description
+    %      - string
+    %      - A Test
+    %      - (no DefaultEntry)
+    %    * - IsLocalTest
+    %      - logical
+    %      - 0
+    %      - (no DefaultEntry)
+    %    * - AcquisitionName
+    %      - string
+    %      - TOP
+    %      - (no DefaultEntry)
+    %    * - RoiName
+    %      - string
+    %      - Full
+    %      - (no DefaultEntry)
+    %    * - CloudCenterReference
+    %      - string
+    %      - None
+    %      - (no DefaultEntry)
+    %    * - OdCLim
+    %      - double
+    %      - 4
+    %      - (no DefaultEntry)
+    %    * - IsOdPreview
+    %      - logical
+    %      - 0
+    %      - (no DefaultEntry)
+    %    * - ScannedVariableID
+    %      - int64
+    %      - 1
+    %      - (no DefaultEntry)
+    %    * - ScannedVariableID2
+    %      - int64
+    %      - 0
+    %      - (no DefaultEntry)
+    %    * - AnalysisMethod
+    %      - stringMatrix
+    %      - None
+    %      - (no DefaultEntry)
+    %    * - FringeRemovalMethod
+    %      - string
+    %      - LSR
+    %      - (no DefaultEntry)
+    %    * - FringeRemovalMask
+    %      - doubleMatrix
+    %      - []
+    %      - (no DefaultEntry)
+    %    * - ImagingStage
+    %      - string
+    %      - LF
+    %      - (no DefaultEntry)
+    %    * - ImagingMethod
+    %      - string
+    %      - Absorption
+    %      - (no DefaultEntry)
+    %    * - AdMethod
+    %      - string
+    %      - RandomPolarization
+    %      - (no DefaultEntry)
+    %    * - AdCLim
+    %      - double
+    %      - 8
+    %      - (no DefaultEntry)
+    %    * - DensityFitMethod
+    %      - string
+    %      - BosonicGaussianFit1D
+    %      - (no DefaultEntry)
+    %    * - AtomNumberYLim
+    %      - double
+    %      - 30
+    %      - (no DefaultEntry)
+    %    * - AtomNumberFitMethod
+    %      - string
+    %      - None
+    %      - (no DefaultEntry)
+    %    * - CenterFitMethod
+    %      - string
+    %      - LinearFit1D
+    %      - (no DefaultEntry)
+    %    * - AveragingMethod
+    %      - string
+    %      - StdErr
+    %      - (no DefaultEntry)
+    %    * - ScopeValueName
+    %      - string
+    %      - None
+    %      - (no DefaultEntry)
+    %    * - CiceroLogOrigin
+    %      - string
+    %      - XXX
+    %      - (via join)
+    %    * - ParentPath
+    %      - string
+    %      - XXX
+    %      - (via join)
+    %    * - DataPrefix
+    %      - string
+    %      - run
+    %      - (via join)
+    %    * - DataFormat
+    %      - string
+    %      - .tif
+    %      - (via join)
+    %    * - IsAutoDelete
+    %      - logical
+    %      - 0
+    %      - (via join)
+    %    * - DatabaseName
+    %      - string
+    %      - experiment
+    %      - (via join)
+    %    * - DatabaseTableName
+    %      - string
+    %      - main
+    %      - (via join)
+    %    * - DataGroupSize
+    %      - double
+    %      - 3
+    %      - (via join)
+    %    * - IsAutoAcquire
+    %      - logical
+    %      - 1
+    %      - (via join)
+    %    * - OdColormap
+    %      - doubleMatrix
+    %      - [0,0,0]
+    %      - (via join)
+    %    * - AtomName
+    %      - string
+    %      - Lithium7
+    %      - (via join)
+    %    * - ImagingStageList
+    %      - stringMatrix
+    %      - [LF,HF,NI]
+    %      - (via join)
+    %    * - ControlAppName
+    %      - string
+    %      - BecControl
+    %      - (via join)
+    %
+    % **Foreign keys:**
+    %
+    % (none)
+    %
+    % **Join conditions:**
+    %
+    % - Join to :class:`BecExpConfig` on ``IsLocalTest`` mirroring the listed columns.
+    %
+    % **Flags:**
+    %
+    % .. list-table::
+    %    :widths: 38 14
+    %    :header-rows: 1
+    %
+    %    * - Property
+    %      - Value
+    %    * - IsIncludeDefaultEntry
+    %      - true
+    %    * - IsFirstColumnUnique
+    %      - true
+    %    * - IsTriggerJoinOnRight
+    %      - true
+    %    * - IsTriggerJoinOnLeft
+    %      - true
+
+    properties
+
+    end
+
+    methods
+        function obj = BecExpSetting()
+            obj@MmParameter()
+        end
+
+        function defineSchema(obj)
+            obj.TableColumn = dictionary(...
+                "TrialName", "string", ...
+                "Description", "string", ...
+                "IsLocalTest","logical",...
+                "AcquisitionName", "string", ...
+                "RoiName", "string", ...
+                "CloudCenterReference", "string", ...
+                "OdCLim", "double", ...
+                "IsOdPreview","logical",...
+                "IsDensityAverage","logical",...
+                "ScannedVariableID", "int64", ...
+                "ScannedVariableID2", "int64", ...
+                "AnalysisMethod", "stringMatrix", ...
+                "FringeRemovalMethod", "string", ...
+                "FringeRemovalMask", "doubleMatrix", ...
+                "ImagingStage", "string", ...
+                "ImagingMethod", "string", ...
+                "AdMethod", "string", ...
+                "AdCLim", "double", ...
+                "DensityFitMethod", "string", ...
+                "AtomNumberYLim", "double", ...
+                "AtomNumberFitMethod", "string", ...
+                "CenterFitMethod", "string", ...
+                "AveragingMethod", "string", ...
+                "ScopeValueName", "string", ...
+                "CiceroLogOrigin", "string", ...
+                "ParentPath", "string", ...
+                "DataPrefix", "string", ...
+                "DataFormat", "string", ...
+                "IsAutoDelete", "logical", ...
+                "DatabaseName", "string", ...
+                "DatabaseTableName", "string", ...
+                "DataGroupSize", "double", ...
+                "IsAutoAcquire", "logical", ...
+                "OdColormap", "doubleMatrix", ...
+                "AtomName", "string", ...
+                "ImagingStageList", "stringMatrix", ...
+                "ControlAppName", "string"...
+                );
+
+            % Define default values for each column (used when adding new columns) via :attr:`DefaultValue`
+            obj.DefaultValue = dictionary(...
+                "TrialName", "'Test'", ...
+                "Description", "'A Test'", ...
+                "IsLocalTest","0",...
+                "AcquisitionName", "'TOP'", ...
+                "RoiName", "'Full'", ...
+                "CloudCenterReference", "'None'", ...
+                "OdCLim", "4", ...
+                "IsOdPreview","0",...
+                "IsDensityAverage","0",...
+                "ScannedVariableID", "1", ...
+                "ScannedVariableID2", "0", ...
+                "AnalysisMethod", "'None'", ...
+                "FringeRemovalMethod", "'LSR'", ...
+                "FringeRemovalMask", "'[]'", ...
+                "ImagingStage", "'LF'", ...
+                "ImagingMethod", "'Absorption'", ...
+                "AdMethod", "'RandomPolarization'", ...
+                "AdCLim", "8", ...
+                "DensityFitMethod", "'BosonicGaussianFit1D'", ...
+                "AtomNumberYLim", "30", ...
+                "AtomNumberFitMethod", "'None'", ...
+                "CenterFitMethod", "'LinearFit1D'", ...
+                "AveragingMethod", "'StdErr'", ...
+                "ScopeValueName", "'None'", ...
+                "CiceroLogOrigin", "'XXX'", ...
+                "ParentPath", "'XXX'", ...
+                "DataPrefix", "'run'", ...
+                "DataFormat", "'.tif'", ...
+                "IsAutoDelete", "0", ...
+                "DatabaseName", "'experiment'", ...
+                "DatabaseTableName", "'main'", ...
+                "DataGroupSize", "3", ...
+                "IsAutoAcquire", "1", ...
+                "OdColormap", "'[0,0,0]'", ...
+                "AtomName", "'Lithium7'", ...
+                "ImagingStageList", "'LF,HF,NI'", ...
+                "ControlAppName", "'BecControl'" ...
+                );
+
+            % Define join condition
+            configPara = [ ...
+                "CiceroLogOrigin" ...
+                "ParentPath" ...
+                "DataPrefix" ...
+                "DataFormat" ...
+                "IsAutoDelete" ...
+                "DatabaseName" ...
+                "DatabaseTableName" ...
+                "DataGroupSize" ...
+                "IsAutoAcquire" ...
+                "OdColormap" ...
+                "AtomName" ...
+                "ImagingStageList" ...
+                "ControlAppName"];
+            obj.JoinCondition = cell2table({ ...
+                "BecExpConfig","IsLocalTest","IsLocalTest",{configPara},{configPara};...
+                },...
+                "VariableNames",["TableRight","KeyLeft","KeyRight","ColumnLeft","ColumnRight"]);
+            obj.IsTriggerJoinOnLeft = true;
+            obj.IsTriggerJoinOnRight = true;
+            obj.IsIncludeDefaultEntry = true;
+        end
+    end
+end
+

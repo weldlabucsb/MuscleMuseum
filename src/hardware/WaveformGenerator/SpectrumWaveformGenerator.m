@@ -1,7 +1,26 @@
 classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
-    %SpectrumWaveformGenerator Summary of this class goes here
-    %   Please download the Spectrum AWG MATLAB driver:
-    %   https://spectrum-instrumentation.com/products/drivers_examples/matlab_support.php
+    %:class:`SpectrumWaveformGenerator` Spectrum-specific AWG implementation.
+    %
+    % Requires the Spectrum MATLAB driver (see vendor site) to be on MATLAB's
+    % path. Implements device-specific connection (:meth:`connectSpec`),
+    % configuration (:meth:`setSpec`), and upload sequencing (:meth:`upload`).
+    %
+    % - **Workflow:** :meth:`upload` → :meth:`connectSpec` → :meth:`setSpec` → segment/sequence prep → program card → status check → :meth:`closeSpec`.
+    % - **Segment rules:** All enabled channels must have equal segment counts; each
+    %   segment must meet board minimum length and be padded to a multiple of 32 samples.
+    % - **Scaling:** Samples are mapped to 16-bit DAC range; amplitudes are validated
+    %   against :attr:`OutputLimit` considering :attr:`OutputLoad`.
+    %
+    % **Example:**
+    %
+    % .. code-block:: matlab
+    %
+    %    awg = SpectrumDN2662_02("PCI::SPCM0", name="SpecAWG");
+    %    awg.SamplingRate = [1.25e9, 1.25e9];
+    %    awg.IsOutput = [true true];
+    %    % ... set awg.WaveformList per channel ...
+    %    awg.upload();
+    %
     
     properties (SetAccess = protected,Transient)
         Device
@@ -11,8 +30,12 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
     
     methods
         function obj = SpectrumWaveformGenerator(resourceName,name)
-            %KEYSIGHT Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`SpectrumWaveformGenerator`.
+            %
+            % :param resourceName: Vendor-specific resource string
+            % :type resourceName: string
+            % :param name: Device nickname
+            % :type name: string, optional
             arguments
                 resourceName string
                 name string = string.empty
@@ -22,13 +45,19 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
         end
 
         function connect(obj)
-            % Spectrum requires us to close the card handle every time we
-            % upload a waveform. So it's not possible to establish a
-            % constant connection. Every time we need to upload a new
-            % waveform, we need to connect to the card again.
+            % No persistent session (Spectrum connects per-upload).
+            %
+            % Spectrum AWG MATLAB driver requires closing/opening the card
+            % around uploads; use :meth:`connectSpec` within :meth:`upload`.
         end
         
         function connectSpec(obj)
+            % Initialize Spectrum maps and open the device.
+            %
+            % Loads :attr:`RegMap` and :attr:`ErrorMap`, frees lingering sessions,
+            % and opens the card using :attr:`ResourceName`.
+            %
+            % :raises error: If Spectrum MATLAB library is missing or card open fails
             try
                 obj.RegMap = spcMCreateRegMap;
                 obj.ErrorMap = spcMCreateErrorMap;
@@ -44,26 +73,36 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
         end
 
         function set(obj)
-
+            % Unused (Spectrum initializes per-upload).
         end
         
         function setSpec(obj)
+            % Configure sampling rate, trigger, and enabled outputs for Spectrum device.
+            %
+            % Sets card PLL to requested :attr:`SamplingRate(1)`, programs trigger
+            % source based on :attr:`TriggerSource(1)`, and enables channels per
+            % :attr:`IsOutput`.
+            %
+            % :raises error: On PLL setup failure or subsequent Spectrum errors
             obj.check;
 
             %% Set sampling rate
-            [success,obj.Device] = spcMSetupClockPLL(obj.Device, obj.SamplingRate, 0);
+            [success,obj.Device] = spcMSetupClockPLL(obj.Device, obj.SamplingRate(1), 0);
             if (success == false)
                 obj.closeSpec
                 spcMErrorMessageStdOut(obj.Device, 'Error: spcMSetupClockPLL:\n\t', true);
                 return;
             end
-            obj.SamplingRate = obj.Device.setSamplerate;
+            sr = obj.Device.setSamplerate;
+            obj.SamplingRate(:) = deal(sr);
 
             %% Set triggering
-            switch obj.TriggerSource
+            switch obj.TriggerSource(1)
                 case "External"
                     [~,obj.Device] = spcMSetupTrigExternal(obj.Device, obj.RegMap('SPC_TM_POS'), 0, 0, 1, 0); 
                 case "Immediate"
+                    [~,obj.Device] = spcMSetupTrigSoftware(obj.Device, 0);
+                otherwise
                     [~,obj.Device] = spcMSetupTrigSoftware(obj.Device, 0);
             end
 
@@ -76,13 +115,14 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
         end
 
         function upload(obj)
-            % Different from Keysight, Spectrum AWG insists that all
-            % channels have the same number of segments and behave in the
-            % same way. The samples must be uploaded segment by segment,
-            % and each (physical) segment stores samples of all channels.
-            % See the manual, chapter <data management>.
-            % It might be buggy to use the simultaneous concat option or 
-            % the trigger advance option with multiple channels.
+            % Upload waveforms as same-sized segments and sequence them (Spectrum requirement).
+            %
+            % Channels must have identical segment counts; each segment stores
+            % samples for all enabled channels. Segments are padded to 32-sample
+            % boundaries and meet board minimums; scaling maps to 16-bit DAC.
+            %
+            % :raises error: On mismatched segment counts, segment size mismatch,
+            %   output limit violations, or Spectrum driver errors
             %% Set and connect
             obj.connectSpec;
             obj.setSpec;
@@ -119,8 +159,8 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             %% Load prepared waveforms
             t = cell(1,nEnabledChannel);
             for ii = 1:nEnabledChannel
-                obj.WaveformList{enabledChannel(ii)}.SamplingRate = obj.SamplingRate;
-                obj.WaveformList{enabledChannel(ii)}.NCycle = NaN; % For spectrum AWG, we don't want to split a periodic waveform into parts and upload
+                obj.WaveformList{enabledChannel(ii)}.SamplingRate = obj.SamplingRate(1);
+                obj.WaveformList{enabledChannel(ii)}.NPeriodPerCycle = 0; % For spectrum AWG, we don't want to split a periodic waveform into parts and upload
                 t{ii} = obj.WaveformList{enabledChannel(ii)}.WaveformPrepared; % Load the prepared waveforms
             end
 
@@ -142,7 +182,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                 for jj = 1:(nWave-1)
                     amp(ii) = max(amp(ii),max(abs(t{ii}.Sample{jj})));
                 end
-                if obj.OutputLoad == "50"
+                if obj.OutputLoad(ii) == "50"
                     oLim = obj.OutputLimit;
                 else
                     oLim = obj.OutputLimit * 2;
@@ -153,15 +193,14 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                 elseif amp(ii) < oLim(1)
                     amp(ii) = oLim(1);
                 end
-                if obj.OutputLoad == "50"
+                if obj.OutputLoad(ii) == "50"
                     [~,obj.Device] = spcMSetupAnalogOutputChannel(obj.Device, enabledChannel(ii)-1, amp(ii)*1e3, 0, 0, obj.RegMap('SPCM_STOPLVL_ZERO'), 0, 0);
                 else
                     [~,obj.Device] = spcMSetupAnalogOutputChannel(obj.Device, enabledChannel(ii)-1, amp(ii)/2*1e3, 0, 0, obj.RegMap('SPCM_STOPLVL_ZERO'), 0, 0);
                 end
             end
 
-            %% Set channel selection
-            % See the channel selection chapter
+            %% Set channel selection (bit masks)
             bitAll = int64(2.^(enabledChannel-1));
             bitMask = bitAll(1);
             for ii = 1:(numel(bitAll)-1)
@@ -179,7 +218,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             end
             [~,obj.Device] = spcMSetupModeRepSequence(obj.Device, bitMaskH, bitMaskL, nWave, 0); 
 
-            %% Tailor the waveforms
+            %% Tailor the waveforms (segment sizes and scaling)
             sample = cell(nWave,nEnabledChannel);
             scale=32767;            
 
@@ -210,7 +249,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                 errorCode = spcm_dwSetData(obj.Device.hDrv, 0, segSize(1), nEnabledChannel, 0, sample{jj,:});
             end
 
-            %% Determine the order
+            %% Determine the order (sequence)
             for ii = 1:nWave
                 if ii ~= nWave
                     switch t{1}.PlayMode(ii)
@@ -252,10 +291,11 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
         end
 
         function close(obj)
-
+            % Placeholder (Spectrum cards close in :meth:`closeSpec`).
         end
         
         function closeSpec(obj)
+            % Close the Spectrum device if connected.
             if isempty(obj.Device)
                 warning("Device is not connected.")
                 return
@@ -265,6 +305,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
         end
     
         function status = check(obj)
+            % Check Spectrum device status and sequence option presence.
             status = false;
             if isempty(obj.Device)
                 error("Device is not connected.")
