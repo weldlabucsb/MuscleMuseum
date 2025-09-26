@@ -27,6 +27,8 @@ classdef DensityFit < BecAnalysis
         CondensateSize % Condensate radii [:math:`R_{x,c}`; :math:`R_{y,c}`] per run/subROI [m]
         CondensateCentralDensity % Condensate central column density per run/subROI [m^{-2}]
         BackGroundDensity % Background density level from fits per run/subROI [m^{-2}]
+        WeightedMeanPosition % Calculated Weighted Mean Position
+        WeightedStandardDeviation % Calculated Standard Deviation of cloud from Weighted Mean
     end
 
     properties (Hidden, Transient)
@@ -77,6 +79,8 @@ classdef DensityFit < BecAnalysis
             obj.CondensateSize = zeros(2,1,nSub);
             obj.CondensateCentralDensity = zeros(1,1,nSub);
             obj.BackGroundDensity = zeros(1,1,nSub);
+            obj.WeightedMeanPosition = zeros(2,1,nSub);
+            obj.WeightedStandardDeviation = zeros(2,1,nSub);
 
             %% Initialize fit objects
             switch obj.FitMethod
@@ -84,8 +88,6 @@ classdef DensityFit < BecAnalysis
                     obj.FitData = GaussianFit1D([1,1]);
                 case "BosonicGaussianFit1D"
                     obj.FitData = BosonicGaussianFit1D([1,1]);
-                case "WeightedMean"
-                    obj.FitData = BosonicGaussianFit1D([1,1]); %Defaulting to BosonicGaussianFit1D for anything that requires the FitData object
             end
             obj.FitData = repmat(obj.FitData,2,1,nSub);
 
@@ -114,7 +116,7 @@ classdef DensityFit < BecAnalysis
             hold(ax2,'on')
             % Initialize thermal and condensate plots
                 switch obj.FitMethod
-                    case {"GaussianFit1D","BosonicGaussianFit1D", "WeightedMean"}
+                    case {"GaussianFit1D","BosonicGaussianFit1D"}
                         for ii = 1:nSub
                             obj.ThermalXLine(ii) = errorbar(ax1,1,1,[]);
                             obj.ThermalXLine(ii).Marker = mOrder(ii);
@@ -189,8 +191,6 @@ classdef DensityFit < BecAnalysis
                     fitData = GaussianFit1D([1,1]);
                 case "BosonicGaussianFit1D"
                     fitData = BosonicGaussianFit1D([1,1]);
-                case "WeightedMean"
-                    fitData = BosonicGaussianFit1D([1,1]);
             end
             fitData = repmat(fitData,2,nRun,nSub);
 
@@ -218,9 +218,6 @@ classdef DensityFit < BecAnalysis
                             fitData(1,ii,jj) = GaussianFit1D([xList,xRaw]);
                             fitData(2,ii,jj) = GaussianFit1D([yList,yRaw]);
                         case "BosonicGaussianFit1D"
-                            fitData(1,ii,jj) = BosonicGaussianFit1D([xList,xRaw]);
-                            fitData(2,ii,jj) = BosonicGaussianFit1D([yList,yRaw]);
-                        case "WeightedMean"
                             fitData(1,ii,jj) = BosonicGaussianFit1D([xList,xRaw]);
                             fitData(2,ii,jj) = BosonicGaussianFit1D([yList,yRaw]);
                     end
@@ -296,38 +293,30 @@ classdef DensityFit < BecAnalysis
                             obj.ThermalCloudCentralDensity(1,ii,jj) = ...
                                 mean(amp*boseFunction(1,2)/sqrt(pi)./flip(obj.ThermalCloudSize(:,ii,jj)));
 
-                        case "WeightedMean"
-
-                            if isempty(becExp.Roi.SubRoi)
-                                xList = obj.BecExp.Roi.XList;
-                                yList = obj.BecExp.Roi.YList;
-                                xRaw = sum(adData,1).'*px;
-                                yRaw = sum(adData,2)*px;
-                            else
-                                xList = obj.BecExp.Roi.SubRoi(jj).XList;
-                                yList = obj.BecExp.Roi.SubRoi(jj).YList;
-                                xRaw = sum(adData{jj},1).'*px;
-                                yRaw = sum(adData{jj},2)*px;
-                            end
-                            amp = [obj.FitData(1,ii,jj).Coefficient(1);...
-                                obj.FitData(2,ii,jj).Coefficient(1)];
-
-                            %Calculate mean position based on xList and
-                            %yRaw
-                            meanxpos=sum(dot(xList, xRaw))/sum(xRaw);
-                            meanypos=sum(dot(yList, yRaw))/sum(yRaw);
-                            obj.ThermalCloudCenter(1,ii,jj) = px * sum(dot(xList, xRaw))/sum(xRaw);
-                            obj.ThermalCloudCenter(2,ii,jj) = px * sum(dot(yList, yRaw))/sum(yRaw);
-                            
-                            obj.ThermalCloudSize(1,ii,jj) = px * ...
-                                sqrt(sum(dot((xList-meanxpos).^2, xRaw))/(((length(xList)-1)/length(xList))*sum(xRaw)));
-                            obj.ThermalCloudSize(2,ii,jj) = px * ...
-                                sqrt(sum(dot((yList-meanypos).^2, yRaw))/(((length(yList)-1)/length(yList))*sum(yRaw)));
-
-
-                            obj.ThermalCloudCentralDensity(1,ii,jj) = ...
-                                mean(amp*boseFunction(1,2)/sqrt(pi)./flip(obj.ThermalCloudSize(:,ii,jj)));
+                        
                     end
+                    if isempty(becExp.Roi.SubRoi)
+                        xList = obj.BecExp.Roi.XList;
+                        yList = obj.BecExp.Roi.YList;
+                        xRaw = sum(adData,1).'*px;
+                        yRaw = sum(adData,2)*px;
+                    else
+                        xList = obj.BecExp.Roi.SubRoi(jj).XList;
+                        yList = obj.BecExp.Roi.SubRoi(jj).YList;
+                        xRaw = sum(adData{jj},1).'*px;
+                        yRaw = sum(adData{jj},2)*px;
+                    end
+                    meanxpos=sum(dot(xList, xRaw))/sum(xRaw);
+                    meanypos=sum(dot(yList, yRaw))/sum(yRaw);
+
+                    obj.WeightedMeanPosition(1,ii,jj) = px * sum(dot(xList, xRaw))/sum(xRaw);
+                    obj.WeightedMeanPosition(2,ii,jj) = px * sum(dot(yList, yRaw))/sum(yRaw);
+                    
+                    obj.WeightedStandardDeviation(1,ii,jj) = px * ...
+                        sqrt(sum(dot((xList-meanxpos).^2, xRaw))/(((length(xList)-1)/length(xList))*sum(xRaw)));
+                    obj.WeightedStandardDeviation(2,ii,jj) = px * ...
+                        sqrt(sum(dot((yList-meanypos).^2, yRaw))/(((length(yList)-1)/length(yList))*sum(yRaw)));
+
                 end
             end
         end
@@ -346,7 +335,7 @@ classdef DensityFit < BecAnalysis
             varList = becExp.ScannedVariableList;
 
             switch obj.FitMethod
-                case {"GaussianFit1D","BosonicGaussianFit1D", "WeightedMean"}
+                case {"GaussianFit1D","BosonicGaussianFit1D"}
                     for ii = 1:nSub
                         [xThermalX,yThermalX,stdThermalX] = computeAveErr(varList,obj.ThermalCloudSize(1,:,ii) * 1e6, becExp.AveragingMethod);
                         [xThermalY,yThermalY,stdThermalY] = computeAveErr(varList,obj.ThermalCloudSize(2,:,ii) * 1e6, becExp.AveragingMethod);
