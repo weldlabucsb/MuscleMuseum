@@ -152,7 +152,7 @@ classdef CenterFit < BecAnalysis
                 hold(ax1,'on')
                 hold(ax2,'on')
                 switch becExp.DensityFit.FitMethod
-                    case {"GaussianFit1D","BosonicGaussianFit1D"}
+                    case {"GaussianFit1D","BosonicGaussianFit1D", "WeightedMean"}
                         % X data lines
                         co = ax1.ColorOrder;
                         obj.ThermalXLine = errorbar(ax1,1,1,[]);
@@ -193,7 +193,7 @@ classdef CenterFit < BecAnalysis
             if ishandle(fig)
                 %% Initialize table data
                 switch becExp.DensityFit.FitMethod
-                    case {"GaussianFit1D","BosonicGaussianFit1D"}
+                    case {"GaussianFit1D","BosonicGaussianFit1D", "WeightedMean"}
                         %% Thermal fit only
                         data{1,1} = 'Thermal Cloud Center Mean in x';
                         data{1,2} = '';
@@ -322,7 +322,7 @@ classdef CenterFit < BecAnalysis
 
             %% Update data
             switch becExp.DensityFit.FitMethod
-                case {"GaussianFit1D","BosonicGaussianFit1D"}
+                case {"GaussianFit1D","BosonicGaussianFit1D", "WeightedMean"}
                     %% Thermal fit only
                     obj.ThermalCloudCenterMean = mean(becExp.DensityFit.ThermalCloudCenter,2);
                     obj.ThermalCloudCenterRange = max(becExp.DensityFit.ThermalCloudCenter,[],2) - ...
@@ -408,7 +408,7 @@ classdef CenterFit < BecAnalysis
             px = becExp.Acquisition.PixelSizeReal;
 
             switch becExp.DensityFit.FitMethod
-                case {"GaussianFit1D","BosonicGaussianFit1D"}
+                case {"GaussianFit1D","BosonicGaussianFit1D", "WeightedMean"}
                     %% Thermal fit only
                     obj.ParaTable.Data{1,2} = num2str(obj.ThermalCloudCenterMean(1)/px,'%.2f');
                     obj.ParaTable.Data{2,2} = num2str(obj.ThermalCloudCenterMean(2)/px,'%.2f');
@@ -498,7 +498,7 @@ classdef CenterFit < BecAnalysis
                 TrialName = becExp.Name;
                 px = becExp.Acquisition.PixelSizeReal;
                 switch becExp.DensityFit.FitMethod
-                    case {"GaussianFit1D","BosonicGaussianFit1D"}
+                    case {"GaussianFit1D","BosonicGaussianFit1D", "WeightedMean"}
                         Center = obj.ThermalCloudCenterMean;
                 end
                 Center = reshape(flip(Center),1,2) / px; % Use ROI coordinates convention.
