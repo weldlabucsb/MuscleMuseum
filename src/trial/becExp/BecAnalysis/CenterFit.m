@@ -58,6 +58,7 @@ classdef CenterFit < BecAnalysis
                 loc = [0.3919,0.032],...
                 size = [0.3069,0.57]...
                 );
+            obj.IsUseWeighted=becExp.IsUseWeightedPosition;
         end
 
         function initialize(obj)
