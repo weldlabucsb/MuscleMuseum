@@ -21,6 +21,7 @@ classdef BecExp < Trial
         CloudCenter double % Cloud center coordinates [:math:`y_0`, :math:`x_0`] from previous measurement [pixels]
         AveragingMethod string = "StdErr" % Data averaging method: "None"|"StdErr"|"Std"
         IsDensityAverage logical = false % Flag to control averaging when saving Od and Ad data and figures
+        IsUseWeightedPosition logical = 0 % Logical value to control use of weighted or fitted center positions for CenterFit
     end
 
     properties(Dependent)
@@ -1507,6 +1508,11 @@ classdef BecExp < Trial
             end
         end
 
+        function set.IsUseWeightedPosition(obj, value)
+            if ~isempty(obj.CenterFit)
+                obj.CenterFit.IsUseWeighted=value;
+            end
+        end
     end
 
     methods (Hidden)
