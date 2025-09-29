@@ -215,6 +215,12 @@ if exist("BecExpDataPrefix","var")
     if exist('CiceroLogOrigin','var')
         s.CiceroLogOrigin = CiceroLogOrigin;
     end
+    if exist('IsPCIAvailable', 'var')
+        s.IsPCIAvailable=IsPCIAvailable;
+    end
+    if exist("PCIPhase", 'var')
+        s.PCIPhase=PCIPhase;
+    end
     updateConfig("BecExpConfig",s)
 end
 
