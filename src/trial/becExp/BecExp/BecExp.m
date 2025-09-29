@@ -21,6 +21,8 @@ classdef BecExp < Trial
         CloudCenter double % Cloud center coordinates [:math:`y_0`, :math:`x_0`] from previous measurement [pixels]
         AveragingMethod string = "StdErr" % Data averaging method: "None"|"StdErr"|"Std"
         IsDensityAverage logical = false % Flag to control averaging when saving Od and Ad data and figures
+        IsPCIAvailable logical = false % Logic value to determine whether PCI is avaialbe or not
+        PCIPhase double = 0 %Value describing phase shift of phase spot plate for PCI
     end
 
     properties(Dependent)
@@ -127,6 +129,10 @@ classdef BecExp < Trial
                 obj.addAnalysis(obj.AnalysisMethod);
             end
             obj.setAnalyzer;
+
+            % Imaging Setting
+            obj.IsPCIAvailable=obj.ConfigParameter.IsPCIAvailable;
+            obj.PCIPhase=obj.ConfigParameter.PCIPhase;  
 
             % Finalize construction
             if ~isLoad

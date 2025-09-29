@@ -74,6 +74,9 @@ classdef Ad < BecAnalysis
             if ~isempty(t)
                 obj.CrossSectionData = t.CrossSection{1};
             end
+
+            obj.IsPCIAvailable=becExp.IsPCIAvailable;
+            obj.PCIPhase=becExp.PCIPhase;
         end
     end
 

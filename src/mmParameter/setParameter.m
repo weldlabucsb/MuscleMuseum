@@ -201,6 +201,8 @@ if exist("BecExpDataPrefix","var")
         "OdColormap";
         "AtomName";
         "ImagingStageList";
+        "IsPCIAvailable";
+        "PCIPhase";
     ];
     userParameter2 = intersect("BecExp"+userParameter,varList);
     userParameter = replace(userParameter2,"BecExp","");
