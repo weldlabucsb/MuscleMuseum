@@ -144,8 +144,10 @@ classdef Ad < BecAnalysis
                     %Needs to obtain phase plate for imaging, assume
                     %phi=pi/2 for now, should be between -pi and pi
 
-                    phi=-pi/3; %Assumes additional thickness, use minus for etched
-                    
+                    % phi=-pi/3; %Assumes additional thickness, use minus for etched
+                    phi = obj.PCIPhase;
+
+
                     freqlistPCI_Imaging=becExp.HardwareData.hw_ImagingPci;
                     freqPCI_Imaging=freqlistPCI_Imaging(runIdx);
 
