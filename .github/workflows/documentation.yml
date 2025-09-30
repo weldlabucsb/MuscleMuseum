@@ -15,15 +15,17 @@ jobs:
         run: |
           pip install sphinxcontrib-matlabdomain
           pip install sphinx-book-theme
+          pip install sphinx-copybutton
           pip install sphinx sphinx_rtd_theme myst_parser
       - name: Sphinx build
+        working-directory: ./doc/sphinx/source
         run: |
-          sphinx-build doc/sphinx/source _build
+          sphinx-build . _build
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         with:
           publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: _build/
+          publish_dir: doc/sphinx/source/_build
           force_orphan: true

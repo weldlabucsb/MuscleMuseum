@@ -1,0 +1,749 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Alkali &#8212; MuscleMuseum 0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=2149b5ce"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/atom/Alkali';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Atom" href="Atom.html" />
+    <link rel="prev" title="atom" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MuscleMuseum 0.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../intro/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/index.html">database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../field/index.html">field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sup/support.html">Support</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/api/atom/Alkali.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/issues/new?title=Issue%20on%20page%20%2Fapi/atom/Alkali.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Alkali</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="alkali">
+<h1>Alkali<a class="headerlink" href="#alkali" title="Link to this heading">#</a></h1>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="Alkali">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Alkali</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atomName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/Atom/Alkali.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Alkali" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a></p>
+<p><a class="reference internal" href="#Alkali" title="Alkali"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Alkali</span></code></a> provides utilities for alkali atoms and D-line transitions.</p>
+<p>This class extends the base <a class="reference internal" href="Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a> class to provide specialized
+functionality for alkali atoms. On construction, it automatically computes
+D1 and D2 manifolds, ground and excited state <a class="reference internal" href="AtomManifold.html#AtomManifold" title="AtomManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">AtomManifold</span></code></a> objects,
+and calculates key transition properties including cycling and repumper
+frequencies, saturation intensities, and absorption cross-sections. The class
+also provides methods for computing AC Stark shifts and polarizabilities
+in the large detuning limit.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Create a lithium-7 atom and access its properties</span>
+<span class="n">li</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Alkali</span><span class="p">(</span><span class="s">&quot;Lithium7&quot;</span><span class="p">);</span>
+<span class="n">cycFreq</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">li</span><span class="p">.</span><span class="n">CyclerFrequency</span><span class="p">;</span><span class="w">           </span><span class="c">% D2 cycling transition frequency [Hz]</span>
+<span class="n">Isat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">li</span><span class="p">.</span><span class="n">CyclerSaturationIntensity</span><span class="p">;</span><span class="w">    </span><span class="c">% Saturation intensity [W/m^2]</span>
+<span class="n">crossSec</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">li</span><span class="p">.</span><span class="n">CyclerCrossSection</span><span class="p">;</span><span class="w">       </span><span class="c">% Absorption cross-section [m^2]</span>
+</pre></div>
+</div>
+<p><strong>Notes:</strong></p>
+<p>The class follows Daniel Steck’s conventions for transition matrix elements
+and uses data from the ARC (Alkali Rydberg Calculator) Python package with
+custom modifications for improved accuracy.</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Alkali.Alkali">
+<span class="sig-name descname"><span class="pre">Alkali</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atomName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Alkali.Alkali" title="Link to this definition">#</a></dt>
+<dd><p>Construct an <a class="reference internal" href="#Alkali" title="Alkali"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Alkali</span></code></a> atom and compute D-line manifolds.</p>
+<p>Creates an alkali atom object, initializes D1/D2 transition manifolds,
+ground and excited state manifolds, and computes cycling and repumper
+transition properties including frequencies, saturation intensities,
+and absorption cross-sections. All calculations are performed at zero
+magnetic field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>atomName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Atom/isotope name recognized by ARC, e.g., “Lithium7”, “Rubidium87”</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="Alkali.CyclerCrossSection">
+<span class="sig-name descname"><span class="pre">CyclerCrossSection</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Alkali.CyclerCrossSection" title="Link to this definition">#</a></dt>
+<dd><p>D2 cycling transition resonant absorption cross-section <span class="math notranslate nohighlight">\(\sigma_0\)</span> [m^2]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Alkali.CyclerFrequency">
+<span class="sig-name descname"><span class="pre">CyclerFrequency</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Alkali.CyclerFrequency" title="Link to this definition">#</a></dt>
+<dd><p>D2 cycling transition frequency <span class="math notranslate nohighlight">\(F_g^{\max} \rightarrow F_e^{\max}\)</span> at zero field [Hz]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Alkali.CyclerSaturationIntensity">
+<span class="sig-name descname"><span class="pre">CyclerSaturationIntensity</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Alkali.CyclerSaturationIntensity" title="Link to this definition">#</a></dt>
+<dd><p>D2 cycling transition saturation intensity <span class="math notranslate nohighlight">\(I_{\text{sat}}\)</span> [W/m^2]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Alkali.CyclerSaturationIntensityLu">
+<span class="sig-name descname"><span class="pre">CyclerSaturationIntensityLu</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Alkali.CyclerSaturationIntensityLu" title="Link to this definition">#</a></dt>
+<dd><p>D2 cycling transition saturation intensity <span class="math notranslate nohighlight">\(I_{\text{sat}}\)</span> [mW/cm^2]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Alkali.D1">
+<span class="sig-name descname"><span class="pre">D1</span></span><em class="property"> <span class="pre">TwoJManifold</span></em><a class="headerlink" href="#Alkali.D1" title="Link to this definition">#</a></dt>
+<dd><p>D1 line transition manifold: <span class="math notranslate nohighlight">\(nS_{1/2} \leftrightarrow nP_{1/2}\)</span> with combined ground/excited hyperfine structure</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Alkali.D1Excited">
+<span class="sig-name descname"><span class="pre">D1Excited</span></span><em class="property"> <span class="pre">OneJManifold</span></em><a class="headerlink" href="#Alkali.D1Excited" title="Link to this definition">#</a></dt>
+<dd><p>D1 excited state manifold: <span class="math notranslate nohighlight">\(nP_{1/2}\)</span> with hyperfine structure <span class="math notranslate nohighlight">\(F,M_F\)</span></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Alkali.D2">
+<span class="sig-name descname"><span class="pre">D2</span></span><em class="property"> <span class="pre">TwoJManifold</span></em><a class="headerlink" href="#Alkali.D2" title="Link to this definition">#</a></dt>
+<dd><p>D2 line transition manifold: <span class="math notranslate nohighlight">\(nS_{1/2} \leftrightarrow nP_{3/2}\)</span> with combined ground/excited hyperfine structure</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Alkali.D2Excited">
+<span class="sig-name descname"><span class="pre">D2Excited</span></span><em class="property"> <span class="pre">OneJManifold</span></em><a class="headerlink" href="#Alkali.D2Excited" title="Link to this definition">#</a></dt>
+<dd><p>D2 excited state manifold: <span class="math notranslate nohighlight">\(nP_{3/2}\)</span> with hyperfine structure <span class="math notranslate nohighlight">\(F,M_F\)</span></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Alkali.DGround">
+<span class="sig-name descname"><span class="pre">DGround</span></span><em class="property"> <span class="pre">OneJManifold</span></em><a class="headerlink" href="#Alkali.DGround" title="Link to this definition">#</a></dt>
+<dd><p>Ground state manifold: <span class="math notranslate nohighlight">\(nS_{1/2}\)</span> with hyperfine structure <span class="math notranslate nohighlight">\(F,M_F\)</span></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Alkali.RepumperCrossSection">
+<span class="sig-name descname"><span class="pre">RepumperCrossSection</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Alkali.RepumperCrossSection" title="Link to this definition">#</a></dt>
+<dd><p>D2 repumper transition resonant absorption cross-section <span class="math notranslate nohighlight">\(\sigma_0\)</span> [m^2]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Alkali.RepumperFrequency">
+<span class="sig-name descname"><span class="pre">RepumperFrequency</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Alkali.RepumperFrequency" title="Link to this definition">#</a></dt>
+<dd><p>D2 repumper transition frequency <span class="math notranslate nohighlight">\(F_g^{\max-1} \rightarrow F_e^{\max-1}\)</span> at zero field [Hz]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Alkali.RepumperSaturationIntensity">
+<span class="sig-name descname"><span class="pre">RepumperSaturationIntensity</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Alkali.RepumperSaturationIntensity" title="Link to this definition">#</a></dt>
+<dd><p>D2 repumper transition saturation intensity <span class="math notranslate nohighlight">\(I_{\text{sat}}\)</span> assuming <span class="math notranslate nohighlight">\(\sigma^+\)</span> polarization [W/m^2]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Alkali.RepumperSaturationIntensityLu">
+<span class="sig-name descname"><span class="pre">RepumperSaturationIntensityLu</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Alkali.RepumperSaturationIntensityLu" title="Link to this definition">#</a></dt>
+<dd><p>D2 repumper transition saturation intensity <span class="math notranslate nohighlight">\(I_{\text{sat}}\)</span> [mW/cm^2]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Alkali.Spinor1">
+<span class="sig-name descname"><span class="pre">Spinor1</span></span><em class="property"> <span class="pre">OneFManifold</span></em><a class="headerlink" href="#Alkali.Spinor1" title="Link to this definition">#</a></dt>
+<dd><p>Lower ground hyperfine manifold: <span class="math notranslate nohighlight">\(nS_{1/2}, F = |I - J|\)</span> with magnetic sublevels <span class="math notranslate nohighlight">\(M_F\)</span></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Alkali.Spinor2">
+<span class="sig-name descname"><span class="pre">Spinor2</span></span><em class="property"> <span class="pre">OneFManifold</span></em><a class="headerlink" href="#Alkali.Spinor2" title="Link to this definition">#</a></dt>
+<dd><p>Upper ground hyperfine manifold: <span class="math notranslate nohighlight">\(nS_{1/2}, F = I + J\)</span> with magnetic sublevels <span class="math notranslate nohighlight">\(M_F\)</span></p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Alkali.AcStarkShiftLargeDetuning">
+<span class="sig-name descname"><span class="pre">AcStarkShiftLargeDetuning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">l</span></em>, <em class="sig-param"><span class="pre">j</span></em>, <em class="sig-param"><span class="pre">f</span></em>, <em class="sig-param"><span class="pre">mF</span></em>, <em class="sig-param"><span class="pre">qAxisAngle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Alkali.AcStarkShiftLargeDetuning" title="Link to this definition">#</a></dt>
+<dd><p>Compute total AC Stark shift for a hyperfine state.</p>
+<p>Calculates the complete AC Stark shift including scalar, vector, and
+tensor contributions for a given hyperfine state in the presence of
+a laser field. The calculation is valid in the large detuning limit
+where the detuning is much larger than the hyperfine splitting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>laser</strong> (<span><a class="reference internal" href="../field/Laser.html#Laser" title="Laser"><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">Laser</span></code></a></span>) – <a class="reference internal" href="../field/Laser.html#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a> object specifying field parameters</p></li>
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Principal quantum number</p></li>
+<li><p><strong>l</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Orbital angular momentum quantum number</p></li>
+<li><p><strong>j</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Total electronic angular momentum quantum number</p></li>
+<li><p><strong>f</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Total hyperfine angular momentum quantum number</p></li>
+<li><p><strong>mF</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Magnetic sublevel quantum number</p></li>
+<li><p><strong>qAxisAngle</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double(1,2),</span> <span class="pre">optional</span></code></span>) – Quantization axis spherical angles <span class="math notranslate nohighlight">\([\theta,\phi]\)</span> [rad] (default: laser direction)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Total AC Stark shift <span class="math notranslate nohighlight">\(\Delta E\)</span> [Hz]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+<p><strong>Notes:</strong></p>
+<p>The total shift is: <span class="math notranslate nohighlight">\(\Delta E = \Delta E_0 + \Delta E_1 + \Delta E_2\)</span>
+where <span class="math notranslate nohighlight">\(\Delta E_0\)</span> is the scalar shift, <span class="math notranslate nohighlight">\(\Delta E_1\)</span> is the
+vector shift proportional to <span class="math notranslate nohighlight">\(M_F\)</span>, and <span class="math notranslate nohighlight">\(\Delta E_2\)</span> is the
+tensor shift proportional to <span class="math notranslate nohighlight">\((3M_F^2 - F(F+1))\)</span>.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Alkali.ScalarPolarizabilityLargeDetuning">
+<span class="sig-name descname"><span class="pre">ScalarPolarizabilityLargeDetuning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fL</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">l</span></em>, <em class="sig-param"><span class="pre">j</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Alkali.ScalarPolarizabilityLargeDetuning" title="Link to this definition">#</a></dt>
+<dd><p>Compute scalar polarizability for large detuning limit.</p>
+<p>Calculates the scalar polarizability <span class="math notranslate nohighlight">\(\alpha_0\)</span> in the limit where
+the laser detuning is much larger than the hyperfine splitting. Uses
+Steck’s formulation (Eq. 7.491) with contributions from both D1 and D2
+transitions for ground states, and single-line contributions for excited states.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fL</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Laser frequency [Hz]</p></li>
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Principal quantum number</p></li>
+<li><p><strong>l</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Orbital angular momentum quantum number</p></li>
+<li><p><strong>j</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Total electronic angular momentum quantum number</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Scalar polarizability <span class="math notranslate nohighlight">\(\alpha_0\)</span> [Hz/(V/m)^2]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+<p><strong>Notes:</strong></p>
+<p>The polarizability is computed using:</p>
+<div class="math notranslate nohighlight">
+\[\alpha_0 = \frac{2}{3\hbar} \sum_e \frac{\omega_e |\langle g \| d \| e \rangle|^2}{\omega_e^2 - \omega_L^2}\]</div>
+<p>where the sum runs over allowed electric dipole transitions.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Alkali.TensorPolarizabilityLargeDetuning">
+<span class="sig-name descname"><span class="pre">TensorPolarizabilityLargeDetuning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fL</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">l</span></em>, <em class="sig-param"><span class="pre">j</span></em>, <em class="sig-param"><span class="pre">f</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Alkali.TensorPolarizabilityLargeDetuning" title="Link to this definition">#</a></dt>
+<dd><p>Compute tensor polarizability for large detuning limit.</p>
+<p>Calculates the tensor polarizability <span class="math notranslate nohighlight">\(\alpha_2\)</span> in the limit where
+the laser detuning is much larger than the hyperfine splitting. Uses
+Steck’s formulation (Eq. 7.491) with Wigner 6j symbols. Returns zero
+for <span class="math notranslate nohighlight">\(F=0\)</span> or <span class="math notranslate nohighlight">\(F=1/2\)</span> states.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fL</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Laser frequency [Hz]</p></li>
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Principal quantum number</p></li>
+<li><p><strong>l</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Orbital angular momentum quantum number</p></li>
+<li><p><strong>j</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Total electronic angular momentum quantum number</p></li>
+<li><p><strong>f</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Total hyperfine angular momentum quantum number</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor polarizability <span class="math notranslate nohighlight">\(\alpha_2\)</span> [Hz/(V/m)^2]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+<p><strong>Notes:</strong></p>
+<p>The tensor polarizability contributes to quadratic Zeeman shifts
+proportional to <span class="math notranslate nohighlight">\((3M_F^2 - F(F+1))\)</span> and is responsible for
+differential light shifts between magnetic sublevels.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Alkali.VectorPolarizabilityLargeDetuning">
+<span class="sig-name descname"><span class="pre">VectorPolarizabilityLargeDetuning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fL</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">l</span></em>, <em class="sig-param"><span class="pre">j</span></em>, <em class="sig-param"><span class="pre">f</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Alkali.VectorPolarizabilityLargeDetuning" title="Link to this definition">#</a></dt>
+<dd><p>Compute vector polarizability for large detuning limit.</p>
+<p>Calculates the vector polarizability <span class="math notranslate nohighlight">\(\alpha_1\)</span> in the limit where
+the laser detuning is much larger than the hyperfine splitting. Uses
+Steck’s formulation (Eq. 7.491) with Wigner 6j symbols to account for
+hyperfine coupling. Returns zero for <span class="math notranslate nohighlight">\(F=0\)</span> states.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fL</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Laser frequency [Hz]</p></li>
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Principal quantum number</p></li>
+<li><p><strong>l</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Orbital angular momentum quantum number</p></li>
+<li><p><strong>j</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Total electronic angular momentum quantum number</p></li>
+<li><p><strong>f</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Total hyperfine angular momentum quantum number</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Vector polarizability <span class="math notranslate nohighlight">\(\alpha_1\)</span> [Hz/(V/m)^2]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+<p><strong>Notes:</strong></p>
+<p>The vector polarizability contributes to Zeeman shifts proportional to
+<span class="math notranslate nohighlight">\(M_F\)</span> and couples electronic and nuclear angular momenta through
+the hyperfine interaction.</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">atom</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Atom.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Atom</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Weld Lab
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Weld Lab.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

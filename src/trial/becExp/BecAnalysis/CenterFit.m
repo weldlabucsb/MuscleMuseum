@@ -1,95 +1,54 @@
 classdef CenterFit < BecAnalysis
-    %CENTERFIT CenterFit object used to handle fitting and plotting of
-    %cloud centers over scanned variable in experiment. Currently not
-    %written to handle multiple subrois
-    %Properties:
-    %   FitMethod - String denoting selection of fitting method used
-    %   FitDataThermal - Array of FitData1D objects used to generate a fit
-    %   of the collected data. Currently consistently of two Fit1D arrays,
-    %   one for x and one for y. Grabs the data from the BecExp.DensityFit
-    %   objects and grabbing the thermalcloudcenter coordinates
-    %   FitDataCondensate - Array of FitData1D objects used for fitting
-    %   condensate center. Currently not being used.
-    %   IsSaveCenter - Logic used to determine whether to save this dataset
-    %   as a plot or not.
+    %:class:`CenterFit` fit thermal cloud centers vs scanned variable.
     %
-    %   The following parameters depend on the selected fits:
-    %   ThermalCloudCenterMean - Mean of Cloud center positions (units m)
-    %   ThermalCloudCenterRange - Range of Cloud center positions (units m)
-    %   ThermalCloudCenterSlope - Slope of Cloud center position fit
-    %   ThermalCloudCenterAcceleration - Acceleration derived from cloud
-    %   center position
-    %   ThermalCloudCenterSloshAmplitude - Amplitude of slosh from cloud
-    %   center position
-    %   ThermalCloudCenterSloshOffset - Offset of slosh from cloud center
-    %   position fit
-    %   ThermalCloudCenterSloshFrequency - Slosh frequency from cloud
-    %   center position fit.
+    % Uses center positions from :class:`DensityFit` to estimate trends versus
+    % the scanned variable with user-selected 1D fit models (linear, parabolic,
+    % sine, triangle). Produces x/y center plots with fits and a parameter
+    % table summarizing slope, acceleration, or slosh parameters. Not intended
+    % for sub-ROIs.
     %
-    %   Following parameters are not being used/updated:
-    %   CondensateCenterMean
-    %   CondensateCenterRange
-    %   CondensateCenterSlope
-    %   CondensateCenterAcceleration
-    %   CondensateCenterSloshAmplitude
-    %   CondensateCenterSloshOffset
-    %   CondensateCenterSloshFrequency
-    %
-    %   ThermalXLine - Errorbar plot used in plot for x axis
-    %   ThermalXFitLine - Corresponding fitted line for plot for x axis
-    %   ThermalYLine - Errorbar plot used in plot for y axis
-    %   ThermalYFitLine - Corresponding fitted line for plot for y axis
-    %   ParaTable - Table in plot used to list out fitted parameters
-    %   MinimumFitNumber - Threshold length of datapoints used to determine whether the
-    %   Centerfit object shows or not.
-    %
-    %Methods:
-    %   CenterFit(becExp)
-    %   initialize(obj)
-    %   updateData(obj,~)
-    %   updateFigure(obj,~)
-    %   refresh(obj)
-    %   save(obj)
-    %   overwriteStartPoint(params)
-    %   getParamList()
+    % **Associated Charts:**
+    %   - Chart(1): "Center fit" - Cloud center position vs parameter with fit curves
 
     properties
-        FitMethod = "LinearFit1D"
-        FitDataThermal
-        FitDataCondensate
-        IsSaveCenter logical = false
-        MinimumFitNumber = 1 %analyzing old code was breaking because MinimumFitNumber became empty when opening old datasets
+        FitMethod = "LinearFit1D" % 1D fit model: \"LinearFit1D\"|\"ParabolicFit1D\"|\"SineFit1D\"|\"TriangleFit1D\"
+        FitDataThermal % Two fit objects (x,y) applied to thermal cloud center trajectories
+        FitDataCondensate % Reserved for future condensate center trajectory fits
+        IsSaveCenter logical = false % Flag to save mean center position to CloudCenterData.mat for reuse
+        MinimumFitNumber = 1 % Minimum number of runs required to perform the selected fit model
     end
 
     properties (SetAccess = protected)
-        ThermalCloudCenterMean
-        ThermalCloudCenterRange
-        ThermalCloudCenterSlope
-        ThermalCloudCenterAcceleration
-        ThermalCloudCenterSloshAmplitude
-        ThermalCloudCenterSloshOffset
-        ThermalCloudCenterSloshFrequency
-        CondensateCenterMean
-        CondensateCenterRange
-        CondensateCenterSlope
-        CondensateCenterAcceleration
-        CondensateCenterSloshAmplitude
-        CondensateCenterSloshOffset
-        CondensateCenterSloshFrequency
+        ThermalCloudCenterMean % Mean thermal cloud center position [:math:`x`; :math:`y`] [pixels]
+        ThermalCloudCenterRange % Thermal cloud center position range [:math:`x`; :math:`y`] [pixels]
+        ThermalCloudCenterSlope % Linear fit slope for center vs parameter [pixels/VarUnit]
+        ThermalCloudCenterAcceleration % Parabolic fit acceleration [pixels/VarUnit^2 or m/s^2 for time scans]
+        ThermalCloudCenterSloshAmplitude % Sine/Triangle fit oscillation amplitude [pixels]
+        ThermalCloudCenterSloshOffset % Sine/Triangle fit center offset [pixels]
+        ThermalCloudCenterSloshFrequency % Sine/Triangle fit frequency [Hz for time scans, 1/VarUnit otherwise]
+        CondensateCenterMean % Reserved: Mean condensate center position [:math:`x`; :math:`y`] [pixels]
+        CondensateCenterRange % Reserved: Condensate center position range [:math:`x`; :math:`y`] [pixels]
+        CondensateCenterSlope % Reserved: Linear slope for condensate center [pixels/VarUnit]
+        CondensateCenterAcceleration % Reserved: Parabolic acceleration for condensate center [pixels/VarUnit^2]
+        CondensateCenterSloshAmplitude % Reserved: Oscillation amplitude for condensate center [pixels]
+        CondensateCenterSloshOffset % Reserved: Center offset for condensate center [pixels]
+        CondensateCenterSloshFrequency % Reserved: Oscillation frequency for condensate center [Hz or 1/VarUnit]
     end
 
     properties (Hidden,Transient)
-        ThermalXLine
-        ThermalXFitLine
-        ThermalYLine
-        ThermalYFitLine
-        ParaTable
+        ThermalXLine % Plot handle for thermal x-center data points
+        ThermalXFitLine % Plot handle for thermal x-center fit line
+        ThermalYLine % Plot handle for thermal y-center data points
+        ThermalYFitLine % Plot handle for thermal y-center fit line
+        ParaTable % UI table handle for displaying fit parameters and results
     end
 
     methods
         function obj = CenterFit(becExp)
-            %OD Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct :class:`CenterFit` analyzer.
+            %
+            % :param becExp: Owning experiment
+            % :type becExp: :class:`BecExp`
             obj@BecAnalysis(becExp)
             obj.Chart(1) = Chart(...
                 name = "Center fit",...
@@ -101,6 +60,11 @@ classdef CenterFit < BecAnalysis
         end
 
         function initialize(obj)
+            % Initialize plots, fit objects, and parameter table.
+            %
+            % Sets up dual-axis plots for x/y center trajectories, initializes
+            % fit objects based on :attr:`FitMethod`, and creates parameter table.
+            % Requires :class:`DensityFit` in analysis pipeline.
             becExp = obj.BecExp;
             %% Check if we have DensityFit and Sub-ROIs
             if ~ismember("DensityFit",obj.BecExp.AnalysisMethod)
@@ -162,7 +126,7 @@ classdef CenterFit < BecAnalysis
                 t.TileSpacing = 'compact';
                 t.Padding = 'compact';
 
-                % X axes
+                % X axes (x center)
                 ax1 = nexttile(t);
                 ax1.XLabel.Interpreter = "latex";
                 ax1.YLabel.String = "$x_0$ [Pixels]";
@@ -173,7 +137,7 @@ classdef CenterFit < BecAnalysis
                 ax1.YGrid = "on";
                 ax1.XTickLabel = [];
 
-                % Y Axes
+                % Y axes (y center)
                 ax2 = nexttile(t);
                 ax2.XLabel.String = becExp.XLabel;
                 ax2.XLabel.Interpreter = "latex";
@@ -258,7 +222,7 @@ classdef CenterFit < BecAnalysis
                                 data{5,2} = '';
                                 data{6,1} = 'Thermal Cloud Center Acceleration in y';
                                 data{6,2} = '';
-                                if isTimeUnit(becExp.ScannedParameterUnit)
+                                if isTimeUnit(becExp.ScannedVariableUnit)
                                     data{5,3} = 'm/s^2';
                                     data{6,3} = 'm/s^2';
                                 else
@@ -283,14 +247,14 @@ classdef CenterFit < BecAnalysis
                                 data{9,2} = '';
                                 data{10,1} = 'Thermal Cloud Center Slosh Frequency in y';
                                 data{10,2} = '';
-                                if isTimeUnit(becExp.ScannedParameterUnit)
+                                if isTimeUnit(becExp.ScannedVariableUnit)
                                     data{9,3} = 'Hz';
                                     data{10,3} = 'Hz';
                                 else
                                     data{9,3} = '1/VarUnit';
                                     data{10,3} = '1/VarUnit';
                                 end
-                            case "TriangleFit1D"
+                            case {"TriangleFit1D","IsoscelesTriangleFit1D"}
                                 obj.MinimumFitNumber = 5;
                                 data{5,1} = 'Thermal Cloud Center Slosh Amplitude in x';
                                 data{5,2} = '';
@@ -308,7 +272,7 @@ classdef CenterFit < BecAnalysis
                                 data{9,2} = '';
                                 data{10,1} = 'Thermal Cloud Center Slosh Frequency in y';
                                 data{10,2} = '';
-                                if isTimeUnit(becExp.ScannedParameterUnit)
+                                if isTimeUnit(becExp.ScannedVariableUnit)
                                     data{9,3} = 'Hz';
                                     data{10,3} = 'Hz';
                                 else
@@ -338,14 +302,22 @@ classdef CenterFit < BecAnalysis
         end
 
         function updateData(obj,~)
+            % Compute fit parameters for cloud centers vs scanned variable.
+            %
+            % For each axis (x,y), prepares :attr:`FitDataThermal` and
+            % extracts slope/acceleration/slosh parameters depending on
+            % :attr:`FitMethod` when sufficient runs exist.
+            %
+            % :param ~: Unused run index placeholder (processes all runs)
+            % :type ~: double
             becExp = obj.BecExp;
             if ~ismember("DensityFit",becExp.AnalysisMethod) ||...
                     ~isempty(becExp.Roi.SubRoi)
                 return
             end
-            paraList = becExp.ScannedParameterList.';
-            if isTimeUnit(becExp.ScannedParameterUnit)
-                tUnit = unit2SI(becExp.ScannedParameterUnit);
+            varList = becExp.ScannedVariableList.';
+            if isTimeUnit(becExp.ScannedVariableUnit)
+                tUnit = unit2SI(becExp.ScannedVariableUnit);
             end
 
             %% Update data
@@ -360,7 +332,7 @@ classdef CenterFit < BecAnalysis
                             case "LinearFit1D"
                                 %% Linear Fit
                                 for xx = 1:2
-                                    obj.FitDataThermal(xx).RawData = [paraList,becExp.DensityFit.ThermalCloudCenter(xx,:).'];
+                                    obj.FitDataThermal(xx).RawData = [varList,becExp.DensityFit.ThermalCloudCenter(xx,:).'];
                                     obj.FitDataThermal(xx).do;
                                 end
                                 obj.ThermalCloudCenterSlope = ...
@@ -368,10 +340,10 @@ classdef CenterFit < BecAnalysis
                             case "ParabolicFit1D"
                                 %% Parabolic Fit
                                 for xx = 1:2
-                                    obj.FitDataThermal(xx).RawData = [paraList,becExp.DensityFit.ThermalCloudCenter(xx,:).'];
+                                    obj.FitDataThermal(xx).RawData = [varList,becExp.DensityFit.ThermalCloudCenter(xx,:).'];
                                     obj.FitDataThermal(xx).do;
                                 end
-                                if isTimeUnit(becExp.ScannedParameterUnit)
+                                if isTimeUnit(becExp.ScannedVariableUnit)
                                     obj.ThermalCloudCenterAcceleration = ...
                                         1 / (tUnit^2) * 2 * [obj.FitDataThermal(1).Coefficient(1);obj.FitDataThermal(2).Coefficient(1)];
                                 else
@@ -381,24 +353,24 @@ classdef CenterFit < BecAnalysis
                             case "SineFit1D"
                                 %% Sine Fit
                                 for xx = 1:2
-                                    obj.FitDataThermal(xx).RawData = [paraList,becExp.DensityFit.ThermalCloudCenter(xx,:).'];
+                                    obj.FitDataThermal(xx).RawData = [varList,becExp.DensityFit.ThermalCloudCenter(xx,:).'];
                                     obj.FitDataThermal(xx).do;
                                 end
                                 obj.ThermalCloudCenterSloshAmplitude = ...
                                     [obj.FitDataThermal(1).Coefficient(1);obj.FitDataThermal(2).Coefficient(1)];
                                 obj.ThermalCloudCenterSloshOffset = ...
                                     [obj.FitDataThermal(1).Coefficient(4);obj.FitDataThermal(2).Coefficient(4)];
-                                if isTimeUnit(becExp.ScannedParameterUnit)
+                                if isTimeUnit(becExp.ScannedVariableUnit)
                                     obj.ThermalCloudCenterSloshFrequency = ...
                                         1 / tUnit * [obj.FitDataThermal(1).Coefficient(2);obj.FitDataThermal(2).Coefficient(2)];
                                 else
                                     obj.ThermalCloudCenterSloshFrequency = ...
                                         [obj.FitDataThermal(1).Coefficient(2);obj.FitDataThermal(2).Coefficient(2)];
                                 end
-                            case "TriangleFit1D"
+                            case {"TriangleFit1D","IsoscelesTriangleFit1D"}
                                 %% Sine Fit
                                 for xx = 1:2
-                                    obj.FitDataThermal(xx).RawData = [paraList,becExp.DensityFit.ThermalCloudCenter(xx,:).'];
+                                    obj.FitDataThermal(xx).RawData = [varList,becExp.DensityFit.ThermalCloudCenter(xx,:).'];
                                     obj.FitDataThermal(xx).do;
                                 end
                                 obj.ThermalCloudCenterSloshAmplitude = ...
@@ -407,7 +379,7 @@ classdef CenterFit < BecAnalysis
                                 obj.ThermalCloudCenterSloshOffset = ...
                                     [(obj.FitDataThermal(1).Coefficient(1) + obj.FitDataThermal(1).Coefficient(2))/2;...
                                     (obj.FitDataThermal(2).Coefficient(1) + obj.FitDataThermal(2).Coefficient(2))/2];
-                                if isTimeUnit(becExp.ScannedParameterUnit)
+                                if isTimeUnit(becExp.ScannedVariableUnit)
                                     obj.ThermalCloudCenterSloshFrequency = ...
                                         1 ./ tUnit ./ [obj.FitDataThermal(1).Coefficient(4);obj.FitDataThermal(2).Coefficient(4)];
                                 else
@@ -423,6 +395,10 @@ classdef CenterFit < BecAnalysis
         end
 
         function updateFigure(obj,~)
+            % Update center vs scan plots and parameter table.
+            %
+            % :param ~: Unused run index placeholder
+            % :type ~: double
             fig = obj.Chart(1).Figure;
             becExp = obj.BecExp;
             if ~ismember("DensityFit",obj.BecExp.AnalysisMethod) || (isempty(fig) || ~ishandle(fig)) ||...
@@ -439,15 +415,15 @@ classdef CenterFit < BecAnalysis
                     obj.ParaTable.Data{3,2} = num2str(obj.ThermalCloudCenterRange(1)/px,'%.2f');
                     obj.ParaTable.Data{4,2} = num2str(obj.ThermalCloudCenterRange(2)/px,'%.2f');
                     if becExp.NCompletedRun >= 1 && becExp.NCompletedRun < obj.MinimumFitNumber
-                        obj.ThermalXLine.XData = obj.BecExp.ScannedParameterList;
+                        obj.ThermalXLine.XData = obj.BecExp.ScannedVariableList;
                         obj.ThermalXLine.YData = obj.BecExp.DensityFit.ThermalCloudCenter(1,:) / px;
-                        obj.ThermalYLine.XData = obj.BecExp.ScannedParameterList;
+                        obj.ThermalYLine.XData = obj.BecExp.ScannedVariableList;
                         obj.ThermalYLine.YData = obj.BecExp.DensityFit.ThermalCloudCenter(2,:) / px;
                     elseif becExp.NCompletedRun >= obj.MinimumFitNumber
                         rawXT = obj.FitDataThermal(1).RawData;
                         rawYT = obj.FitDataThermal(2).RawData;
-                        [xRawXT,yRawXT,stdRawXT] = computeStd(rawXT(:,1),rawXT(:,2) / px, becExp.AveragingMethod);
-                        [xRawYT,yRawYT,stdRawYT] = computeStd(rawYT(:,1),rawYT(:,2) / px, becExp.AveragingMethod);
+                        [xRawXT,yRawXT,stdRawXT] = computeAveErr(rawXT(:,1),rawXT(:,2) / px, becExp.AveragingMethod);
+                        [xRawYT,yRawYT,stdRawYT] = computeAveErr(rawYT(:,1),rawYT(:,2) / px, becExp.AveragingMethod);
 
                         obj.ThermalXLine.XData = xRawXT;
                         obj.ThermalXLine.YData = yRawXT;
@@ -471,14 +447,14 @@ classdef CenterFit < BecAnalysis
                                 obj.ParaTable.Data{5,2} = num2str(obj.ThermalCloudCenterSlope(1)/px);
                                 obj.ParaTable.Data{6,2} = num2str(obj.ThermalCloudCenterSlope(2)/px);
                             case "ParabolicFit1D"
-                                if isTimeUnit(becExp.ScannedParameterUnit)
+                                if isTimeUnit(becExp.ScannedVariableUnit)
                                     obj.ParaTable.Data{5,2} = num2str(obj.ThermalCloudCenterAcceleration(1));
                                     obj.ParaTable.Data{6,2} = num2str(obj.ThermalCloudCenterAcceleration(2));
                                 else
                                     obj.ParaTable.Data{5,2} = num2str(obj.ThermalCloudCenterAcceleration(1)/px);
                                     obj.ParaTable.Data{6,2} = num2str(obj.ThermalCloudCenterAcceleration(2)/px);
                                 end
-                            case {"SineFit1D","TriangleFit1D"}
+                            case {"SineFit1D","TriangleFit1D","IsoscelesTriangleFit1D"}
                                 obj.ParaTable.Data{5,2} = num2str(obj.ThermalCloudCenterSloshAmplitude(1)/px);
                                 obj.ParaTable.Data{6,2} = num2str(obj.ThermalCloudCenterSloshAmplitude(2)/px);
                                 obj.ParaTable.Data{7,2} = num2str(obj.ThermalCloudCenterSloshOffset(1)/px);
@@ -497,12 +473,17 @@ classdef CenterFit < BecAnalysis
         end
 
         function refresh(obj)
+            % Recompute and redraw all center-fit outputs.
             obj.initialize;
             obj.updateData(obj.BecExp.NCompletedRun)
             obj.updateFigure(obj.BecExp.NCompletedRun)
         end
 
         function save(obj)
+            % Save figure and optionally persist center reference for reuse.
+            %
+            % When :attr:`IsSaveCenter` is true, writes/updates
+            % ``CloudCenterData.mat`` with mean center for this trial.
             becExp = obj.BecExp;
             if ~ismember("DensityFit",becExp.AnalysisMethod) ||...
                     ~isempty(becExp.Roi.SubRoi)

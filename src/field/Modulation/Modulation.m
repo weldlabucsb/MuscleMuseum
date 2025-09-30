@@ -1,18 +1,36 @@
 classdef Modulation < handle
-    %MODULATION Summary of this class goes here
-    %   Detailed explanation goes here
-    
+    %:class:`Modulation` defines a scalar modulation envelope in time.
+    %
+    % Described by :attr:`Depth`, :attr:`Frequency`, :attr:`Duration`, and :attr:`Timing`.
+    % Provides :meth:`timeFunc` that returns the modulation value versus time.
+    %
+    % **Example:**
+    %
+    % .. code-block:: matlab
+    %
+    %    m = Modulation(depth=0.2, frequency=10e3, duration=3e-3, timing=1e-3);
+    %    f = m.timeFunc();
+    %    y = f(0:1e-6:5e-3);
+    %
     properties
-        Depth
-        Frequency
-        Duration
-        Timing
+        Depth % Modulation depth :math:`\alpha` (unitless or client-defined)
+        Frequency % Modulation frequency :math:`f_m` [Hz]
+        Duration % Modulation duration :math:`T_m` [s]
+        Timing % Start time :math:`t_0` [s]
     end
     
     methods
         function obj = Modulation(options)
-            %MODULATION Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`Modulation` object.
+            %
+            % :param depth: Modulation depth (unitless or physical as used by client)
+            % :type depth: double, optional
+            % :param frequency: Modulation frequency :math:`f_m` in [Hz]
+            % :type frequency: double, optional
+            % :param duration: Duration :math:`T_m` in [s]
+            % :type duration: double, optional
+            % :param timing: Start time :math:`t_0` in [s]
+            % :type timing: double, optional
             arguments
                 options.depth double
                 options.frequency double
@@ -28,8 +46,10 @@ classdef Modulation < handle
         end
         
         function func = timeFunc(obj)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
+            % Build modulation function :math:`m(t) = \mathbb{1}_{[t_0,t_0+T_m]}(t)\, \alpha\, \sin(2\pi f_m t)`.
+            %
+            % :return: Function handle mapping time :math:`t` to :math:`m(t)`
+            % :rtype: function_handle
             alpha = obj.Depth;
             freq = obj.Frequency;
             tMod = obj.Duration;

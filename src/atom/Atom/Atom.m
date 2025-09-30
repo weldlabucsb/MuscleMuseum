@@ -20,20 +20,19 @@ classdef (Abstract) Atom < dynamicprops & handle & matlab.mixin.Heterogeneous
     end
 
     properties (SetAccess = private)
-        ArcObj %The ARC atom object.
-        Type string {mustBeMember(Type,{'Alkali','Divalent'})} %Either "Alkali" or "Divalent".
+        ArcObj % ARC atom object (Python)
+        Type string {mustBeMember(Type,{'Alkali','Divalent'})} % Either "Alkali" or "Divalent"
     end
     
     methods
         function obj = Atom(atomName)
-            %When an :class:`Atom` is constructed, it first imports the
-            %corresponding ARC object using atomName. It then write the ARC
-            %objest's properties into its own properties. The ArcObj (ARC
-            %atom object) is also saved as a property of an :class:`Atom`
-            %object for its later uses. Finally, it creates a folder for
-            %saving the pre-calcualted atomic data.
+            % Construct an :class:`Atom` and mirror ARC properties.
             %
-            %:param string atomName: the name of the atom, e.g., "Lithium7".
+            % Creates ARC object, mirrors its attributes to dynamic MATLAB
+            % properties, infers :attr:`Type`, and prepares :attr:`DataPath`.
+            %
+            % :param atomName: Atom/isotope name (ARC-known), e.g., "Lithium7"
+            % :type atomName: string
             arguments
                 atomName string
             end
@@ -48,7 +47,7 @@ classdef (Abstract) Atom < dynamicprops & handle & matlab.mixin.Heterogeneous
                     + ME.message)
             end
 
-            %Wrtie python object properties into matlab object properties
+            % Mirror Python attributes to MATLAB dynamic properties
             s = struct(pyType.attributes(obj.ArcObj));  
             fieldList = fieldnames(s);
             for ii = 1:numel(fieldList)
@@ -64,14 +63,13 @@ classdef (Abstract) Atom < dynamicprops & handle & matlab.mixin.Heterogeneous
                 obj.Type = "Alkali";
             end
 
-            %Set data path. Distinguish this with the dataFolder property
-            %that pointing to the arc atomic data.
+            % Set data path (distinct from ARC data folder)
             obj.DataPath = fullfile(getHome,"Documents","MMUser","atomData");
             createFolder(obj.DataPath);
         end
 
         function s = saveobj(obj)
-            %Only save :attr:`Atom.Type` and :attr:`Atom.Name` into files.
+            % Save minimal state (:attr:`Type`, :attr:`Name`).
             s.Type = obj.Type;
             s.Name = obj.Name;
         end
@@ -79,8 +77,7 @@ classdef (Abstract) Atom < dynamicprops & handle & matlab.mixin.Heterogeneous
 
     methods (Static)
         function obj = loadobj(s) 
-            %When the object is loaded, reconstruct it using
-            %:attr:`Atom.Type` and :attr:`Atom.Name`
+            % Reconstruct from (:attr:`Type`, :attr:`Name`).
             if isstruct(s)
                 switch s.Type
                     case "Alkali"

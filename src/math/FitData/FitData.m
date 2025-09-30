@@ -1,16 +1,39 @@
 classdef (Abstract) FitData < handle
-    %FIT Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`FitData` abstract base for data fitting operations.
+    %
+    % Provides a framework for fitting mathematical functions to experimental data
+    % using MATLAB's curve fitting toolbox. Supports customizable fit parameters,
+    % bounds, and optimization settings.
+    %
+    % **Example1:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Create a Gaussian fit object
+    %     data = [x, y]; % n x 2 array of x,y coordinates
+    %     gaussianFit = GaussianFit1D(data);
+    %     gaussianFit.do();
+    %     gaussianFit.plot();
+    %
+    % **Example2:**
+    %
+    % .. code-block:: matlab
+    %
+    %     % Customize fit parameters
+    %     fitObj = LinearFit1D(data);
+    %     fitObj.IsOverride = true;
+    %     fitObj.StartPointOverride = [1.0, 0.5];
+    %     fitObj.do();
 
     properties
-        RawData double
-        IsOverride logical = false
-        StartPointOverride (1,:) double % Fit coefficient start point. Check the documentso of [fitoptions]
-        LowerOverride (1,:) double % Fit coefficient lower bound.
-        UpperOverride (1,:) double % Fit coefficient upper bound.
-        TolFun (1,1) double = 1E-16
-        MaxFunEvals (1,1) double = 2000
-        MaxIter (1,1) double = 2000
+        RawData double % Input data for fitting
+        IsOverride logical = false % Whether to use override parameters
+        StartPointOverride (1,:) double % Fit coefficient start point override
+        LowerOverride (1,:) double % Fit coefficient lower bound override
+        UpperOverride (1,:) double % Fit coefficient upper bound override
+        TolFun (1,1) double = 1E-16 % Function tolerance for optimization
+        MaxFunEvals (1,1) double = 2000 % Maximum function evaluations
+        MaxIter (1,1) double = 2000 % Maximum iterations for optimization
     end
 
     properties (Dependent,Hidden,Transient)
@@ -18,9 +41,9 @@ classdef (Abstract) FitData < handle
     end
 
     properties (SetAccess = protected)
-        StartPoint (1,:) double % Fit coefficient start point. Check the documentso of [fitoptions]
-        Lower (1,:) double % Fit coefficient lower bound.
-        Upper (1,:) double % Fit coefficient upper bound.
+        StartPoint (1,:) double % Fit coefficient start point
+        Lower (1,:) double % Fit coefficient lower bound
+        Upper (1,:) double % Fit coefficient upper bound
         Func % MATLAB fittype object
         Result % MATLAB fitobject
         Gof % Goodness of fit
@@ -28,18 +51,28 @@ classdef (Abstract) FitData < handle
     end
 
     properties (Dependent)
-        CoefficientName string
-        FitFormula string
-        MinimumDataSize double
+        CoefficientName string % Names of fit coefficients
+        FitFormula string % Mathematical formula for the fit function
+        MinimumDataSize double % Minimum number of data points required
     end
 
     methods
         function obj = FitData(rawData)
+            % Construct a :class:`FitData`.
+            %
+            % :param rawData: Input data for fitting
+            % :type rawData: double array
+            %
             obj.setFormula
             obj.RawData = rawData;
         end
 
         function option = get.Option(obj)
+            % Build MATLAB fitoptions object with current settings.
+            %
+            % :return: Configured fitoptions object
+            % :rtype: fitoptions
+            %
             coffSize = size(obj.CoefficientName);
             if ~isempty(obj.Func)
                 option = fitoptions(obj.Func);
@@ -89,6 +122,11 @@ classdef (Abstract) FitData < handle
         end
 
         function cName = get.CoefficientName(obj)
+            % Get names of fit coefficients.
+            %
+            % :return: Coefficient names
+            % :rtype: string array
+            %
             if isempty(obj.Func)
                 cName = string.empty;
             else
@@ -97,6 +135,11 @@ classdef (Abstract) FitData < handle
         end
 
         function minSize = get.MinimumDataSize(obj)
+            % Get minimum number of data points required for fitting.
+            %
+            % :return: Minimum data size
+            % :rtype: double
+            %
             cName = obj.CoefficientName;
             if isempty(cName)
                 minSize = 1;
@@ -106,6 +149,11 @@ classdef (Abstract) FitData < handle
         end
 
         function formulaString = get.FitFormula(obj)
+            % Get mathematical formula for the fit function.
+            %
+            % :return: Formula string
+            % :rtype: string
+            %
             if isempty(obj.Func)
                 formulaString = string.empty;
             else
@@ -114,11 +162,24 @@ classdef (Abstract) FitData < handle
         end
     
         function set.RawData(obj,val)
+            % Set raw data and automatically guess coefficients.
+            %
+            % :param val: Input data
+            % :type val: double array
+            %
             obj.RawData = obj.checkData(val);
             obj.guessCoefficient;
         end
         
         function setDefaultOverride(obj)
+            % Set override parameters to default values.
+            %
+            % **Example:**
+            %
+            % .. code-block:: matlab
+            %
+            %     fitObj.setDefaultOverride();
+            %
             obj.guessCoefficient
             nameList = ["StartPoint","Lower","Upper"];
             for ii = 1:numel(nameList)
@@ -129,6 +190,14 @@ classdef (Abstract) FitData < handle
         end
 
         function clearOverride(obj)
+            % Clear all override parameters.
+            %
+            % **Example:**
+            %
+            % .. code-block:: matlab
+            %
+            %     fitObj.clearOverride();
+            %
             nameList = ["StartPoint","Lower","Upper"];
             for ii = 1:numel(nameList)
                 obj.(nameList(ii)+"Override") = [];

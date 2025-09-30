@@ -1,6 +1,21 @@
 function HF = computeFloquetHamiltonian(H,T,nt)
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+% Compute the (effective) Floquet Hamiltonian from a time-periodic Hamiltonian.
+%
+% :param H: Matrix-valued Hamiltonian function handle :math:`H(t)`
+% :type H: function_handle
+% :param T: Modulation period :math:`T` in [s]
+% :type T: double
+% :param nt: Number of time samples over one period (uniform grid)
+% :type nt: double, optional
+% :return: Effective Floquet Hamiltonian :math:`H_F` in [Hz]
+% :rtype: double matrix
+%
+% **Notes:**
+%
+%     The evolution operator over one period is approximated by a product
+%     :math:`U(T) \approx \prod_k \exp\{-i\,2\pi\, H(t_k)\, \Delta t\}`, and
+%     the effective Hamiltonian is extracted as
+%     :math:`H_F = \frac{i}{2\pi T}\,\log U(T)`.
 arguments
     H function_handle
     T double {mustBeScalarOrEmpty,mustBePositive}

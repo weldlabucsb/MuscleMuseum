@@ -1,6 +1,7 @@
 classdef (Abstract) SpaceSim < Sim
-    %TIMESIM Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`SpaceSim` abstract base for spatial simulations.
+    %
+    % Defines origin, range, step, dimension, and boundary condition.
     
     properties
         SpaceOrigin double = [0;0;0] % in meters
@@ -12,8 +13,12 @@ classdef (Abstract) SpaceSim < Sim
     
     methods
         function obj = SpaceSim(trialName,config)
-            %TIMESIM Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct a :class:`SpaceSim`.
+            %
+            % :param trialName: Simulation name
+            % :type trialName: string
+            % :param config: Config table/struct or name
+            % :type config: string | table | struct
             obj@Sim(trialName,config);
         end
         

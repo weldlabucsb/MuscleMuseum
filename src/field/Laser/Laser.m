@@ -1,38 +1,69 @@
 classdef Laser < matlab.mixin.Heterogeneous & handle
-    %Specify the laser parameters. 
-    
+    %:class:`Laser` specifies monochromatic laser parameters and derived quantities.
+    %
+    % Stores wavelength/frequency, polarization, direction/angles, phase, intensity
+    % and power. Provides dependent properties (e.g., :attr:`Wavevector`, :attr:`AngularFrequency`)
+    % and helpers (:meth:`spacePhaseFunc`, :meth:`timePhaseFunc`, :meth:`spaceTimePhaseFunc`,
+    % :meth:`rotate`, :meth:`rotateToAngle`).
+    %
+    % **Example:**
+    %
+    % .. code-block:: matlab
+    %
+    %    l = Laser(frequency=3.84e14, polarization=[1;0;0], direction=[0;0;1]);
+    %    k = l.AngularWavevector;  % [rad/m]
+    %    f = l.timePhaseFunc();    % function_handle for :math:`e^{i \omega t}`
+    %
     properties
-        Wavelength (1,1) double = NaN %In meter
-        Frequency (1,1) double = NaN %Absolute frequency in Hz. Linear frequency
-        Polarization (3,1) double = [NaN;NaN;NaN]
-        Phase (1,1) double = 0 %In radians
-        Direction (3,1) double = [NaN;NaN;NaN]
-        Angle (1,2) double = [NaN,NaN] %[Polar angle theta, Azimth angle phi] in radians
-        Intensity double = NaN %In W/m^2
-        Power double = NaN %In Watts
+        Wavelength (1,1) double = NaN % Wavelength :math:`\lambda` in [m]
+        Frequency (1,1) double = NaN % Linear frequency :math:`f` in [Hz]
+        Polarization (3,1) double = [1;0;0] % Jones polarization vector :math:`(E_x,E_y,E_z)`. The definition here is the conjugate of wiki's
+        Phase (1,1) double = 0 % Optical phase :math:`\phi` in [rad]
+        Direction (3,1) double = [0;0;1] % Propagation unit vector :math:`\hat{\mathbf{k}} = (x,y,z)`
+        Angle (1,2) double = [0,0] % Spherical angles :math:`(\theta,\phi)` in [rad]
+        Intensity double = NaN % Intensity :math:`I` in [W/m^2]
+        Power double = NaN % Optical power :math:`P` in [W]
     end
 
     properties (Dependent)
-        Wavenumber
-        Wavevector
-        AngularFrequency
-        AngularWavenumber
-        AngularWavevector
-        WavelengthInAir
-        IntensityLu %Intensity in mW/cm^2
-        ElectricFieldAmplitude
+        Wavenumber % :math:`k_0 = 1/\lambda` [1/m]
+        Wavevector % :math:`\mathbf{k}_0 = k_0\, \hat{\mathbf{k}}` [1/m]
+        AngularFrequency % :math:`\omega = 2\pi f` [rad/s]
+        AngularWavenumber % :math:`k = 2\pi/\lambda` [rad/m]
+        AngularWavevector % :math:`\mathbf{k} = k\, \hat{\mathbf{k}}` [rad/m]
+        WavelengthInAir % :math:`\lambda_{\mathrm{air}}` in [m]
+        IntensityLu % Intensity in [mW/cm^2]
+        ElectricFieldAmplitude % Field amplitude :math:`|E| = \sqrt{2 Z_0 I}` in [V/m]
     end
     
     methods
         
         function obj = Laser(options)
+            % Construct a :class:`Laser`.
+            %
+            % :param frequency: Linear frequency :math:`f` [Hz] (sets :math:`\lambda`)
+            % :type frequency: double, optional
+            % :param wavelength: Wavelength :math:`\lambda` [m] (sets :math:`f`)
+            % :type wavelength: double, optional
+            % :param polarization: Jones vector :math:`(E_x,E_y,E_z)`
+            % :type polarization: double(3,1), optional
+            % :param phase: Optical phase :math:`\phi` [rad]
+            % :type phase: double, optional
+            % :param direction: Propagation direction unit vector :math:`(x,y,z)`
+            % :type direction: double(3,1), optional
+            % :param angle: Spherical angles :math:`(\theta,\phi)` [rad]
+            % :type angle: double(1,2), optional
+            % :param intensity: Intensity :math:`I` [W/m^2]
+            % :type intensity: double, optional
+            % :param power: Power :math:`P` [W]
+            % :type power: double, optional
             arguments
                 options.frequency = NaN
                 options.wavelength = NaN
-                options.polarization = [NaN;NaN;NaN]
+                options.polarization = [1;0;0]
                 options.phase = 0
-                options.direction = [NaN;NaN;NaN]
-                options.angle = [NaN,NaN]
+                options.direction = [0;0;1]
+                options.angle = [0,0]
                 options.intensity = NaN
                 options.power = NaN
             end
@@ -98,30 +129,68 @@ classdef Laser < matlab.mixin.Heterogeneous & handle
             end
         end
         function lambdaAir = get.WavelengthInAir(obj)
+            % Get wavelength in air :math:`\lambda_{\mathrm{air}}`.
+            %
+            % :return: Wavelength in air [m]
+            % :rtype: double
             lambdaAir = obj.Wavelength/1.000293;
         end
         function nu = get.Wavenumber(obj)
+            % Get wavenumber :math:`k_0 = 1/\lambda`.
+            %
+            % :return: Wavenumber [1/m]
+            % :rtype: double
             nu = 1/obj.Wavelength;
         end
         function k = get.AngularWavenumber(obj)
+            % Get angular wavenumber :math:`k = 2\pi/\lambda`.
+            %
+            % :return: Angular wavenumber [rad/m]
+            % :rtype: double
             k = obj.Wavenumber * 2 * pi;
         end
         function omega = get.AngularFrequency(obj)
+            % Get angular frequency :math:`\omega = 2\pi f`.
+            %
+            % :return: Angular frequency [rad/s]
+            % :rtype: double
             omega = obj.Frequency * 2 * pi;
         end
         function nuVec = get.Wavevector(obj)
+            % Get wavevector :math:`\mathbf{k}_0 = k_0\, \hat{\mathbf{k}}`.
+            %
+            % :return: Wavevector [1/m]
+            % :rtype: double(3,1)
             nuVec = obj.Wavenumber * obj.Direction;
         end
         function kVec = get.AngularWavevector(obj)
+            % Get angular wavevector :math:`\mathbf{k} = k\, \hat{\mathbf{k}}`.
+            %
+            % :return: Angular wavevector [rad/m]
+            % :rtype: double(3,1)
             kVec = obj.Wavevector * 2 * pi;
         end
         function I = get.IntensityLu(obj)
+            % Get intensity in mW/cm^2.
+            %
+            % :return: Intensity in mW/cm^2
+            % :rtype: double
             I = obj.Intensity / 10;
         end
         function E = get.ElectricFieldAmplitude(obj)
+            % Get electric field amplitude :math:`|E| = \sqrt{2 Z_0 I}`.
+            %
+            % :return: Electric field amplitude [V/m]
+            % :rtype: double
             E = sqrt(obj.Intensity * 2 * Constants.SI("Z0"));
         end
         function obj = rotate(obj,eul)
+            % Rotate direction and polarization by ZYZ Euler angles.
+            %
+            % :param eul: Euler angles :math:`[\alpha,\beta,\gamma]` (ZYZ) in radians
+            % :type eul: double(1,3)
+            % :return: Self-reference
+            % :rtype: :class:`Laser`
             rotm = eul2rotm(eul,"ZYZ");
             dir = obj.Direction;
             dir = dir(:);
@@ -133,6 +202,12 @@ classdef Laser < matlab.mixin.Heterogeneous & handle
             obj.Polarization = reshape(pol,size(obj.Polarization));
         end
         function obj = rotateToAngle(obj,angle)
+            % Rotate to target spherical angles :math:`[\theta,\phi]`.
+            %
+            % :param angle: :math:`[\theta,\phi]` in radians
+            % :type angle: double(1,2)
+            % :return: Self-reference
+            % :rtype: :class:`Laser`
             oldAngle = obj.Angle;
             rotm = eul2rotm([angle(2),angle(1),0],"ZYZ") * ...
                 (eul2rotm([oldAngle(2),oldAngle(1),0],"ZYZ"))^(-1);
@@ -146,6 +221,10 @@ classdef Laser < matlab.mixin.Heterogeneous & handle
             obj.Polarization = reshape(pol,size(obj.Polarization));
         end
         function func = spacePhaseFunc(obj)
+            % Build :math:`e^{i(\phi - \mathbf{k}\cdot \mathbf{r})}` phase function of space.
+            %
+            % :return: function handle mapping position :math:`\mathbf{r}` to phase factor
+            % :rtype: function_handle
             kvec = obj.AngularWavevector;
             phase = obj.Phase;
             func = @(r) spacePhase(r);
@@ -154,6 +233,10 @@ classdef Laser < matlab.mixin.Heterogeneous & handle
             end
         end
         function func = timePhaseFunc(obj)
+            % Build :math:`e^{i \omega t}` phase function of time.
+            %
+            % :return: function handle mapping :math:`t` to phase factor
+            % :rtype: function_handle
             omega = obj.AngularFrequency;
             func = @(t) timePhase(t);
             function out = timePhase(t)
@@ -161,6 +244,10 @@ classdef Laser < matlab.mixin.Heterogeneous & handle
             end
         end
         function func = spaceTimePhaseFunc(obj)
+            % Build :math:`e^{i(\omega t + \phi - \mathbf{k}\cdot \mathbf{r})}` phase function.
+            %
+            % :return: function handle mapping (:math:`\mathbf{r},t`) to phase factor
+            % :rtype: function_handle
             omega = obj.AngularFrequency;
             kvec = obj.AngularWavevector;
             phase = obj.Phase;

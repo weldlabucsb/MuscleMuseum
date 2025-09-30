@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="900" height="500" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .class-box { fill: #f9f9f9; stroke: #333; stroke-width: 1.5; }
+      .field-class { fill: #e8f5e8; stroke: #2e7d32; stroke-width: 2; }
+      .potential-class { fill: #fff3e0; stroke: #f57c00; stroke-width: 2; }
+      .class-title { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; text-anchor: middle; }
+      .class-content { font-family: Arial, sans-serif; font-size: 11px; text-anchor: start; }
+      .association-line { stroke: #666; stroke-width: 1.5; fill: none; stroke-dasharray: 5,5; }
+    </style>
+  </defs>
+  
+  <!-- MagneticField Class -->
+  <rect x="50" y="50" width="350" height="200" class="field-class" rx="8"/>
+  <text x="225" y="75" class="class-title">MagneticField</text>
+  <line x1="60" y1="85" x2="390" y2="85" stroke="#333" stroke-width="1"/>
+  
+  <!-- Properties -->
+  <text x="65" y="105" class="class-content">+Bias : double(3,1)</text>
+  <text x="65" y="120" class="class-content">+Gradient : double(3,3)</text>
+  <text x="65" y="135" class="class-content">+Quadratic : double(3,3,3)</text>
+  <text x="65" y="150" class="class-content">+ArbitraryDistribution : function_handle</text>
+  
+  <!-- Dependent Properties -->
+  <text x="65" y="175" class="class-content">+BiasLu : double(3,1)</text>
+  <text x="65" y="190" class="class-content">+GradientLu : double(3,3)</text>
+  <text x="65" y="205" class="class-content">+FieldZero : double(3,1)</text>
+  
+  <line x1="60" y1="220" x2="390" y2="220" stroke="#333" stroke-width="1"/>
+  
+  <!-- Methods -->
+  <text x="65" y="240" class="class-content">+spaceFunc()</text>
+  
+  <!-- MagneticPotential Class -->
+  <rect x="500" y="50" width="350" height="280" class="potential-class" rx="8"/>
+  <text x="675" y="75" class="class-title">MagneticPotential</text>
+  <text x="675" y="90" class="class-title" style="font-size: 12px; font-style: italic;">extends Potential</text>
+  <line x1="510" y1="100" x2="840" y2="100" stroke="#333" stroke-width="1"/>
+  
+  <!-- Properties -->
+  <text x="515" y="120" class="class-content">+MagneticField : MagneticField</text>
+  
+  <!-- Dependent Properties -->
+  <text x="515" y="145" class="class-content">+EnergyFactor : double</text>
+  <text x="515" y="160" class="class-content">+EnergyFactorLowField : double</text>
+  <text x="515" y="175" class="class-content">+EnergyFactorHighField : double</text>
+  
+  <line x1="510" y1="190" x2="840" y2="190" stroke="#333" stroke-width="1"/>
+  
+  <!-- Methods -->
+  <text x="515" y="210" class="class-content">+spaceFuncLowField()</text>
+  <text x="515" y="225" class="class-content">+spaceFuncHighField()</text>
+  
+  <!-- Key Features Box -->
+  <rect x="50" y="300" width="800" height="150" class="class-box" rx="8"/>
+  <text x="450" y="325" class="class-title">Key Features</text>
+  <line x1="60" y1="335" x2="840" y2="335" stroke="#333" stroke-width="1"/>
+  
+  <text x="65" y="355" class="class-content" style="font-weight: bold;">MagneticField:</text>
+  <text x="65" y="370" class="class-content">• Supports uniform bias fields B₀</text>
+  <text x="65" y="385" class="class-content">• Linear gradients ∂Bᵢ/∂xⱼ for magnetic traps</text>
+  <text x="65" y="400" class="class-content">• Arbitrary spatial distributions B(r)</text>
+  <text x="65" y="415" class="class-content">• Unit conversions (Tesla ↔ Gauss)</text>
+  
+  <text x="450" y="355" class="class-content" style="font-weight: bold;">MagneticPotential:</text>
+  <text x="450" y="370" class="class-content">• Zeeman energy shifts from magnetic fields</text>
+  <text x="450" y="385" class="class-content">• Low-field (linear) and high-field (Paschen-Back) regimes</text>
+  <text x="450" y="400" class="class-content">• Automatic regime selection based on field strength</text>
+  <text x="450" y="415" class="class-content">• State-specific energy factors αₘF and αₘJ</text>
+  
+  <!-- Association line -->
+  <line x1="400" y1="150" x2="500" y2="120" class="association-line"/>
+  <text x="430" y="130" class="class-content" style="font-size: 10px;">uses</text>
+  
+</svg>

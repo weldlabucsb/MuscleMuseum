@@ -1,37 +1,42 @@
 classdef Od < BecAnalysis
-    %OD Calculate and plot optical depth
-    %   Detailed explanation goes here
+    %:class:`Od` compute optical depth (OD) and related plots per run.
+    %
+    % Reads ROI images (atom/light/dark), computes absorption and OD, applies
+    % optional fringe removal, and renders OD mix and GIF animations. Also
+    % stores background-subtracted light for downstream imaging analysis.
+    %
+    % **Associated Charts:**
+    %   - Chart(1): "OdMix" - Horizontal mosaic or 2D density plot of OD
+    %   - Chart(2): "OdAnimation" - Animated GIF showing OD evolution
+    %
+    % **Associated GUIs:**
+    %   - Gui(1): "FringeRemoval" - Interface for fringe removal configuration
 
     properties (Transient)
-        RoiData double % Raw RoiData, including atom/light/dark.
-        CameraLightData double % For calculating cross section. Background subtracted. Fringe removed.
-        OdData double % Calculated OdData
-        ImageRatio double % Calculated Ratio of post-subtracted Atom and Light Imaging for PCI
+        RoiData double % Raw ROI image stack with shape (:math:`N_y`, :math:`N_x`, :math:`N_\mathrm{run}`, [atom, light, dark])
+        CameraLightData double % Background-subtracted light images after fringe removal processing
+        OdData double % Optical depth maps :math:`\mathrm{OD} = -\ln(I_\mathrm{atom}/I_\mathrm{light})` per run
+        ImageRatio double % Atom-to-light intensity ratio :math:`I_\mathrm{atom}/I_\mathrm{light}` for phase contrast imaging
     end
 
     properties
-        FringeRemovalMethod string = "LSR" % Least square regression
-        FringeRemovalMask double % 2*N array. First column is y coordinate. Second column is x coordinate.
-        Colormap = jet
+        FringeRemovalMethod string = "LSR" % Fringe removal algorithm: "LSR" (least squares regression) or "None"
+        FringeRemovalMask double % Background region coordinates as 2×N matrix [:math:`y`; :math:`x`] in pixels
+        Colormap = jet % Colormap function handle for optical depth visualization
     end
 
     properties (SetObservable)
-        CLim double = [0,4]
+        CLim double = [0,4] % Color axis limits for optical depth plots [OD_min, OD_max]
     end
 
     methods
         function obj = Od(becExp)
-            %OD Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct :class:`Od` analyzer.
+            %
+            % :param becExp: Owning experiment
+            % :type becExp: :class:`BecExp`
             obj@BecAnalysis(becExp)
             obj.Gui(1) = Gui(...
-                name = "OdPreviewer",...
-                fpath = fullfile(becExp.DataAnalysisPath,"Od"),...
-                loc = [0.003125,0.387037037],...
-                size = [0.38984375,0.587037], ...
-                isEnabled = false...
-                );
-            obj.Gui(2) = Gui(...
                 name = "FringeRemoval",...
                 fpath = fullfile(becExp.DataAnalysisPath,"FringeRemoval"),...
                 loc = "center",...
@@ -61,18 +66,28 @@ classdef Od < BecAnalysis
     methods
 
         function initialize(obj)
-            % Initialize matrices
+            % Initialize internal data arrays and property change listeners.
+            %
+            % Sets up storage arrays for ROI data, optical depth maps, image ratios,
+            % and processed light images. Establishes listener for color limit changes.
             roiSize = obj.BecExp.Roi.CenterSize(3:4);
             obj.RoiData = zeros([roiSize,1,3]);
             obj.OdData = zeros([roiSize,1]);
             obj.ImageRatio = zeros([roiSize,1]);
             obj.CameraLightData = zeros([roiSize,1]);
 
-            obj.Gui(1).initialize(obj.BecExp) % invoke OdPreviewer
             addlistener(obj,'CLim','PostSet',@obj.handlePropEvents);
         end
 
         function update(obj,runIdx)
+            % Read run data and compute optical depth without fringe removal.
+            %
+            % Loads raw images for the specified run, computes optical depth using
+            % the absorption-to-OD conversion, and updates camera light data for
+            % downstream analysis modules.
+            %
+            % :param runIdx: Run index to process
+            % :type runIdx: double
             becExp = obj.BecExp;
             if ~isempty(becExp.TempData)
                 % Read RoiData from camera
@@ -86,46 +101,55 @@ classdef Od < BecAnalysis
             obj.OdData(:,:,runIdx) = absorption2Od(computeAbsorption(obj.RoiData(:,:,runIdx,:)));
             obj.ImageRatio(:,:, runIdx) = computeAbsorption(obj.RoiData(:,:,runIdx,:));
 
-            % Update OdPreviewer
-            obj.Gui(1).update;
-
             % Update camera light data
             obj.CameraLightData(:,:,runIdx) = obj.RoiData(:,:,runIdx,2) - obj.RoiData(:,:,runIdx,3);
         end
 
         function finalize(obj)
+            % Apply fringe removal and generate final OD visualizations.
+            %
+            % Performs fringe removal processing (if configured), then creates
+            % the OD mosaic plot and animated GIF showing temporal evolution.
             obj.doFringeRemoval
             obj.plotOdMix
             obj.plotOdAnimation
         end
 
         function show(obj)
+            % Display OD mosaic and animation charts with property listeners.
+            %
+            % Makes the OD visualization charts visible and establishes property
+            % change listeners for real-time color limit updates.
             addlistener(obj,'CLim','PostSet',@obj.handlePropEvents);
-            obj.Gui(1).initialize(obj.BecExp)
             obj.Chart(1).show
             obj.Chart(2).show
         end
 
         function refresh(obj)
+            % Reload all ROI data from disk and regenerate OD analysis.
+            %
+            % Clears temporary data, reloads all run images from disk, and
+            % recomputes the complete OD analysis including fringe removal
+            % and visualization.
             becExp = obj.BecExp;
             becExp.TempData = [];
             roi = becExp.Roi;
             roiSize = roi.CenterSize(3:4);
             nRun = becExp.NCompletedRun;
 
-            if isempty(obj.Gui(1).App) || ~isvalid(obj.Gui(1).App)
-                obj.Gui(1).initialize(obj.BecExp)
-            else
-                obj.Gui(1).update
-            end
-
             obj.RoiData = becExp.readRunRoi(1:nRun);
 
-            % Redo ploting
+            % Redo plotting
             obj.finalize;
         end
 
         function doFringeRemoval(obj)
+            % Perform optional fringe removal and update processed data.
+            %
+            % Applies fringe removal algorithm (if configured) to reduce systematic
+            % intensity variations. Updates optical depth, image ratio, and camera
+            % light data with the corrected values.
+
             %% First calculate atom and light with background subtraction
             atom = obj.RoiData(:,:,:,1) - obj.RoiData(:,:,:,3);
             light = obj.RoiData(:,:,:,2) - obj.RoiData(:,:,:,3);
@@ -151,7 +175,7 @@ classdef Od < BecAnalysis
                         light = reshape(light,roiSize(1),roiSize(2),size(light,2),1);
                         OdAfter = absorption2Od(computeAbsorption(cat(4,atom,light)));
                         ImageRatioAfter = computeAbsorption(cat(4,atom,light));
-                        obj.Gui(2).initialize(OdBefore,OdAfter,Rtest,obj.FringeRemovalMethod)
+                        obj.Gui(1).initialize(OdBefore,OdAfter,Rtest,obj.FringeRemovalMethod)
                     otherwise
                         OdAfter = OdBefore;
                         ImageRatioAfter = ImageRatioBefore;
@@ -168,21 +192,52 @@ classdef Od < BecAnalysis
         end
 
         function plotOdMix(obj)
-            %% Initialize
+            % Generate OD mosaic plot for 1D scans or 2D parameter map.
+            %
+            % Creates either a horizontal mosaic of OD images (for 1D parameter
+            % scans) or a 2D density map (for 2D parameter scans) showing the
+            % spatial distribution of optical depth.
+
+            %% Initialize figure
             fig = obj.Chart(1).initialize;
             if ishandle(fig)
                 figure(fig)
             else
                 return
             end
+
+            %% Check if 2D scan and call appropriate plotting method
+            if obj.BecExp.Is2DScan
+                obj.plotOdMix2D(fig);
+            else
+                obj.plotOdMix1D(fig);
+            end
+        end
+
+        function plotOdMix1D(obj, fig)
+            % Create horizontal mosaic of OD images for 1D parameter scans.
+            %
+            % Concatenates OD images from all runs side-by-side, sorted by
+            % parameter value, with proper axis labeling and colorbar.
+            %
+            % :param fig: Target figure handle
+            % :type fig: matlab.ui.Figure
             ax = gca;
 
             %% Plot OD Data
-            nRun = obj.BecExp.NCompletedRun;
+            odData = obj.OdData;
+            if ~obj.BecExp.IsDensityAverage
+                xTick = obj.BecExp.ScannedVariableListSorted;
+                odData = odData(:,:,obj.BecExp.RunListSorted);
+            else
+                [xTick,odData] = computeAveErr(obj.BecExp.ScannedVariableList,odData);
+            end
+
+            nRun = numel(xTick);
             cData = cell(1,nRun);
-            runList = obj.BecExp.RunListSorted;
-            for ii = 1:nRun
-                cData{ii} = obj.OdData(:,:,runList(ii));
+
+            for ii = 1:numel(xTick)
+                cData{ii} = odData(:,:,ii);
             end
             mData = horzcat(cData{:});
             img = imagesc(ax,mData);
@@ -201,7 +256,7 @@ classdef Od < BecAnalysis
             aspect = double(nRun)*roiSize(2)/roiSize(1);
             figPos = fig.InnerPosition;
             targetWidth = figPos(3)*0.85;
-            targetHeight = figPos(4)*0.85;
+            targetHeight = figPos(4)*0.8;
             ax.Units = "pixels";
             if targetWidth > targetHeight * aspect
                 ax.Position(4) = targetHeight;
@@ -226,22 +281,107 @@ classdef Od < BecAnalysis
             ax.Title.Interpreter = "latex";
             ax.Title.FontSize = fz;
             ax.FontSize = fz;
-            
+
             renderTicks(img,[1,2],yxBoundary(1):yxBoundary(2))
             ax.TickDir = "out";
             tickSpace = roiSize(2);
             ax.XTick = (tickSpace/2):tickSpace:(tickSpace*double(nRun)-tickSpace/2);
-            ax.XTickLabel = string(obj.BecExp.ScannedParameterListSorted);
+            ax.XTickLabel = string(xTick);
             set(ax,'box','off')
             ax.Units = "pixels";
             outerpos = ax.OuterPosition;
             fig.Position(4) = fig.Position(3) * outerpos(4)/outerpos(3)*1.05;
             ax.OuterPosition(2) = 0;
+        end
+
+        function plotOdMix2D(obj, fig)
+            % Create 2D parameter density map from OD data.
+            %
+            % Generates a 2D density plot showing OD variation across the
+            % two-dimensional parameter space, using a representative slice
+            % through the ROI.
+            %
+            % :param fig: Target figure handle
+            % :type fig: matlab.ui.Figure
+            %% Plot OD Data
+            ax = gca;
+            odData = obj.OdData;
+            odData = flip(odData,1);
+            [xTick,yTick,odData] = computeAveErr2D(...
+                obj.BecExp.ScannedVariableList(1,:), ...
+                obj.BecExp.ScannedVariableList(2,:), ...
+                odData,"None");
+            [r, c, ny, nx] = size(odData);
+            mData = reshape(permute(odData, [1, 3, 2, 4]), r*ny, c*nx);
+            img = imagesc(ax,mData);
+
+            %% Render
+            fz = 20;
+            cb = colorbar(ax);
+            clim(obj.CLim)
+            colormap(ax,obj.Colormap)
             
+            cb.Label.Interpreter = "Latex";
+            cb.Label.String = "OD";
+            cb.Label.FontSize = fz;
+            roiSize = obj.BecExp.Roi.CenterSize(3:4);
+            yxBoundary = obj.BecExp.Roi.YXBoundary;
+            aspect = double(nx)*roiSize(2)/(roiSize(1) * double(ny));
+            figPos = fig.InnerPosition;
+            targetWidth = figPos(3)*0.85;
+            targetHeight = figPos(4)*0.8;
+            ax.Units = "pixels";
+            if targetWidth > targetHeight * aspect
+                ax.Position(4) = targetHeight;
+                ax.Position(3) = targetHeight * aspect;
+            else
+                ax.Position(3) = targetWidth;
+                ax.Position(4) = targetWidth / aspect;
+            end
+            ax.Position(1:2) = [figPos(3)/2 - ax.Position(3)/2,...
+                figPos(4)/2 - ax.Position(4)/2];
+            pbaspect(ax,[aspect,1,1])
+
+            ax.Units = "normalized";
+            ax.XLabel.String = obj.BecExp.XLabel;
+            ax.XLabel.Interpreter = "latex";
+            ax.XLabel.FontSize = fz;
+            ax.YLabel.String = obj.BecExp.YLabel;
+            ax.YLabel.Interpreter = "latex";
+            ax.YLabel.FontSize = fz;
+            ax.Title.String = "TrialName: " + obj.BecExp.Name + ...
+                ", Trial \#" + num2str(obj.BecExp.SerialNumber);
+            ax.Title.Interpreter = "latex";
+            ax.Title.FontSize = fz;
+            ax.FontSize = fz;
+            ax.YDir = "normal";
+
+            renderTicks(img,[1,2],yxBoundary(1):yxBoundary(2))
+            ax.TickDir = "out";
+            tickSpace = roiSize(2);
+            ax.XTick = (tickSpace/2):tickSpace:(tickSpace*double(nx)-tickSpace/2);
+            ax.XTickLabel = string(xTick);
+            tickSpace = roiSize(1);
+            ax.YTick = (tickSpace/2):tickSpace:(tickSpace*double(ny)-tickSpace/2);
+            ax.YTickLabel = string(yTick);
+            set(ax,'box','off')
+            ax.Units = "pixels";
+            outerpos = ax.OuterPosition;
+            fig.Position(4) = fig.Position(3) * outerpos(4)/outerpos(3)*1.05;
+            ax.OuterPosition(2) = 0;
         end
 
         function plotOdAnimation(obj)
+            % Generate animated GIF showing OD evolution across parameter values.
+            %
+            % Creates an animated visualization with the main OD image and
+            % cross-sectional profiles, stepping through parameter values
+            % to show temporal or parametric evolution.
+            
             %% Initialize figure
+            if obj.BecExp.Is2DScan
+                obj.Chart(2).IsEnabled = false;
+            end
             fig = obj.Chart(2).initialize;
             if ishandle(fig)
                 figure(fig)
@@ -260,11 +400,16 @@ classdef Od < BecAnalysis
             roi = becExp.Roi;
             yxBoundary = roi.YXBoundary;
             roiSize = roi.CenterSize(3:4);
-            nRun = becExp.NCompletedRun;
-            runList = obj.BecExp.RunListSorted;
-            paraName = becExp.ScannedParameter;
-            paraListSorted = becExp.ScannedParameterListSorted;
-            paraUnit = becExp.ScannedParameterUnit;
+            varName = becExp.ScannedVariable;
+            varUnit = becExp.ScannedVariableUnit;
+            odData = obj.OdData;
+            if ~obj.BecExp.IsDensityAverage
+                varListSorted = becExp.ScannedVariableListSorted;
+                odData = odData(:,:,becExp.RunListSorted);
+            else
+                [varListSorted,odData] = computeAveErr(becExp.ScannedVariableList,odData);
+            end
+            nRun = numel(varListSorted);
 
             %% Initialize plots
             roiAspect = roiSize(2)/roiSize(1);
@@ -304,8 +449,8 @@ classdef Od < BecAnalysis
             imgAxes.Title.Interpreter = "Latex";
             imgAxes.Title.FontSize = 14;
             imgAxes.Toolbar.Visible = "off";
-            
-            
+
+
             % X plot
             xAxes = axes(fig);
             xAxes.Units = "pixels";
@@ -317,7 +462,7 @@ classdef Od < BecAnalysis
             xAxes.YLim = obj.CLim;
             xAxes.XLim = [yxBoundary(3),yxBoundary(4)];
             xAxes.Toolbar.Visible = "off";
-            
+
             % Y plot
             yAxes = axes(fig);
             yAxes.Units = "pixels";
@@ -336,24 +481,24 @@ classdef Od < BecAnalysis
                 for ii = 1:nRun
 
                     % Update plots
-                    img.CData = obj.OdData(:,:,runList(ii));
-                    xLine.YData = squeeze(obj.OdData(round(roiSize(1)/2),:,runList(ii)));
-                    yLine.XData = squeeze(obj.OdData(:,round(roiSize(2)/2),runList(ii)));
+                    img.CData = odData(:,:,ii);
+                    xLine.YData = squeeze(odData(round(roiSize(1)/2),:,ii));
+                    yLine.XData = squeeze(odData(:,round(roiSize(2)/2),ii));
 
                     % Update title
-                    if ismissing(paraUnit)
-                        paraLabel = "$\mathrm{" + paraName + "} = ~$" + ...
-                            string(paraListSorted(ii));
+                    if varUnit == "None" || ismissing(varUnit)
+                        varLabel = "$\mathrm{" + varName + "} = ~$" + ...
+                            string(varListSorted(ii));
                     else
-                        paraLabel = "$\mathrm{" + paraName + "} = ~$" + ...
-                            string(paraListSorted(ii)) + "$~\mathrm{" + ...
-                            paraUnit + "}$";
+                        varLabel = "$\mathrm{" + varName + "} = ~$" + ...
+                            string(varListSorted(ii)) + "$~\mathrm{" + ...
+                            varUnit + "}$";
                     end
                     imgAxes.Title.String = ...
                         "TrialName: " + becExp.Name + ...
                         ", Trial \#" + num2str(becExp.SerialNumber) + ...
-                        ", Run \#" + num2str(ii) + ", " + ... 
-                        paraLabel;
+                        ", Run \#" + num2str(ii) + ", " + ...
+                        varLabel;
 
                     % Save as gif
                     frame = getframe(fig);
@@ -376,6 +521,7 @@ classdef Od < BecAnalysis
 
     methods (Static)
         function handlePropEvents(src,evnt)
+            % Listener callback to propagate CLim changes.
             switch src.Name
                 case 'CLim'
                     obj = evnt.AffectedObject;
@@ -386,13 +532,16 @@ classdef Od < BecAnalysis
                             ax.CLim = obj.CLim;
                         end
                     end
-                    if ~isempty(obj.Gui(1).App)
-                        if isvalid(obj.Gui(1).App)
-                            obj.Gui(1).App.OdAxes.CLim = obj.CLim;
-                            obj.Gui(1).App.OdYAxes.XLim = obj.CLim;
-                            obj.Gui(1).App.OdXAxes.YLim = obj.CLim;
-                            obj.Gui(1).App.ODMinEditField.Value = obj.CLim(1);
-                            obj.Gui(1).App.ODMaxEditField.Value = obj.CLim(2);
+                    odApp = obj.BecExp.Ad.Gui(1).App;
+                    if ~isempty(odApp)
+                        if isvalid(odApp)
+                            if odApp.IsOd
+                                odApp.OdAxes.CLim = obj.CLim;
+                                odApp.OdYAxes.XLim = obj.CLim;
+                                odApp.OdXAxes.YLim = obj.CLim;
+                                odApp.ODMinEditField.Value = obj.CLim(1);
+                                odApp.ODMaxEditField.Value = obj.CLim(2);
+                            end
                         end
                     end
             end

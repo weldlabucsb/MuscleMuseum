@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="900" height="600" viewBox="0 0 900 600">
+  <defs>
+    <style>
+      .formula-box { fill: #f8f9fa; stroke: #6c757d; stroke-width: 1.5; }
+      .linear-box { fill: #e3f2fd; stroke: #1976d2; stroke-width: 2; }
+      .gaussian-box { fill: #f3e5f5; stroke: #7b1fa2; stroke-width: 2; }
+      .oscillatory-box { fill: #e8f5e8; stroke: #388e3c; stroke-width: 2; }
+      .physics-box { fill: #fff3e0; stroke: #f57c00; stroke-width: 2; }
+      .title { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; text-anchor: middle; }
+      .formula { font-family: 'Times New Roman', serif; font-size: 14px; text-anchor: middle; font-style: italic; }
+      .description { font-family: Arial, sans-serif; font-size: 12px; text-anchor: middle; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="450" y="25" class="title" style="font-size: 20px;">FitData Mathematical Functions</text>
+  
+  <!-- Linear and Polynomial -->
+  <rect x="20" y="60" width="200" height="120" class="linear-box" rx="8"/>
+  <text x="120" y="80" class="title">Linear &amp; Polynomial</text>
+  <text x="120" y="105" class="formula">y = ax + b</text>
+  <text x="120" y="125" class="formula">y = ax² + bx + c</text>
+  <text x="120" y="150" class="description">LinearFit1D</text>
+  <text x="120" y="165" class="description">ParabolicFit1D</text>
+  
+  <!-- Gaussian and Peaks -->
+  <rect x="240" y="60" width="200" height="120" class="gaussian-box" rx="8"/>
+  <text x="340" y="80" class="title">Gaussian &amp; Peaks</text>
+  <text x="340" y="105" class="formula">y = A·e^(-(x-x₀)²/(2σ²)) + C</text>
+  <text x="340" y="125" class="formula">Bosonic corrections</text>
+  <text x="340" y="150" class="description">GaussianFit1D</text>
+  <text x="340" y="165" class="description">BosonicGaussianFit1D</text>
+  
+  <!-- Oscillatory -->
+  <rect x="460" y="60" width="200" height="120" class="oscillatory-box" rx="8"/>
+  <text x="560" y="80" class="title">Oscillatory</text>
+  <text x="560" y="105" class="formula">y = A·sin(2πfx + φ) + C</text>
+  <text x="560" y="125" class="formula">Triangle waves</text>
+  <text x="560" y="150" class="description">SineFit1D</text>
+  <text x="560" y="165" class="description">TriangleFit1D</text>
+  
+  <!-- Physics Specialized -->
+  <rect x="680" y="60" width="200" height="120" class="physics-box" rx="8"/>
+  <text x="780" y="80" class="title">Physics Specialized</text>
+  <text x="780" y="105" class="formula">TF + Thermal</text>
+  <text x="780" y="125" class="formula">√Parabolic profiles</text>
+  <text x="780" y="150" class="description">BosonicBimodalFit1D</text>
+  <text x="780" y="165" class="description">SqrtParabolicFit1D</text>
+  
+  <!-- Detailed formulas section -->
+  <text x="450" y="220" class="title" style="font-size: 18px;">Detailed Mathematical Expressions</text>
+  
+  <!-- Linear -->
+  <rect x="50" y="250" width="800" height="40" class="formula-box" rx="5"/>
+  <text x="70" y="265" class="description" style="font-weight: bold;">Linear:</text>
+  <text x="450" y="275" class="formula" style="font-size: 16px;">y = ax + b</text>
+  
+  <!-- Gaussian -->
+  <rect x="50" y="300" width="800" height="40" class="formula-box" rx="5"/>
+  <text x="70" y="315" class="description" style="font-weight: bold;">Gaussian:</text>
+  <text x="450" y="325" class="formula" style="font-size: 16px;">y = A·exp(-(x-x₀)²/(2σ²)) + C</text>
+  
+  <!-- Sine -->
+  <rect x="50" y="350" width="800" height="40" class="formula-box" rx="5"/>
+  <text x="70" y="365" class="description" style="font-weight: bold;">Sine:</text>
+  <text x="450" y="375" class="formula" style="font-size: 16px;">y = A·sin(2πfx + φ) + C</text>
+  
+  <!-- Triangle -->
+  <rect x="50" y="400" width="800" height="60" class="formula-box" rx="5"/>
+  <text x="70" y="415" class="description" style="font-weight: bold;">Triangle:</text>
+  <text x="450" y="430" class="formula" style="font-size: 14px;">u = (x + φ) mod T</text>
+  <text x="450" y="450" class="formula" style="font-size: 12px;">y = A_min + (A_max - A_min)·u/T_r  for u &lt; T_r</text>
+  
+  <!-- Bimodal -->
+  <rect x="50" y="470" width="800" height="60" class="formula-box" rx="5"/>
+  <text x="70" y="485" class="description" style="font-weight: bold;">Bimodal:</text>
+  <text x="450" y="500" class="formula" style="font-size: 12px;">y = A·max{0,1-((x-x₀)/R)²}^(3/2) + B·Bose(e^(-(x-x_g)²/(2σ_g²)); 2.5) + C</text>
+  <text x="450" y="520" class="description" style="font-size: 10px;">Thomas-Fermi + Thermal Bosonic components</text>
+  
+</svg>

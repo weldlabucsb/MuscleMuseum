@@ -30,15 +30,18 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../_static/documentation_options.js?v=e1a75a79"></script>
+    <script src="../_static/documentation_options.js?v=2149b5ce"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'intro/introduction';</script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -153,17 +156,9 @@
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../main/waveform.html">Waveform and WaveformList</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../api/atom.html">Atom</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/field.html">Field</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/trial.html">Trial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/becexp.html">BecExp</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/sim.html">Sim</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/hardware.html">Hardware</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/math.html">Math</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/misc.html">Misc</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../main/fitData.html">Fit curves or surfaces using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../main/lasers_magnetic_fields.html">Lasers and magnetic fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sup/support.html">Support</a></li>
 </ul>
 
@@ -211,6 +206,70 @@
 
 
 
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/intro/introduction.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/issues/new?title=Issue%20on%20page%20%2Fintro/introduction.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
 <div class="dropdown dropdown-download-buttons">
   <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
     <i class="fas fa-download"></i>
@@ -219,7 +278,7 @@
       
       
       
-      <li><a href="../_sources/intro/introduction.rst" target="_blank"
+      <li><a href="../_sources/" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -326,21 +385,26 @@ several key features:</p>
 <li><p>Data Management with <a class="reference external" href="https://www.postgresql.org/">PostgreSQL</a>: MuscleMuseum employs the robust PostgreSQL database system for efficient data management. This ensures reliable storage and retrieval of experimental data.</p></li>
 <li><p>User-Friendly GUIs: The package offers intuitive Graphical User Interfaces (GUIs) developed using <a class="reference external" href="https://www.mathworks.com/products/matlab/app-designer.html">MATLAB App Designer</a>.</p></li>
 </ol>
-<p>Right now, I have implemented:</p>
+<p>Right now, we have implemented:</p>
 <ol class="arabic simple">
-<li><p><a class="reference internal" href="../api/becexp.html#BecExp" title="BecExp"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecExp</span></code></a>: A BEC experimental control and data analysis system integrated with <a class="reference external" href="https://akeshet.github.io/Cicero-Word-Generator/">Cicero</a></p></li>
-<li><p><a class="reference internal" href="../api/becexp.html#BecControlPanel" title="BecControlPanel"><code class="xref mat mat-app docutils literal notranslate"><span class="pre">BecControlPanel</span></code></a> &amp; <a class="reference internal" href="../api/becexp.html#BecBrowser" title="BecBrowser"><code class="xref mat mat-app docutils literal notranslate"><span class="pre">BecBrowser</span></code></a>: Apps for controlling and browsing BEC experiments</p></li>
-<li><p><a class="reference internal" href="../api/atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a>: Atomic data and atomic structure handling</p></li>
-<li><p><a class="reference internal" href="../api/sim.html#MeSim" title="MeSim"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">MeSim</span></code></a>: A single-atom master equation simulation tool</p></li>
-<li><p><a class="reference internal" href="../api/sim.html#SeSim1D" title="SeSim1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SeSim1D</span></code></a>: A 1D Time-dependent Schrodinger equation (TDSE) simulation tool</p></li>
-<li><p><a class="reference internal" href="../api/sim.html#LatticeSeSim1D" title="LatticeSeSim1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">LatticeSeSim1D</span></code></a>: A 1D lattice dynamics simulation tool</p></li>
-<li><p><a class="reference internal" href="../api/field.html#OpticalLattice" title="OpticalLattice"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OpticalLattice</span></code></a>: Some lattice band structure calculations</p></li>
-<li><p><a class="reference internal" href="../api/hardware.html#KeysightWaveformGenerator" title="KeysightWaveformGenerator"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">KeysightWaveformGenerator</span></code></a>: Keysight function generator control</p></li>
+<li><p><a class="reference internal" href="../api/trial/BecExp.html#BecExp" title="BecExp"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecExp</span></code></a>: A BEC experimental control and data analysis system integrated with <a class="reference external" href="https://akeshet.github.io/Cicero-Word-Generator/">Cicero</a></p></li>
+<li><p><a class="reference internal" href="../api/trial/BecControlPanel.html#BecControlPanel" title="BecControlPanel"><code class="xref mat mat-app docutils literal notranslate"><span class="pre">BecControlPanel</span></code></a> &amp; <a class="reference internal" href="../api/trial/BecBrowser.html#BecBrowser" title="BecBrowser"><code class="xref mat mat-app docutils literal notranslate"><span class="pre">BecBrowser</span></code></a>: Apps for controlling and browsing BEC experiments</p></li>
+<li><p><a class="reference internal" href="../api/atom/Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a>: Atomic data and atomic structure handling</p></li>
+<li><p><a class="reference internal" href="../api/trial/MeSim.html#MeSim" title="MeSim"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">MeSim</span></code></a>: A single-atom master equation simulation tool</p></li>
+<li><p><a class="reference internal" href="../api/trial/SeSim1D.html#SeSim1D" title="SeSim1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SeSim1D</span></code></a>: A 1D Time-dependent Schrodinger equation (TDSE) simulation tool</p></li>
+<li><p><a class="reference internal" href="../api/trial/LatticeSeSim1D.html#LatticeSeSim1D" title="LatticeSeSim1D"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">LatticeSeSim1D</span></code></a>: A 1D lattice dynamics simulation tool</p></li>
+<li><p><a class="reference internal" href="../api/field/OpticalLattice.html#OpticalLattice" title="OpticalLattice"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OpticalLattice</span></code></a>: Some lattice band structure calculations</p></li>
+<li><p><a class="reference internal" href="../api/math/FitData.html#FitData" title="FitData"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">FitData</span></code></a>: Automatic curve fitting</p></li>
+<li><p><a class="reference internal" href="../api/math/Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a>: Software waveform generation</p></li>
+<li><p><a class="reference internal" href="../api/hardware/KeysightWaveformGenerator.html#KeysightWaveformGenerator" title="KeysightWaveformGenerator"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">KeysightWaveformGenerator</span></code></a>: Keysight function generator control</p></li>
+<li><p><a class="reference internal" href="../api/hardware/SpectrumWaveformGenerator.html#SpectrumWaveformGenerator" title="SpectrumWaveformGenerator"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">SpectrumWaveformGenerator</span></code></a>: Spectrum function generator control</p></li>
+<li><p><a class="reference internal" href="../api/hardware/VescentPhaseLock.html#VescentPhaseLock" title="VescentPhaseLock"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">VescentPhaseLock</span></code></a>: Vescent phase locker control</p></li>
+<li><p><a class="reference internal" href="../api/hardware/TektronixScope.html#TektronixScope" title="TektronixScope"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">TektronixScope</span></code></a>: Tektronix scope control</p></li>
+<li><p><a class="reference internal" href="../api/hardware/Andor.html#Andor" title="Andor"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Andor</span></code></a>, <a class="reference internal" href="../api/hardware/Pco.html#Pco" title="Pco"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Pco</span></code></a> &amp; <a class="reference internal" href="../api/hardware/Basler.html#Basler" title="Basler"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Basler</span></code></a>: Camera control</p></li>
 </ol>
 <p>Still under construction:</p>
 <ol class="arabic simple">
 <li><p>Gross-Pitaevskii equation simulation</p></li>
-<li><p>Scope talk</p></li>
 <li><p>RF generator control</p></li>
 </ol>
 <p>Known issues: the database functions I wrote are not compatible with MATLAB 2023b or higher. I

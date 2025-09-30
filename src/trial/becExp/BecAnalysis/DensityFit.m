@@ -1,35 +1,47 @@
 classdef DensityFit < BecAnalysis
-    %OD Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`DensityFit` 1D profile fitting to extract cloud sizes and centers.
+    %
+    % Fits integrated AD profiles along x/y using either Gaussian or
+    % Bose-enhanced Gaussian models to obtain radii :math:`R_{x,y}`, centers,
+    % and central column densities. Provides a GUI for profile inspection and
+    % a chart for radii vs scan.
+    %
+    % **Associated Charts:**
+    %   - Chart(1): "Cloud size" - Cloud radius plots vs parameter
+    %
+    % **Associated GUIs:**
+    %   - Gui(1): "DensityFitDisplay" - Interactive profile fitting interface
 
     properties
-        FitMethod string = "BosonicGaussianFit1D"
-        FitData
-        DensityLimX double = [0,1]
-        DensityLimY double = [0,1]
+        FitMethod string = "BosonicGaussianFit1D" % 1D profile fit model: \"GaussianFit1D\" or \"BosonicGaussianFit1D\"
+        FitData % Fit objects array with dimensions (x/y direction, run, subROI)
+        DensityLimX double = [0,1] % X-direction density plot limits [min, max] automatically updated during fitting
+        DensityLimY double = [0,1] % Y-direction density plot limits [min, max] automatically updated during fitting
     end
 
     properties (SetAccess = protected)
-        ThermalCloudCenter %[x0t;y0t] in pixel
-        ThermalCloudSize % [wt_x;wt_y] in m
-        ThermalCloudCentralDensity % m^-2
-        CondensateCenter %[x0c;y0c] in pixel
-        CondensateSize % [wc_x;wc_y] in m
-        CondensateCentralDensity % m^-2
-        BackGroundDensity % m^-2
+        ThermalCloudCenter % Thermal cloud center positions [:math:`x_{0t}`; :math:`y_{0t}`] per run/subROI [pixels]
+        ThermalCloudSize % Thermal cloud radii [:math:`R_{x,t}`; :math:`R_{y,t}`] per run/subROI [m]
+        ThermalCloudCentralDensity % Thermal cloud central column density per run/subROI [m^{-2}]
+        CondensateCenter % Condensate center positions [:math:`x_{0c}`; :math:`y_{0c}`] per run/subROI [pixels]
+        CondensateSize % Condensate radii [:math:`R_{x,c}`; :math:`R_{y,c}`] per run/subROI [m]
+        CondensateCentralDensity % Condensate central column density per run/subROI [m^{-2}]
+        BackGroundDensity % Background density level from fits per run/subROI [m^{-2}]
     end
 
     properties (Hidden, Transient)
-        ThermalXLine matlab.graphics.chart.primitive.ErrorBar
-        ThermalYLine matlab.graphics.chart.primitive.ErrorBar
-        CondensateXLine matlab.graphics.chart.primitive.ErrorBar
-        CondensateYLine matlab.graphics.chart.primitive.ErrorBar
+        ThermalXLine matlab.graphics.chart.primitive.ErrorBar % Errorbar plot handles for thermal x-direction cloud size
+        ThermalYLine matlab.graphics.chart.primitive.ErrorBar % Errorbar plot handles for thermal y-direction cloud size
+        CondensateXLine matlab.graphics.chart.primitive.ErrorBar % Errorbar plot handles for condensate x-direction size
+        CondensateYLine matlab.graphics.chart.primitive.ErrorBar % Errorbar plot handles for condensate y-direction size
     end
 
     methods
         function obj = DensityFit(becExp)
-            %OD Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct :class:`DensityFit` analyzer.
+            %
+            % :param becExp: Owning experiment
+            % :type becExp: :class:`BecExp`
             obj@BecAnalysis(becExp)
             obj.Gui(1) = Gui(...
                 name = "DensityFitDisplay",...
@@ -47,6 +59,10 @@ classdef DensityFit < BecAnalysis
         end
 
         function initialize(obj)
+            % Initialize fit objects, data containers, and plots.
+            %
+            % Sets up 1D profile fit objects, creates data storage arrays,
+            % initializes GUI and chart components, and configures plot layouts.
             becExp = obj.BecExp;
             nSub = becExp.Roi.NSub;
             nSub(nSub == 0) = 1;
@@ -73,6 +89,9 @@ classdef DensityFit < BecAnalysis
 
             %% Initialize plots
             obj.Gui(1).initialize(becExp)
+            if becExp.Is2DScan
+                obj.Chart(1).IsEnabled = false;
+            end
             fig = obj.Chart(1).initialize;
 
             %% Initialize cloud size plots
@@ -152,6 +171,10 @@ classdef DensityFit < BecAnalysis
         end
 
         function updateData(obj,runIdx)
+            % Build and execute 1D fits for given run indices.
+            %
+            % :param runIdx: Run index or indices
+            % :type runIdx: double|double[]
             becExp = obj.BecExp;
             px = becExp.Acquisition.PixelSizeReal;
             nRun = numel(runIdx);
@@ -266,6 +289,7 @@ classdef DensityFit < BecAnalysis
         end
 
         function updateFigure(obj,~)
+            % Update size vs scan charts.
             obj.Gui(1).update
             fig = obj.Chart(1).Figure;
             if isempty(fig) || ~ishandle(fig)
@@ -275,13 +299,13 @@ classdef DensityFit < BecAnalysis
             becExp = obj.BecExp;
             nSub = becExp.Roi.NSub;
             nSub(nSub == 0) = 1;
-            paraList = becExp.ScannedParameterList;
+            varList = becExp.ScannedVariableList;
 
             switch obj.FitMethod
                 case {"GaussianFit1D","BosonicGaussianFit1D"}
                     for ii = 1:nSub
-                        [xThermalX,yThermalX,stdThermalX] = computeStd(paraList,obj.ThermalCloudSize(1,:,ii) * 1e6, becExp.AveragingMethod);
-                        [xThermalY,yThermalY,stdThermalY] = computeStd(paraList,obj.ThermalCloudSize(2,:,ii) * 1e6, becExp.AveragingMethod);
+                        [xThermalX,yThermalX,stdThermalX] = computeAveErr(varList,obj.ThermalCloudSize(1,:,ii) * 1e6, becExp.AveragingMethod);
+                        [xThermalY,yThermalY,stdThermalY] = computeAveErr(varList,obj.ThermalCloudSize(2,:,ii) * 1e6, becExp.AveragingMethod);
                         obj.ThermalXLine(ii).XData = xThermalX;
                         obj.ThermalXLine(ii).YData = yThermalX;
                         obj.ThermalXLine(ii).YNegativeDelta = stdThermalX;
@@ -316,6 +340,7 @@ classdef DensityFit < BecAnalysis
         end
 
         function refresh(obj)
+            % Recompute fits for all runs and refresh figures.
             obj.initialize;
             nRun = obj.BecExp.NCompletedRun;
             obj.updateData(1:nRun);

@@ -1,6 +1,7 @@
 classdef Tektronix1104 < TektronixScope
-    %TEKTRONIX1104 Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`Tektronix1104` model configuration for a 4-ch scope.
+    %
+    % Sets model-specific limits, default sampling, and disabled properties.
     
     properties
         
@@ -8,6 +9,12 @@ classdef Tektronix1104 < TektronixScope
     
     methods
         function obj = Tektronix1104(resourceName,name)
+            % Construct a :class:`Tektronix1104`.
+            %
+            % :param resourceName: VISA/connection resource name
+            % :type resourceName: string
+            % :param name: Device nickname
+            % :type name: string, optional
             arguments
                 resourceName string
                 name string = string.empty
@@ -26,6 +33,7 @@ classdef Tektronix1104 < TektronixScope
         end
 
         function set(obj)
+            % Apply configuration to the instrument.
             obj.check;
             obj.Oscilloscope.AcquisitionTime = obj.Duration;
             obj.Oscilloscope.TriggerMode = lowerFirst(obj.TriggerMode);
