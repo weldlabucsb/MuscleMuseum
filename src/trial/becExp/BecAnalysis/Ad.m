@@ -273,7 +273,11 @@ classdef Ad < BecAnalysis
             scannedVariableList = obj.BecExp.ScannedVariableList;
             save(fullfile(obj.BecExp.DataAnalysisPath,"AdData"),"adData","x","y","scannedVariableList");
             if obj.Chart(1).IsEnabled
-                saveas(obj.Chart(1).Figure,obj.Chart(1).Path,'png')
+                if ~isempty(obj.Chart(1).Figure)
+                    if isvalid(obj.Chart(1).Figure)
+                        saveas(obj.Chart(1).Figure,obj.Chart(1).Path,'png')
+                    end
+                end
             end
         end
 

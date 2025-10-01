@@ -676,6 +676,19 @@ classdef BecExp < Trial
             obj.Analyzer.Enabled = true;
         end
 
+        function save(obj)
+            if obj.NCompletedRun == 0
+                return
+            end
+            warning off
+            for ii = 1:numel(obj.AnalysisMethod)
+                obj.(obj.AnalysisMethod(ii)).save;
+                obj.(obj.AnalysisMethod(ii)).close;
+            end
+            warning on
+            obj.update
+        end
+
         function stop(obj)
             % Stop acquisition, finalize analysis, and clean up resources.
             %
@@ -803,7 +816,7 @@ classdef BecExp < Trial
             end
         end
 
-        function refresh(obj,anaylsisName)
+        function refresh(obj,anaylsisName,isRefreshData)
             % Recompute analysis data and refresh visualizations.
             %
             % Reprocesses all run data through the analysis pipeline and updates
@@ -815,10 +828,17 @@ classdef BecExp < Trial
             arguments
                 obj BecExp
                 anaylsisName string = string.empty
+                isRefreshData logical = false
             end
             if obj.IsHoldRefresh
                 obj.displayLog("Refresh is on hold.")
                 return
+            end
+
+            if isRefreshData
+                refreshMethod = "refreshData";
+            else
+                refreshMethod = "refresh";
             end
 
             nAnalysis = numel(obj.AnalysisMethod);
@@ -831,19 +851,19 @@ classdef BecExp < Trial
                 obj.displayLog("Refreshing the figures.")
                 if isempty(anaylsisName)
                     for ii = 1:nAnalysis
-                        obj.(obj.AnalysisMethod(ii)).refresh;
+                        obj.(obj.AnalysisMethod(ii)).(refreshMethod);
                     end
                 elseif ~isscalar(anaylsisName)
                     error("Input must be a string scalar.")
                 elseif ~ismember(anaylsisName,vertcat(obj.AnalysisOrder{:}))
                     warning(anaylsisName + " is not in AnalysisOrder. Will refresh all.")
                     for ii = 1:nAnalysis
-                        obj.(obj.AnalysisMethod(ii)).refresh;
+                        obj.(obj.AnalysisMethod(ii)).(refreshMethod);
                     end
                 else
                     % First refresh [anaylsisName]
                     if ismember(anaylsisName,obj.AnalysisMethod)
-                        obj.(anaylsisName).refresh
+                        obj.(anaylsisName).(refreshMethod)
                     end
 
                     % Then refresh everthing after [anaylsisName]
@@ -854,19 +874,27 @@ classdef BecExp < Trial
                         aMethodIdx = find(ismember(obj.AnalysisMethod,afterAnalysis),1);
                         if ~isempty(aMethodIdx)
                             for ii = aMethodIdx:nAnalysis
-                                obj.(obj.AnalysisMethod(ii)).refresh;
+                                obj.(obj.AnalysisMethod(ii)).(refreshMethod);
                             end
                         else
                             % Refresh everthing that are not in AanalysisOrder
                             extraAnalysis = obj.AnalysisMethod(~ismember(obj.AnalysisMethod,vertcat(obj.AnalysisOrder{:})));
                             for ii = 1:numel(extraAnalysis)
-                                obj.(extraAnalysis(ii)).refresh;
+                                obj.(extraAnalysis(ii)).(refreshMethod);
                             end
                         end
                     end
                 end
                 obj.displayLog("Refresh done.")
             end
+        end
+
+        function refreshData(obj,anaylsisName)
+            arguments
+                obj BecExp
+                anaylsisName string = string.empty
+            end
+            obj.refresh(anaylsisName,true)
         end
 
         function refreshFigure(obj)
