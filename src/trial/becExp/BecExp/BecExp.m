@@ -131,8 +131,17 @@ classdef BecExp < Trial
             obj.setAnalyzer;
 
             % Imaging Setting
+            if isfield(obj.ConfigParameter, 'IsPCIAvialable')
             obj.IsPCIAvailable=obj.ConfigParameter.IsPCIAvailable;
-            obj.PCIPhase=obj.ConfigParameter.PCIPhase;  
+            else
+                obj.IsPCIAvailable=1;
+            end
+
+            if isfield(obj.ConfigParameter, 'PCIPhase')
+                obj.PCIPhase=obj.ConfigParameter.PCIPhase;  
+            else
+                obj.IsPCIAvailable=-pi/3;
+            end
 
             % Finalize construction
             if ~isLoad

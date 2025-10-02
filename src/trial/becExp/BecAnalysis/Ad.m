@@ -145,7 +145,12 @@ classdef Ad < BecAnalysis
                     %phi=pi/2 for now, should be between -pi and pi
 
                     % phi=-pi/3; %Assumes additional thickness, use minus for etched
-                    phi = obj.PCIPhase;
+                    if isprop(obj, 'PCIPhase') % To deal with old experimental runs.
+
+                        phi = obj.PCIPhase;
+                    else
+                        phi = -pi/3;
+                    end
 
 
                     freqlistPCI_Imaging=becExp.HardwareData.hw_ImagingPci;
