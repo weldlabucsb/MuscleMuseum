@@ -23,6 +23,9 @@ classdef BecExp < Trial
         IsDensityAverage logical = false % Flag to control averaging when saving Od and Ad data and figures
         IsPCIAvailable logical = false % Logic value to determine whether PCI is avaialbe or not
         PCIPhase double = 0 %Value describing phase shift of phase spot plate for PCI
+        IsOverrideHwRoi = 0 %Logic value determining whether to override full camera ROI or not.
+        HwRoi double %1x4 array describing the new overridden HwRoi
+
     end
 
     properties(Dependent)
@@ -39,6 +42,7 @@ classdef BecExp < Trial
         IsHoldRefresh logical = false % Flag to temporarily disable figure refresh during operations
         IsAcquiring logical = false % Flag indicating whether images are currently being acquired
         IsOdPreview logical = false % Flag to toggle optical depth preview mode in analysis GUIs
+        IsRunning logical = false % Flag to indicate BecExp has started collecting data
     end
 
     properties (Hidden,Transient)
@@ -141,6 +145,18 @@ classdef BecExp < Trial
                 obj.PCIPhase=obj.ConfigParameter.PCIPhase;  
             else
                 obj.IsPCIAvailable=-pi/3;
+            end
+
+            if isfield(obj.ConfigParameter, 'IsOverrideHwRoi')
+                obj.IsOverrideHwRoi=obj.ConfigParameter.IsOverrideHwRoi;
+                obj.Acquisition.IsOverrideRoi=obj.ConfigParameter.IsOverrideHwRoi;
+            end
+
+            if isfield(obj.ConfigParameter, 'HwRoi')
+                if ~strcmp(obj.ConfigParameter.HwRoi, "Full")
+                    %Need to add code to BecControlPanel to make sure field
+                    %is never left on as NewROI.
+                end
             end
 
             % Finalize construction
@@ -622,6 +638,7 @@ classdef BecExp < Trial
             % Sets up hardware associations, starts camera acquisition (if auto mode)
             % or file watcher, enables the analysis pipeline, and initializes all
             % analysis figure windows.
+            obj.IsRunning = 1;
             obj.displayLog(" ")
             obj.displayLog("Trial #" + string(obj.SerialNumber) + ": Starting data acquisition and real-time analysis.")
             obj.countExistedLog
@@ -704,6 +721,7 @@ classdef BecExp < Trial
             % Stops camera or file watcher, unlocks phase locks, performs final
             % analysis refresh (with fringe removal if enabled), saves all figures,
             % and updates the trial database. Deletes empty trials with no runs.
+            obj.IsRunning=0;
             obj.displayLog(" ")
             obj.displayLog("Trial #" + string(obj.SerialNumber) + ": Stopping data acquisition and real-time analysis.")
 
@@ -753,6 +771,7 @@ classdef BecExp < Trial
             % Similar to :meth:`stop` but skips the final analysis refresh step
             % to save time. Still performs cleanup, saves figures, and updates
             % the database. Useful when immediate shutdown is needed.
+            obj.IsRunning=0;
             obj.displayLog(" ")
             obj.displayLog("Trial #" + string(obj.SerialNumber) + ": Stopping data acquisition and real-time analysis. Will not force refresh.")
 
@@ -1550,6 +1569,14 @@ classdef BecExp < Trial
             end
         end
 
+        function set.HwRoi(obj, s)
+            if ~obj.IsRunning
+                obj.Acquisition.HwRoi=s;
+            else
+                error("HwRoi should not be changed while experiment is running")
+            end
+        end
+
     end
 
     methods (Hidden)
@@ -1642,6 +1669,8 @@ classdef BecExp < Trial
             structcell = struct2cell(s);
             set(obj,propList(ia)',structcell(ib)')
         end
+
+        
 
     end
 
