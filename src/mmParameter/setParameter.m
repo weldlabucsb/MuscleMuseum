@@ -201,6 +201,8 @@ if exist("BecExpDataPrefix","var")
         "OdColormap";
         "AtomName";
         "ImagingStageList";
+        "IsPCIAvailable";
+        "PCIPhase";
     ];
     userParameter2 = intersect("BecExp"+userParameter,varList);
     userParameter = replace(userParameter2,"BecExp","");
@@ -212,6 +214,12 @@ if exist("BecExpDataPrefix","var")
     s.ControlAppName = "BecControl";
     if exist('CiceroLogOrigin','var')
         s.CiceroLogOrigin = CiceroLogOrigin;
+    end
+    if exist('IsPCIAvailable', 'var')
+        s.IsPCIAvailable=IsPCIAvailable;
+    end
+    if exist("PCIPhase", 'var')
+        s.PCIPhase=PCIPhase;
     end
     updateConfig("BecExpConfig",s)
 end

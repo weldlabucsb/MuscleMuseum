@@ -74,6 +74,9 @@ classdef Ad < BecAnalysis
             if ~isempty(t)
                 obj.CrossSectionData = t.CrossSection{1};
             end
+
+            obj.IsPCIAvailable=becExp.IsPCIAvailable;
+            obj.PCIPhase=becExp.PCIPhase;
         end
     end
 
@@ -141,8 +144,15 @@ classdef Ad < BecAnalysis
                     %Needs to obtain phase plate for imaging, assume
                     %phi=pi/2 for now, should be between -pi and pi
 
-                    phi=-pi/3; %Assumes additional thickness, use minus for etched
-                    
+                    % phi=-pi/3; %Assumes additional thickness, use minus for etched
+                    if isprop(obj, 'PCIPhase') % To deal with old experimental runs.
+
+                        phi = obj.PCIPhase;
+                    else
+                        phi = -pi/3;
+                    end
+
+
                     freqlistPCI_Imaging=becExp.HardwareData.hw_ImagingPci;
                     freqPCI_Imaging=freqlistPCI_Imaging(runIdx);
 
