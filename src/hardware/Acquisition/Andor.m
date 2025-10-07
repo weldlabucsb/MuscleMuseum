@@ -101,6 +101,10 @@ classdef Andor < Acquisition
             % messages for parameter setup, Start, data transfer, and Stop.
             % Uses :class:`parallel.pool.PollableDataQueue` for communication.
             % Send the worker queue to the client
+            isUseTimeout=1;
+            timeoutTime=1.5;
+            firstpictime=convertTo(datetime, 'posixtime')+9999;
+            imagecollecting=0;
             wq = parallel.pool.PollableDataQueue;
             send(cq,wq);
 
@@ -120,6 +124,7 @@ classdef Andor < Acquisition
             isAcq = false;
             acqMode = "Absorption";
             bitPerSample = 16;
+            FreeInternalMemory();
 
             while true
                 pause(0.1)
@@ -182,6 +187,11 @@ classdef Andor < Acquisition
                     [~, firstIndex, lastIndex] = GetNumberNewImages();
 
                     %% Send image data to the client
+
+                    if ((lastIndex - firstIndex + 1) >=1) && ((lastIndex - firstIndex + 1) < groupSize) && ~imagecollecting
+                        firstpictime=convertTo(datetime, 'posixtime');
+                        imagecollecting=1;
+                    end
                     if (lastIndex - firstIndex + 1) == groupSize
                         switch acqMode
                             case "Absorption"
@@ -205,6 +215,13 @@ classdef Andor < Acquisition
                                 CheckWarning(ret);
                                 send(cdq,mData)
                         end
+                        firstpictime=convertTo(datetime, 'posixtime')+9999;
+                        imagecollecting=0;
+                    end
+                    if convertTo(datetime,'posixtime')>(firstpictime+timeoutTime) && imagecollecting==1 && isUseTimeout
+                        FreeInternalMemory()
+                        firstpictime=convertTo(datetime, 'posixtime')+9999;
+                        imagecollecting=0;
                     end
                     
                     %% Stop
