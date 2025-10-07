@@ -1,9 +1,12 @@
 classdef SineFit1D < FitData1D
     % Sine function fit for one-dimensional data.
     %
-    % Fits a sine function of the form A*sin(2*pi*f*x + phi) + C to experimental data.
+    % Fits a sine function of the form :math:`A\,\sin(2\pi f x + \phi) + C` to experimental data.
     % Automatically estimates amplitude, frequency, phase, and offset from the data
     % using Fourier transform analysis.
+    %
+    % - **Formula**: :math:`y = A\,\sin(2\pi f x + \phi) + C`
+    % - **Coefficients**: :math:`A` (amplitude), :math:`f` (frequency), :math:`\phi` (phase), :math:`C` (offset)
     %
     % **Example1:**
     %
@@ -41,21 +44,11 @@ classdef SineFit1D < FitData1D
             % :param rawData: Input data as n x 2 matrix [x, y]
             % :type rawData: double array
             %
-            % **Example:**
-            %
-            % .. code-block:: matlab
-            %
-            %     data = [1:10; randn(1,10)].';
-            %     sineFit = SineFit1D(data);
-            %
             obj@FitData1D(rawData)
         end
         
         function setFormula(obj)
             % Set the sine fit formula.
-            %
-            % Formula: A*sin(2*pi*f*x + phi) + C
-            % Parameters: A (amplitude), f (frequency), phi (phase), C (offset)
             %
             obj.Func = fittype('A * sin(2 * pi * f * x + phi) + C','independent', {'x'},...
                 'coefficients', {'A', 'f', 'phi','C'});

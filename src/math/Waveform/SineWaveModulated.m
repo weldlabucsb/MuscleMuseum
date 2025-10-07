@@ -32,34 +32,27 @@ classdef SineWaveModulated < ModulatedWaveform
         function obj = SineWaveModulated(options)
             %Construct a SineWaveModulated object.
             %
-            % :param samplingRate: Sampling rate in Hz (default: inherited)
+            % :param samplingRate: Sampling rate in Hz (default: [])
             % :type samplingRate: double, optional
             % :param startTime: Start time in seconds (default: 0)
             % :type startTime: double, optional
-            % :param duration: Duration in seconds (default: inherited)
+            % :param duration: Duration in seconds (default: [])
             % :type duration: double, optional
-            % :param amplitude: Peak-to-peak amplitude (default: inherited)
+            % :param amplitude: Peak-to-peak amplitude (default: [])
             % :type amplitude: double, optional
             % :param offset: DC offset (default: 0)
             % :type offset: double, optional
-            % :param frequency: Carrier frequency in Hz (default: inherited)
+            % :param frequency: Carrier frequency in Hz (default: [])
             % :type frequency: double, optional
             % :param phase: Initial phase in radians (default: 0)
             % :type phase: double, optional
             % :param amplitudeModulation: Amplitude modulation waveform (default: [])
-            % :type amplitudeModulation: Waveform, optional
+            % :type amplitudeModulation: :class:`WaveformList`, optional
             % :param frequencyModulation: Frequency modulation waveform (default: [])
-            % :type frequencyModulation: Waveform, optional
+            % :type frequencyModulation: :class:`WaveformList`, optional
             % :param phaseModulation: Phase modulation waveform (default: [])
-            % :type phaseModulation: Waveform, optional
+            % :type phaseModulation: :class:`WaveformList`, optional
             %
-            % **Example:**
-            %
-            % .. code-block:: matlab
-            %
-            %     ampMod = SineWave(frequency = 10, amplitude = 0.5);
-            %     sine = SineWaveModulated(frequency = 1000, amplitude = 1.0, ...
-            %                              amplitudeModulation = ampMod);
             arguments
                 options.samplingRate double = [];
                 options.startTime double = 0;

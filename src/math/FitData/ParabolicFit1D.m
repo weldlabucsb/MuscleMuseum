@@ -1,8 +1,11 @@
 classdef ParabolicFit1D < FitData1D
     % Parabolic function fit for one-dimensional data.
     %
-    % Fits a parabolic function of the form y = ax^2 + bx + c to experimental data.
+    % Fits a parabolic function of the form :math:`y = a\,x^2 + b\,x + c` to experimental data.
     % Uses MATLAB's built-in poly2 fit type for efficient quadratic regression.
+    %
+    % - **Formula**: :math:`y = a\,x^2 + b\,x + c`
+    % - **Coefficients**: :math:`a` (quadratic), :math:`b` (linear), :math:`c` (constant)
     %
     % **Example1:**
     %
@@ -39,21 +42,11 @@ classdef ParabolicFit1D < FitData1D
             % :param rawData: Input data as n x 2 matrix [x, y]
             % :type rawData: double array
             %
-            % **Example:**
-            %
-            % .. code-block:: matlab
-            %
-            %     data = [1:10; randn(1,10)].';
-            %     parabolicFit = ParabolicFit1D(data);
-            %
             obj@FitData1D(rawData)
         end
 
         function setFormula(obj)
             % Set the parabolic fit formula.
-            %
-            % Formula: y = ax^2 + bx + c (poly2)
-            % Parameters: a (quadratic), b (linear), c (constant)
             %
             obj.Func = fittype('poly2');
         end

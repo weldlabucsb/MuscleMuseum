@@ -156,32 +156,22 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">database</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="connectPsqlDatabase.html">connectPsqlDatabase</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">createReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="createWriter.html">createWriter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="findTimeRangeData.html">findTimeRangeData</a></li>
-<li class="toctree-l3"><a class="reference internal" href="findTodayData.html">findTodayData</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pgFetch.html">pgFetch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pgFetchHook.html">pgFetchHook</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pgRead.html">pgRead</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pgReadHook.html">pgReadHook</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pgUpdate.html">pgUpdate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pgWrite.html">pgWrite</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pgWriteHook.html">pgWriteHook</a></li>
-<li class="toctree-l3"><a class="reference internal" href="quoteTableColumn.html">quoteTableColumn</a></li>
-<li class="toctree-l3"><a class="reference internal" href="setDatabase.html">setDatabase</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../field/index.html">field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">hardware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -405,8 +395,25 @@ document.write(`
 <dl class="mat function">
 <dt class="sig sig-object mat" id="createReader">
 <span class="sig-name descname"><span class="pre">createReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">databaseName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/database/func/createReader.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#createReader" title="Link to this definition">#</a></dt>
-<dd><p>createWriter Create a writer connection to the specific database.
-“databaseName” has to be a stored MATLAB datasource</p>
+<dd><p>Create a PostgreSQL reader connection to the specified database.</p>
+<p>Establishes a database connection with read-only privileges using predefined
+reader credentials. The database name must be a stored MATLAB datasource.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>databaseName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Name of the MATLAB-configured datasource</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>PostgreSQL connection with read-only access</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>database.postgre.connection</p>
+</dd>
+</dl>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">conn</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">createReader</span><span class="p">(</span><span class="s">&quot;myDatabase&quot;</span><span class="p">);</span>
+<span class="n">data</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">pgFetch</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;SELECT * FROM myTable&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>

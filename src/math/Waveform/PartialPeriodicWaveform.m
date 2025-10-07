@@ -10,7 +10,7 @@ classdef (Abstract) PartialPeriodicWaveform < Waveform
     % .. code-block:: matlab
     %
     %     % Create a pulse with rise and fall times
-    %     pulse = TrapezoidalPulse(amplitude = 2.0, frequency = 1000, ...
+    %     pulse = TrapezoidalPulse(amplitude = 2.0, ...
     %                              riseTime = 0.001, fallTime = 0.001);
     %     pulse.plot();
     %
@@ -24,7 +24,7 @@ classdef (Abstract) PartialPeriodicWaveform < Waveform
     
     properties
         Amplitude double = 0 % Peak-to-peak amplitude, usually in Volts.
-        Offset double = 0 % Offest, usually in Volts.
+        Offset double = 0 % Offset, usually in Volts.
         Frequency double {mustBePositive} = 100 % In Hz
         Phase double = 0 % In radians
         RiseTime double {mustBeNonnegative} = 0 % In s - Rise transition time.
@@ -133,7 +133,7 @@ classdef (Abstract) PartialPeriodicWaveform < Waveform
             %
             % :return: Vector of sample values for one cycle
             % :rtype: double
-            if obj.NRepeat == 1 && isempty(obj.SampleExtra)
+            if obj.NRepeat == 1 && isempty(obj.SampleExtra) && obj.PeriodicStartTime ~= obj.PeriodicEndTime
                 tFunc = obj.TimeFunc;
                 t = obj.PeriodicStartTime : obj.TimeStep : (obj.PeriodicEndTime -  - obj.TimeStep);
                 s = tFunc(t);

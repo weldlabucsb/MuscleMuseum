@@ -1,38 +1,47 @@
 classdef Imaging < BecAnalysis
-    %IMAGING Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`Imaging` compute photon counts and saturation parameter statistics.
+    %
+    % Converts ROI data to mean light/dark counts and saturation parameter
+    % :math:`s = (\hbar\omega/I_\mathrm{sat}) (I_\mathrm{light}-I_\mathrm{dark}) / t` with efficiency
+    % corrections, plots 1D error bars or 2D maps, and tracks a propagation
+    % version accounting for atom/light averaging.
+    %
+    % **Associated Charts:**
+    %   - Chart(1): "Imaging analysis" - Saturation parameter and photon count plots
 
     properties (SetAccess = protected)
-        SaturationParameterMean double %I/I_sat, averaged over ROI
-        LightMean double %averaged over the ROI
-        DarkMean double %averaged over the ROI
-        ImagingTime double = []
-        ImagingTimeUnit string
-        QuantumEfficiency double = 1 %read from the camera specs
-        Transmission double = 1 %read from the camera specs
+        SaturationParameterMean double % Saturation parameter :math:`s = I/I_\mathrm{sat}` averaged over ROI per run
+        LightMean double % Mean light photon counts over ROI per run [counts]
+        DarkMean double % Mean dark photon counts over ROI per run [counts]
+        ImagingTime double = [] % Imaging pulse exposure time per run [time units]
+        ImagingTimeUnit string % Unit string for imaging time from variable settings
+        QuantumEfficiency double = 1 % Camera quantum efficiency at imaging wavelength [dimensionless]
+        Transmission double = 1 % Overall optical system transmission factor [dimensionless]
     end
 
     properties
-        ImagingStage string = "LF" % LF:low-field. HF:high-field. NI:non-inter
-        ImagingMethod string = "Absorption"
+        ImagingStage string = "LF" % Magnetic field stage: "LF" (low-field), "HF" (high-field), "NI" (non-interacting)
+        ImagingMethod string = "Absorption" % Imaging technique: "Absorption", "Dispersive", "Fluorescence", etc.
     end
 
     properties (SetAccess = protected, Hidden)
-        Prefactor %For calculating SaturationParameter
+        Prefactor % Conversion prefactor :math:`\hbar\omega/(\text{pixel area} \cdot I_\mathrm{sat} \cdot t_\mathrm{unit})` for saturation parameter
     end
 
     properties (Dependent)
-        SaturationParameterMeanOverall double %I/I_sat, averaged over ROI and all runs
+        SaturationParameterMeanOverall double % Overall saturation parameter :math:`\langle s \rangle` averaged over ROI and all runs
     end
 
     properties (Transient)
-        SaturationParameterPropagation % (s_atom + s_light)/2, 2D distribution. This accounts for the propagation effects
+        SaturationParameterPropagation % Spatially-resolved saturation parameter :math:`s(y,x) = (s_\mathrm{atom} + s_\mathrm{light})/2` per run
     end
 
     methods
         function obj = Imaging(becExp)
-            %IMAGING Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct :class:`Imaging` analyzer.
+            %
+            % :param becExp: Owning experiment
+            % :type becExp: :class:`BecExp`
             obj@BecAnalysis(becExp)
             obj.Chart(1) = Chart(...
                 name = "Imaging analysis",...
@@ -62,6 +71,10 @@ classdef Imaging < BecAnalysis
         end
 
         function initialize(obj)
+            % Initialize plots and precompute constants for imaging analysis.
+            %
+            % Sets up dual subplot layout for saturation parameter and photon counts,
+            % initializes data storage arrays, and configures plot properties.
             fig = obj.Chart(1).initialize;
             obj.SaturationParameterMean = 0;
             obj.LightMean = 0;
@@ -101,6 +114,14 @@ classdef Imaging < BecAnalysis
         end
 
         function updateData(obj,runIdx)
+            % Compute imaging metrics for a given run.
+            %
+            % Calculates mean photon counts (corrected for quantum efficiency and
+            % transmission), saturation parameter, and spatially-resolved saturation
+            % map for downstream absorption density analysis.
+            %
+            % :param runIdx: Run index to process
+            % :type runIdx: double
             becExp = obj.BecExp;
             roiData = squeeze(becExp.Od.RoiData(:,:,runIdx,:));
             eff = obj.QuantumEfficiency * obj.Transmission;
@@ -117,6 +138,7 @@ classdef Imaging < BecAnalysis
         end
 
         function updateFigure(obj,~)
+            % Update figure for 1D or 2D scans based on current data.
             % Check if we have the figure handle
             if ishandle(obj.Chart(1).Figure)
                 fig = figure(obj.Chart(1).Figure);
@@ -133,15 +155,21 @@ classdef Imaging < BecAnalysis
         end
         
         function updateFigure1D(obj, fig)
-            % 1D plotting logic (original implementation)
+            % Update 1D plots with errorbar series for photon counts and saturation.
+            %
+            % Displays light/dark photon counts and saturation parameter as
+            % error bar plots versus the scanned parameter.
+            %
+            % :param fig: Figure handle
+            % :type fig: matlab.ui.Figure
             % Parameters
             varList = obj.BecExp.ScannedVariableList;
             ax = findobj(fig,'Type','Axes');
 
             % Find x, y, and error plot data
-            [xLight,yLight,stdLight] = computeStd(varList,obj.LightMean);
-            [xDark,yDark,stdDark] = computeStd(varList,obj.DarkMean);
-            [xSat,ySat,stdSat] = computeStd(varList,obj.SaturationParameterMean);
+            [xLight,yLight,stdLight] = computeAveErr(varList,obj.LightMean);
+            [xDark,yDark,stdDark] = computeAveErr(varList,obj.DarkMean);
+            [xSat,ySat,stdSat] = computeAveErr(varList,obj.SaturationParameterMean);
 
             % Update imaging counts plots
             l = findobj(ax(1),'Type','ErrorBar');
@@ -168,7 +196,13 @@ classdef Imaging < BecAnalysis
         end
         
         function updateFigure2D(obj, fig)
-            % 2D plotting logic
+            % Update 2D plots with heatmaps for saturation and photon differences.
+            %
+            % Creates density plots showing saturation parameter and light-dark
+            % difference across the two-dimensional parameter space.
+            %
+            % :param fig: Figure handle
+            % :type fig: matlab.ui.Figure
             becExp = obj.BecExp;
             
             % Get 2D plot data
@@ -191,7 +225,7 @@ classdef Imaging < BecAnalysis
             
             % Create density plot for saturation parameter
             imagesc(ax1, xData, yData, sat2D);
-            ax1.Colormap = jet;
+            ax1.Colormap = sky;
             colorbar(ax1);
             ax1.XLabel.String = becExp.XLabel;
             ax1.XLabel.Interpreter = "latex";
@@ -210,7 +244,7 @@ classdef Imaging < BecAnalysis
             % Create combined plot (light - dark)
             combined2D = light2D - dark2D;
             imagesc(ax2, xData, yData, combined2D);
-            ax2.Colormap = jet;
+            ax2.Colormap = sky;
             colorbar(ax2);
             ax2.XLabel.String = becExp.XLabel;
             ax2.XLabel.Interpreter = "latex";
@@ -227,10 +261,19 @@ classdef Imaging < BecAnalysis
         end
 
         function sMean = get.SaturationParameterMeanOverall(obj)
+            % Compute overall mean saturation parameter across all runs.
+            %
+            % :return: Average saturation parameter :math:`\langle s \rangle` over all runs
+            % :rtype: double
             sMean = mean(obj.SaturationParameterMean(:));
         end
 
         function refresh(obj)
+            % Recompute imaging metrics for all runs and refresh visualization.
+            %
+            % Reloads all ROI data, recalculates photon counts and saturation
+            % parameters, updates the spatially-resolved saturation map, and
+            % refreshes the display plots.
             obj.initialize;
             becExp = obj.BecExp;
             roiData = becExp.Od.RoiData(:,:,:,:);

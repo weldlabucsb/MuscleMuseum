@@ -1,4 +1,16 @@
 function setDatabase()
+% Initialize PostgreSQL database infrastructure for the experiment system.
+%
+% Sets up local and remote PostgreSQL databases, creates required databases,
+% tables, and user accounts with appropriate permissions. Loads configuration
+% from :class:`DatabaseServerConfig` and :class:`DatabaseConfig`.
+%
+% **Example:**
+%
+% .. code-block:: matlab
+%
+%    setDatabase();  % Initialize all databases and users
+%
 %% Load database configuration
 disp(newline + "Setting PostgreSQL dataBase...")
 p = DatabaseServerConfig;

@@ -43,6 +43,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/atom/TwoJManifold';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -156,30 +157,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">atom</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="Alkali.html">Alkali</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Atom.html">Atom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AtomManifold.html">AtomManifold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Divalent.html">Divalent</a></li>
-<li class="toctree-l3"><a class="reference internal" href="OneFManifold.html">OneFManifold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="OneJManifold.html">OneJManifold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TwoAtom.html">TwoAtom</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">TwoJManifold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TwoJManifoldDivalent.html">TwoJManifoldDivalent</a></li>
-<li class="toctree-l3"><a class="reference internal" href="angularMomentumList.html">angularMomentumList</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getAtom.html">getAtom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lithiumDME.html">lithiumDME</a></li>
-<li class="toctree-l3"><a class="reference internal" href="magneticAngularMomentum.html">magneticAngularMomentum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="saveAtom.html">saveAtom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="spinMatrices.html">spinMatrices</a></li>
-<li class="toctree-l3"><a class="reference internal" href="strontiumDME.html">strontiumDME</a></li>
-<li class="toctree-l3"><a class="reference internal" href="totalAngularMomentum.html">totalAngularMomentum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="uncoupledSpinBasis.html">uncoupledSpinBasis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="uncoupledSpinBasisTransformation.html">uncoupledSpinBasisTransformation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="uncoupledSpinMatrices.html">uncoupledSpinMatrices</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../database/index.html">database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../field/index.html">field</a></li>
@@ -187,7 +173,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -412,222 +397,495 @@ document.write(`
 <dt class="sig sig-object mat" id="TwoJManifold">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TwoJManifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">nG</span></em>, <em class="sig-param"><span class="pre">lG</span></em>, <em class="sig-param"><span class="pre">jG</span></em>, <em class="sig-param"><span class="pre">nE</span></em>, <em class="sig-param"><span class="pre">lE</span></em>, <em class="sig-param"><span class="pre">jE</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/AtomManifold/TwoJManifold.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TwoJManifold" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="AtomManifold.html#AtomManifold" title="AtomManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">AtomManifold</span></code></a></p>
-<p>TWOJ Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#TwoJManifold" title="TwoJManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">TwoJManifold</span></code></a> ground/excited manifolds (<span class="math notranslate nohighlight">\(J_g\rightarrow J_e\)</span>).</p>
+<p>Builds combined state list, operators, linewidths, reduced DME, saturation
+intensity and Doppler temperature for an alkali D-line transition.</p>
+<p><strong>Examples:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Example1: Build D1/D2 manifolds from an alkali atom</span>
+<span class="n">alk</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Alkali</span><span class="p">(</span><span class="s">&quot;Rubidium87&quot;</span><span class="p">);</span>
+<span class="n">D1</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="n">alk</span><span class="p">.</span><span class="n">D1</span><span class="p">;</span><span class="w">                    </span><span class="c">% :class:`TwoJManifold` (D1)</span>
+<span class="n">D2</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="n">alk</span><span class="p">.</span><span class="n">D2</span><span class="p">;</span><span class="w">                    </span><span class="c">% :class:`TwoJManifold` (D2)</span>
+<span class="n">Isat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">D2</span><span class="p">.</span><span class="n">SaturationIntensity</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">D2</span><span class="p">.</span><span class="n">FGround</span><span class="p">),</span><span class="nb">max</span><span class="p">(</span><span class="n">D2</span><span class="p">.</span><span class="n">FGround</span><span class="p">),</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                              </span><span class="nb">max</span><span class="p">(</span><span class="n">D2</span><span class="p">.</span><span class="n">FExcited</span><span class="p">),</span><span class="nb">max</span><span class="p">(</span><span class="n">D2</span><span class="p">.</span><span class="n">FExcited</span><span class="p">));</span>
+</pre></div>
+</div>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Example2: Hamiltonians and dressed states vs bias field</span>
+<span class="n">B</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="n">MagneticField</span><span class="p">(</span><span class="n">bias</span><span class="p">=[</span><span class="mi">0</span><span class="p">;</span><span class="mi">0</span><span class="p">;</span><span class="mf">2e-4</span><span class="p">]);</span>
+<span class="n">Hz</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="n">D2</span><span class="p">.</span><span class="n">HamiltonianAtomBiasField</span><span class="p">(</span><span class="n">B</span><span class="p">);</span>
+<span class="p">[</span><span class="n">tbl</span><span class="p">,</span><span class="n">U</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">D2</span><span class="p">.</span><span class="n">BiasDressedStateList</span><span class="p">(</span><span class="n">B</span><span class="p">);</span>
+</pre></div>
+</div>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="TwoJManifold.TwoJManifold">
 <span class="sig-name descname"><span class="pre">TwoJManifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">nG</span></em>, <em class="sig-param"><span class="pre">lG</span></em>, <em class="sig-param"><span class="pre">jG</span></em>, <em class="sig-param"><span class="pre">nE</span></em>, <em class="sig-param"><span class="pre">lE</span></em>, <em class="sig-param"><span class="pre">jE</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.TwoJManifold" title="Link to this definition">#</a></dt>
-<dd><p>TWOJ Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct a <a class="reference internal" href="#TwoJManifold" title="TwoJManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">TwoJManifold</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atom</strong> (<a class="reference internal" href="Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a>) – Atom context</p></li>
+<li><p><strong>nG</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Ground principal quantum number</p></li>
+<li><p><strong>lG</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Ground <span class="math notranslate nohighlight">\(L\)</span></p></li>
+<li><p><strong>jG</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Ground <span class="math notranslate nohighlight">\(J\)</span></p></li>
+<li><p><strong>nE</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Excited principal quantum number</p></li>
+<li><p><strong>lE</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Excited <span class="math notranslate nohighlight">\(L\)</span></p></li>
+<li><p><strong>jE</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Excited <span class="math notranslate nohighlight">\(J\)</span></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.DopplerTemperature">
 <span class="sig-name descname"><span class="pre">DopplerTemperature</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifold.DopplerTemperature" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Doppler temperature [K]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.EnergyExcited">
 <span class="sig-name descname"><span class="pre">EnergyExcited</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifold.EnergyExcited" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Excited hyperfine energies [Hz]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.EnergyGround">
 <span class="sig-name descname"><span class="pre">EnergyGround</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifold.EnergyGround" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Ground hyperfine energies [Hz]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.FExcited">
 <span class="sig-name descname"><span class="pre">FExcited</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifold.FExcited" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Excited hyperfine <span class="math notranslate nohighlight">\(F\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.FGround">
 <span class="sig-name descname"><span class="pre">FGround</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifold.FGround" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Ground hyperfine <span class="math notranslate nohighlight">\(F\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.FOperator">
 <span class="sig-name descname"><span class="pre">FOperator</span></span><em class="property"> <span class="pre">cell</span></em><a class="headerlink" href="#TwoJManifold.FOperator" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Hyperfine spin operators (block-diagonal)</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.HFSCoefficientExcited">
 <span class="sig-name descname"><span class="pre">HFSCoefficientExcited</span></span><a class="headerlink" href="#TwoJManifold.HFSCoefficientExcited" title="Link to this definition">#</a></dt>
-<dd><p>[A,B]</p>
+<dd><p>[A,B] excited hyperfine coefficients (Hz)</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.HFSCoefficientGround">
 <span class="sig-name descname"><span class="pre">HFSCoefficientGround</span></span><a class="headerlink" href="#TwoJManifold.HFSCoefficientGround" title="Link to this definition">#</a></dt>
-<dd><p>[A,B]</p>
+<dd><p>[A,B] ground hyperfine coefficients (Hz)</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.IOperator">
 <span class="sig-name descname"><span class="pre">IOperator</span></span><em class="property"> <span class="pre">cell</span></em><a class="headerlink" href="#TwoJManifold.IOperator" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Nuclear spin operators (block-diagonal)</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.JExcited">
 <span class="sig-name descname"><span class="pre">JExcited</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifold.JExcited" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Excited <span class="math notranslate nohighlight">\(J\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.JGround">
 <span class="sig-name descname"><span class="pre">JGround</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifold.JGround" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Ground <span class="math notranslate nohighlight">\(J\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.JOperator">
 <span class="sig-name descname"><span class="pre">JOperator</span></span><em class="property"> <span class="pre">cell</span></em><a class="headerlink" href="#TwoJManifold.JOperator" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Electronic spin operators (block-diagonal excited/ground)</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.LExcited">
 <span class="sig-name descname"><span class="pre">LExcited</span></span><em class="property"> <span class="pre">int32</span></em><a class="headerlink" href="#TwoJManifold.LExcited" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Excited <span class="math notranslate nohighlight">\(L\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.LGround">
 <span class="sig-name descname"><span class="pre">LGround</span></span><em class="property"> <span class="pre">int32</span></em><a class="headerlink" href="#TwoJManifold.LGround" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Ground <span class="math notranslate nohighlight">\(L\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.LandegFExcited">
 <span class="sig-name descname"><span class="pre">LandegFExcited</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifold.LandegFExcited" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Excited Landé <span class="math notranslate nohighlight">\(g_F\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.LandegFGround">
 <span class="sig-name descname"><span class="pre">LandegFGround</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifold.LandegFGround" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Ground Landé <span class="math notranslate nohighlight">\(g_F\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.LandegJExcited">
 <span class="sig-name descname"><span class="pre">LandegJExcited</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifold.LandegJExcited" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Excited Landé <span class="math notranslate nohighlight">\(g_J\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.LandegJGround">
 <span class="sig-name descname"><span class="pre">LandegJGround</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifold.LandegJGround" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Ground Landé <span class="math notranslate nohighlight">\(g_J\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.LifetimeExcited">
 <span class="sig-name descname"><span class="pre">LifetimeExcited</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifold.LifetimeExcited" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Excited-state lifetime [s]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.MFExcited">
 <span class="sig-name descname"><span class="pre">MFExcited</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifold.MFExcited" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Excited <span class="math notranslate nohighlight">\(M_F\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.MFGround">
 <span class="sig-name descname"><span class="pre">MFGround</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifold.MFGround" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Ground <span class="math notranslate nohighlight">\(M_F\)</span></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.NExcited">
 <span class="sig-name descname"><span class="pre">NExcited</span></span><em class="property"> <span class="pre">int32</span></em><a class="headerlink" href="#TwoJManifold.NExcited" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Excited principal quantum number</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.NGround">
 <span class="sig-name descname"><span class="pre">NGround</span></span><em class="property"> <span class="pre">int32</span></em><a class="headerlink" href="#TwoJManifold.NGround" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Ground principal quantum number</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.NaturalLinewidth">
 <span class="sig-name descname"><span class="pre">NaturalLinewidth</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifold.NaturalLinewidth" title="Link to this definition">#</a></dt>
-<dd><p>One should keep in mind that there is no 2pi for consistency. e.g. for Lithium7 it is 5.8724e6 Hz</p>
+<dd><p>Natural linewidth [Hz] (no 2π)</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.ReducedDipoleMatrixElement">
 <span class="sig-name descname"><span class="pre">ReducedDipoleMatrixElement</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifold.ReducedDipoleMatrixElement" title="Link to this definition">#</a></dt>
-<dd><p>Following steck’s convention as &lt;Jg||d||Je&gt;, in SI unit.</p>
+<dd><p><span class="math notranslate nohighlight">\(\langle J_g\Vert d\Vert J_e\rangle\)</span> [C·m]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.ReducedSaturationIntensity">
 <span class="sig-name descname"><span class="pre">ReducedSaturationIntensity</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifold.ReducedSaturationIntensity" title="Link to this definition">#</a></dt>
-<dd><p>In SI unit</p>
+<dd><p>Reduced Isat [W/m^2]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.ReducedSaturationIntensityLu">
 <span class="sig-name descname"><span class="pre">ReducedSaturationIntensityLu</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#TwoJManifold.ReducedSaturationIntensityLu" title="Link to this definition">#</a></dt>
-<dd><p>In lab unit. mW/cm^2</p>
+<dd><p>Reduced Isat [mW/cm^2]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="TwoJManifold.StateList">
 <span class="sig-name descname"><span class="pre">StateList</span></span><em class="property"> <span class="pre">table</span></em><a class="headerlink" href="#TwoJManifold.StateList" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Combined state table with labels and flags</p>
+</dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="TwoJManifold.BiasDressedStateList">
 <span class="sig-name descname"><span class="pre">BiasDressedStateList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">isPlot</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.BiasDressedStateList" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Compute dressed states versus bias field and assemble blocks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>B</strong> (<a class="reference internal" href="../field/MagneticField.html#MagneticField" title="MagneticField"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">MagneticField</span></code></a>) – Magnetic field</p></li>
+<li><p><strong>isPlot</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">logical,</span> <span class="pre">optional</span></code></span>) – Plot results</p></li>
+<li><p><strong>samplingSize</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Number of bias samples</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dressed state table, unitary U, and branch map</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>table, double, cell</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="TwoJManifold.DipoleMatrixElement">
 <span class="sig-name descname"><span class="pre">DipoleMatrixElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fG</span></em>, <em class="sig-param"><span class="pre">mfG</span></em>, <em class="sig-param"><span class="pre">fE</span></em>, <em class="sig-param"><span class="pre">mfE</span></em>, <em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.DipoleMatrixElement" title="Link to this definition">#</a></dt>
-<dd><p>Dipole Matrix element &lt;fG,mfG|dq|fE,mfE&gt;, in SI unit. The
-sign of q is reversed to accomodate to Steck’s convention.
-Now the selection rule should be mfE + q = mfG.</p>
+<dd><p>Dipole matrix element <span class="math notranslate nohighlight">\(\langle f_G,m_F^G| d_q | f_E,m_F^E\rangle\)</span> [C·m].</p>
+<p>Selection rule: <span class="math notranslate nohighlight">\(m_F^E + q = m_F^G\)</span>. Sign of <span class="math notranslate nohighlight">\(q\)</span>
+follows Steck’s convention.</p>
+<div class="math notranslate nohighlight">
+\[m_F^E = m_F^G + q\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fG</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Ground <span class="math notranslate nohighlight">\(F\)</span></p></li>
+<li><p><strong>mfG</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Ground <span class="math notranslate nohighlight">\(M_F\)</span></p></li>
+<li><p><strong>fE</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Excited <span class="math notranslate nohighlight">\(F'\)</span></p></li>
+<li><p><strong>mfE</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Excited <span class="math notranslate nohighlight">\(M_F'\)</span></p></li>
+<li><p><strong>q</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Spherical component (<span class="math notranslate nohighlight">\(-1,0,+1\)</span>)</p></li>
+<li><p><strong>U</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Basis transform</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dipole matrix element [C·m]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="TwoJManifold.DipoleMatrixElementNu">
 <span class="sig-name descname"><span class="pre">DipoleMatrixElementNu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fG</span></em>, <em class="sig-param"><span class="pre">mfG</span></em>, <em class="sig-param"><span class="pre">fE</span></em>, <em class="sig-param"><span class="pre">mfE</span></em>, <em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.DipoleMatrixElementNu" title="Link to this definition">#</a></dt>
-<dd><p>Dipole Matrix element &lt;fG,mfG|dq|fE,mfE&gt;, as multiples of the
-ReducedDipoleMatrixElement. Same numbers as in Steck’s Alkali
-D line Data.</p>
+<dd><p>Dipole matrix element normalized by reduced DME (Steck tables).</p>
+<div class="math notranslate nohighlight">
+\[d_\nu = \frac{\langle f_G m_F^G | d_q | f_E m_F^E \rangle}{\langle J_G \Vert d \Vert J_E \rangle}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dimensionless ratio</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>double</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="TwoJManifold.HamiltonianAtom">
 <span class="sig-name descname"><span class="pre">HamiltonianAtom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fRot</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.HamiltonianAtom" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Diagonal Hamiltonian with rotating-frame shift on excited states.</p>
+<div class="math notranslate nohighlight">
+\[H_a = U^\dagger \, \operatorname{diag}\big(E - f_\mathrm{rot}\,\chi_\mathrm{exc}\big) \, U\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fRot</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Rotating-frame frequency [Hz]</p></li>
+<li><p><strong>U</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Basis transform</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Hamiltonian matrix [Hz]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="TwoJManifold.HamiltonianAtomBiasField">
 <span class="sig-name descname"><span class="pre">HamiltonianAtomBiasField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.HamiltonianAtomBiasField" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Zeeman Hamiltonian from <a class="reference internal" href="OneJManifold.html#OneJManifold" title="OneJManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OneJManifold</span></code></a> blocks.</p>
+<div class="math notranslate nohighlight">
+\[H_Z = U^\dagger \, \mathrm{blkdiag}\big(H_Z^{(e)}, H_Z^{(g)}\big) \, U\]</div>
+<p>where each block uses <span class="math notranslate nohighlight">\(H_Z = \mu_B ( g_J \mathbf{J} + g_I \mathbf{I} )\cdot\mathbf{B} / h\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>B</strong> (<a class="reference internal" href="../field/MagneticField.html#MagneticField" title="MagneticField"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">MagneticField</span></code></a>) – Magnetic field object</p></li>
+<li><p><strong>U</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Basis transform</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Hamiltonian matrix [Hz]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="TwoJManifold.HamiltonianAtomLaser">
 <span class="sig-name descname"><span class="pre">HamiltonianAtomLaser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">fRot</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.HamiltonianAtomLaser" title="Link to this definition">#</a></dt>
-<dd><p>In Hz</p>
+<dd><p>Atom-light interaction Hamiltonian <span class="math notranslate nohighlight">\(H_\mathrm{AL}(t)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[H_{\mathrm{AL}}(t) = \sum_{q=-1}^{+1} \frac{\Omega^*}{2}\, e_q\, \Sigma_q\, e^{i\Delta t} + \mathrm{h.c.}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>laser</strong> (<a class="reference internal" href="../field/Laser.html#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a>) – Driving field</p></li>
+<li><p><strong>fRot</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Rotating-frame frequency [Hz]</p></li>
+<li><p><strong>U</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Basis transform</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Function handle H(r,t) [Hz]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function_handle</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="TwoJManifold.HamiltonianAtomLaserOrigin">
+<span class="sig-name descname"><span class="pre">HamiltonianAtomLaserOrigin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">fRot</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.HamiltonianAtomLaserOrigin" title="Link to this definition">#</a></dt>
+<dd><p>Atom-light interaction Hamiltonian <span class="math notranslate nohighlight">\(H_\mathrm{AL}(t=0,r=0)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[H_{\mathrm{AL}}(t) = \sum_{q=-1}^{+1} \frac{\Omega^*}{2}\, e_q\, \Sigma_q\, e^{i\Delta t} + \mathrm{h.c.}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>laser</strong> (<a class="reference internal" href="../field/Laser.html#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a>) – Driving field</p></li>
+<li><p><strong>fRot</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Rotating-frame frequency [Hz]</p></li>
+<li><p><strong>U</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Basis transform</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Function handle H(r,t) [Hz]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function_handle</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="TwoJManifold.LaserDressedStateListLargeDetuning">
+<span class="sig-name descname"><span class="pre">LaserDressedStateListLargeDetuning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">laser</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.LaserDressedStateListLargeDetuning" title="Link to this definition">#</a></dt>
+<dd><p>Compute laser-dressed states for large detuning limit.</p>
+<p>Calculates the AC Stark-shifted energy levels for both ground and excited
+state manifolds in the presence of a laser field. The method combines
+dressed states from separate ground and excited manifolds, properly
+indexing and energy-shifting the excited states by the transition frequency.
+Valid in the large detuning limit where laser detuning exceeds hyperfine
+splitting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>laser</strong> (<span><a class="reference internal" href="../field/Laser.html#Laser" title="Laser"><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">Laser</span></code></a></span>) – <a class="reference internal" href="../field/Laser.html#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a> object specifying field parameters</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Combined state table with AC Stark energy shifts</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>table</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<p>Table with columns from <a class="reference internal" href="#TwoJManifold.StateList" title="TwoJManifold.StateList"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StateList</span></code></a> plus <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">EnergyShift</span></code> containing
+AC Stark shifts [Hz]. Excited states are energy-shifted by the transition
+frequency and indexed after ground states.</p>
+<p><strong>Notes:</strong></p>
+<p>The method creates separate <a class="reference internal" href="OneJManifold.html#OneJManifold" title="OneJManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OneJManifold</span></code></a> objects for ground and
+excited states, computes their individual AC Stark shifts, then combines
+them with proper energy referencing and state indexing.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="TwoJManifold.LaserDressedStateListSmallDetuning">
+<span class="sig-name descname"><span class="pre">LaserDressedStateListSmallDetuning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">isPlot</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.LaserDressedStateListSmallDetuning" title="Link to this definition">#</a></dt>
+<dd><p>Compute laser-dressed states for small detuning regime using exact diagonalization.</p>
+<p>Calculates AC Stark-shifted energy levels by exactly diagonalizing the combined
+atomic and atom-laser interaction Hamiltonians. Valid in the small detuning regime
+where the laser detuning is comparable to or smaller than the hyperfine splitting,
+allowing application of the rotating wave approximation. Uses adiabatic continuation
+via <code class="xref mat mat-func docutils literal notranslate"><span class="pre">eigenshuffle()</span></code> to track eigenstate evolution with laser intensity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>laser</strong> (<span><a class="reference internal" href="../field/Laser.html#Laser" title="Laser"><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">Laser</span></code></a></span>) – <a class="reference internal" href="../field/Laser.html#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a> object specifying field parameters</p></li>
+<li><p><strong>isPlot</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">logical,</span> <span class="pre">optional</span></code></span>) – Flag to generate AC Stark shift plot vs intensity</p></li>
+<li><p><strong>samplingSize</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Number of intensity points for adiabatic continuation (default: 1000)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dressed state table, unitary transformation matrix, and AC Stark map</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(table, double, cell)</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<ul class="simple">
+<li><p><strong>dressedStateList</strong>: Table with <a class="reference internal" href="#TwoJManifold.StateList" title="TwoJManifold.StateList"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">StateList</span></code></a> columns plus <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">EnergyShift</span></code> [Hz] and <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DressedState</span></code> eigenvectors</p></li>
+<li><p><strong>U</strong>: Unitary transformation matrix connecting bare to dressed states</p></li>
+<li><p><strong>acMap</strong>: Cell array <code class="docutils literal notranslate"><span class="pre">{intensityList,</span> <span class="pre">energyMatrix}</span></code> for plotting AC Stark shifts vs intensity</p></li>
+</ul>
+<p><strong>Notes:</strong></p>
+<p>The method constructs the total Hamiltonian <span class="math notranslate nohighlight">\(H = H_{\text{atom}} + \sqrt{s} H_{\text{AL}}\)</span>
+where <span class="math notranslate nohighlight">\(s\)</span> ranges from 0 to 1, corresponding to laser intensities from 0 to the full
+intensity. The <code class="xref mat mat-func docutils literal notranslate"><span class="pre">eigenshuffle()</span></code> algorithm ensures consistent eigenstate tracking
+during the adiabatic sweep, preventing level crossings from scrambling state assignments.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="TwoJManifold.LoweringOperator">
 <span class="sig-name descname"><span class="pre">LoweringOperator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.LoweringOperator" title="Link to this definition">#</a></dt>
-<dd><p>See Steck Eq. (7.407)</p>
+<dd><p>Spherical lowering operator (see Steck Eq. 7.407).</p>
+<div class="math notranslate nohighlight">
+\[\Sigma_q = \sum_{g,e} |g\rangle\langle e|\, d_\nu(g\leftarrow e;q)\]</div>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="TwoJManifold.ReducedRabiFrequency">
 <span class="sig-name descname"><span class="pre">ReducedRabiFrequency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">laser</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.ReducedRabiFrequency" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Reduced Rabi frequency for linearly polarized light.</p>
+<div class="math notranslate nohighlight">
+\[\Omega = -\sqrt{\frac{I}{2 I_{\mathrm{sat}}^{(\mathrm{red})}}}\, \Gamma\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>laser</strong> (<a class="reference internal" href="../field/Laser.html#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a>) – Driving field</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(\Omega\)</span> [Hz]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="TwoJManifold.SaturationIntensity">
 <span class="sig-name descname"><span class="pre">SaturationIntensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fG</span></em>, <em class="sig-param"><span class="pre">mfG</span></em>, <em class="sig-param"><span class="pre">fE</span></em>, <em class="sig-param"><span class="pre">mfE</span></em>, <em class="sig-param"><span class="pre">U</span></em><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.SaturationIntensity" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Saturation intensity for specified sublevels.</p>
+<div class="math notranslate nohighlight">
+\[I_{\mathrm{sat}} = \frac{I_{\mathrm{sat}}^{(\mathrm{red})}}{|d_\nu|^2}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\(I_{sat}\)</span> [W/m^2]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>double</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="TwoJManifold.getMIMJ">
 <span class="sig-name descname"><span class="pre">getMIMJ</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TwoJManifold.getMIMJ" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Compute <span class="math notranslate nohighlight">\((M_I,M_J)\)</span> labels by adiabatic mapping.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Table of MI, MJ per basis state</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>table</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd>
 </dl>

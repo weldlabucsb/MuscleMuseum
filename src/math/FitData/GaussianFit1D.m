@@ -1,8 +1,15 @@
 classdef GaussianFit1D < FitData1D
     % Gaussian function fit for one-dimensional data.
     %
-    % Fits a Gaussian function of the form A*exp(-(x-x0)^2/(2*sigma^2))+C to
+    % Fits a Gaussian function of the form :math:`A\,e^{-(x-x_0)^2/(2\sigma^2)}+C` to
     % experimental data. Automatically estimates initial parameters from the data.
+    %
+    % - **Formula**: :math:`y = A\,e^{-(x-x_0)^2/(2\sigma^2)} + C`
+    % - **Coefficients**:
+    %   - :math:`A`: amplitude
+    %   - :math:`x_0`: center
+    %   - :math:`\sigma`: width
+    %   - :math:`C`: offset
     %
     % **Example1:**
     %
@@ -40,21 +47,11 @@ classdef GaussianFit1D < FitData1D
             % :param rawData: Input data as n x 2 matrix [x, y]
             % :type rawData: double array
             %
-            % **Example:**
-            %
-            % .. code-block:: matlab
-            %
-            %     data = [1:10; randn(1,10)].';
-            %     gaussianFit = GaussianFit1D(data);
-            %
             obj@FitData1D(rawData)
         end
 
         function setFormula(obj)
             % Set the Gaussian fit formula.
-            %
-            % Formula: A*exp(-(x-x0)^2/(2*sigma^2))+C
-            % Parameters: A (amplitude), x0 (center), sigma (width), C (offset)
             %
             obj.Func = fittype('A*exp(-(x-x0)^2/(2*sigma^2))+C','independent', {'x'},...
                 'coefficients', {'A', 'x0', 'sigma','C'});

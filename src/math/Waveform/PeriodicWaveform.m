@@ -23,7 +23,7 @@ classdef (Abstract) PeriodicWaveform < Waveform
     
     properties
         Amplitude double = 0 % Peak-to-peak amplitude, usually in Volts.
-        Offset double = 0 % Offest, usually in Volts.
+        Offset double = 0 % Offset, usually in Volts.
         Frequency double {mustBePositive} = 100 % In Hz
         Phase double = 0 % In radians
     end

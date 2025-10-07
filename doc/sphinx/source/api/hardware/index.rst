@@ -32,11 +32,4 @@ hardware
    VescentSlice
    WaveformGenerator
    WgControlPanel
-   getAcq
-   getPl
-   getScope
-   getWg
    saveBecImageAbsorption
-   setBaslerConfig
-   setIxon888Config
-   setPcoConfig

@@ -1,6 +1,10 @@
 classdef (Abstract) TektronixScope < Scope
-    %TEKTRONIXOSCILLOSCOPE Summary of this class goes here
-    %   Detailed explanation goes here
+    %:class:`TektronixScope` base wrapper for Tektronix oscilloscopes.
+    %
+    % Provides connection, configuration, readout, and close helpers using
+    % MATLAB Quick-Control Oscilloscope. Implements :meth:`connect`, :meth:`set`,
+    % :meth:`read`, :meth:`close`, and :meth:`check` in terms of the common
+    % :class:`Scope` interface.
     properties (SetAccess = protected,Transient)
         Oscilloscope  % MATLAB Quick-Control Oscilloscope object
     end
@@ -17,6 +21,7 @@ classdef (Abstract) TektronixScope < Scope
         end
 
         function connect(obj)
+            % Connect to the instrument using :attr:`ResourceName`.
             obj.Oscilloscope = oscilloscope;
             obj.Oscilloscope.Timeout = 5;
             obj.Oscilloscope.Resource = obj.ResourceName;
@@ -24,6 +29,12 @@ classdef (Abstract) TektronixScope < Scope
         end
 
         function set(obj)
+            % Apply acquisition and trigger settings and per-channel config.
+            %
+            % Uses :attr:`Duration`, :attr:`NSample`, :attr:`TriggerMode`,
+            % :attr:`TriggerSlope`, :attr:`TriggerLevel`, :attr:`TriggerSource`,
+            % and channel arrays (:attr:`IsEnabled`, :attr:`VerticalCoupling`,
+            % :attr:`VerticalOffset`, :attr:`VerticalRange`).
             obj.check;
             obj.Oscilloscope.AcquisitionTime = obj.Duration;
             obj.Oscilloscope.WaveformLength = obj.NSample;
@@ -53,6 +64,7 @@ classdef (Abstract) TektronixScope < Scope
         end
 
         function read(obj)
+            % Read waveforms from enabled channels and update :attr:`Sample`.
             obj.check;
             ChannelName = obj.Oscilloscope.ChannelsEnabled;
             ChannelName = string(ChannelName.');
@@ -64,6 +76,7 @@ classdef (Abstract) TektronixScope < Scope
         end
 
         function close(obj)
+            % Gracefully close the instrument session.
             if isempty(obj.Oscilloscope)
                 warning("Scope is not connected.")
                 return
@@ -79,6 +92,10 @@ classdef (Abstract) TektronixScope < Scope
         end
 
         function status = check(obj)
+            % Validate instrument state and configuration limits.
+            %
+            % :return: True when the instrument is connected, open, and within limits
+            % :rtype: logical
             if isempty(obj.Oscilloscope)
                 error("Scope is not connected.")   
             elseif ~isvalid(obj.Oscilloscope)

@@ -13,12 +13,15 @@ math
    FitOverride
    GaussianFit1D
    GaussianRandom
+   IsoscelesTriangleFit1D
    LinearFit1D
    LinearFrequencyRamp
    LinearRamp
    ModulatedWaveform
    ParabolicFit1D
    PartialPeriodicWaveform
+   PchipPulse
+   PchipRamp
    PchipSinePulse
    PeriodicWaveform
    RandomWaveform
@@ -28,6 +31,8 @@ math
    SineWaveModulated
    SqrtParabolicFit1D
    SquareWave
+   TanhPulse
+   TanhRamp
    TanhSinePulse
    TrapezoidalPulse
    TrapezoidalSinePulse

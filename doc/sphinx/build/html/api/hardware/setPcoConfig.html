@@ -190,10 +190,6 @@
 <li class="toctree-l3"><a class="reference internal" href="VescentSlice.html">VescentSlice</a></li>
 <li class="toctree-l3"><a class="reference internal" href="WaveformGenerator.html">WaveformGenerator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="WgControlPanel.html">WgControlPanel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getAcq.html">getAcq</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getPl.html">getPl</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getScope.html">getScope</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getWg.html">getWg</a></li>
 <li class="toctree-l3"><a class="reference internal" href="saveBecImageAbsorption.html">saveBecImageAbsorption</a></li>
 <li class="toctree-l3"><a class="reference internal" href="setBaslerConfig.html">setBaslerConfig</a></li>
 <li class="toctree-l3"><a class="reference internal" href="setIxon888Config.html">setIxon888Config</a></li>
@@ -203,7 +199,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -427,9 +422,14 @@ document.write(`
 <dl class="mat function">
 <dt class="sig sig-object mat" id="setPcoConfig">
 <span class="sig-name descname"><span class="pre">setPcoConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acq</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/func/setPcoConfig.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#setPcoConfig" title="Link to this definition">#</a></dt>
-<dd><p>SETPCOCONFIG set PCO camera configuration
-Input must be an “Acquisition” object. The following setup is for
-regular BEC experiment data taking.</p>
+<dd><p>setPcoConfig Configure PCO camera for absorption imaging.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>acq</strong> (<a class="reference internal" href="Acquisition.html#Acquisition" title="Acquisition"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Acquisition</span></code></a>) – Acquisition instance with connected VideoInput</p>
+</dd>
+</dl>
+<p>Sets hardware trigger (ExternExposureStart), rising polarity, timestamps,
+and exposure using <a class="reference internal" href="Acquisition.html#Acquisition.ExposureTime" title="Acquisition.ExposureTime"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Acquisition.ExposureTime</span></code></a>.</p>
 </dd></dl>
 
 </section>

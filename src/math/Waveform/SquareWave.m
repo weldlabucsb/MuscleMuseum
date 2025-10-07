@@ -31,28 +31,23 @@ classdef SquareWave < PeriodicWaveform
         function obj = SquareWave(options)
             %Construct a SquareWave object.
             %
-            % :param samplingRate: Sampling rate in Hz (default: inherited)
+            % :param samplingRate: Sampling rate in Hz (default: [])
             % :type samplingRate: double, optional
             % :param startTime: Start time in seconds (default: 0)
             % :type startTime: double, optional
-            % :param duration: Duration in seconds (default: inherited)
+            % :param duration: Duration in seconds (default: [])
             % :type duration: double, optional
-            % :param amplitude: Peak-to-peak amplitude (default: inherited)
+            % :param amplitude: Peak-to-peak amplitude (default: [])
             % :type amplitude: double, optional
             % :param offset: DC offset (default: 0)
             % :type offset: double, optional
-            % :param frequency: Frequency in Hz (default: inherited)
+            % :param frequency: Frequency in Hz (default: [])
             % :type frequency: double, optional
             % :param phase: Phase in radians (default: 0)
             % :type phase: double, optional
             % :param dutyCycle: Duty cycle fraction [0,1] (default: 0.5)
             % :type dutyCycle: double, optional
             %
-            % **Example:**
-            %
-            % .. code-block:: matlab
-            %
-            %     square = SquareWave(frequency = 1000, amplitude = 2.0, dutyCycle = 0.3);
             arguments
                 options.samplingRate double = []
                 options.startTime     double = 0

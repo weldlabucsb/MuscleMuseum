@@ -46,8 +46,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/mmParameter/BecExpConfig';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="BecExpParameterUnit" href="BecExpParameterUnit.html" />
-    <link rel="prev" title="AcquisitionConfig" href="AcquisitionConfig.html" />
+    <link rel="next" title="BecExpSetting" href="BecExpSetting.html" />
+    <link rel="prev" title="AcquisitionSetting" href="AcquisitionSetting.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -156,6 +156,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
@@ -164,26 +171,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">hardware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">mmParameter</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="AcquisitionConfig.html">AcquisitionConfig</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">BecExpConfig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecExpParameterUnit.html">BecExpParameterUnit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ComputerConfig.html">ComputerConfig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="DatabaseConfig.html">DatabaseConfig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="DatabaseServerConfig.html">DatabaseServerConfig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="HardwareList.html">HardwareList</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ListList.html">ListList</a></li>
-<li class="toctree-l3"><a class="reference internal" href="MmParameter.html">MmParameter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="PhaseLockSetting.html">PhaseLockSetting</a></li>
-<li class="toctree-l3"><a class="reference internal" href="RoiConfig.html">RoiConfig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ScopeSetting.html">ScopeSetting</a></li>
-<li class="toctree-l3"><a class="reference internal" href="VariableList.html">VariableList</a></li>
-<li class="toctree-l3"><a class="reference internal" href="WaveformGeneratorConfig.html">WaveformGeneratorConfig</a></li>
-<li class="toctree-l3"><a class="reference internal" href="WaveformGeneratorSetting.html">WaveformGeneratorSetting</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generateParameter.html">generateParameter</a></li>
-</ul>
-</details></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">mmParameter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -408,16 +396,114 @@ document.write(`
 <dt class="sig sig-object mat" id="BecExpConfig">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BecExpConfig</span></span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/mmParameter/BecExpConfig.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BecExpConfig" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="MmParameter.html#MmParameter" title="MmParameter"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">MmParameter</span></code></a></p>
-<p><a class="reference internal" href="#BecExpConfig" title="BecExpConfig"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecExpConfig</span></code></a> stores configuration presets for <a class="reference internal" href="../trial/BecExp.html#BecExp" title="BecExp"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecExp</span></code></a> trials.</p>
-<p>Columns include trial descriptor fields (e.g., <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">TrialName</span></code>,
-<code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Description</span></code>), acquisition/ROI references (e.g., <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">AcquisitionName</span></code>,
-<code class="xref mat mat-attr docutils literal notranslate"><span class="pre">RoiName</span></code>), analysis pipeline selections (e.g., <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">AnalysisMethod</span></code>,
-<code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DensityFitMethod</span></code>), and plotting ranges/labels. Methods such as
-<a class="reference internal" href="MmParameter.html#MmParameter.readTable" title="MmParameter.readTable"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">MmParameter.readTable()</span></code></a> return MATLAB-typed columns (matrices restored
-from TEXT).</p>
-<p>A join is established to <a class="reference internal" href="BecExpParameterUnit.html#BecExpParameterUnit" title="BecExpParameterUnit"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecExpParameterUnit</span></code></a> on
-<code class="xref mat mat-attr docutils literal notranslate"><span class="pre">ScannedParameter</span></code> to mirror the corresponding
-<code class="xref mat mat-attr docutils literal notranslate"><span class="pre">ScannedParameterUnit</span></code>.</p>
+<p><a class="reference internal" href="#BecExpConfig" title="BecExpConfig"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecExpConfig</span></code></a> stores machine/global configuration for <a class="reference internal" href="../trial/BecExp.html#BecExp" title="BecExp"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecExp</span></code></a>.</p>
+<p>These entries represent deployment-level configuration such as file paths,
+database targets, color maps, and control app name, which are mirrored into
+<a class="reference internal" href="BecExpSetting.html#BecExpSetting" title="BecExpSetting"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecExpSetting</span></code></a> via a join on <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">IsLocalTest</span></code>.</p>
+<p><strong>Schema (columns, types, defaults):</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 39.5%" />
+<col style="width: 23.7%" />
+<col style="width: 36.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Column</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>IsLocalTest</p></td>
+<td><p>logical</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>CiceroLogOrigin</p></td>
+<td><p>string</p></td>
+<td><p>XXX</p></td>
+</tr>
+<tr class="row-even"><td><p>ParentPath</p></td>
+<td><p>string</p></td>
+<td><p>XXX</p></td>
+</tr>
+<tr class="row-odd"><td><p>DataPrefix</p></td>
+<td><p>string</p></td>
+<td><p>run</p></td>
+</tr>
+<tr class="row-even"><td><p>DataFormat</p></td>
+<td><p>string</p></td>
+<td><p>.tif</p></td>
+</tr>
+<tr class="row-odd"><td><p>IsAutoDelete</p></td>
+<td><p>logical</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>DatabaseName</p></td>
+<td><p>string</p></td>
+<td><p>experiment</p></td>
+</tr>
+<tr class="row-odd"><td><p>DatabaseTableName</p></td>
+<td><p>string</p></td>
+<td><p>main</p></td>
+</tr>
+<tr class="row-even"><td><p>DataGroupSize</p></td>
+<td><p>double</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p>IsAutoAcquire</p></td>
+<td><p>logical</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>OdColormap</p></td>
+<td><p>doubleMatrix</p></td>
+<td><p>[0,0,0]</p></td>
+</tr>
+<tr class="row-odd"><td><p>AtomName</p></td>
+<td><p>string</p></td>
+<td><p>Lithium7</p></td>
+</tr>
+<tr class="row-even"><td><p>ImagingStageList</p></td>
+<td><p>stringMatrix</p></td>
+<td><p>[LF,HF,NI]</p></td>
+</tr>
+<tr class="row-odd"><td><p>ControlAppName</p></td>
+<td><p>string</p></td>
+<td><p>BecControl</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Foreign keys:</strong></p>
+<p>(none)</p>
+<p><strong>Join conditions:</strong></p>
+<p>(used by <a class="reference internal" href="BecExpSetting.html#BecExpSetting" title="BecExpSetting"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecExpSetting</span></code></a>, not defined here)</p>
+<p><strong>Flags:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 73.1%" />
+<col style="width: 26.9%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>IsIncludeDefaultEntry</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>IsFirstColumnUnique</p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p>IsTriggerJoinOnRight</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>IsTriggerJoinOnLeft</p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
@@ -450,20 +536,20 @@ from TEXT).</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="AcquisitionConfig.html"
+       href="AcquisitionSetting.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">AcquisitionConfig</p>
+        <p class="prev-next-title">AcquisitionSetting</p>
       </div>
     </a>
     <a class="right-next"
-       href="BecExpParameterUnit.html"
+       href="BecExpSetting.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">BecExpParameterUnit</p>
+        <p class="prev-next-title">BecExpSetting</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

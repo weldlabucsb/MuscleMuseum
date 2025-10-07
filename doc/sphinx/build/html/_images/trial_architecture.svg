@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="800" viewBox="0 0 1000 800">
+  <defs>
+    <style>
+      .class-box { fill: #f9f9f9; stroke: #333; stroke-width: 1.5; }
+      .abstract-class { fill: #e3f2fd; stroke: #1976d2; stroke-width: 2; }
+      .concrete-class { fill: #e8f5e8; stroke: #2e7d32; stroke-width: 2; }
+      .database-box { fill: #fff3e0; stroke: #f57c00; stroke-width: 2; }
+      .filesystem-box { fill: #f3e5f5; stroke: #7b1fa2; stroke-width: 2; }
+      .config-box { fill: #ffebee; stroke: #c62828; stroke-width: 2; }
+      .class-title { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; text-anchor: middle; }
+      .class-content { font-family: Arial, sans-serif; font-size: 11px; text-anchor: start; }
+      .inheritance-line { stroke: #333; stroke-width: 1.5; fill: none; marker-end: url(#arrowhead); }
+      .association-line { stroke: #666; stroke-width: 1.5; fill: none; stroke-dasharray: 5,5; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="500" y="30" class="class-title" style="font-size: 18px;">Trial System Architecture</text>
+  
+  <!-- Trial Abstract Base -->
+  <rect x="350" y="60" width="300" height="180" class="abstract-class" rx="8"/>
+  <text x="500" y="85" class="class-title">Trial</text>
+  <text x="500" y="100" class="class-title" style="font-size: 12px; font-style: italic;">&lt;&lt;abstract&gt;&gt;</text>
+  <line x1="360" y1="110" x2="640" y2="110" stroke="#333" stroke-width="1"/>
+  <text x="365" y="130" class="class-content">+Name : string</text>
+  <text x="365" y="145" class="class-content">+Description : string</text>
+  <text x="365" y="160" class="class-content">+NRun : int32</text>
+  <text x="365" y="175" class="class-content">+NCompletedRun : int32</text>
+  <text x="520" y="130" class="class-content">+DataPath : string</text>
+  <text x="520" y="145" class="class-content">+SerialNumber : int32</text>
+  <text x="520" y="160" class="class-content">+DateTime : datetime</text>
+  <text x="520" y="175" class="class-content">+IsCompleted : logical</text>
+  <line x1="360" y1="185" x2="640" y2="185" stroke="#333" stroke-width="1"/>
+  <text x="365" y="205" class="class-content">+update()</text>
+  <text x="365" y="220" class="class-content">+createWatcher()</text>
+  <text x="520" y="205" class="class-content">+writeDatabase()*</text>
+  <text x="520" y="220" class="class-content">+setFolder()*</text>
+  
+  <!-- Concrete Implementations -->
+  <rect x="100" y="300" width="200" height="100" class="concrete-class" rx="8"/>
+  <text x="200" y="325" class="class-title">BecExp</text>
+  <line x1="110" y1="335" x2="290" y2="335" stroke="#333" stroke-width="1"/>
+  <text x="115" y="355" class="class-content">Cold atom experiments</text>
+  <text x="115" y="370" class="class-content">Real-time analysis</text>
+  <text x="115" y="385" class="class-content">Hardware integration</text>
+  
+  <rect x="320" y="300" width="200" height="100" class="concrete-class" rx="8"/>
+  <text x="420" y="325" class="class-title">MeSim</text>
+  <line x1="330" y1="335" x2="510" y2="335" stroke="#333" stroke-width="1"/>
+  <text x="335" y="355" class="class-content">Master equation simulation</text>
+  <text x="335" y="370" class="class-content">Quantum state evolution</text>
+  <text x="335" y="385" class="class-content">Parameter sweeps</text>
+  
+  <rect x="540" y="300" width="200" height="100" class="concrete-class" rx="8"/>
+  <text x="640" y="325" class="class-title">SeSim1D</text>
+  <line x1="550" y1="335" x2="730" y2="335" stroke="#333" stroke-width="1"/>
+  <text x="555" y="355" class="class-content">Schrödinger equation</text>
+  <text x="555" y="370" class="class-content">1D time evolution</text>
+  <text x="555" y="385" class="class-content">Lattice dynamics</text>
+  
+  <!-- Database System -->
+  <rect x="50" y="480" width="250" height="120" class="database-box" rx="8"/>
+  <text x="175" y="505" class="class-title">PostgreSQL Database</text>
+  <line x1="60" y1="515" x2="290" y2="515" stroke="#333" stroke-width="1"/>
+  <text x="65" y="535" class="class-content">• Unique serial numbers</text>
+  <text x="65" y="550" class="class-content">• Configuration storage</text>
+  <text x="65" y="565" class="class-content">• Run completion tracking</text>
+  <text x="65" y="580" class="class-content">• Parameter value logging</text>
+  
+  <!-- File System -->
+  <rect x="350" y="480" width="250" height="120" class="filesystem-box" rx="8"/>
+  <text x="475" y="505" class="class-title">File System Monitoring</text>
+  <line x1="360" y1="515" x2="590" y2="515" stroke="#333" stroke-width="1"/>
+  <text x="365" y="535" class="class-content">• Real-time file detection</text>
+  <text x="365" y="550" class="class-content">• Event-driven processing</text>
+  <text x="365" y="565" class="class-content">• Automatic analysis triggers</text>
+  <text x="365" y="580" class="class-content">• Data group completion</text>
+  
+  <!-- Configuration System -->
+  <rect x="650" y="480" width="250" height="120" class="config-box" rx="8"/>
+  <text x="775" y="505" class="class-title">Configuration Management</text>
+  <line x1="660" y1="515" x2="890" y2="515" stroke="#333" stroke-width="1"/>
+  <text x="665" y="535" class="class-content">• Parameter tables</text>
+  <text x="665" y="550" class="class-content">• Hardware settings</text>
+  <text x="665" y="565" class="class-content">• Variable unit mapping</text>
+  <text x="665" y="580" class="class-content">• Flexible loading</text>
+  
+  <!-- Workflow Steps -->
+  <rect x="100" y="650" width="800" height="120" class="class-box" rx="8"/>
+  <text x="500" y="675" class="class-title">Typical Workflow</text>
+  <line x1="110" y1="685" x2="890" y2="685" stroke="#333" stroke-width="1"/>
+  <text x="120" y="705" class="class-content">1. Create Trial → 2. Load Configuration → 3. Setup Folders → 4. Initialize Database</text>
+  <text x="120" y="720" class="class-content">5. Start File Monitoring → 6. Run Experiment → 7. Process Data → 8. Update Database</text>
+  <text x="120" y="735" class="class-content">9. Generate Analysis → 10. Save Results → 11. Complete Trial</text>
+  <text x="120" y="750" class="class-content">• Events: NewRunFinished → Analysis Pipeline → Figure Updates → Database Sync</text>
+  
+  <!-- Inheritance lines -->
+  <line x1="200" y1="300" x2="200" y2="270" class="inheritance-line"/>
+  <line x1="200" y1="270" x2="450" y2="270" stroke="#333" stroke-width="1"/>
+  <line x1="450" y1="270" x2="450" y2="240" class="inheritance-line"/>
+  
+  <line x1="420" y1="300" x2="420" y2="270" class="inheritance-line"/>
+  <line x1="640" y1="300" x2="640" y2="270" class="inheritance-line"/>
+  
+  <!-- Association lines -->
+  <line x1="400" y1="400" x2="175" y2="480" class="association-line"/>
+  <line x1="500" y1="400" x2="475" y2="480" class="association-line"/>
+  <line x1="600" y1="400" x2="775" y2="480" class="association-line"/>
+  
+</svg>

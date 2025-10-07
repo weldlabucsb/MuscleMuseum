@@ -43,6 +43,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/math/BosonicGaussianFit1D';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -156,54 +157,22 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../database/index.html">database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../field/index.html">field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">hardware</a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">math</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="BosonicBimodalFit1D.html">BosonicBimodalFit1D</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">BosonicGaussianFit1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ConstantTop.html">ConstantTop</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ConstantWave.html">ConstantWave</a></li>
-<li class="toctree-l3"><a class="reference internal" href="FitData.html">FitData</a></li>
-<li class="toctree-l3"><a class="reference internal" href="FitData1D.html">FitData1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="FitOverride.html">FitOverride</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GaussianFit1D.html">GaussianFit1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GaussianRandom.html">GaussianRandom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LinearFit1D.html">LinearFit1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LinearFrequencyRamp.html">LinearFrequencyRamp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LinearRamp.html">LinearRamp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ModulatedWaveform.html">ModulatedWaveform</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ParabolicFit1D.html">ParabolicFit1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="PartialPeriodicWaveform.html">PartialPeriodicWaveform</a></li>
-<li class="toctree-l3"><a class="reference internal" href="PchipSinePulse.html">PchipSinePulse</a></li>
-<li class="toctree-l3"><a class="reference internal" href="PeriodicWaveform.html">PeriodicWaveform</a></li>
-<li class="toctree-l3"><a class="reference internal" href="RandomWaveform.html">RandomWaveform</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Roi.html">Roi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SineFit1D.html">SineFit1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SineWave.html">SineWave</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SineWaveModulated.html">SineWaveModulated</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SqrtParabolicFit1D.html">SqrtParabolicFit1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SquareWave.html">SquareWave</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TanhSinePulse.html">TanhSinePulse</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TrapezoidalPulse.html">TrapezoidalPulse</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TrapezoidalSinePulse.html">TrapezoidalSinePulse</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TriangleFit1D.html">TriangleFit1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="UniformRandom.html">UniformRandom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Waveform.html">Waveform</a></li>
-<li class="toctree-l3"><a class="reference internal" href="WaveformEditor.html">WaveformEditor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="WaveformList.html">WaveformList</a></li>
-<li class="toctree-l3"><a class="reference internal" href="WaveformListEditor.html">WaveformListEditor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getAllFitData.html">getAllFitData</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getAllFitData1D.html">getAllFitData1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getAllWaveform.html">getAllWaveform</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -432,6 +401,10 @@ document.write(`
 <p>Fits a bosonic Gaussian function that accounts for Bose-Einstein statistics
 to experimental data. Uses a Bose function approximation applied to a
 Gaussian distribution.</p>
+<ul class="simple">
+<li><p><strong>Formula</strong>: <span class="math notranslate nohighlight">\(y = A\,\mathrm{Bose}(e^{-(x-x_0)^2/(2\sigma^2)};2.5) + C\)</span></p></li>
+<li><p><strong>Coefficients</strong>: <span class="math notranslate nohighlight">\(A\)</span> (amplitude), <span class="math notranslate nohighlight">\(x_0\)</span> (center), <span class="math notranslate nohighlight">\(\sigma\)</span> (width), <span class="math notranslate nohighlight">\(C\)</span> (offset)</p></li>
+</ul>
 <p><strong>Example1:</strong></p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Fit bosonic Gaussian to experimental data</span>
 <span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
@@ -463,11 +436,6 @@ Gaussian distribution.</p>
 <dd class="field-odd"><p><strong>rawData</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span> <span class="pre">array</span></code></span>) – Input data as n x 2 matrix [x, y]</p>
 </dd>
 </dl>
-<p><strong>Example:</strong></p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="nb">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)].</span><span class="o">&#39;</span><span class="p">;</span>
-<span class="n">bosonicFit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">BosonicGaussianFit1D</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
-</pre></div>
-</div>
 </dd></dl>
 
 </dd>
@@ -483,8 +451,6 @@ based on data characteristics, similar to standard Gaussian fit.</p>
 <dt class="sig sig-object mat" id="BosonicGaussianFit1D.setFormula">
 <span class="sig-name descname"><span class="pre">setFormula</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BosonicGaussianFit1D.setFormula" title="Link to this definition">#</a></dt>
 <dd><p>Set the bosonic Gaussian fit formula.</p>
-<p>Formula: A*boseFunctionApprox(exp(-(x-x0)^2/(2*sigma^2)), 2.5) + C
-Parameters: A (amplitude), x0 (center), sigma (width), C (offset)</p>
 </dd></dl>
 
 </dd>

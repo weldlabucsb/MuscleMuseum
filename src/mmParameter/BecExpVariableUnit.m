@@ -1,9 +1,53 @@
 classdef BecExpVariableUnit < MmParameter
-    %:class:`BecExpParameterUnit` records units for scan variables in BEC experiments.
+    %:class:`BecExpVariableUnit` records units for scan variables in BEC experiments.
     %
-    % Maps :attr:`ScannedParameter` to its string unit label
-    % (:attr:`ScannedParameterUnit`). Intended for joining into
-    % :class:`BecExpConfig`.
+    % Maps :attr:`ScannedVariable` to its string unit label
+    % (:attr:`ScannedVariableUnit`). Intended for joining into
+    % :class:`BecExpSetting` and CSV post-processing.
+    %
+    % **Schema (columns, types, defaults, default entries):**
+    %
+    % .. list-table::
+    %    :widths: 28 18 22 32
+    %    :header-rows: 1
+    %
+    %    * - Column
+    %      - Type
+    %      - Default
+    %      - DefaultEntry values
+    %    * - ScannedVariable
+    %      - string
+    %      - dummy
+    %      - RunIndex
+    %    * - ScannedVariableUnit
+    %      - string
+    %      - V
+    %      - (empty)
+    %
+    % **Foreign keys:**
+    %
+    % (none)
+    %
+    % **Join conditions:**
+    %
+    % (used by :class:`BecExpSetting`, not defined here)
+    %
+    % **Flags:**
+    %
+    % .. list-table::
+    %    :widths: 38 14
+    %    :header-rows: 1
+    %
+    %    * - Property
+    %      - Value
+    %    * - IsIncludeDefaultEntry
+    %      - true
+    %    * - IsFirstColumnUnique
+    %      - true
+    %    * - IsTriggerJoinOnRight
+    %      - false
+    %    * - IsTriggerJoinOnLeft
+    %      - false
 
     properties
 

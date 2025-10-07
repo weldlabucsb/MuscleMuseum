@@ -67,17 +67,9 @@ classdef OpticalLattice < OpticalPotential
                 atom (1,1) Atom
                 laser Laser
                 name string = string.empty
-                options.manifold string = "DGround"
-                options.stateIndex double = []
+                options.atomicState = struct.empty
             end
-            obj@OpticalPotential(atom,laser,name);
-            obj.Manifold = options.manifold;
-            if ~isempty(options.stateIndex)
-                obj.StateIndex = options.stateIndex;
-            else
-                % By default, pick the lowest magnetic trappable state
-                obj.StateIndex = atom.(obj.Manifold).StateList.Index(end);
-            end
+            obj@OpticalPotential(atom,laser,name,atomicState = options.atomicState);
         end
 
         function a0 = get.LatticeSpacing(obj)
@@ -93,7 +85,14 @@ classdef OpticalLattice < OpticalPotential
             %
             % :return: Depth :math:`V_0` in [Hz]
             % :rtype: double
-            v0 =  4 * abs(obj.ScalarPolarizabilityGround * abs(obj.Laser.ElectricFieldAmplitude)^2 / 4);
+            atom = obj.Atom;
+            v0 = 4 * abs(atom.AcStarkShiftLargeDetuning(...
+                obj.Laser,...
+                obj.AtomicState.N,...
+                obj.AtomicState.L,...
+                obj.AtomicState.J,...
+                obj.AtomicState.F,...
+                obj.AtomicState.MF));
         end
 
         function fZ = get.AxialFrequencyLaser(obj)
@@ -257,7 +256,7 @@ classdef OpticalLattice < OpticalPotential
 
         function updateIntensity(obj)
             % Set laser intensity to achieve target depth :math:`V_0`.
-            obj.Laser.Intensity = abs(obj.Depth / obj.ScalarPolarizabilityGround) / 2 / Constants.SI("Z0");
+            obj.Laser.Intensity = obj.Depth / obj.DepthLaser * obj.Laser.Intensity;
         end
 
         function [E,Fjn,phi,u] = computeBand1D(obj,q,n,x,options)
@@ -1048,8 +1047,8 @@ classdef OpticalLattice < OpticalPotential
             obj.BlochStateFourier = Fjn;
             obj.AmpModCoupling = obj.computeAmpModCoupling1D;
             obj.BerryConnection = obj.computeBerryConnection1D;
-            obj.removeGauge;
-            obj.BerryConnection = obj.computeBerryConnection1D;
+            % obj.removeGauge;
+            % obj.BerryConnection = obj.computeBerryConnection1D;
 
 
         end
@@ -1125,7 +1124,7 @@ classdef OpticalLattice < OpticalPotential
             end
         end
 
-        function [EF,vF] = computeFloquetAmpMod1D(obj,q,n,wf)
+        function [EF,vF] = computeFloquetAmpMod1D(obj,q,n,wf,isShuffle)
             % Compute Floquet quasi-energies and modes under amplitude modulation.
             %
             % :param q: Quasi-momentum samples in [1/m]
@@ -1143,8 +1142,14 @@ classdef OpticalLattice < OpticalPotential
                 q double {mustBeVector} % Sampling quasimomentum [p/hbar] in unit of 1/meter.
                 n double {mustBeVector,mustBeInteger,mustBeNonnegative}
                 wf Waveform
+                isShuffle logical = false
             end
-            [~,Fjn] = obj.computeBand1D(q,n); % compute static Bloch states
+            if isempty(obj.BandEnergy) && ~isempty(q)
+                [~,Fjn] = obj.computeBand1D(q,n); % compute static Bloch states
+            else
+                Fjn = obj.BlochStateFourier;
+                q = obj.QuasiMomentumList;
+            end
             nMax = size(Fjn,1);
             T = wf.Period;
             EF = zeros(length(n),length(q));
@@ -1173,6 +1178,32 @@ classdef OpticalLattice < OpticalPotential
                     [~,idx] = max(P,[],1);
                     EF(:,qIdx) = EFAll(idx);
                     vF(:,:,qIdx) = vFAll(:,idx);
+                end
+            end
+
+            if isShuffle
+                % Find break points
+                freq = 1/T;
+                threshHold = 2e3;
+                breakPoint = abs(diff(EF,1,2)) > threshHold;
+                nBranch = 20;
+                nBand = numel(n);
+                freqShift = (-nBranch : nBranch) * freq;
+                while any(breakPoint(:))
+                    [row,col] = find(breakPoint);
+                    nn = row(1);
+                    qq = col(1);
+                    EFTest = EF(:,qq+1) + freqShift;
+                    [~,idx] = min(abs(EFTest(:) - EF(nn,qq)));
+                    [nIdx,branchIdx] = ind2sub([nBand,nBranch*2 + 1],idx);
+                    if nIdx == nn
+                        EF(nn,(qq+1):end) = EF(nn,(qq+1):end) + freqShift(branchIdx);
+                    else
+                        temp = EF(nn,(qq+1):end);
+                        EF(nn,(qq+1):end) = EF(nIdx,(qq+1):end) + freqShift(branchIdx);
+                        EF(nIdx,(qq+1):end) = temp;
+                    end
+                    breakPoint = abs(diff(EF,1,2)) > threshHold;
                 end
             end
         end

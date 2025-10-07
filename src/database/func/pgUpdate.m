@@ -1,4 +1,29 @@
 function pgUpdate(connect,tablename, data, filter, varargin)
+% Update PostgreSQL database table rows using row filters and MATLAB table data.
+%
+% Updates existing database rows matching the provided filters with new data
+% from a MATLAB table. Automatically adds missing columns as array types when
+% needed and handles vector-valued data appropriately.
+%
+% :param connect: Open PostgreSQL database connection
+% :type connect: database.postgre.connection
+% :param tablename: Target database table name
+% :type tablename: string
+% :param data: MATLAB table containing new data values
+% :type data: table
+% :param filter: Row filters specifying which rows to update (one per table row)
+% :type filter: matlab.io.RowFilter
+% :param isForceArray: Force new columns to be created as array types (default: false)
+% :type isForceArray: logical, optional
+%
+% **Example:**
+%
+% .. code-block:: matlab
+%
+%    conn = createWriter("myDatabase");
+%    rf = rowfilter("SerialNumber");
+%    rf = rf.SerialNumber == 1234;
+%    pgUpdate(conn, "myTable", newData, rf);
 
 [connect,tablename,data,filter,varargin{:}] = convertCharsToStrings(connect,tablename, data, filter, varargin{:});
 

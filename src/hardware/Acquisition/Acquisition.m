@@ -1,31 +1,46 @@
 classdef Acquisition < handle & matlab.mixin.SetGetExactNames
-    %:class:`Acquisition` camera acquisition base class.
+    %:class:`Acquisition` base class for camera acquisition/control.
     %
-    % Describes camera properties and saving images from a camera of interest.
-    % Implements helpers for connect/configure/callback/start/stop and image
-    % utilities. Subclasses (e.g., :class:`Andor`) override specifics.
+    % Provides common camera identity and configuration, connection helpers,
+    % and utilities for setting callbacks, starting/stopping acquisition, and
+    % post-processing images (e.g., bad-pixel removal). Concrete subclasses
+    % (:class:`Andor`, :class:`Basler`, :class:`Pco`, etc.) apply vendor-specific
+    % details.
     %
-    % **Notes:**
+    % - **Configuration loading**: Constructor reads camera 
+    %   via :class:`AcquisitionSetting` and applies matches by property name.
+    % - **Quantum efficiency**: :meth:`QuantumEfficiency` interpolates provided data
+    %   (if any) to a requested wavelength.
+    % - **Pixel size in object plane**: :math:`\mathrm{PixelSizeReal} = \dfrac{\mathrm{PixelSize}}{\mathrm{Magnification}}`.
     %
-    %     Configuration is loaded from ``Config.mat`` by :meth:`Acquisition` and applied
-    %     via an internal setter. Quantum efficiency can be interpolated by :meth:`QuantumEfficiency`.
+    % **Example:**
+    %
+    % .. code-block:: matlab
+    %
+    %    acq = Basler("MainCam");
+    %    acq.connectCamera();
+    %    acq.setCameraParameter();    % or model-specific helper
+    %    acq.setCallback(@(data,evt) disp(size(data)));
+    %    acq.startCamera();
+    %    pause(1);
+    %    acq.stopCamera();
 
     properties (SetAccess = protected)
         Name string % Nickname/label of the acquisition
-        CameraType string % Producer of the camera
-        CameraModel string % Model of the camera
-        AdaptorName string % MATLAB camera adaptor used to connect to camera.
-        DeviceID int32 % ID if multiple devices share the same adaptor
+        CameraType string % Camera vendor/type
+        CameraModel string % Camera model identifier
+        AdaptorName string % MATLAB adaptor name used to connect
+        DeviceID int32 % Device ID if multiple devices share the adaptor
         SerialNumber int32 % Camera serial number
-        PixelSize double % Pixel size [micron]
-        ImageSize uint32 % [size y, size x]
-        BitsPerSample int16 % Bits per pixel
-        BadRow uint32 % rows that have bad pixels
-        BadColumn uint32 % columns that have bad pixels
-        Magnification double % Optical magnification
-        Transmission double = 1 % Optical system transmission
-        ConfigFun function_handle % Function handle to configure camera parameters
-        QuantumEfficiencyData double = [] % Columns: wavelength [m], quantum efficiency
+        PixelSize double % Pixel size [m]
+        ImageSize uint32 % [size y, size x] in pixels
+        BitsPerSample int16 % Bits per pixel (e.g., 8/16/32)
+        BadRow uint32 % Row indices with bad pixels
+        BadColumn uint32 % Column indices with bad pixels
+        Magnification double % Optical magnification (unitless)
+        Transmission double = 1 % Optical transmission (0-1)
+        ConfigFun function_handle % Function handle to set camera parameters
+        QuantumEfficiencyData double = [] % [wavelength (m), quantum efficiency]
     end
 
     properties (Constant, Hidden)
@@ -37,16 +52,16 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
     end
 
     properties
-        ExposureTime double % Exposure time [us]
+        ExposureTime double % Exposure time [s]
         IsExternalTriggered logical % Whether camera is externally triggered
         ImageGroupSize int32 % Number of frames before saving
         ImagePath {mustBeFolder} = "." % Save folder
         ImagePrefix string = "run" % Image filename prefix
-        ImageFormat string = "tif" % Image format
+        ImageFormat string = "tif" % Image format (e.g., 'tif')
     end
 
     properties (Dependent)
-        PixelSizeReal % Pixel size in object plane
+        PixelSizeReal % Pixel size in object plane [m]
     end
 
     methods
@@ -56,8 +71,8 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
             % :param acqName: Camera name key used in configuration
             % :type acqName: string
             %
-            % Loads ``AcquisitionConfig`` from ``Config.mat`` and applies with
-            % a protected configuration setter.
+            % Loads configuration  via :class:`AcquisitionSetting`
+            % and applies matching fields to properties.
             p = AcquisitionSetting;
             s = p.readEntry(acqName,"Name");
             setConfigProperty(obj,s)
@@ -82,6 +97,8 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
 
         function connectCamera(obj)
             % Connect to the camera and create :attr:`VideoInput`.
+            %
+            % :raises error: When adaptor connection fails
             try
                 warning("off")
                 vid = videoinput(obj.AdaptorName,obj.DeviceID);
@@ -96,7 +113,9 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
         end
 
         function setCameraParameter(obj)
-            % Set camera parameters via the predefined configuration :attr:`ConfigFun`.
+            % Set camera parameters via :attr:`ConfigFun`.
+            %
+            % :raises error: If camera is not connected
             if isempty(obj.VideoInput)
                 error('Camera not connected. Try the "connectCamera" method first.')
             end
@@ -118,6 +137,8 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
 
         function startCamera(obj)
             % Start camera recording.
+            %
+            % :raises error: If camera is not connected
             if isempty(obj.VideoInput)
                 error('Camera not connected. Try the "connectCamera" method first.')
             end
@@ -143,9 +164,9 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
             % Replace bad pixel rows/columns by neighbor averages.
             %
             % :param imageData: Image data array
-            % :type imageData: double array | uint*
+            % :type imageData: numeric array
             % :return: Corrected image data
-            % :rtype: same as input
+            % :rtype: numeric array
             if ~all(size(imageData,1,2) == obj.ImageSize)
                 error("Image data size is wrong.")
             end
@@ -180,10 +201,9 @@ classdef Acquisition < handle & matlab.mixin.SetGetExactNames
     methods (Access = private, Hidden)
 
         function  setConfigProperty(obj,struct)
-            % Compare properties of :attr:`obj` with fields of ``struct`` and set matches.
+            % Compare :attr:`obj` properties with fields of ``struct`` and set matches.
             %
-            % The object must inherit the set method from
-            % :class:`matlab.mixin.SetGetExactNames`.
+            % Requires :class:`matlab.mixin.SetGetExactNames` to set only exact-name matches.
             mc = metaclass(obj); %use metaclass to access non-public properties
             propList = {mc.PropertyList.Name};
             fieldList = fieldnames(struct);

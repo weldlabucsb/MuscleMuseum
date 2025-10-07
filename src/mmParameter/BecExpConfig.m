@@ -1,16 +1,86 @@
 classdef BecExpConfig < MmParameter
-    %:class:`BecExpConfig` stores configuration presets for :class:`BecExp` trials.
+    %:class:`BecExpConfig` stores machine/global configuration for :class:`BecExp`.
     %
-    % Columns include trial descriptor fields (e.g., :attr:`TrialName`,
-    % :attr:`Description`), acquisition/ROI references (e.g., :attr:`AcquisitionName`,
-    % :attr:`RoiName`), analysis pipeline selections (e.g., :attr:`AnalysisMethod`,
-    % :attr:`DensityFitMethod`), and plotting ranges/labels. Methods such as
-    % :meth:`MmParameter.readTable` return MATLAB-typed columns (matrices restored
-    % from TEXT).
+    % These entries represent deployment-level configuration such as file paths,
+    % database targets, color maps, and control app name, which are mirrored into
+    % :class:`BecExpSetting` via a join on :attr:`IsLocalTest`.
     %
-    % A join is established to :class:`BecExpParameterUnit` on
-    % :attr:`ScannedParameter` to mirror the corresponding
-    % :attr:`ScannedParameterUnit`.
+    % **Schema (columns, types, defaults):**
+    %
+    % .. list-table::
+    %    :widths: 30 18 28
+    %    :header-rows: 1
+    %
+    %    * - Column
+    %      - Type
+    %      - Default
+    %    * - IsLocalTest
+    %      - logical
+    %      - 0
+    %    * - CiceroLogOrigin
+    %      - string
+    %      - XXX
+    %    * - ParentPath
+    %      - string
+    %      - XXX
+    %    * - DataPrefix
+    %      - string
+    %      - run
+    %    * - DataFormat
+    %      - string
+    %      - .tif
+    %    * - IsAutoDelete
+    %      - logical
+    %      - 0
+    %    * - DatabaseName
+    %      - string
+    %      - experiment
+    %    * - DatabaseTableName
+    %      - string
+    %      - main
+    %    * - DataGroupSize
+    %      - double
+    %      - 3
+    %    * - IsAutoAcquire
+    %      - logical
+    %      - 1
+    %    * - OdColormap
+    %      - doubleMatrix
+    %      - [0,0,0]
+    %    * - AtomName
+    %      - string
+    %      - Lithium7
+    %    * - ImagingStageList
+    %      - stringMatrix
+    %      - [LF,HF,NI]
+    %    * - ControlAppName
+    %      - string
+    %      - BecControl
+    %
+    % **Foreign keys:**
+    %
+    % (none)
+    %
+    % **Join conditions:**
+    %
+    % (used by :class:`BecExpSetting`, not defined here)
+    %
+    % **Flags:**
+    %
+    % .. list-table::
+    %    :widths: 38 14
+    %    :header-rows: 1
+    %
+    %    * - Property
+    %      - Value
+    %    * - IsIncludeDefaultEntry
+    %      - false
+    %    * - IsFirstColumnUnique
+    %      - true
+    %    * - IsTriggerJoinOnRight
+    %      - false
+    %    * - IsTriggerJoinOnLeft
+    %      - false
 
     properties
 

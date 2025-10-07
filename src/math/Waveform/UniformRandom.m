@@ -30,22 +30,17 @@ classdef UniformRandom < RandomWaveform
         function obj = UniformRandom(options)
             %Construct a UniformRandom object.
             %
-            % :param samplingRate: Sampling rate in Hz (default: inherited)
+            % :param samplingRate: Sampling rate in Hz (default: [])
             % :type samplingRate: double, optional
             % :param startTime: Start time in seconds (default: 0)
             % :type startTime: double, optional
-            % :param duration: Duration in seconds (default: inherited)
+            % :param duration: Duration in seconds (default: [])
             % :type duration: double, optional
             % :param lowerBound: Lower bound of uniform distribution (default: 0)
             % :type lowerBound: double, optional
             % :param upperBound: Upper bound of uniform distribution (default: 1)
             % :type upperBound: double, optional
             %
-            % **Example:**
-            %
-            % .. code-block:: matlab
-            %
-            %     uniform = UniformRandom(lowerBound = -1, upperBound = 1, duration = 0.01);
             arguments
                 options.samplingRate double = [];
                 options.startTime double = 0;

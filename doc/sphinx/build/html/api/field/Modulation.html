@@ -157,29 +157,22 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../database/index.html">database</a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">field</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="Aom.html">Aom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Eom.html">Eom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GaussianBeam.html">GaussianBeam</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Laser.html">Laser</a></li>
-<li class="toctree-l3"><a class="reference internal" href="MagneticField.html">MagneticField</a></li>
-<li class="toctree-l3"><a class="reference internal" href="MagneticPotential.html">MagneticPotential</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Modulation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="OpticalLattice.html">OpticalLattice</a></li>
-<li class="toctree-l3"><a class="reference internal" href="OpticalPotential.html">OpticalPotential</a></li>
-<li class="toctree-l3"><a class="reference internal" href="OpticalTrap.html">OpticalTrap</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Potential.html">Potential</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">hardware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -435,25 +428,25 @@ Provides <a class="reference internal" href="#Modulation.timeFunc" title="Modula
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="Modulation.Depth">
 <span class="sig-name descname"><span class="pre">Depth</span></span><a class="headerlink" href="#Modulation.Depth" title="Link to this definition">#</a></dt>
-<dd><p>Modulation depth (unitless or client-defined)</p>
+<dd><p>Modulation depth <span class="math notranslate nohighlight">\(\alpha\)</span> (unitless or client-defined)</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Modulation.Duration">
 <span class="sig-name descname"><span class="pre">Duration</span></span><a class="headerlink" href="#Modulation.Duration" title="Link to this definition">#</a></dt>
-<dd><p>Modulation duration <span class="math notranslate nohighlight">\(T_m\)</span> in [s]</p>
+<dd><p>Modulation duration <span class="math notranslate nohighlight">\(T_m\)</span> [s]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Modulation.Frequency">
 <span class="sig-name descname"><span class="pre">Frequency</span></span><a class="headerlink" href="#Modulation.Frequency" title="Link to this definition">#</a></dt>
-<dd><p>Modulation frequency <span class="math notranslate nohighlight">\(f_m\)</span> in [Hz]</p>
+<dd><p>Modulation frequency <span class="math notranslate nohighlight">\(f_m\)</span> [Hz]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Modulation.Timing">
 <span class="sig-name descname"><span class="pre">Timing</span></span><a class="headerlink" href="#Modulation.Timing" title="Link to this definition">#</a></dt>
-<dd><p>Start time <span class="math notranslate nohighlight">\(t_0\)</span> in [s]</p>
+<dd><p>Start time <span class="math notranslate nohighlight">\(t_0\)</span> [s]</p>
 </dd></dl>
 
 </dd>
@@ -463,7 +456,7 @@ Provides <a class="reference internal" href="#Modulation.timeFunc" title="Modula
 <dd><p>Build modulation function <span class="math notranslate nohighlight">\(m(t) = \mathbb{1}_{[t_0,t_0+T_m]}(t)\, \alpha\, \sin(2\pi f_m t)\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>function handle mapping time <span class="math notranslate nohighlight">\(t\)</span> to <span class="math notranslate nohighlight">\(m(t)\)</span></p>
+<dd class="field-odd"><p>Function handle mapping time <span class="math notranslate nohighlight">\(t\)</span> to <span class="math notranslate nohighlight">\(m(t)\)</span></p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>function_handle</p>

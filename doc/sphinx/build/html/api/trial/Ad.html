@@ -43,6 +43,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/trial/Ad';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -156,6 +157,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
@@ -165,86 +173,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">trial</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Ad</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AdPreviewer.html">AdPreviewer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AtomNumber.html">AtomNumber</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecAnalysis.html">BecAnalysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecBrowser.html">BecBrowser</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecControlPanel.html">BecControlPanel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecExp.html">BecExp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="CenterFit.html">CenterFit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="DensityFit.html">DensityFit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="DensityFitDisplay.html">DensityFitDisplay</a></li>
-<li class="toctree-l3"><a class="reference internal" href="DiffusionProfile.html">DiffusionProfile</a></li>
-<li class="toctree-l3"><a class="reference internal" href="FokkerPlanck.html">FokkerPlanck</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ForceProfile.html">ForceProfile</a></li>
-<li class="toctree-l3"><a class="reference internal" href="FringeRemoval.html">FringeRemoval</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GPE.html">GPE</a></li>
-<li class="toctree-l3"><a class="reference internal" href="HardwareAssociation.html">HardwareAssociation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Imaging.html">Imaging</a></li>
-<li class="toctree-l3"><a class="reference internal" href="InitialCondition.html">InitialCondition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="KapitzaDirac.html">KapitzaDirac</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LatticeFourierSeSim1D.html">LatticeFourierSeSim1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LatticeFourierSeSim1DRun.html">LatticeFourierSeSim1DRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LatticeSeSim1D.html">LatticeSeSim1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="MeSim.html">MeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="MeSimRun.html">MeSimRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Od.html">Od</a></li>
-<li class="toctree-l3"><a class="reference internal" href="OdPreviewer.html">OdPreviewer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ScopeValue.html">ScopeValue</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SeSim1D.html">SeSim1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SeSim1DRun.html">SeSim1DRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Sim.html">Sim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SimRun.html">SimRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SpaceSim.html">SpaceSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SpaceSimRun.html">SpaceSimRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SpaceTimeSim.html">SpaceTimeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TimeSim.html">TimeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TimeSimRun.html">TimeSimRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Tof.html">Tof</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Trial.html">Trial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="absorption2Od.html">absorption2Od</a></li>
-<li class="toctree-l3"><a class="reference internal" href="acceleration.html">acceleration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="angdist.html">angdist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cgcoefficient.html">cgcoefficient</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cmd_rmdir.html">cmd_rmdir</a></li>
-<li class="toctree-l3"><a class="reference internal" href="computeAbsorption.html">computeAbsorption</a></li>
-<li class="toctree-l3"><a class="reference internal" href="computeFloquetHamiltonian.html">computeFloquetHamiltonian</a></li>
-<li class="toctree-l3"><a class="reference internal" href="convertidx.html">convertidx</a></li>
-<li class="toctree-l3"><a class="reference internal" href="decompfactor.html">decompfactor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deleteBecExp.html">deleteBecExp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deleteMeSim.html">deleteMeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deleteTrial.html">deleteTrial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="diffu.html">diffu</a></li>
-<li class="toctree-l3"><a class="reference internal" href="fixPhase.html">fixPhase</a></li>
-<li class="toctree-l3"><a class="reference internal" href="fixPhase2.html">fixPhase2</a></li>
-<li class="toctree-l3"><a class="reference internal" href="fluxdist.html">fluxdist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="force.html">force</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gaussian_gen.html">gaussian_gen</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gaussian_grad.html">gaussian_grad</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gaussian_prof.html">gaussian_prof</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gaussiantr.html">gaussiantr</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gfactor.html">gfactor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="hamiltonian_al.html">hamiltonian_al</a></li>
-<li class="toctree-l3"><a class="reference internal" href="hamiltonian_al_a.html">hamiltonian_al_a</a></li>
-<li class="toctree-l3"><a class="reference internal" href="histoplot.html">histoplot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadBecExp.html">loadBecExp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadMeSim.html">loadMeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadTrial.html">loadTrial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pinky.html">pinky</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rabi.html">rabi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rabiMatrix.html">rabiMatrix</a></li>
-<li class="toctree-l3"><a class="reference internal" href="randpdf.html">randpdf</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rhodot.html">rhodot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rhodot_a.html">rhodot_a</a></li>
-<li class="toctree-l3"><a class="reference internal" href="runLocalTest.html">runLocalTest</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so3.html">so3</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sortBecAnalysis.html">sortBecAnalysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="wignersixj.html">wignersixj</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">trial</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../sup/support.html">Support</a></li>
@@ -468,113 +397,210 @@ document.write(`
 <dt class="sig sig-object mat" id="Ad">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Ad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/BecAnalysis/Ad.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Ad" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="BecAnalysis.html#BecAnalysis" title="BecAnalysis"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecAnalysis</span></code></a></p>
-<p>OD Calculate and plot optical depth
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#Ad" title="Ad"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Ad</span></code></a> compute atomic column density (AD) from OD and imaging config.</p>
+<p>Converts optical depth (<a class="reference internal" href="Od.html#Od" title="Od"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Od</span></code></a>) to atomic column density using
+a chosen cross section model (<a class="reference internal" href="#Ad.AdMethod" title="Ad.AdMethod"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">AdMethod</span></code></a>). Supports uniform and
+spatially varying saturation corrections via <a class="reference internal" href="#Ad.CrossSectionData" title="Ad.CrossSectionData"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">CrossSectionData</span></code></a>
+and <a class="reference internal" href="Imaging.html#Imaging.SaturationParameterPropagation" title="Imaging.SaturationParameterPropagation"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Imaging.SaturationParameterPropagation</span></code></a>. Provides preview
+GUI and renders 1D mosaics or 2D density maps, with optional GIF export.</p>
+<dl class="simple">
+<dt><strong>Associated Charts:</strong></dt><dd><ul class="simple">
+<li><p>Chart(1): “AdMix” - Horizontal mosaic or 2D density plot of atomic density</p></li>
+<li><p>Chart(2): “AdAnimation” - Animated GIF showing AD evolution</p></li>
+</ul>
+</dd>
+<dt><strong>Associated GUIs:</strong></dt><dd><ul class="simple">
+<li><p>Gui(1): “AtomPreviewer” - Real-time preview of atomic density data</p></li>
+</ul>
+</dd>
+</dl>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Ad.Ad">
 <span class="sig-name descname"><span class="pre">Ad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">becExp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Ad.Ad" title="Link to this definition">#</a></dt>
-<dd><p>OD Construct an instance of this class
-Detailed explanation goes here</p>
+<dd><p>Construct <a class="reference internal" href="#Ad" title="Ad"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Ad</span></code></a> analyzer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>becExp</strong> (<a class="reference internal" href="BecExp.html#BecExp" title="BecExp"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecExp</span></code></a>) – Owning experiment</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="Ad.AdData">
 <span class="sig-name descname"><span class="pre">AdData</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Ad.AdData" title="Link to this definition">#</a></dt>
-<dd><p>Calculated AdData</p>
+<dd><p>Atomic column density <span class="math notranslate nohighlight">\(n_\mathrm{col}\)</span> per run [m^{-2}]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Ad.AdMethod">
 <span class="sig-name descname"><span class="pre">AdMethod</span></span><em class="property"> <span class="pre">string</span> <span class="pre">=</span> <span class="pre">&quot;StrongLight&quot;</span></em><a class="headerlink" href="#Ad.AdMethod" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Cross-section model: “TwoLevelWeakLight”|”RandomPolarization”|”UniformStrongLight”|”StrongLight”|”PhaseContrastImaging”</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Ad.Blur">
 <span class="sig-name descname"><span class="pre">Blur</span></span><em class="property"> <span class="pre">=</span> <span class="pre">100</span></em><a class="headerlink" href="#Ad.Blur" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Gaussian blur kernel size [pixels] applied to saturation-dependent cross-section maps</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Ad.CLim">
 <span class="sig-name descname"><span class="pre">CLim</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[0,8]</span></em><a class="headerlink" href="#Ad.CLim" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Color axis limits for atomic density plots in units of <a class="reference internal" href="#Ad.Unit" title="Ad.Unit"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Unit</span></code></a> [m^{-2}]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Ad.Colormap">
 <span class="sig-name descname"><span class="pre">Colormap</span></span><em class="property"> <span class="pre">=</span> <span class="pre">jet</span></em><a class="headerlink" href="#Ad.Colormap" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Colormap function handle for atomic density visualization</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Ad.CrossSectionData">
 <span class="sig-name descname"><span class="pre">CrossSectionData</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#Ad.CrossSectionData" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Cross-section lookup table with columns [<span class="math notranslate nohighlight">\(s\)</span>, <span class="math notranslate nohighlight">\(\sigma(s)/\sigma_0\)</span>] for saturation-dependent scattering</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Ad.Unit">
 <span class="sig-name descname"><span class="pre">Unit</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1e13</span></em><a class="headerlink" href="#Ad.Unit" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Display scale factor for atomic density values [m^{-2}]</p>
+</dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Ad.finalize">
 <span class="sig-name descname"><span class="pre">finalize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Ad.finalize" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Generate final atomic density visualizations.</p>
+<p>Creates the atomic density mosaic plot and animated GIF showing
+the evolution of atomic column density across parameter values.</p>
+</dd></dl>
 
 <dl class="mat staticmethod">
 <dt class="sig sig-object mat" id="Ad.handlePropEvents">
 <em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">handlePropEvents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">src</span></em>, <em class="sig-param"><span class="pre">evnt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Ad.handlePropEvents" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Handle property change events for color limits and GUI updates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">meta.property</span></code></span>) – Property metadata object</p></li>
+<li><p><strong>evnt</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">event.EventData</span></code></span>) – Event data containing affected object</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Ad.initialize">
 <span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Ad.initialize" title="Link to this definition">#</a></dt>
-<dd><p>Initialize matrices</p>
+<dd><p>Initialize data storage and preview GUI interface.</p>
+<p>Sets up atomic density data arrays, launches the atomic density
+previewer application, configures OD preview mode, and establishes
+property change listeners for color limits.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Ad.plotAdAnimation">
 <span class="sig-name descname"><span class="pre">plotAdAnimation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Ad.plotAdAnimation" title="Link to this definition">#</a></dt>
-<dd><p>Initialize figure</p>
+<dd><p>Create animated GIF across runs from AD data.</p>
+<p>Saves an animated GIF to <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Chart(2).Path</span></code> using current AD
+color scaling and ROI mid-slice profiles.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Ad.plotAdMix">
 <span class="sig-name descname"><span class="pre">plotAdMix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">adData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Ad.plotAdMix" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Plot AD mosaics (1D scans) or 2D map (2D scans).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>adData</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Optional AD to plot; defaults to <a class="reference internal" href="#Ad.AdData" title="Ad.AdData"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">AdData</span></code></a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>void</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Ad.plotAdMix1D">
 <span class="sig-name descname"><span class="pre">plotAdMix1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fig</span></em>, <em class="sig-param"><span class="pre">adData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Ad.plotAdMix1D" title="Link to this definition">#</a></dt>
-<dd><p>1D plotting logic (original implementation)</p>
+<dd><p>1D plotting logic (mosaic across runs)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fig</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">matlab.ui.Figure</span></code></span>) – Figure handle</p></li>
+<li><p><strong>adData</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Optional AD to plot; defaults to <a class="reference internal" href="#Ad.AdData" title="Ad.AdData"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">AdData</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Ad.plotAdMix2D">
 <span class="sig-name descname"><span class="pre">plotAdMix2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fig</span></em>, <em class="sig-param"><span class="pre">adData</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Ad.plotAdMix2D" title="Link to this definition">#</a></dt>
 <dd><p>2D plotting logic</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fig</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">matlab.ui.Figure</span></code></span>) – Figure handle</p></li>
+<li><p><strong>adData</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Optional AD to plot; defaults to <a class="reference internal" href="#Ad.AdData" title="Ad.AdData"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">AdData</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Ad.refresh">
 <span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Ad.refresh" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Recompute atomic density for all runs and refresh visualization.</p>
+<p>Reinitializes data storage, updates the preview GUI, reprocesses
+all completed runs, and regenerates visualization plots.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Ad.save">
 <span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Ad.save" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Save AD data and figure to disk.</p>
+<p>Writes <code class="docutils literal notranslate"><span class="pre">AdData.mat</span></code> under <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">BecExp.DataAnalysisPath</span></code> with
+AD values and ROI axes. If the primary chart is enabled, also
+saves the PNG figure at <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Chart(1).Path</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>void</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Ad.show">
 <span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Ad.show" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Display atomic density previewer and chart windows.</p>
+<p>Initializes the atomic density previewer GUI, configures OD preview
+mode, establishes property change listeners, and shows chart figures.
+Loads saved data for backwards compatibility when available.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Ad.update">
 <span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Ad.update" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Compute atomic column density from optical depth for given run.</p>
+<p>Converts optical depth to atomic column density using the selected
+cross-section model, accounting for saturation effects when applicable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>runIdx</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Run index to process</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd>
 </dl>

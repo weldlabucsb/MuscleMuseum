@@ -1,73 +1,96 @@
 classdef BecExp < Trial
-    %BecExp This is BecExp. Test Test.
-    %   Detailed explanation goes here
+    %:class:`BecExp` run orchestration for BEC experiments with real-time analysis.
+    %
+    % Wires together acquisition, ROI selection, analysis modules, logging,
+    % and database updates. Supports automatic or file-watcher acquisition,
+    % 1D/2D parameter scans, figure/GUI management, and error handling for
+    % Cicero and hardware logs.
+    %
+    % **Workflow:**
+    %
+    % - :meth:`start`: set hardware, start acquisition or watcher, enable analyzer, initialize figures
+    % - On each run (listener): fetch/move Cicero log, update hardware/scope data, update figures
+    % - :meth:`stop`/:meth:`fastStop`: stop acquisition, unlock, refresh/save/close analysis figures
+    % - :meth:`refresh`: recompute and redraw analysis
+    % - :meth:`show`/:meth:`browserShow`: display figures/GUI on chosen monitor(s)
     properties
-        Roi Roi
-        SubRoi Roi
-        Acquisition Acquisition
-        AnalysisMethod string % List of analysis methods
-        CloudCenter double % Cloud center [y_0,x_0] from previous measurement, in pixels
-        AveragingMethod string = "StdErr" %Averaging method
+        Roi Roi % :class:`Roi` defining main region of interest for image analysis
+        SubRoi Roi % Optional collection of sub-ROIs for multi-region analysis
+        Acquisition Acquisition % :class:`Acquisition` settings and hardware interface helpers
+        AnalysisMethod string % Ordered list of active analysis module names
+        CloudCenter double % Cloud center coordinates [:math:`y_0`, :math:`x_0`] from previous measurement [pixels]
+        AveragingMethod string = "StdErr" % Data averaging method: "None"|"StdErr"|"Std"
+        IsDensityAverage logical = false % Flag to control averaging when saving Od and Ad data and figures
     end
 
     properties(Dependent)
-        ScannedVariable string
-        ScannedVariableUnit string  
-        ScannedVariable2 string  
-        ScannedVariableUnit2 string  
+        ScannedVariable string % Primary scanned variable name from :attr:`VariableUnitSetting`
+        ScannedVariableUnit string % Primary scanned variable unit string
+        ScannedVariable2 string % Secondary scanned variable name for 2D parameter scans
+        ScannedVariableUnit2 string % Secondary scanned variable unit string for 2D scans
     end
 
     properties(Hidden)
-        ScannedVariableID (1,1) double = 1
-        ScannedVariableID2 (1,1) double = 0
-        IsAutoAcquire logical = false %If we want to automatically set the camera through MATLAB
-        IsHoldRefresh logical = false
-        IsAcquiring logical = false %If the program is still acquiring images
-        IsOdPreview logical = false
+        ScannedVariableID (1,1) double = 1 % Primary variable ID in :class:`BecExpVariableUnit` lookup table
+        ScannedVariableID2 (1,1) double = 0 % Secondary variable ID for 2D parameter scans (0 = none)
+        IsAutoAcquire logical = false % Flag to automatically control camera acquisition from MATLAB
+        IsHoldRefresh logical = false % Flag to temporarily disable figure refresh during operations
+        IsAcquiring logical = false % Flag indicating whether images are currently being acquired
+        IsOdPreview logical = false % Flag to toggle optical depth preview mode in analysis GUIs
     end
 
     properties (Hidden,Transient)
-        ExistedCiceroLogNumber %Count the number of log files that are already in the Origin folder.
-        ExistedHardwareLogNumber %Count the number of hardware log files that are already in the folder.
+        ExistedCiceroLogNumber % Count of Cicero log files already present in origin directory
+        ExistedHardwareLogNumber % Count of hardware log files already present in origin directories
     end
 
     properties (SetAccess = private, Hidden)
-        CiceroLogOrigin = "."
-        CiceroLogPath string
-        CiceroLogTime datetime
-        DeletedRunVariableList
-        VariableUnitSetting
-        HardwareList
-        VariableList
-        HardwareAssociation
-        HardwareLogPath string
+        CiceroLogOrigin = "." % Origin directory path watched for new Cicero log files
+        CiceroLogPath string % Destination log folder path within trial directory
+        CiceroLogTime datetime % Timestamps of moved Cicero log files per run
+        DeletedRunVariableList % Cached scanned parameter values for runs that have been deleted
+        VariableUnitSetting % Lookup table mapping variable IDs to parameter names and units
+        HardwareList % Configuration table for hardware devices and their settings
+        VariableList % Live table of current hardware variable values
+        HardwareAssociation % Mapping table linking trial configurations to hardware settings
+        HardwareLogPath string % Destination hardware log folder path within trial directory
     end
 
     properties (SetAccess = private)
-        CiceroData struct
-        HardwareData struct
-        ScopeData struct
-        Atom Atom
+        CiceroData struct % Aggregated Cicero sequence variables per run from log files
+        HardwareData struct % Aggregated hardware measurement values per run from device logs
+        ScopeData struct % Aggregated oscilloscope-derived measurement values per run
+        Atom Atom % :class:`Atom` object containing atomic species properties for the experiment
     end
 
     properties (Dependent,Hidden)
-        ScannedVariableList
-        RunListSorted
-        ScannedVariableListSorted
-        XLabel
-        YLabel                     % Y-axis label for 2D scans
-        VariableGrid              % 2D parameter grid for 2D scans
+        ScannedVariableList % 1D array or 2×N matrix of scanned variable values across runs
+        RunListSorted % Run indices sorted by ascending scanned variable value(s)
+        ScannedVariableListSorted % Scanned variable values sorted in ascending order
+        XLabel % LaTeX-formatted axis label with units for primary scanned variable
+        YLabel % LaTeX-formatted y-axis label with units for secondary variable (2D scans only)
+        VariableGrid % Meshgrid structure containing X, Y grids for 2D variable scans
     end
 
     properties (Constant,Hidden)
         AnalysisOrder = {"Od";"Imaging";"Ad";...
-            "DensityFit";["AtomNumber";"Tof";"CenterFit";"KapitzaDirac"];"ScopeValue"}
+            "DensityFit";["AtomNumber";"Tof";"CenterFit";"KapitzaDirac"];"ScopeValue"} % Analysis execution order groups defining dependencies
     end
 
     methods
         function obj = BecExp(trialName,config,isLoad)
-            %BECEXP Construct an instance of this class
-            %   Detailed explanation goes here
+            % Construct :class:`BecExp` trial orchestrator.
+            %
+            % Initializes atom and acquisition settings, ROI, analysis
+            % modules, log paths, and optional auto-load. When not loading,
+            % performs an initial update to set up figures and internal state.
+            %
+            % :param trialName: Human-readable trial name
+            % :type trialName: string
+            % :param config: Configuration entry name (default: "BecExpSetting")
+            % :type config: string, optional
+            % :param isLoad: If true, construct from a saved object struct
+            % :type isLoad: logical, optional
             arguments
                 trialName string
                 config = "BecExpSetting"
@@ -99,7 +122,7 @@ classdef BecExp < Trial
             % Analysis settings
             if ~isLoad
                 obj.AnalysisMethod = rmmissing(["Od";"Imaging";"Ad";...
-                    obj.AnalysisMethod]);
+                    obj.AnalysisMethod(:)]);
                 obj.AnalysisMethod(obj.AnalysisMethod == "None") = [];
                 obj.addAnalysis(obj.AnalysisMethod);
             end
@@ -113,6 +136,10 @@ classdef BecExp < Trial
         end
 
         function setParameterTable(obj)
+            % Load static parameter lookup tables used by the trial.
+            %
+            % Initializes configuration tables for variable mappings, hardware
+            % settings, current values, and trial associations from the database.
             obj.VariableUnitSetting = BecExpVariableUnit;
             obj.HardwareList = HardwareList;
             obj.VariableList = VariableList;
@@ -120,11 +147,19 @@ classdef BecExp < Trial
         end
         
         function var1 = get.ScannedVariable(obj)
+            % Get primary scanned variable name from lookup table.
+            %
+            % :return: Primary scanned parameter name
+            % :rtype: string
             id = obj.ScannedVariableID;
             var1 = obj.VariableUnitSetting.readValue(id,"ScannedVariable");
         end
 
         function var2 = get.ScannedVariable2(obj)
+            % Get secondary scanned variable name for 2D parameter scans.
+            %
+            % :return: Secondary scanned parameter name, or "None" if not a 2D scan
+            % :rtype: string
             id = obj.ScannedVariableID2;
             if id == 0
                 var2 = "None";
@@ -134,11 +169,19 @@ classdef BecExp < Trial
         end
 
         function unit1 = get.ScannedVariableUnit(obj)
+            % Get unit string for primary scanned variable.
+            %
+            % :return: Primary scanned parameter unit string
+            % :rtype: string
             id = obj.ScannedVariableID;
             unit1 = obj.VariableUnitSetting.readValue(id,"ScannedVariableUnit");
         end
 
         function unit2 = get.ScannedVariableUnit2(obj)
+            % Get unit string for secondary scanned variable in 2D scans.
+            %
+            % :return: Secondary scanned parameter unit string, or "None" if not a 2D scan
+            % :rtype: string
             id = obj.ScannedVariableID2;
             if id == 0
                 unit2 = "None";
@@ -148,66 +191,18 @@ classdef BecExp < Trial
         end
         
         function varList = get.ScannedVariableList(obj)
+            % Get scanned parameter values for all completed runs.
+            %
+            % Returns either a 1D array (for 1D scans) or a 2×N matrix (for 2D scans)
+            % containing the parameter values for each run. Handles special cases like
+            % run index and Cicero log time.
+            %
+            % :return: Parameter values per run - 1D array or 2×N matrix
+            % :rtype: double
             if obj.Is2DScan
-                % For 2D scans, return a 2xN matrix with both parameters
-                var1 = obj.ScannedVariable;
-                var2 = obj.ScannedVariable2;
-                
-                % Get first parameter values
-                switch var1
-                    case "RunIndex"
-                        varList1 = double(1:obj.NCompletedRun);
-                    case "CiceroLogTime"
-                        if ~isempty(obj.CiceroLogTime)
-                            varList1 = obj.CiceroLogTime;
-                            varList1 = varList1 - varList1(1);
-                            varList1 = seconds(varList1);
-                        else
-                            varList1 = [];
-                        end
-                    otherwise
-                        if isfield(obj.CiceroData,var1)
-                            varList1 = obj.CiceroData.(var1);
-                        elseif isfield(obj.HardwareData,var1)
-                            varList1 = obj.HardwareData.(var1);
-                        else
-                            obj.updateScopeData
-                            if isfield(obj.ScopeData,var1)
-                                varList1 = obj.ScopeData.(var1);
-                            else
-                                varList1 = [];
-                            end
-                        end
-                end
-                
-                % Get second parameter values
-                switch var2
-                    case "RunIndex"
-                        varList2 = double(1:obj.NCompletedRun);
-                    case "CiceroLogTime"
-                        if ~isempty(obj.CiceroLogTime)
-                            varList2 = obj.CiceroLogTime;
-                            varList2 = varList2 - varList2(1);
-                            varList2 = seconds(varList2);
-                        else
-                            varList2 = [];
-                        end
-                    otherwise
-                        if isfield(obj.CiceroData,var2)
-                            varList2 = obj.CiceroData.(var2);
-                        elseif isfield(obj.HardwareData,var2)
-                            varList2 = obj.HardwareData.(var2);
-                        else
-                            obj.updateScopeData
-                            if isfield(obj.ScopeData,var2)
-                                varList2 = obj.ScopeData.(var2);
-                            else
-                                varList2 = [];
-                            end
-                        end
-                end
-                
-                % Return 2xN matrix
+                % For 2D scans, return a 2xN matrix with both parameters             
+                varList1 = obj.getVariableList(obj.ScannedVariable);
+                varList2 = obj.getVariableList(obj.ScannedVariable2);
                 if ~isempty(varList1) && ~isempty(varList2)
                     varList = [varList1; varList2];
                 else
@@ -215,45 +210,63 @@ classdef BecExp < Trial
                 end
             else
                 % 1D scan - original logic
-                switch obj.ScannedVariable
-                    case "RunIndex"
-                        varList = double(1:obj.NCompletedRun);
-                    case "CiceroLogTime"
-                        if ~isempty(obj.CiceroLogTime)
-                            varList = obj.CiceroLogTime;
-                            varList = varList - varList(1);
-                            varList = seconds(varList);
+                varList = obj.getVariableList(obj.ScannedVariable);
+            end
+        end
+
+        function varList = getVariableList(obj,varName)
+            switch varName
+                case "None"
+                    varList = [];
+                case "RunIndex"
+                    varList = double(1:obj.NCompletedRun);
+                case "CiceroLogTime"
+                    if ~isempty(obj.CiceroLogTime)
+                        varList = obj.CiceroLogTime;
+                        varList = varList - varList(1);
+                        varList = seconds(varList);
+                    else
+                        varList = [];
+                    end
+                otherwise
+                    if isfield(obj.CiceroData,varName)
+                        varList = obj.CiceroData.(varName);
+                    elseif isfield(obj.HardwareData,varName)
+                        varList = obj.HardwareData.(varName);
+                    else
+                        obj.updateScopeData
+                        if isfield(obj.ScopeData,varName)
+                            varList = obj.ScopeData.(varName);
                         else
                             varList = [];
                         end
-                    otherwise
-                        if isfield(obj.CiceroData,obj.ScannedVariable)
-                            varList = obj.CiceroData.(obj.ScannedVariable);
-                        elseif isfield(obj.HardwareData,obj.ScannedVariable)
-                            varList = obj.HardwareData.(obj.ScannedVariable);
-                        else
-                            obj.updateScopeData
-                            if isfield(obj.ScopeData,obj.ScannedVariable)
-                                varList = obj.ScopeData.(obj.ScannedVariable);
-                            else
-                                varList = [];
-                            end
-                        end
-                end
+                    end
             end
         end
 
         function runListSorted = get.RunListSorted(obj)
+            % Get run indices sorted by scanned value(s).
+            %
+            % :return: Sorted run indices
+            % :rtype: double
             varList = obj.ScannedVariableList;
             [~,runListSorted] =  sort(varList,2);
         end
 
         function varListSorted = get.ScannedVariableListSorted(obj)
+            % Get sorted list of scanned values.
+            %
+            % :return: Sorted scanned values
+            % :rtype: double
             varList = obj.ScannedVariableList;
             [varListSorted,~] =  sort(varList,2);
         end
 
         function xLabel = get.XLabel(obj)
+            % Build LaTeX-formatted x-axis label for primary variable.
+            %
+            % :return: Axis label string
+            % :rtype: string
             sP = obj.ScannedVariable;
             sP = strrep(sP,'_','\_');
             if obj.ScannedVariableUnit == "None"
@@ -264,6 +277,10 @@ classdef BecExp < Trial
         end
 
         function yLabel = get.YLabel(obj)
+            % Build LaTeX-formatted y-axis label for secondary variable.
+            %
+            % :return: Axis label string or empty
+            % :rtype: string
             if ~obj.Is2DScan
                 yLabel = "";
                 return
@@ -271,14 +288,20 @@ classdef BecExp < Trial
             
             sP = obj.ScannedVariable2;
             sP = strrep(sP,'_','\_');
-            if obj.ScannedVariable2Unit == "None"
+            if obj.ScannedVariableUnit2 == "None"
                 yLabel = sP;
             else
-                yLabel = sP + "~[$\mathrm{" + obj.ScannedVariable2Unit + "}$]";
+                yLabel = sP + "~[$\mathrm{" + obj.ScannedVariableUnit2 + "}$]";
             end
         end
 
         function l = ScannedVariableLabel(obj,runNumber)
+            % Build label strings for scanned variable names and values.
+            %
+            % :param runNumber: Run index
+            % :type runNumber: double
+            % :return: [names, values] joined for display
+            % :rtype: string
             if ~obj.Is2DScan
                 sv = obj.ScannedVariable;
             else
@@ -301,7 +324,13 @@ classdef BecExp < Trial
         end
 
         function varGrid = get.VariableGrid(obj)
-            % Create 2D parameter grid for 2D scans
+            % Create 2D parameter grid structure for 2D scans.
+            %
+            % Generates meshgrid arrays and unique parameter lists for 2D parameter
+            % scans. Returns empty for 1D scans.
+            %
+            % :return: Structure with X, Y meshgrids and unique parameter lists
+            % :rtype: struct
             if ~obj.Is2DScan
                 varGrid = [];
                 return
@@ -326,6 +355,13 @@ classdef BecExp < Trial
         end
 
         function drp = get.DeletedRunVariableList(obj)
+            % Get cached parameter values for deleted runs.
+            %
+            % Returns parameter values from runs that have been deleted but are
+            % not present in the current run list. Used for tracking deleted data.
+            %
+            % :return: Parameter values of deleted runs that are not in current list
+            % :rtype: double
             if isempty(obj.DeletedRunVariableList)
                 drp = eval(class(obj.ScannedVariableList)+".empty(0,0)");
                 return
@@ -336,11 +372,13 @@ classdef BecExp < Trial
                 drp = obj.DeletedRunVariableList(~ismember(obj.DeletedRunVariableList,obj.ScannedVariableList));
             end
         end
-    end
-
-    methods
 
         function setAnalyzer(obj)
+            % Set up event listener for automated analysis upon run completion.
+            %
+            % Creates a listener that triggers analysis pipeline when new run data
+            % becomes available. The analyzer handles image renaming, log fetching,
+            % hardware updates, and figure refreshing.
             obj.Analyzer = addlistener(obj,'NewRunFinished',@(src,event) onChanged(src,event,obj));
             obj.Analyzer.Enabled = false;
             function onChanged(~,~,obj)
@@ -467,8 +505,13 @@ classdef BecExp < Trial
         end
 
         function addAnalysis(obj,newAnalysisList)
-            %ADDANALYSIS Summary of this function goes here
-            %   Detailed explanation goes here
+            % Add new analysis modules to the experiment pipeline.
+            %
+            % Instantiates analysis objects, applies configuration settings,
+            % and sorts them according to :attr:`AnalysisOrder` dependencies.
+            %
+            % :param newAnalysisList: Names of analysis modules to add
+            % :type newAnalysisList: string
             if ~isstring(newAnalysisList)
                 error('Input must be a string.')
             end
@@ -515,8 +558,13 @@ classdef BecExp < Trial
         end
 
         function removeAnalysis(obj,removeAnalysisList)
-            %REMOVEANALYSIS Summary of this function goes here
-            %   Detailed explanation goes here
+            % Remove analysis modules from the experiment pipeline.
+            %
+            % Closes associated figures and removes modules from the active
+            % analysis list, then re-sorts the remaining modules.
+            %
+            % :param removeAnalysisList: Names of analysis modules to remove
+            % :type removeAnalysisList: string
             if ~isstring(removeAnalysisList)
                 error('Input must be a string.')
             end
@@ -536,9 +584,13 @@ classdef BecExp < Trial
         end
 
         function analysisListSorted = sortAnalysis(obj)
-            %SORTANALYSIS Summary of this function goes here
-            %   We need to run different analysis in certain order so we have to sort
-            %   the analysis methods
+            % Sort analysis modules according to execution dependencies.
+            %
+            % Arranges active analysis modules in the order specified by
+            % :attr:`AnalysisOrder` to ensure proper data flow (e.g., Od before Ad).
+            %
+            % :return: Sorted list of analysis module names
+            % :rtype: string
             analysisList = obj.AnalysisMethod;
             analysisListSorted = rmmissing(unique(analysisList(:)));
             analysisOrder = obj.AnalysisOrder;
@@ -550,6 +602,11 @@ classdef BecExp < Trial
         end
 
         function start(obj)
+            % Initialize hardware and begin data acquisition or file watching.
+            %
+            % Sets up hardware associations, starts camera acquisition (if auto mode)
+            % or file watcher, enables the analysis pipeline, and initializes all
+            % analysis figure windows.
             obj.displayLog(" ")
             obj.displayLog("Trial #" + string(obj.SerialNumber) + ": Starting data acquisition and real-time analysis.")
             obj.countExistedLog
@@ -583,8 +640,10 @@ classdef BecExp < Trial
         end
 
         function pause(obj)
-            %PAUSE Summary of this function goes here
-            %   Detailed explanation goes here
+            % Pause data acquisition and disable real-time analysis.
+            %
+            % Temporarily stops camera acquisition or file watcher and disables
+            % the analysis pipeline without closing figures or losing state.
             obj.displayLog("Pausing data acquisition and real-time analysis.")
             if obj.IsAutoAcquire
                 obj.Acquisition.pauseCamera;
@@ -595,8 +654,10 @@ classdef BecExp < Trial
         end
 
         function resume(obj)
-            %RESUME Summary of this function goes here
-            %   Detailed explanation goes here
+            % Resume data acquisition and re-enable real-time analysis.
+            %
+            % Restarts camera acquisition or file watcher, updates log file counts,
+            % and re-enables the analysis pipeline from the paused state.
             obj.displayLog("Resuming data acquisition and real-time analysis.")
 
             obj.ExistedCiceroLogNumber = countFileNumber(obj.CiceroLogOrigin,".clg");
@@ -609,7 +670,25 @@ classdef BecExp < Trial
             obj.Analyzer.Enabled = true;
         end
 
+        function save(obj)
+            if obj.NCompletedRun == 0
+                return
+            end
+            warning off
+            for ii = 1:numel(obj.AnalysisMethod)
+                obj.(obj.AnalysisMethod(ii)).save;
+                obj.(obj.AnalysisMethod(ii)).close;
+            end
+            warning on
+            obj.update
+        end
+
         function stop(obj)
+            % Stop acquisition, finalize analysis, and clean up resources.
+            %
+            % Stops camera or file watcher, unlocks phase locks, performs final
+            % analysis refresh (with fringe removal if enabled), saves all figures,
+            % and updates the trial database. Deletes empty trials with no runs.
             obj.displayLog(" ")
             obj.displayLog("Trial #" + string(obj.SerialNumber) + ": Stopping data acquisition and real-time analysis.")
 
@@ -654,6 +733,11 @@ classdef BecExp < Trial
         end
 
         function fastStop(obj)
+            % Fast stop without forced refresh; save and close analysis figures.
+            %
+            % Similar to :meth:`stop` but skips the final analysis refresh step
+            % to save time. Still performs cleanup, saves figures, and updates
+            % the database. Useful when immediate shutdown is needed.
             obj.displayLog(" ")
             obj.displayLog("Trial #" + string(obj.SerialNumber) + ": Stopping data acquisition and real-time analysis. Will not force refresh.")
 
@@ -689,16 +773,21 @@ classdef BecExp < Trial
         end
 
         function show(obj)
-            %SHOW Summary of this function goes here
-            %   Detailed explanation goes here
+            % Display all analysis windows on the current monitor.
+            %
+            % Makes all analysis figure windows and GUIs visible using their
+            % default positioning and sizing settings.
             for ii = 1:numel(obj.AnalysisMethod)
                 obj.(obj.AnalysisMethod(ii)).show;
             end
         end
 
         function browserShow(obj)
-            %SHOW Summary of this function goes here
-            %   Detailed explanation goes here
+            % Display analysis windows in browser-style layout on secondary monitor.
+            %
+            % Arranges analysis figures and GUIs on the secondary monitor (if available)
+            % in a browser-like tiled layout for better multi-monitor workflows.
+            % Falls back to primary monitor if only one display is available.
             mp = sortMonitor;
             monitorIndex = 1;
             if size(mp,1) > 1
@@ -721,16 +810,29 @@ classdef BecExp < Trial
             end
         end
 
-        function refresh(obj,anaylsisName)
-            %REFRESH Summary of this function goes here
-            %   Detailed explanation goes here
+        function refresh(obj,anaylsisName,isRefreshData)
+            % Recompute analysis data and refresh visualizations.
+            %
+            % Reprocesses all run data through the analysis pipeline and updates
+            % figures. Can refresh all modules or start from a specific module
+            % (refreshing it and all downstream dependencies).
+            %
+            % :param anaylsisName: Analysis module to start refresh from (default: all)
+            % :type anaylsisName: string, optional
             arguments
                 obj BecExp
                 anaylsisName string = string.empty
+                isRefreshData logical = false
             end
             if obj.IsHoldRefresh
                 obj.displayLog("Refresh is on hold.")
                 return
+            end
+
+            if isRefreshData
+                refreshMethod = "refreshData";
+            else
+                refreshMethod = "refresh";
             end
 
             nAnalysis = numel(obj.AnalysisMethod);
@@ -743,19 +845,19 @@ classdef BecExp < Trial
                 obj.displayLog("Refreshing the figures.")
                 if isempty(anaylsisName)
                     for ii = 1:nAnalysis
-                        obj.(obj.AnalysisMethod(ii)).refresh;
+                        obj.(obj.AnalysisMethod(ii)).(refreshMethod);
                     end
                 elseif ~isscalar(anaylsisName)
                     error("Input must be a string scalar.")
                 elseif ~ismember(anaylsisName,vertcat(obj.AnalysisOrder{:}))
                     warning(anaylsisName + " is not in AnalysisOrder. Will refresh all.")
                     for ii = 1:nAnalysis
-                        obj.(obj.AnalysisMethod(ii)).refresh;
+                        obj.(obj.AnalysisMethod(ii)).(refreshMethod);
                     end
                 else
                     % First refresh [anaylsisName]
                     if ismember(anaylsisName,obj.AnalysisMethod)
-                        obj.(anaylsisName).refresh
+                        obj.(anaylsisName).(refreshMethod)
                     end
 
                     % Then refresh everthing after [anaylsisName]
@@ -766,13 +868,13 @@ classdef BecExp < Trial
                         aMethodIdx = find(ismember(obj.AnalysisMethod,afterAnalysis),1);
                         if ~isempty(aMethodIdx)
                             for ii = aMethodIdx:nAnalysis
-                                obj.(obj.AnalysisMethod(ii)).refresh;
+                                obj.(obj.AnalysisMethod(ii)).(refreshMethod);
                             end
                         else
                             % Refresh everthing that are not in AanalysisOrder
                             extraAnalysis = obj.AnalysisMethod(~ismember(obj.AnalysisMethod,vertcat(obj.AnalysisOrder{:})));
                             for ii = 1:numel(extraAnalysis)
-                                obj.(extraAnalysis(ii)).refresh;
+                                obj.(extraAnalysis(ii)).(refreshMethod);
                             end
                         end
                     end
@@ -781,7 +883,20 @@ classdef BecExp < Trial
             end
         end
 
+        function refreshData(obj,anaylsisName)
+            arguments
+                obj BecExp
+                anaylsisName string = string.empty
+            end
+            obj.refresh(anaylsisName,true)
+        end
+
         function refreshFigure(obj)
+            % Update all analysis figures with current data without recomputing.
+            %
+            % Refreshes the visual display of all analysis modules using existing
+            % processed data. Faster than :meth:`refresh` since it skips data
+            % recomputation.
             arguments
                 obj BecExp
             end
@@ -793,6 +908,15 @@ classdef BecExp < Trial
         end
 
         function mData = readRun(obj,runIdx)
+            % Read raw image data for specified run indices.
+            %
+            % Loads atom, light, and dark images from disk, applies bad pixel
+            % correction, and returns as a 4D array.
+            %
+            % :param runIdx: Run index or indices to read
+            % :type runIdx: double
+            % :return: Image data with shape (:math:`N_y`, :math:`N_x`, :math:`N_\mathrm{run}`, 3)
+            % :rtype: double
             runIdx = string(runIdx(:));
             runPath = fullfile(obj.DataPath,obj.DataPrefix) + "_" + runIdx ...
                 + ["_atom","_light","_dark"] + obj.DataFormat;
@@ -807,8 +931,16 @@ classdef BecExp < Trial
         end
 
         function roiData = readRunRoi(obj,runIdx)
-            %READRUNROI Summary of this function goes here
-            %   Detailed explanation goes here
+            % Read ROI-cropped image data for specified run indices.
+            %
+            % Similar to :meth:`readRun` but returns only the ROI-selected regions
+            % to reduce memory usage and improve processing speed. Uses parallel
+            % processing when available.
+            %
+            % :param runIdx: Run index or indices to read
+            % :type runIdx: double
+            % :return: ROI-cropped image data with shape (:math:`N_{y,\mathrm{ROI}}`, :math:`N_{x,\mathrm{ROI}}`, :math:`N_\mathrm{run}`, 3)
+            % :rtype: double
             runIdx = string(runIdx(:));
             nRun = numel(runIdx);
             runPath = fullfile(obj.DataPath,obj.DataPrefix) + "_" + runIdx ...
@@ -846,6 +978,12 @@ classdef BecExp < Trial
 
             % Read one run function
             function data = processOneRun(filePaths)
+                % Process one run's image files in parallel worker.
+                %
+                % :param filePaths: Array of file paths for [atom, light, dark] images
+                % :type filePaths: string
+                % :return: ROI-selected image data for one run
+                % :rtype: double
                 data = zeros([roiSize, 1, 3]);  % adjust dimensions as needed
                 for kk = 1:3
                     data(:,:,1,kk) = roi.select(acq.killBadPixel(double(imread(filePaths(kk)))));
@@ -854,8 +992,10 @@ classdef BecExp < Trial
         end
 
         function deleteRun(obj,runIdx)
-            %DELETERUN Summary of this function goes here
-            %   Detailed explanation goes here
+            % Delete run data (images, logs) and update in-memory tables.
+            %
+            % :param runIdx: Run index or indices to delete
+            % :type runIdx: double|double[]
             if isempty(runIdx)
                 return
             elseif obj.IsAcquiring
@@ -1043,13 +1183,32 @@ classdef BecExp < Trial
         end
 
         function countExistedLog(obj)
-            %COUNTEXISTEDLOG Summary of this function goes here
-            %   Detailed explanation goes here
+            % Count existing Cicero and hardware log files in origin directories.
+            %
+            % Updates counters for pre-existing log files to distinguish new
+            % files generated during the current experiment run.
             obj.ExistedCiceroLogNumber = countFileNumber(obj.CiceroLogOrigin,".clg");
+            obj.coutExistedHardwareLog
+        end
+
+        function coutExistedHardwareLog(obj)
+            % Count existing hardware log files for all configured devices.
+            %
+            % Updates the hardware log file counters by checking each device's
+            % data path for pre-existing log files.
             obj.ExistedHardwareLogNumber = arrayfun(@countFileNumber,obj.HardwareList.readColumn("DataPath"));
         end
 
         function [sData, readsuccess] = readCiceroLog(obj,runIdx)
+            % Read and deserialize Cicero log files for specified runs.
+            %
+            % Loads binary Cicero log files (.clg) and extracts sequence variables
+            % using .NET binary formatter. Handles file access errors gracefully.
+            %
+            % :param runIdx: Run index or indices to read
+            % :type runIdx: double
+            % :return: Structure with sequence variables per run, and success flag
+            % :rtype: struct, logical
             readsuccess=false;
             try
                 runIdx = string(runIdx(:));
@@ -1096,6 +1255,16 @@ classdef BecExp < Trial
         end
 
         function isFetched = fetchCiceroLog(obj,runIdx)
+            % Wait for and move new Cicero log file from origin to trial directory.
+            %
+            % Monitors the origin directory for new .clg files, waits up to 10 seconds
+            % for file creation, then attempts to move it to the trial log folder
+            % with proper naming convention.
+            %
+            % :param runIdx: Run number for file naming
+            % :type runIdx: double
+            % :return: True if log file was successfully fetched and moved
+            % :rtype: logical
             obj.displayLog("Fetching the Cicero log file for run #" + num2str(runIdx) + ".")
             newLogNum = 0; % Number of new log files.
             t = 0; % Total pause time.
@@ -1152,6 +1321,14 @@ classdef BecExp < Trial
         end
 
         function fetchHardwareLog(obj,runIdx)
+            % Trigger scope data collection and fetch hardware log files.
+            %
+            % Commands the hardware control panel to read current scope data,
+            % then searches for and moves new hardware log files from device
+            % directories to the trial hardware log folder.
+            %
+            % :param runIdx: Run number for file naming
+            % :type runIdx: double
             obj.displayLog("Reading scope data for run #" + num2str(runIdx) + ".")
             hwApp = get(findall(0, 'Tag', "HwControlPanel"), 'RunningAppInstance');
             if ~isempty(hwApp)
@@ -1192,6 +1369,11 @@ classdef BecExp < Trial
         end
 
         function setHardware(obj)
+            % Configure hardware settings and upload to hardware control panel.
+            %
+            % Reads trial-specific hardware associations from the database,
+            % updates hardware settings, and uploads configurations to the
+            % hardware control panel application.
 
             %% Set HardwareSetting
             obj.displayLog("Checking hardware associations...")
@@ -1218,6 +1400,11 @@ classdef BecExp < Trial
         end
 
         function unlock(obj)
+            % Unlock phase locks through hardware control panel.
+            %
+            % Attempts to disable phase locks via the hardware control panel
+            % application. Issues a warning if unlocking fails due to hardware
+            % connection issues.
             hwApp = get(findall(0, 'Tag', "HwControlPanel"), 'RunningAppInstance');
             if ~isempty(hwApp)
                 hwApp = HardwareControlPanel;
@@ -1230,8 +1417,7 @@ classdef BecExp < Trial
         end
         
         function updateHardware(obj)
-            %UPDATEHARDWARE Summary of this function goes here
-            %   Detailed explanation goes here
+            % Read current hardware values into :attr:`HardwareData` and update UI.
             hwApp = get(findall(0, 'Tag', "HwControlPanel"), 'RunningAppInstance');
             if ~isempty(hwApp)
                 if isvalid(hwApp)
@@ -1252,8 +1438,11 @@ classdef BecExp < Trial
         end
 
         function updateScopeData(obj)
-            %UPDATESCOPEDATA Summary of this function goes here
-            %   Detailed explanation goes here
+            % Update scope-derived measurement values from hardware logs.
+            %
+            % Reads oscilloscope data from hardware log files and extracts
+            % measurement values (RMS, peak, etc.) for channels specified in
+            % the scanned variables or scope value analysis.
             fullValueName = string.empty;
             if contains(obj.ScannedVariable,"Scope","IgnoreCase",true)
                 fullValueName = [fullValueName,obj.ScannedVariable];
@@ -1284,6 +1473,18 @@ classdef BecExp < Trial
             end
 
             function value = readRun(runIdx,sName,vName,cNumber)
+                % Read specific scope measurement value from hardware log file.
+                %
+                % :param runIdx: Run number
+                % :type runIdx: double
+                % :param sName: Scope device name
+                % :type sName: string
+                % :param vName: Measurement value name (e.g., "Rms", "Peak")
+                % :type vName: string  
+                % :param cNumber: Channel number
+                % :type cNumber: double
+                % :return: Measurement value for specified channel
+                % :rtype: double
                 try
                     scopeData = loadVar(fullfile(obj.HardwareLogPath,obj.DataPrefix + "_" + num2str(runIdx)) + "_" + sName + ".mat");
                 catch
@@ -1303,6 +1504,10 @@ classdef BecExp < Trial
         end
 
         function writeDatabase(obj)
+            % Write trial metadata to PostgreSQL database.
+            %
+            % Converts trial object to table format and writes to database,
+            % excluding transient analysis method references.
             sData = struct(obj);
             sData = rmfield(sData,{'AnalysisMethod'});
             tData = struct2table(sData,AsArray=true);
@@ -1310,6 +1515,10 @@ classdef BecExp < Trial
         end
 
         function updateDatabase(obj)
+            % Update existing database entry with current trial state.
+            %
+            % Updates the database record with current trial metadata, Cicero
+            % data, and hardware data using the trial's serial number as key.
             obj.displayLog("Updating the database entry.")
             sData = struct(obj);
             tData = struct2table(sData,AsArray=true);
@@ -1331,13 +1540,13 @@ classdef BecExp < Trial
     methods (Hidden)
 
         function setFolder(obj)
-            %SETFOLDER This method creates data storage folders and sets up data
-            %analysis paths.
-            %   The data are stored in the folder:
-            %   [ParentPath]\year\year.month\month.day\[datafolder]
-            %   [datafolder] is named as "idx1 - Name_idx2" where idx1 indicates
-            %   it is the idx1-th data taken this day, and idx2 indicates it is the
-            %   idx2-th data taken this day with the same Name.
+            % Create data storage folder hierarchy and set analysis paths.
+            %
+            % Creates nested directory structure organized by date and trial index:
+            % ``[ParentPath]\year\year.month\month.day\[datafolder]``
+            % where ``[datafolder]`` is named as ``idx1 - Name_idx2_Trial_serialNumber``
+            % with idx1 being the daily folder index and idx2 the daily trial index
+            % for the given name.
 
             %% Look at the watch
             t = obj.DateTime;
@@ -1403,10 +1612,14 @@ classdef BecExp < Trial
         end
 
         function setConfigProperty(obj,s)
-            %This method compares the properties of the handle object 'obj' with
-            %the fields of a structure 'struct'. Then it sets the properties to the
-            %values of the fields. The obj must inherit the set method from
-            %matlab.mixin.SetGetExactNames
+            % Set object properties from structure fields.
+            %
+            % Compares object properties with structure fields and sets matching
+            % properties to the structure values. Requires the object to inherit
+            % from :class:`matlab.mixin.SetGetExactNames`.
+            %
+            % :param s: Structure containing property-value pairs
+            % :type s: struct
             mc = metaclass(obj); %use metaclass to access non-public properties
             propList = {mc.PropertyList.Name};
             fieldList = fieldnames(s);

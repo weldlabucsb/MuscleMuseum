@@ -1,8 +1,58 @@
 classdef HardwareAssociation < MmParameter
-    %:class:`HardwareList` catalogs available hardware objects and their data folders.
+    %:class:`HardwareAssociation` binds trial presets to hardware setting rows.
     %
-    % Maps a logical :attr:`Name` to a hardware :attr:`Type` and a device-specific
-    % :attr:`DataPath` for storing logs/objects.
+    % Each row links a :attr:`TrialID` (from :class:`BecExpSetting`) to a
+    % :attr:`SettingID` (from :class:`HardwareSetting`), and optionally provides
+    % a literal :attr:`DefaultValue` and/or a :attr:`VariableID` override. This
+    % enables per-trial overrides of hardware settings.
+    %
+    % **Schema (columns, types, defaults):**
+    %
+    % .. list-table::
+    %    :widths: 30 20 30
+    %    :header-rows: 1
+    %
+    %    * - Column
+    %      - Type
+    %      - Default
+    %    * - TrialID
+    %      - int64
+    %      - 1
+    %    * - SettingID
+    %      - int64
+    %      - 1
+    %    * - DefaultValue
+    %      - string
+    %      - None
+    %    * - VariableID
+    %      - int64
+    %      - 0
+    %
+    % **Foreign keys:**
+    %
+    % - ``SettingID`` → :class:`HardwareSetting` (``ID``)
+    % - ``TrialID`` → :class:`BecExpSetting` (``ID``)
+    %
+    % **Join conditions:**
+    %
+    % (none)
+    %
+    % **Flags:**
+    %
+    % .. list-table::
+    %    :widths: 38 14
+    %    :header-rows: 1
+    %
+    %    * - Property
+    %      - Value
+    %    * - IsIncludeDefaultEntry
+    %      - false
+    %    * - IsFirstColumnUnique
+    %      - false
+    %    * - IsTriggerJoinOnRight
+    %      - false
+    %    * - IsTriggerJoinOnLeft
+    %      - false
 
     properties
         

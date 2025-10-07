@@ -248,7 +248,12 @@ classdef MmParameter < handle
         end
 
         function createView(obj)
-
+            % Hook for subclasses to create auxiliary SQL views.
+            %
+            % Default implementation is a no-op. Subclasses may override to
+            % create helper views that support richer queries (e.g., JSON
+            % expansion). Keep implementations idempotent by checking for
+            % view existence before creating.
         end
 
         function checkConstructor(obj)

@@ -156,6 +156,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
@@ -163,14 +170,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../field/index.html">field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">hardware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">misc</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Chart</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Constants.html">Constants</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Gui.html">Gui</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -395,86 +396,139 @@ document.write(`
 <dt class="sig sig-object mat" id="Chart">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Chart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">NameValueArgs</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/misc/Chart.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Chart" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code></p>
-<p>CHART Summary of this class goes here
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#Chart" title="Chart"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Chart</span></code></a> utility to create, position, show, and save figures.</p>
+<p>Manages figure creation across multiple monitors, supports logical
+positioning and sizing (fractions or presets), and saving to <code class="docutils literal notranslate"><span class="pre">.fig</span></code>
+/<code class="docutils literal notranslate"><span class="pre">.png</span></code> or opening a <code class="docutils literal notranslate"><span class="pre">.gif</span></code> instead when <a class="reference internal" href="#Chart.IsGif" title="Chart.IsGif"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">IsGif</span></code></a> is true.</p>
+<p><strong>Examples:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ch</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Chart</span><span class="p">(</span><span class="n">name</span><span class="p">=</span><span class="s">&quot;Spectrum&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">num</span><span class="p">=</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">fpath</span><span class="p">=</span><span class="s">&quot;C:/tmp/spectrum&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">           </span><span class="n">loc</span><span class="p">=[</span><span class="mf">0.05</span><span class="p">,</span><span class="mf">0.1</span><span class="p">],</span><span class="w"> </span><span class="nb">size</span><span class="p">=[</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.4</span><span class="p">],</span><span class="w"> </span><span class="n">isGif</span><span class="p">=</span><span class="nb">false</span><span class="p">);</span>
+<span class="n">fig</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ch</span><span class="p">.</span><span class="n">initialize</span><span class="p">();</span>
+<span class="nb">plot</span><span class="p">(</span><span class="nb">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">1</span><span class="p">));</span><span class="w"> </span><span class="nb">drawnow</span><span class="p">;</span>
+<span class="n">ch</span><span class="p">.</span><span class="n">save</span><span class="p">();</span>
+<span class="n">ch</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</pre></div>
+</div>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Chart.Chart">
 <span class="sig-name descname"><span class="pre">Chart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">NameValueArgs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Chart.Chart" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Construct a <a class="reference internal" href="#Chart" title="Chart"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Chart</span></code></a> from name-value arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Figure window title</p></li>
+<li><p><strong>num</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Figure number/ID</p></li>
+<li><p><strong>fpath</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Save/load path without extension</p></li>
+<li><p><strong>loc</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span> <span class="pre">or</span> <span class="pre">double</span></code></span>) – Location preset string or [xFrac,yFrac] in (0,1)</p></li>
+<li><p><strong>size</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span> <span class="pre">or</span> <span class="pre">double</span></code></span>) – Size preset string or [wFrac,hFrac] in (0,1)</p></li>
+<li><p><strong>isGif</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">logical</span> <span class="pre">optional</span></code></span>) – Treat target as GIF for <a class="reference internal" href="#Chart.showGif" title="Chart.showGif"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">showGif()</span></code></a></p></li>
+<li><p><strong>isEnabled</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">logical</span> <span class="pre">optional</span></code></span>) – If false, all operations are no-ops</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="Chart.Figure">
-<span class="sig-name descname"><span class="pre">Figure</span></span><em class="property"> <span class="pre">matlab.ui.Figure</span></em><a class="headerlink" href="#Chart.Figure" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">Figure</span></span><a class="headerlink" href="#Chart.Figure" title="Link to this definition">#</a></dt>
+<dd><p>Handle to the managed figure (created in <a class="reference internal" href="#Chart.initialize" title="Chart.initialize"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">initialize()</span></code></a>)</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Chart.IsEnabled">
 <span class="sig-name descname"><span class="pre">IsEnabled</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">true</span></em><a class="headerlink" href="#Chart.IsEnabled" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Master switch to disable all operations</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Chart.IsGif">
 <span class="sig-name descname"><span class="pre">IsGif</span></span><em class="property"> <span class="pre">logical</span> <span class="pre">=</span> <span class="pre">false</span></em><a class="headerlink" href="#Chart.IsGif" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>If true, treat target as GIF and open it via <a class="reference internal" href="#Chart.showGif" title="Chart.showGif"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">showGif()</span></code></a></p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Chart.Location">
 <span class="sig-name descname"><span class="pre">Location</span></span><a class="headerlink" href="#Chart.Location" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Logical location [xFrac,yFrac] or preset string (e.g. “eastnorthwest”)</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Chart.Monitor">
 <span class="sig-name descname"><span class="pre">Monitor</span></span><em class="property"> <span class="pre">double</span> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#Chart.Monitor" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Target monitor index (1 is primary)</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Chart.Name">
 <span class="sig-name descname"><span class="pre">Name</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#Chart.Name" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Human-readable figure name (window title)</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Chart.Number">
 <span class="sig-name descname"><span class="pre">Number</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Chart.Number" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Figure number/ID (used for reuse)</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Chart.Path">
 <span class="sig-name descname"><span class="pre">Path</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#Chart.Path" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>File path without extension for saving/reading</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Chart.Size">
 <span class="sig-name descname"><span class="pre">Size</span></span><a class="headerlink" href="#Chart.Size" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Logical size [wFrac,hFrac] or preset string: “small”,”medium”,”large”,”largetall”,”full”</p>
+</dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Chart.close">
 <span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Chart.close" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Close the managed figure window if it exists.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Chart.initialize">
 <span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Chart.initialize" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Create or reuse the figure, position and size it, and return its handle.</p>
+<p>Uses monitor geometry from <code class="docutils literal notranslate"><span class="pre">sortMonitor</span></code> and supports both preset
+strings and fractional coordinates/sizes in (0,1).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>fig — Figure handle; if <a class="reference internal" href="#Chart.IsEnabled" title="Chart.IsEnabled"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">IsEnabled</span></code></a> is false returns <code class="docutils literal notranslate"><span class="pre">{1}</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>matlab.ui.Figure or cell</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Chart.save">
 <span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Chart.save" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Save figure to <code class="docutils literal notranslate"><span class="pre">.fig</span></code> (if size is reasonable) and <code class="docutils literal notranslate"><span class="pre">.png</span></code>.</p>
+<p>Checks existence and image data size to avoid extremely large
+<code class="docutils literal notranslate"><span class="pre">.fig</span></code> files, then writes PNG unconditionally.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Chart.show">
 <span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Chart.show" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Show a previously saved <code class="docutils literal notranslate"><span class="pre">.fig</span></code> in a managed figure window.</p>
+<p>Creates the window via <a class="reference internal" href="#Chart.initialize" title="Chart.initialize"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">initialize()</span></code></a> and clones the saved
+content using <code class="docutils literal notranslate"><span class="pre">copyobj</span></code> if the figure file exists.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="Chart.showGif">
 <span class="sig-name descname"><span class="pre">showGif</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Chart.showGif" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Open the target <code class="docutils literal notranslate"><span class="pre">.gif</span></code> in the system viewer when <a class="reference internal" href="#Chart.IsGif" title="Chart.IsGif"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">IsGif</span></code></a> is true.</p>
+</dd></dl>
 
 </dd>
 </dl>

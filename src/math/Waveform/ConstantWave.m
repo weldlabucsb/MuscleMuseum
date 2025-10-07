@@ -29,20 +29,15 @@ classdef ConstantWave < PeriodicWaveform & ConstantTop
         function obj = ConstantWave(options)
             %Construct a ConstantWave object.
             %
-            % :param samplingRate: Sampling rate in Hz (default: inherited)
+            % :param samplingRate: Sampling rate in Hz (default: [])
             % :type samplingRate: double, optional
             % :param startTime: Start time in seconds (default: 0)
             % :type startTime: double, optional
-            % :param duration: Duration in seconds (default: inherited)
+            % :param duration: Duration in seconds (default: [])
             % :type duration: double, optional
             % :param offset: DC offset value (default: 0)
             % :type offset: double, optional
             %
-            % **Example:**
-            %
-            % .. code-block:: matlab
-            %
-            %     const = ConstantWave(amplitude = 3.0, duration = 0.01, offset = 1.0);
             arguments
                 options.samplingRate double = [];
                 options.startTime double = 0;

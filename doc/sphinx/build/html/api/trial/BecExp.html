@@ -43,6 +43,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/trial/BecExp';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -156,6 +157,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
@@ -165,86 +173,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">trial</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="Ad.html">Ad</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AdPreviewer.html">AdPreviewer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AtomNumber.html">AtomNumber</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecAnalysis.html">BecAnalysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecBrowser.html">BecBrowser</a></li>
-<li class="toctree-l3"><a class="reference internal" href="BecControlPanel.html">BecControlPanel</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">BecExp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="CenterFit.html">CenterFit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="DensityFit.html">DensityFit</a></li>
-<li class="toctree-l3"><a class="reference internal" href="DensityFitDisplay.html">DensityFitDisplay</a></li>
-<li class="toctree-l3"><a class="reference internal" href="DiffusionProfile.html">DiffusionProfile</a></li>
-<li class="toctree-l3"><a class="reference internal" href="FokkerPlanck.html">FokkerPlanck</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ForceProfile.html">ForceProfile</a></li>
-<li class="toctree-l3"><a class="reference internal" href="FringeRemoval.html">FringeRemoval</a></li>
-<li class="toctree-l3"><a class="reference internal" href="GPE.html">GPE</a></li>
-<li class="toctree-l3"><a class="reference internal" href="HardwareAssociation.html">HardwareAssociation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Imaging.html">Imaging</a></li>
-<li class="toctree-l3"><a class="reference internal" href="InitialCondition.html">InitialCondition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="KapitzaDirac.html">KapitzaDirac</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LatticeFourierSeSim1D.html">LatticeFourierSeSim1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LatticeFourierSeSim1DRun.html">LatticeFourierSeSim1DRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="LatticeSeSim1D.html">LatticeSeSim1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="MeSim.html">MeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="MeSimRun.html">MeSimRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Od.html">Od</a></li>
-<li class="toctree-l3"><a class="reference internal" href="OdPreviewer.html">OdPreviewer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ScopeValue.html">ScopeValue</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SeSim1D.html">SeSim1D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SeSim1DRun.html">SeSim1DRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Sim.html">Sim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SimRun.html">SimRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SpaceSim.html">SpaceSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SpaceSimRun.html">SpaceSimRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SpaceTimeSim.html">SpaceTimeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TimeSim.html">TimeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TimeSimRun.html">TimeSimRun</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Tof.html">Tof</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Trial.html">Trial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="absorption2Od.html">absorption2Od</a></li>
-<li class="toctree-l3"><a class="reference internal" href="acceleration.html">acceleration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="angdist.html">angdist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cgcoefficient.html">cgcoefficient</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cmd_rmdir.html">cmd_rmdir</a></li>
-<li class="toctree-l3"><a class="reference internal" href="computeAbsorption.html">computeAbsorption</a></li>
-<li class="toctree-l3"><a class="reference internal" href="computeFloquetHamiltonian.html">computeFloquetHamiltonian</a></li>
-<li class="toctree-l3"><a class="reference internal" href="convertidx.html">convertidx</a></li>
-<li class="toctree-l3"><a class="reference internal" href="decompfactor.html">decompfactor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deleteBecExp.html">deleteBecExp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deleteMeSim.html">deleteMeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deleteTrial.html">deleteTrial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="diffu.html">diffu</a></li>
-<li class="toctree-l3"><a class="reference internal" href="fixPhase.html">fixPhase</a></li>
-<li class="toctree-l3"><a class="reference internal" href="fixPhase2.html">fixPhase2</a></li>
-<li class="toctree-l3"><a class="reference internal" href="fluxdist.html">fluxdist</a></li>
-<li class="toctree-l3"><a class="reference internal" href="force.html">force</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gaussian_gen.html">gaussian_gen</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gaussian_grad.html">gaussian_grad</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gaussian_prof.html">gaussian_prof</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gaussiantr.html">gaussiantr</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gfactor.html">gfactor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="hamiltonian_al.html">hamiltonian_al</a></li>
-<li class="toctree-l3"><a class="reference internal" href="hamiltonian_al_a.html">hamiltonian_al_a</a></li>
-<li class="toctree-l3"><a class="reference internal" href="histoplot.html">histoplot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadBecExp.html">loadBecExp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadMeSim.html">loadMeSim</a></li>
-<li class="toctree-l3"><a class="reference internal" href="loadTrial.html">loadTrial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pinky.html">pinky</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rabi.html">rabi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rabiMatrix.html">rabiMatrix</a></li>
-<li class="toctree-l3"><a class="reference internal" href="randpdf.html">randpdf</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rhodot.html">rhodot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rhodot_a.html">rhodot_a</a></li>
-<li class="toctree-l3"><a class="reference internal" href="runLocalTest.html">runLocalTest</a></li>
-<li class="toctree-l3"><a class="reference internal" href="so3.html">so3</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sortBecAnalysis.html">sortBecAnalysis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="wignersixj.html">wignersixj</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">trial</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../sup/support.html">Support</a></li>
@@ -466,242 +395,472 @@ document.write(`
 <h1>BecExp<a class="headerlink" href="#becexp" title="Link to this heading">#</a></h1>
 <dl class="mat class">
 <dt class="sig sig-object mat" id="BecExp">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BecExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/BecExp/BecExp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BecExp" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BecExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em>, <em class="sig-param"><span class="pre">isLoad</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/trial/becExp/BecExp/BecExp.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#BecExp" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="Trial.html#Trial" title="Trial"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Trial</span></code></a></p>
-<p>BecExp This is BecExp. Test Test.
-Detailed explanation goes here</p>
+<p><a class="reference internal" href="#BecExp" title="BecExp"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecExp</span></code></a> run orchestration for BEC experiments with real-time analysis.</p>
+<p>Wires together acquisition, ROI selection, analysis modules, logging,
+and database updates. Supports automatic or file-watcher acquisition,
+1D/2D parameter scans, figure/GUI management, and error handling for
+Cicero and hardware logs.</p>
+<p><strong>Workflow:</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#BecExp.start" title="BecExp.start"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">start()</span></code></a>: set hardware, start acquisition or watcher, enable analyzer, initialize figures</p></li>
+<li><p>On each run (listener): fetch/move Cicero log, update hardware/scope data, update figures</p></li>
+<li><p><a class="reference internal" href="#BecExp.stop" title="BecExp.stop"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">stop()</span></code></a>/<a class="reference internal" href="#BecExp.fastStop" title="BecExp.fastStop"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">fastStop()</span></code></a>: stop acquisition, unlock, refresh/save/close analysis figures</p></li>
+<li><p><a class="reference internal" href="#BecExp.refresh" title="BecExp.refresh"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">refresh()</span></code></a>: recompute and redraw analysis</p></li>
+<li><p><a class="reference internal" href="#BecExp.show" title="BecExp.show"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">show()</span></code></a>/<a class="reference internal" href="#BecExp.browserShow" title="BecExp.browserShow"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">browserShow()</span></code></a>: display figures/GUI on chosen monitor(s)</p></li>
+</ul>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.BecExp">
-<span class="sig-name descname"><span class="pre">BecExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.BecExp" title="Link to this definition">#</a></dt>
-<dd><p>BECEXP Construct an instance of this class
-Detailed explanation goes here</p>
+<span class="sig-name descname"><span class="pre">BecExp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em>, <em class="sig-param"><span class="pre">isLoad</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.BecExp" title="Link to this definition">#</a></dt>
+<dd><p>Construct <a class="reference internal" href="#BecExp" title="BecExp"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">BecExp</span></code></a> trial orchestrator.</p>
+<p>Initializes atom and acquisition settings, ROI, analysis
+modules, log paths, and optional auto-load. When not loading,
+performs an initial update to set up figures and internal state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trialName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Human-readable trial name</p></li>
+<li><p><strong>config</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – Configuration entry name (default: “BecExpSetting”)</p></li>
+<li><p><strong>isLoad</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">logical,</span> <span class="pre">optional</span></code></span>) – If true, construct from a saved object struct</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="BecExp.Acquisition">
 <span class="sig-name descname"><span class="pre">Acquisition</span></span><em class="property"> <span class="pre">Acquisition</span></em><a class="headerlink" href="#BecExp.Acquisition" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p><a class="reference internal" href="../hardware/Acquisition.html#Acquisition" title="Acquisition"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Acquisition</span></code></a> settings and hardware interface helpers</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="BecExp.AnalysisMethod">
 <span class="sig-name descname"><span class="pre">AnalysisMethod</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#BecExp.AnalysisMethod" title="Link to this definition">#</a></dt>
-<dd><p>List of analysis methods</p>
+<dd><p>Ordered list of active analysis module names</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="BecExp.Atom">
 <span class="sig-name descname"><span class="pre">Atom</span></span><em class="property"> <span class="pre">Atom</span></em><a class="headerlink" href="#BecExp.Atom" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p><a class="reference internal" href="../atom/Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a> object containing atomic species properties for the experiment</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="BecExp.AveragingMethod">
 <span class="sig-name descname"><span class="pre">AveragingMethod</span></span><em class="property"> <span class="pre">string</span> <span class="pre">=</span> <span class="pre">&quot;StdErr&quot;</span></em><a class="headerlink" href="#BecExp.AveragingMethod" title="Link to this definition">#</a></dt>
-<dd><p>Averaging method</p>
+<dd><p>Data averaging method: “None”|”StdErr”|”Std”</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="BecExp.CiceroData">
 <span class="sig-name descname"><span class="pre">CiceroData</span></span><em class="property"> <span class="pre">struct</span></em><a class="headerlink" href="#BecExp.CiceroData" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Aggregated Cicero sequence variables per run from log files</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="BecExp.CloudCenter">
 <span class="sig-name descname"><span class="pre">CloudCenter</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#BecExp.CloudCenter" title="Link to this definition">#</a></dt>
-<dd><p>Cloud center [y_0,x_0] from previous measurement, in pixels</p>
+<dd><p>Cloud center coordinates [<span class="math notranslate nohighlight">\(y_0\)</span>, <span class="math notranslate nohighlight">\(x_0\)</span>] from previous measurement [pixels]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="BecExp.HardwareData">
 <span class="sig-name descname"><span class="pre">HardwareData</span></span><em class="property"> <span class="pre">struct</span></em><a class="headerlink" href="#BecExp.HardwareData" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="mat attribute">
-<dt class="sig sig-object mat" id="BecExp.PhaseLockAssociation">
-<span class="sig-name descname"><span class="pre">PhaseLockAssociation</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#BecExp.PhaseLockAssociation" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Aggregated hardware measurement values per run from device logs</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="BecExp.Roi">
 <span class="sig-name descname"><span class="pre">Roi</span></span><em class="property"> <span class="pre">Roi</span></em><a class="headerlink" href="#BecExp.Roi" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p><a class="reference internal" href="../math/Roi.html#Roi" title="Roi"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Roi</span></code></a> defining main region of interest for image analysis</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecExp.ScannedVariable">
+<span class="sig-name descname"><span class="pre">ScannedVariable</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#BecExp.ScannedVariable" title="Link to this definition">#</a></dt>
+<dd><p>Primary scanned variable name from <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">VariableUnitSetting</span></code></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecExp.ScannedVariable2">
+<span class="sig-name descname"><span class="pre">ScannedVariable2</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#BecExp.ScannedVariable2" title="Link to this definition">#</a></dt>
+<dd><p>Secondary scanned variable name for 2D parameter scans</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecExp.ScannedVariableUnit">
+<span class="sig-name descname"><span class="pre">ScannedVariableUnit</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#BecExp.ScannedVariableUnit" title="Link to this definition">#</a></dt>
+<dd><p>Primary scanned variable unit string</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="BecExp.ScannedVariableUnit2">
+<span class="sig-name descname"><span class="pre">ScannedVariableUnit2</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#BecExp.ScannedVariableUnit2" title="Link to this definition">#</a></dt>
+<dd><p>Secondary scanned variable unit string for 2D scans</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="BecExp.ScopeData">
 <span class="sig-name descname"><span class="pre">ScopeData</span></span><em class="property"> <span class="pre">struct</span></em><a class="headerlink" href="#BecExp.ScopeData" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Aggregated oscilloscope-derived measurement values per run</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="BecExp.SubRoi">
 <span class="sig-name descname"><span class="pre">SubRoi</span></span><em class="property"> <span class="pre">Roi</span></em><a class="headerlink" href="#BecExp.SubRoi" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="mat attribute">
-<dt class="sig sig-object mat" id="BecExp.WaveformAssociation">
-<span class="sig-name descname"><span class="pre">WaveformAssociation</span></span><em class="property"> <span class="pre">string</span></em><a class="headerlink" href="#BecExp.WaveformAssociation" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Optional collection of sub-ROIs for multi-region analysis</p>
+</dd></dl>
 
 </dd>
 <dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.ScannedVariableLabel">
+<span class="sig-name descname"><span class="pre">ScannedVariableLabel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runNumber</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.ScannedVariableLabel" title="Link to this definition">#</a></dt>
+<dd><p>Build label strings for scanned variable names and values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>runNumber</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Run index</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>[names, values] joined for display</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.addAnalysis">
 <span class="sig-name descname"><span class="pre">addAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">newAnalysisList</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.addAnalysis" title="Link to this definition">#</a></dt>
-<dd><p>ADDANALYSIS Summary of this function goes here
-Detailed explanation goes here</p>
+<dd><p>Add new analysis modules to the experiment pipeline.</p>
+<p>Instantiates analysis objects, applies configuration settings,
+and sorts them according to <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">AnalysisOrder</span></code> dependencies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>newAnalysisList</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Names of analysis modules to add</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.browserShow">
 <span class="sig-name descname"><span class="pre">browserShow</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.browserShow" title="Link to this definition">#</a></dt>
-<dd><p>SHOW Summary of this function goes here
-Detailed explanation goes here</p>
+<dd><p>Display analysis windows in browser-style layout on secondary monitor.</p>
+<p>Arranges analysis figures and GUIs on the secondary monitor (if available)
+in a browser-like tiled layout for better multi-monitor workflows.
+Falls back to primary monitor if only one display is available.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.countExistedLog">
 <span class="sig-name descname"><span class="pre">countExistedLog</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.countExistedLog" title="Link to this definition">#</a></dt>
-<dd><p>COUNTEXISTEDLOG Summary of this function goes here
-Detailed explanation goes here</p>
+<dd><p>Count existing Cicero and hardware log files in origin directories.</p>
+<p>Updates counters for pre-existing log files to distinguish new
+files generated during the current experiment run.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.coutExistedHardwareLog">
+<span class="sig-name descname"><span class="pre">coutExistedHardwareLog</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.coutExistedHardwareLog" title="Link to this definition">#</a></dt>
+<dd><p>Count existing hardware log files for all configured devices.</p>
+<p>Updates the hardware log file counters by checking each device’s
+data path for pre-existing log files.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.deleteRun">
 <span class="sig-name descname"><span class="pre">deleteRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.deleteRun" title="Link to this definition">#</a></dt>
-<dd><p>DELETERUN Summary of this function goes here
-Detailed explanation goes here</p>
+<dd><p>Delete run data (images, logs) and update in-memory tables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>runIdx</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double|double[]</span></code></span>) – Run index or indices to delete</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.fastStop">
 <span class="sig-name descname"><span class="pre">fastStop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.fastStop" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Fast stop without forced refresh; save and close analysis figures.</p>
+<p>Similar to <a class="reference internal" href="#BecExp.stop" title="BecExp.stop"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">stop()</span></code></a> but skips the final analysis refresh step
+to save time. Still performs cleanup, saves figures, and updates
+the database. Useful when immediate shutdown is needed.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.fetchCiceroLog">
 <span class="sig-name descname"><span class="pre">fetchCiceroLog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.fetchCiceroLog" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Wait for and move new Cicero log file from origin to trial directory.</p>
+<p>Monitors the origin directory for new .clg files, waits up to 10 seconds
+for file creation, then attempts to move it to the trial log folder
+with proper naming convention.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>runIdx</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Run number for file naming</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if log file was successfully fetched and moved</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>logical</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.fetchHardwareLog">
 <span class="sig-name descname"><span class="pre">fetchHardwareLog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.fetchHardwareLog" title="Link to this definition">#</a></dt>
+<dd><p>Trigger scope data collection and fetch hardware log files.</p>
+<p>Commands the hardware control panel to read current scope data,
+then searches for and moves new hardware log files from device
+directories to the trial hardware log folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>runIdx</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Run number for file naming</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.getVariableList">
+<span class="sig-name descname"><span class="pre">getVariableList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.getVariableList" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="BecExp.loadobj">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">loadobj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">s</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.loadobj" title="Link to this definition">#</a></dt>
+<dd><p>Reconnect DB writer and GUI handle when the object is loaded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Loaded object with transient handles restored when possible.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="Trial.html#Trial" title="Trial"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Trial</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.pause">
 <span class="sig-name descname"><span class="pre">pause</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.pause" title="Link to this definition">#</a></dt>
-<dd><p>PAUSE Summary of this function goes here
-Detailed explanation goes here</p>
+<dd><p>Pause data acquisition and disable real-time analysis.</p>
+<p>Temporarily stops camera acquisition or file watcher and disables
+the analysis pipeline without closing figures or losing state.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.readCiceroLog">
 <span class="sig-name descname"><span class="pre">readCiceroLog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.readCiceroLog" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Read and deserialize Cicero log files for specified runs.</p>
+<p>Loads binary Cicero log files (.clg) and extracts sequence variables
+using .NET binary formatter. Handles file access errors gracefully.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>runIdx</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Run index or indices to read</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Structure with sequence variables per run, and success flag</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>struct, logical</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.readRun">
 <span class="sig-name descname"><span class="pre">readRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.readRun" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Read raw image data for specified run indices.</p>
+<p>Loads atom, light, and dark images from disk, applies bad pixel
+correction, and returns as a 4D array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>runIdx</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Run index or indices to read</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Image data with shape (<span class="math notranslate nohighlight">\(N_y\)</span>, <span class="math notranslate nohighlight">\(N_x\)</span>, <span class="math notranslate nohighlight">\(N_\mathrm{run}\)</span>, 3)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.readRunRoi">
 <span class="sig-name descname"><span class="pre">readRunRoi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">runIdx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.readRunRoi" title="Link to this definition">#</a></dt>
-<dd><p>READRUNROI Summary of this function goes here
-Detailed explanation goes here</p>
+<dd><p>Read ROI-cropped image data for specified run indices.</p>
+<p>Similar to <a class="reference internal" href="#BecExp.readRun" title="BecExp.readRun"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">readRun()</span></code></a> but returns only the ROI-selected regions
+to reduce memory usage and improve processing speed. Uses parallel
+processing when available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>runIdx</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Run index or indices to read</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>ROI-cropped image data with shape (<span class="math notranslate nohighlight">\(N_{y,\mathrm{ROI}}\)</span>, <span class="math notranslate nohighlight">\(N_{x,\mathrm{ROI}}\)</span>, <span class="math notranslate nohighlight">\(N_\mathrm{run}\)</span>, 3)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.refresh">
 <span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">anaylsisName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.refresh" title="Link to this definition">#</a></dt>
-<dd><p>REFRESH Summary of this function goes here
-Detailed explanation goes here</p>
+<dd><p>Recompute analysis data and refresh visualizations.</p>
+<p>Reprocesses all run data through the analysis pipeline and updates
+figures. Can refresh all modules or start from a specific module
+(refreshing it and all downstream dependencies).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>anaylsisName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – Analysis module to start refresh from (default: all)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.refreshFigure">
 <span class="sig-name descname"><span class="pre">refreshFigure</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.refreshFigure" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Update all analysis figures with current data without recomputing.</p>
+<p>Refreshes the visual display of all analysis modules using existing
+processed data. Faster than <a class="reference internal" href="#BecExp.refresh" title="BecExp.refresh"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">refresh()</span></code></a> since it skips data
+recomputation.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.removeAnalysis">
 <span class="sig-name descname"><span class="pre">removeAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">removeAnalysisList</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.removeAnalysis" title="Link to this definition">#</a></dt>
-<dd><p>REMOVEANALYSIS Summary of this function goes here
-Detailed explanation goes here</p>
+<dd><p>Remove analysis modules from the experiment pipeline.</p>
+<p>Closes associated figures and removes modules from the active
+analysis list, then re-sorts the remaining modules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>removeAnalysisList</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Names of analysis modules to remove</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.resume">
 <span class="sig-name descname"><span class="pre">resume</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.resume" title="Link to this definition">#</a></dt>
-<dd><p>RESUME Summary of this function goes here
-Detailed explanation goes here</p>
+<dd><p>Resume data acquisition and re-enable real-time analysis.</p>
+<p>Restarts camera acquisition or file watcher, updates log file counts,
+and re-enables the analysis pipeline from the paused state.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.setAnalyzer">
 <span class="sig-name descname"><span class="pre">setAnalyzer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.setAnalyzer" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Set up event listener for automated analysis upon run completion.</p>
+<p>Creates a listener that triggers analysis pipeline when new run data
+becomes available. The analyzer handles image renaming, log fetching,
+hardware updates, and figure refreshing.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.setHardware">
 <span class="sig-name descname"><span class="pre">setHardware</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.setHardware" title="Link to this definition">#</a></dt>
-<dd><p>Get the HardwareControlPanel app</p>
+<dd><p>Configure hardware settings and upload to hardware control panel.</p>
+<p>Reads trial-specific hardware associations from the database,
+updates hardware settings, and uploads configurations to the
+hardware control panel application.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="BecExp.setParameterTable">
+<span class="sig-name descname"><span class="pre">setParameterTable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.setParameterTable" title="Link to this definition">#</a></dt>
+<dd><p>Load static parameter lookup tables used by the trial.</p>
+<p>Initializes configuration tables for variable mappings, hardware
+settings, current values, and trial associations from the database.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.show">
 <span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.show" title="Link to this definition">#</a></dt>
-<dd><p>SHOW Summary of this function goes here
-Detailed explanation goes here</p>
+<dd><p>Display all analysis windows on the current monitor.</p>
+<p>Makes all analysis figure windows and GUIs visible using their
+default positioning and sizing settings.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.sortAnalysis">
 <span class="sig-name descname"><span class="pre">sortAnalysis</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.sortAnalysis" title="Link to this definition">#</a></dt>
-<dd><p>SORTANALYSIS Summary of this function goes here
-We need to run different analysis in certain order so we have to sort
-the analysis methods</p>
+<dd><p>Sort analysis modules according to execution dependencies.</p>
+<p>Arranges active analysis modules in the order specified by
+<code class="xref mat mat-attr docutils literal notranslate"><span class="pre">AnalysisOrder</span></code> to ensure proper data flow (e.g., Od before Ad).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sorted list of analysis module names</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.start">
 <span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.start" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Initialize hardware and begin data acquisition or file watching.</p>
+<p>Sets up hardware associations, starts camera acquisition (if auto mode)
+or file watcher, enables the analysis pipeline, and initializes all
+analysis figure windows.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.stop">
 <span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.stop" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Stop acquisition, finalize analysis, and clean up resources.</p>
+<p>Stops camera or file watcher, unlocks phase locks, performs final
+analysis refresh (with fringe removal if enabled), saves all figures,
+and updates the trial database. Deletes empty trials with no runs.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.unlock">
 <span class="sig-name descname"><span class="pre">unlock</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.unlock" title="Link to this definition">#</a></dt>
-<dd><p>Get the HardwareControlPanel app</p>
+<dd><p>Unlock phase locks through hardware control panel.</p>
+<p>Attempts to disable phase locks via the hardware control panel
+application. Issues a warning if unlocking fails due to hardware
+connection issues.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.updateDatabase">
 <span class="sig-name descname"><span class="pre">updateDatabase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.updateDatabase" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Update existing database entry with current trial state.</p>
+<p>Updates the database record with current trial metadata, Cicero
+data, and hardware data using the trial’s serial number as key.</p>
+</dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.updateHardware">
 <span class="sig-name descname"><span class="pre">updateHardware</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.updateHardware" title="Link to this definition">#</a></dt>
-<dd><p>UPDATEHARDWARE Summary of this function goes here
-Detailed explanation goes here</p>
+<dd><p>Read current hardware values into <a class="reference internal" href="#BecExp.HardwareData" title="BecExp.HardwareData"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">HardwareData</span></code></a> and update UI.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.updateScopeData">
 <span class="sig-name descname"><span class="pre">updateScopeData</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.updateScopeData" title="Link to this definition">#</a></dt>
-<dd><p>UPDATESCOPEDATA Summary of this function goes here
-Detailed explanation goes here</p>
+<dd><p>Update scope-derived measurement values from hardware logs.</p>
+<p>Reads oscilloscope data from hardware log files and extracts
+measurement values (RMS, peak, etc.) for channels specified in
+the scanned variables or scope value analysis.</p>
 </dd></dl>
 
 <dl class="mat method">
 <dt class="sig sig-object mat" id="BecExp.writeDatabase">
 <span class="sig-name descname"><span class="pre">writeDatabase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#BecExp.writeDatabase" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Write trial metadata to PostgreSQL database.</p>
+<p>Converts trial object to table format and writes to database,
+excluding transient analysis method references.</p>
+</dd></dl>
 
 </dd>
 </dl>

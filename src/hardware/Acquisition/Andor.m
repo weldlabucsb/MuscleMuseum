@@ -1,16 +1,41 @@
 classdef Andor < Acquisition
-
     %:class:`Andor` acquisition class using Andor's proprietary SDK via a worker.
     %
     % Uses a parallel worker loop (:meth:`andorLoop`) to manage camera acquisition
     % asynchronously and communicates via :class:`parallel.pool.DataQueue`.
+    %
+    % - **Workflow:**
+    %
+    %   1. :meth:`connectCamera` (client): Launch worker and establish queues
+    %      (client receives worker :class:`parallel.pool.PollableDataQueue`).
+    %   2. :meth:`setCameraParameterAbsorption` (client→worker): Send
+    %      ``SetParameter`` message with ``AcquisitionMode="Absorption"``,
+    %      ``ExposureTime``, and ``BitPerSample``; sets :attr:`ImageGroupSize=3` on client.
+    %   3. :meth:`setCallback`: Register a client callback ``@(data,event)`` that
+    %      handles the 3-frame group (atom, light, dark) pushed by the worker.
+    %   4. :meth:`startCamera` (client→worker): Send ``Start``; worker acquires frames
+    %      until a full group is ready, then sends data via :class:`DataQueue`.
+    %   5. :meth:`stopCamera` (client→worker): Send ``Stop``; worker aborts acquisition,
+    %      closes shutter, and shuts down SDK. Client cancels :attr:`Future` and removes listener.
+    %
+    % **Example:**
+    %
+    % .. code-block:: matlab
+    %
+    %    cam = Andor("MainAndor");
+    %    cam.ExposureTime = 0.01;  % [s]
+    %    cam.BitsPerSample = 16;
+    %    cam.connectCamera();
+    %    cam.setCameraParameterAbsorption();
+    %    cam.setCallback(@(m,~) disp(size(m)));
+    %    cam.startCamera(); pause(1); cam.stopCamera();
     properties (SetAccess=protected,Transient)
-        CallbackFunc function_handle
-        Future parallel.FevalFuture
-        ClientDataQueue parallel.pool.DataQueue
-        ClientQueue parallel.pool.PollableDataQueue
-        WorkerQueue parallel.pool.PollableDataQueue
-        ClientListener event.listener
+        CallbackFunc function_handle % Client-side callback: @(data,event)
+        Future parallel.FevalFuture % Handle to the worker task running :meth:`andorLoop`
+        ClientDataQueue parallel.pool.DataQueue % Queue to receive data from worker
+        ClientQueue parallel.pool.PollableDataQueue % Queue to receive the worker queue handle
+        WorkerQueue parallel.pool.PollableDataQueue % Queue to send commands to worker
+        ClientListener event.listener % Listener that adapts queue messages to callback signature
     end
 
     methods
@@ -27,7 +52,14 @@ classdef Andor < Acquisition
         end
 
         function connectCamera(obj)
-            % Connect to the camera by launching a worker loop and queues.
+            % Connect by launching a worker loop and establishing queues.
+            %
+            % Spawns a background worker running :meth:`andorLoop`, sets up a
+            % :class:`parallel.pool.DataQueue` (worker→client) and a
+            % :class:`parallel.pool.PollableDataQueue` (client→worker), and stores
+            % the returned worker queue in :attr:`WorkerQueue`.
+            %
+            % :raises error: When worker reports an error during startup
 
             % Create client queue
             obj.ClientQueue = parallel.pool.PollableDataQueue;
@@ -49,7 +81,13 @@ classdef Andor < Acquisition
         end
 
         function setCameraParameterAbsorption(obj)
-            % Set absorption-imaging camera parameters on the worker.
+            % Set absorption-imaging parameters on the worker.
+            %
+            % Sends a message over :attr:`WorkerQueue` with fields:
+            % ``Message="SetParameter"``, ``AcquisitionMode="Absorption"``,
+            % ``ExposureTime``, and ``BitPerSample``. Also sets
+            % :attr:`ImageGroupSize` to ``3`` on the client for a 3-frame sequence
+            % (atom, light, dark).
             data.Message = "SetParameter";
             data.AcquisitionMode = "Absorption";
             data.ExposureTime = obj.ExposureTime;
@@ -60,26 +98,44 @@ classdef Andor < Acquisition
 
         function setCallback(obj,callbackFunc)
             % Set camera callback function.
+            %
+            % :param callbackFunc: Function handle invoked as ``callbackFunc(data, event)``
+            % :type callbackFunc: function_handle
+            %
+            % The listener adapts queue payloads to the standard acquisition
+            % callback signature by passing an empty event struct.
             obj.ClientListener = afterEach(obj.ClientDataQueue,@(x) callbackFunc(x,[]));
         end
 
         function startCamera(obj)
             % Start acquisition on the worker.
+            %
+            % Sends ``Message="Start"`` over :attr:`WorkerQueue` and checks for
+            % pending worker errors via :meth:`checkError`.
             data.Message = "Start";
             send(obj.WorkerQueue,data);
             obj.checkError;
         end
 
         function pauseCamera(obj)
-            % Pause camera recording (not implemented; Andor SDK example).
+            % Pause camera recording (not implemented in this backend).
+            %
+            % **Notes:**
+            %
+            %     Pausing is not supported by the current Andor worker example.
+            %     Use :meth:`stopCamera` to end an acquisition.
             % [ret] = AbortAcquisition();
             % CheckWarning(ret);
         end
 
         function stopCamera(obj)
             % Stop camera recording and tear down worker-side state.
+            %
+            % Sends ``Message="Stop"`` to the worker, checks for errors, cancels
+            % the running :attr:`Future`, and deletes :attr:`ClientListener`.
             data.Message = "Stop";
             send(obj.WorkerQueue,data);
+            pause(0.2)
             obj.checkError;
             cancel(obj.Future)
             delete(obj.ClientListener)
@@ -87,6 +143,8 @@ classdef Andor < Acquisition
 
         function checkError(obj)
             % Throw worker errors on the client if present.
+            %
+            % :raises error: Re-throws :attr:`Future.Error` when non-empty
             if ~isempty(obj.Future.Error)
                 obj.Future.Error.throw
             end
@@ -97,9 +155,22 @@ classdef Andor < Acquisition
         function andorLoop(cq,cdq)
             % Worker loop managing Andor SDK calls.
             %
-            % Sends a worker queue back to the client, initializes SDK, and handles
-            % messages for parameter setup, Start, data transfer, and Stop.
-            % Uses :class:`parallel.pool.PollableDataQueue` for communication.
+            % :param cq: Client queue used to deliver the worker queue handle back
+            % :type cq: :class:`parallel.pool.PollableDataQueue`
+            % :param cdq: Data queue used to stream image data to the client
+            % :type cdq: :class:`parallel.pool.DataQueue`
+            %
+            % **Protocol:**
+            %
+            % - Returns a worker :class:`parallel.pool.PollableDataQueue` to client
+            %   via ``cq`` for receiving messages.
+            % - Message ``SetParameter`` with fields ``AcquisitionMode``, ``ExposureTime``,
+            %   ``BitPerSample`` configures SDK (cooler, read mode, shutter, ROI, etc.).
+            % - Message ``Start`` begins acquisition; worker polls for a full group
+            %   of frames (group size set during parameter stage).
+            % - When a group is ready, frames are fetched, oriented, converted to
+            %   the specified bit depth, and sent to the client via ``cdq``.
+            % - Message ``Stop`` aborts acquisition, closes shutter, and shuts down SDK.
             % Send the worker queue to the client
             isUseTimeout=1;
             timeoutTime=1.5;
@@ -108,7 +179,11 @@ classdef Andor < Acquisition
             wq = parallel.pool.PollableDataQueue;
             send(cq,wq);
 
-            % Initialize the andor SDK libariry
+            % Initialize the Andor SDK library
+            try
+                AndorShutDown();
+            catch
+            end
             try
                 ret=AndorInitialize('');
                 CheckError(ret);
@@ -171,6 +246,8 @@ classdef Andor < Acquisition
                     [data,datarcvd] = poll(wq,10);
                     if datarcvd && data.Message == "Start"
                         %% Start acquisition
+                        [ret] = FreeInternalMemory();
+                        CheckWarning(ret);
                         [ret] = StartAcquisition();
                         CheckWarning(ret);
                         isAcq = true;
@@ -210,16 +287,21 @@ classdef Andor < Acquisition
                                     case 32
                                         mData = uint32(mData);
                                 end
-
-                                [ret] = StartAcquisition();
-                                CheckWarning(ret);
                                 send(cdq,mData)
                         end
                         firstpictime=convertTo(datetime, 'posixtime')+9999;
                         imagecollecting=0;
+						[ret] = FreeInternalMemory();
+                        CheckWarning(ret);
+                        [ret] = StartAcquisition();
+                        CheckWarning(ret);
                     end
                     if convertTo(datetime,'posixtime')>(firstpictime+timeoutTime) && imagecollecting==1 && isUseTimeout
-                        FreeInternalMemory()
+                        
+						[ret] = FreeInternalMemory();
+                        CheckWarning(ret);
+                        [ret] = StartAcquisition();
+                        CheckWarning(ret);
                         firstpictime=convertTo(datetime, 'posixtime')+9999;
                         imagecollecting=0;
                     end
@@ -227,6 +309,7 @@ classdef Andor < Acquisition
                     %% Stop
                     [data,datarcvd] = poll(wq);
                     if datarcvd && data.Message == "Stop"
+                        disp("stopping camera")
                         [ret] = AbortAcquisition();
                         CheckWarning(ret);
                         [ret]=SetShutter(1, 2, 1, 1);

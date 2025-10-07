@@ -156,30 +156,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">atom</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="Alkali.html">Alkali</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Atom.html">Atom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="AtomManifold.html">AtomManifold</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Divalent</a></li>
-<li class="toctree-l3"><a class="reference internal" href="OneFManifold.html">OneFManifold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="OneJManifold.html">OneJManifold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TwoAtom.html">TwoAtom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TwoJManifold.html">TwoJManifold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="TwoJManifoldDivalent.html">TwoJManifoldDivalent</a></li>
-<li class="toctree-l3"><a class="reference internal" href="angularMomentumList.html">angularMomentumList</a></li>
-<li class="toctree-l3"><a class="reference internal" href="getAtom.html">getAtom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="lithiumDME.html">lithiumDME</a></li>
-<li class="toctree-l3"><a class="reference internal" href="magneticAngularMomentum.html">magneticAngularMomentum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="saveAtom.html">saveAtom</a></li>
-<li class="toctree-l3"><a class="reference internal" href="spinMatrices.html">spinMatrices</a></li>
-<li class="toctree-l3"><a class="reference internal" href="strontiumDME.html">strontiumDME</a></li>
-<li class="toctree-l3"><a class="reference internal" href="totalAngularMomentum.html">totalAngularMomentum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="uncoupledSpinBasis.html">uncoupledSpinBasis</a></li>
-<li class="toctree-l3"><a class="reference internal" href="uncoupledSpinBasisTransformation.html">uncoupledSpinBasisTransformation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="uncoupledSpinMatrices.html">uncoupledSpinMatrices</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../database/index.html">database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../field/index.html">field</a></li>
@@ -187,7 +172,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -412,9 +396,9 @@ document.write(`
 <dt class="sig sig-object mat" id="Divalent">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Divalent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atomName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/Atom/Divalent.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Divalent" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a></p>
-<p><a class="reference internal" href="#Divalent" title="Divalent"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Divalent</span></code></a> atom subclass with cycling transition properties.</p>
-<p>Adds a blue transition manifold, cycler frequency, saturation intensity,
-cross-section, and derived quantities from ARC.</p>
+<p><a class="reference internal" href="#Divalent" title="Divalent"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Divalent</span></code></a> atom subclass with blue cycling transition properties.</p>
+<p>Adds the blue transition manifold and derives frequency, saturation intensity,
+and resonant cross-section from ARC/manifold data.</p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
@@ -423,7 +407,7 @@ cross-section, and derived quantities from ARC.</p>
 <dd><p>Construct a <a class="reference internal" href="#Divalent" title="Divalent"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Divalent</span></code></a> atom.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>atomName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Isotope name known to ARC (e.g., “Strontium88”)</p>
+<dd class="field-odd"><p><strong>atomName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Isotope name (ARC-known), e.g., “Strontium88”</p>
 </dd>
 </dl>
 </dd></dl>
@@ -432,22 +416,26 @@ cross-section, and derived quantities from ARC.</p>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="Divalent.Blue">
 <span class="sig-name descname"><span class="pre">Blue</span></span><em class="property"> <span class="pre">TwoJManifoldDivalent</span></em><a class="headerlink" href="#Divalent.Blue" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Blue cycling transition manifold</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Divalent.CyclerCrossSection">
 <span class="sig-name descname"><span class="pre">CyclerCrossSection</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Divalent.CyclerCrossSection" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Resonant cross-section [m^2]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Divalent.CyclerFrequency">
 <span class="sig-name descname"><span class="pre">CyclerFrequency</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Divalent.CyclerFrequency" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Cycling transition frequency [Hz]</p>
+</dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Divalent.CyclerSaturationIntensity">
 <span class="sig-name descname"><span class="pre">CyclerSaturationIntensity</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Divalent.CyclerSaturationIntensity" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Saturation intensity [W/m^2]</p>
+</dd></dl>
 
 </dd>
 </dl>
