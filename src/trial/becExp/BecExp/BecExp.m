@@ -1577,6 +1577,14 @@ classdef BecExp < Trial
             end
         end
 
+        function set.IsOverrideHwRoi(obj, s)
+            if ~obj.IsRunning
+                obj.Acquisition.IsOverrideHwRoi=s;
+            else
+                error("HwRoi should not be changed while experiment is running")
+            end
+        end
+
     end
 
     methods (Hidden)
