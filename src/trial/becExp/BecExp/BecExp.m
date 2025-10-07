@@ -144,7 +144,7 @@ classdef BecExp < Trial
             if isfield(obj.ConfigParameter, 'PCIPhase')
                 obj.PCIPhase=obj.ConfigParameter.PCIPhase;  
             else
-                obj.IsPCIAvailable=-pi/3;
+                obj.PCIPhase=-pi/3;
             end
 
             if isfield(obj.ConfigParameter, 'IsOverrideHwRoi')
