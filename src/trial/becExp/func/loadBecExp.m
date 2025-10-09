@@ -1,4 +1,4 @@
-function obj = loadBecExp(serialNumber)
+function obj = loadBecExp(serialNumber,isLocal)
 % Load a :class:`BecExp` trial from the database by serial number.
 %
 % Retrieves configuration and state from the configured database and
@@ -15,9 +15,18 @@ function obj = loadBecExp(serialNumber)
 %
 %    bx = loadBecExp(1234);
 %    bx.refresh();
+arguments
+    serialNumber
+    isLocal logical = false
+end
+if isLocal
+    rowIdx = 2;
+else
+    rowIdx = 1;
+end
 p = BecExpConfig;
-databaseName = p.readValue(1,"DatabaseName");
-databaseTableName = p.readValue(1,"DatabaseTableName");
+databaseName = p.readValue(rowIdx,"DatabaseName");
+databaseTableName = p.readValue(rowIdx,"DatabaseTableName");
 conn = createReader(databaseName);
 obj = loadTrial(conn,databaseTableName,serialNumber);
 end

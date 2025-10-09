@@ -148,6 +148,24 @@ classdef (Abstract) BecAnalysis < handle & matlab.mixin.SetGetExactNames
             obj.finalize
         end
 
+        function refreshData(obj)
+            if ~isempty(obj.Chart)
+                tempChartIsEnabled = num2cell([obj.Chart.IsEnabled]);
+                [obj.Chart.IsEnabled] = deal(false);
+            end
+            if ~isempty(obj.Gui)
+                tempGuiIsEnabled = num2cell([obj.Gui.IsEnabled]);
+                [obj.Gui.IsEnabled] = deal(false);
+            end
+            obj.refresh;
+            if ~isempty(obj.Chart)
+                [obj.Chart.IsEnabled] = tempChartIsEnabled{:};
+            end
+            if ~isempty(obj.Gui)
+                [obj.Gui.IsEnabled] = tempGuiIsEnabled{:};
+            end
+        end
+
         function toggle(obj,isEnabled)
             % Enable or disable all GUIs and charts in this analysis module.
             %

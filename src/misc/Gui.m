@@ -133,8 +133,10 @@ classdef Gui < handle
 
         function update(obj)
             % Call the app's ``update`` method if available.
-            if obj.IsEnabled
-                obj.App.update
+            if obj.IsEnabled && ~isempty(obj.App)
+                if isvalid(obj.App)
+                    obj.App.update
+                end
             end
         end
 
