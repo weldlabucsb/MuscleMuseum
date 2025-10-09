@@ -3,8 +3,10 @@ classdef GaussianPulse < Waveform
     %   The envelope is exp(-0.5 * ((t - tc)/sigma)^2), gated to [t0, te].
     
     properties
-        Sigma double = [];       % Standard deviation of Gaussian envelope
-        CenterTime double = [];  % Center time of the Gaussian envelope
+        Sigma double = 0;       % Standard deviation of Gaussian envelope
+        CenterTime double = 0;  % Center time of the Gaussian envelope
+        Amplitude double = 0;
+        Offset double = 0;
     end
     
     methods

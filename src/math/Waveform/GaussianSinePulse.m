@@ -6,6 +6,8 @@ classdef GaussianSinePulse < Waveform
     properties
         Sigma double = [];       % Standard deviation of Gaussian envelope
         CenterTime double = [];  % Center time of the Gaussian envelope
+        Offset double = [];
+        Phase double = [];
     end
     
     methods
