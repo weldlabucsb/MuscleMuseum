@@ -125,7 +125,7 @@ classdef Andor < Acquisition
             %     Pausing is not supported by the current Andor worker example.
             %     Use :meth:`stopCamera` to end an acquisition.
             % [ret] = AbortAcquisition();
-            % CheckWarning(ret);
+            % CheckError(ret);
         end
 
         function stopCamera(obj)
@@ -203,23 +203,23 @@ classdef Andor < Acquisition
                     if datarcvd && data.Message == "SetParameter"
                         %% Set temperature
                         [ret]=SetCoolerMode(1);     % Camera temperature is maintained on ShutDown
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret]=CoolerON();           %   Turn on temperature cooler
-                        CheckWarning(ret);
+                        CheckError(ret);
 
                         %% Set other parameters
                         [ret]=SetExposureTime(data.ExposureTime);     %   Set exposure time in second  THIS IS THE USUAL VALUE
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret]=SetReadMode(4);                         %   Set read mode; 4 for Image
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret]=SetShutter(1, 1, 0, 0);                 %   Open Shutter
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret,XPixels, YPixels]=GetDetector;           %   Get the CCD size
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret]=SetImage(1, 1, 1, XPixels, 1, YPixels); %   Set the image size
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret]=SetEMCCDGain(1);                        %   Set EMCCD gain
-                        CheckWarning(ret);
+                        CheckError(ret);
                         bitPerSample = data.BitPerSample;
 
                         %% Set acquisition mode
@@ -229,11 +229,11 @@ classdef Andor < Acquisition
                                 groupSize = 3;
 
                                 [ret]=SetAcquisitionMode(3);        %   Set acquisition mode; 3 for Kinetic Series
-                                CheckWarning(ret);
+                                CheckError(ret);
                                 [ret]=SetNumberKinetics(groupSize);
-                                CheckWarning(ret);
+                                CheckError(ret);
                                 [ret]=SetTriggerMode(1);            %   Set external trigger mode
-                                CheckWarning(ret);
+                                CheckError(ret);
                         end
                         isSet = true;                      
                     end
@@ -242,9 +242,9 @@ classdef Andor < Acquisition
                     if datarcvd && data.Message == "Start"
                         %% Start acquisition
                         [ret] = FreeInternalMemory();
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret] = StartAcquisition();
-                        CheckWarning(ret);
+                        CheckError(ret);
                         isAcq = true;
                     end
                 else
@@ -281,9 +281,9 @@ classdef Andor < Acquisition
                         end
 
                         [ret] = FreeInternalMemory();
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret] = StartAcquisition();
-                        CheckWarning(ret);
+                        CheckError(ret);
                     end
                     
                     %% Stop
@@ -291,11 +291,11 @@ classdef Andor < Acquisition
                     if datarcvd && data.Message == "Stop"
                         disp("stopping camera")
                         [ret] = AbortAcquisition();
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret]=SetShutter(1, 2, 1, 1);
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret] = AndorShutDown();
-                        CheckWarning(ret);
+                        CheckError(ret);
                         break
                     end
                 end
