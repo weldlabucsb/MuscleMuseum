@@ -175,6 +175,10 @@ classdef Andor < Acquisition
             %   the specified bit depth, and sent to the client via ``cdq``.
             % - Message ``Stop`` aborts acquisition, closes shutter, and shuts down SDK.
             % Send the worker queue to the client
+            isUseTimeout=1;
+            timeoutTime=1.5;
+            firstpictime=convertTo(datetime, 'posixtime')+9999;
+            imagecollecting=0;
             wq = parallel.pool.PollableDataQueue;
             send(cq,wq);
 
@@ -201,6 +205,8 @@ classdef Andor < Acquisition
             groupSize=3;
             isOverrideRoi=0;
             hwRoi=[0 0 0 0];
+            FreeInternalMemory();
+
             while true
                 pause(0.1)
                 if ~isSet
@@ -271,6 +277,11 @@ classdef Andor < Acquisition
                     [~, firstIndex, lastIndex] = GetNumberNewImages();
 
                     %% Send image data to the client
+
+                    if ((lastIndex - firstIndex + 1) >=1) && ((lastIndex - firstIndex + 1) < groupSize) && ~imagecollecting
+                        firstpictime=convertTo(datetime, 'posixtime');
+                        imagecollecting=1;
+                    end
                     if (lastIndex - firstIndex + 1) == groupSize
                         switch acqMode
                             case "Absorption"
@@ -301,11 +312,21 @@ classdef Andor < Acquisition
                                 end
                                 send(cdq,mData)
                         end
-
-                        [ret] = FreeInternalMemory();
+                        firstpictime=convertTo(datetime, 'posixtime')+9999;
+                        imagecollecting=0;
+						[ret] = FreeInternalMemory();
                         CheckWarning(ret);
                         [ret] = StartAcquisition();
                         CheckWarning(ret);
+                    end
+                    if convertTo(datetime,'posixtime')>(firstpictime+timeoutTime) && imagecollecting==1 && isUseTimeout
+                        
+						[ret] = FreeInternalMemory();
+                        CheckWarning(ret);
+                        [ret] = StartAcquisition();
+                        CheckWarning(ret);
+                        firstpictime=convertTo(datetime, 'posixtime')+9999;
+                        imagecollecting=0;
                     end
                     
                     %% Stop
