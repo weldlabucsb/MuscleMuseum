@@ -195,6 +195,8 @@ classdef Andor < Acquisition
             isAcq = false;
             acqMode = "Absorption";
             bitPerSample = 16;
+            imageCount = 0;
+            
 
             while true
                 pause(0.1)
@@ -235,7 +237,8 @@ classdef Andor < Acquisition
                                 [ret]=SetTriggerMode(1);            %   Set external trigger mode
                                 CheckError(ret);
                         end
-                        isSet = true;                      
+                        isSet = true;
+                        mData = zeros(YPixels,XPixels,groupSize);
                     end
                 elseif ~isAcq
                     [data,datarcvd] = poll(wq,10);
@@ -246,8 +249,11 @@ classdef Andor < Acquisition
                         [ret] = StartAcquisition();
                         CheckError(ret);
                         isAcq = true;
+                        [~, lastGotten, ~] = GetNumberNewImages();% Find the starting index of the buffer.
                     end
                 else
+                    %% Acuiqision
+
                     % Setting this return value to avoid evaluation of the "if" statement
                     % for saving a new image if there is no new image.
                     atmcd.DRV_NO_NEW_DATA;
@@ -258,17 +264,23 @@ classdef Andor < Acquisition
                     % if the "newest image" in the buffer was already retreived.
                     [~, firstIndex, lastIndex] = GetNumberNewImages();
 
-                    %% Send image data to the client
-                    if (lastIndex - firstIndex + 1) == groupSize
-                        switch acqMode
-                            case "Absorption"
-                                [~, mData, ~, ~] = GetImages(firstIndex, lastIndex, ...
-                                    prod([XPixels,YPixels,groupSize]));
-                                mData = reshape(mData, XPixels, YPixels, groupSize);
-                                for ii = 1:groupSize
-                                    mData(:,:,ii) = flip(transpose(mData(:,:,ii)),1);
-                                end
+                    if lastGotten~=lastIndex
+                        indexToGet = firstIndex;
 
+                        % Retreive the oldest new image from the camera buffer.
+                        [ret, imageData, ~, ~] = GetImages(indexToGet, indexToGet, XPixels * YPixels);
+
+                        % Update the last gotten image.
+                        lastGotten = firstIndex;
+
+                        if ret == atmcd.DRV_SUCCESS % data returned
+                            imageCount = imageCount + 1;
+                            imageData = flip(transpose(reshape(imageData, XPixels, YPixels)),1);
+                            mData(:,:,imageCount) = imageData;
+
+                            % Send image data to the client
+                            if imageCount == groupSize
+                                imageCount = 0;
                                 switch bitPerSample
                                     case 8
                                         mData = uint8(mData);
@@ -278,12 +290,12 @@ classdef Andor < Acquisition
                                         mData = uint32(mData);
                                 end
                                 send(cdq,mData)
+                                [ret] = FreeInternalMemory();
+                                CheckError(ret);
+                                [ret] = StartAcquisition();
+                                CheckError(ret);
+                            end
                         end
-
-                        [ret] = FreeInternalMemory();
-                        CheckError(ret);
-                        [ret] = StartAcquisition();
-                        CheckError(ret);
                     end
                     
                     %% Stop
