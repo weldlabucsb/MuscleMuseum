@@ -1,65 +1,12 @@
 classdef HardwareList < MmParameter
     %:class:`HardwareList` catalogs available hardware objects and their data folders.
     %
-    % Maps a logical :attr:`Name` to :attr:`Type` and :attr:`DeviceModel`, plus a
-    % device-specific :attr:`DataPath` and :attr:`ResourceName`. Use
-    % :meth:`saveEntry` to persist a hardware object's parameters and per-channel
-    % settings, and :meth:`loadEntry` to reconstruct the device from stored
-    % entries. Per-channel settings are stored in :class:`HardwareSetting`.
-    %
-    % **Schema (columns, types, defaults):**
-    %
-    % .. list-table::
-    %    :widths: 28 18 28
-    %    :header-rows: 1
-    %
-    %    * - Column
-    %      - Type
-    %      - Default
-    %    * - Name
-    %      - string
-    %      - DefaultWg
-    %    * - Type
-    %      - string
-    %      - WaveformGenerator
-    %    * - DataPath
-    %      - string
-    %      - XXX
-    %    * - DeviceModel
-    %      - string
-    %      - Keysight33600A
-    %    * - ResourceName
-    %      - string
-    %      - XXX
-    %
-    % **Foreign keys:**
-    %
-    % (none)
-    %
-    % **Join conditions:**
-    %
-    % (none)
-    %
-    % **Flags:**
-    %
-    % .. list-table::
-    %    :widths: 38 14
-    %    :header-rows: 1
-    %
-    %    * - Property
-    %      - Value
-    %    * - IsIncludeDefaultEntry
-    %      - false
-    %    * - IsFirstColumnUnique
-    %      - true
-    %    * - IsTriggerJoinOnRight
-    %      - false
-    %    * - IsTriggerJoinOnLeft
-    %      - false
+    % Maps a logical :attr:`Name` to a hardware :attr:`Type` and a device-specific
+    % :attr:`DataPath` for storing logs/objects.
 
     properties
-        HardwareSetting % :class:`HardwareSetting` accessor used to read/write per-device settings
-        WaveformListLibrary % :class:`WaveformListLibrary` accessor used to load/save waveform lists
+        HardwareSetting
+        WaveformListLibrary
     end
 
     methods
@@ -89,17 +36,7 @@ classdef HardwareList < MmParameter
         end
 
         function hwId = saveEntry(obj,hw,isSaveSettingOnly)
-            % Save a hardware object into the database.
-            %
-            % Persists general hardware properties in this table, and upserts
-            % per-channel settings into :class:`HardwareSetting`.
-            %
-            % :param hw: Hardware object to save (e.g., a scope, WG, phase lock)
-            % :type hw: :class:`Hardware`
-            % :param isSaveSettingOnly: If true, only upsert settings; skip general props
-            % :type isSaveSettingOnly: logical, optional
-            % :return: Row ID of the saved hardware entry
-            % :rtype: double
+            % Save a hardware object into the database
             arguments
                 obj
                 hw
@@ -141,16 +78,7 @@ classdef HardwareList < MmParameter
         end
     
         function hw = loadEntry(obj,nameOrID)
-            % Load a hardware object from the database.
-            %
-            % Resolves by numeric ``ID`` or string ``Name``, then constructs the
-            % device using its :attr:`DeviceModel` and populates properties from
-            % :class:`HardwareSetting` (including :attr:`WaveformList` if present).
-            %
-            % :param nameOrID: Hardware row ID or logical Name
-            % :type nameOrID: double or string
-            % :return: Instantiated hardware object populated from settings
-            % :rtype: :class:`Hardware`
+            % Load a Hardware object from the database
             if isnumeric(nameOrID)
                 hwPara = obj.readEntry(nameOrID);
                 id = nameOrID;
@@ -177,17 +105,7 @@ classdef HardwareList < MmParameter
         end
         
         function hw = updateHardware(obj,nameOrID,hw)
-            % Update a hardware object in-memory from stored settings.
-            %
-            % Reads :class:`HardwareSetting` rows and applies them to the
-            % provided object. Useful when settings were changed externally.
-            %
-            % :param nameOrID: Hardware row ID or logical Name
-            % :type nameOrID: double or string
-            % :param hw: Existing hardware object to update
-            % :type hw: :class:`Hardware`
-            % :return: Updated hardware object
-            % :rtype: :class:`Hardware`
+            % Update a Hardware object
             if isnumeric(nameOrID)
                 id = nameOrID;
             else

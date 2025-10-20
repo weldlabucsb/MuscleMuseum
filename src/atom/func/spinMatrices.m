@@ -1,10 +1,6 @@
 function J = spinMatrices(j)
-% Build spin matrices :math:`J_x,J_y,J_z` for spin :math:`j`.
-%
-% :param j: Total spin (e.g., 1/2, 1, 3/2)
-% :type j: double
-% :return: Cell array {Jx; Jy; Jz}
-% :rtype: cell
+%SPINMATRICES Summary of this function goes here
+%   Detailed explanation goes here
 mj = -(-j+1:j);
 JElement = sqrt(j*(j+1)-mj.*(mj+1));
 JPlus = diag(JElement,1);

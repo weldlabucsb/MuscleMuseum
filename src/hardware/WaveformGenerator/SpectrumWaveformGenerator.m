@@ -1,26 +1,14 @@
 classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
     %:class:`SpectrumWaveformGenerator` Spectrum-specific AWG implementation.
+    %   
+    % Please download the Spectrum AWG MATLAB driver (see vendor site) and ensure it
+    % is on MATLAB's path. Provides :meth:`connectSpec`, :meth:`setSpec`, and an
+    % :meth:`upload` implementation that prepares segments and sequences per-channel.
     %
-    % Requires the Spectrum MATLAB driver (see vendor site) to be on MATLAB's
-    % path. Implements device-specific connection (:meth:`connectSpec`),
-    % configuration (:meth:`setSpec`), and upload sequencing (:meth:`upload`).
-    %
-    % - **Workflow:** :meth:`upload` → :meth:`connectSpec` → :meth:`setSpec` → segment/sequence prep → program card → status check → :meth:`closeSpec`.
-    % - **Segment rules:** All enabled channels must have equal segment counts; each
-    %   segment must meet board minimum length and be padded to a multiple of 32 samples.
-    % - **Scaling:** Samples are mapped to 16-bit DAC range; amplitudes are validated
-    %   against :attr:`OutputLimit` considering :attr:`OutputLoad`.
-    %
-    % **Example:**
-    %
-    % .. code-block:: matlab
-    %
-    %    awg = SpectrumDN2662_02("PCI::SPCM0", name="SpecAWG");
-    %    awg.SamplingRate = [1.25e9, 1.25e9];
-    %    awg.IsOutput = [true true];
-    %    % ... set awg.WaveformList per channel ...
-    %    awg.upload();
-    %
+    % Properties:
+    %   - :attr:`Device`: Spectrum device handle and metadata
+    %   - :attr:`RegMap`: Register map (from Spectrum library)
+    %   - :attr:`ErrorMap`: Error codes (from Spectrum library)
     
     properties (SetAccess = protected,Transient)
         Device
@@ -45,19 +33,14 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
         end
 
         function connect(obj)
-            % No persistent session (Spectrum connects per-upload).
-            %
-            % Spectrum AWG MATLAB driver requires closing/opening the card
-            % around uploads; use :meth:`connectSpec` within :meth:`upload`.
+            % Spectrum requires us to close the card handle every time we
+            % upload a waveform. So it's not possible to establish a
+            % constant connection. Every time we need to upload a new
+            % waveform, we need to connect to the card again.
         end
         
         function connectSpec(obj)
             % Initialize Spectrum maps and open the device.
-            %
-            % Loads :attr:`RegMap` and :attr:`ErrorMap`, frees lingering sessions,
-            % and opens the card using :attr:`ResourceName`.
-            %
-            % :raises error: If Spectrum MATLAB library is missing or card open fails
             try
                 obj.RegMap = spcMCreateRegMap;
                 obj.ErrorMap = spcMCreateErrorMap;
@@ -78,12 +61,6 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
         
         function setSpec(obj)
             % Configure sampling rate, trigger, and enabled outputs for Spectrum device.
-            %
-            % Sets card PLL to requested :attr:`SamplingRate(1)`, programs trigger
-            % source based on :attr:`TriggerSource(1)`, and enables channels per
-            % :attr:`IsOutput`.
-            %
-            % :raises error: On PLL setup failure or subsequent Spectrum errors
             obj.check;
 
             %% Set sampling rate
@@ -117,12 +94,8 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
         function upload(obj)
             % Upload waveforms as same-sized segments and sequence them (Spectrum requirement).
             %
-            % Channels must have identical segment counts; each segment stores
-            % samples for all enabled channels. Segments are padded to 32-sample
-            % boundaries and meet board minimums; scaling maps to 16-bit DAC.
-            %
-            % :raises error: On mismatched segment counts, segment size mismatch,
-            %   output limit violations, or Spectrum driver errors
+            % Channels must have the same number of segments and behavior. Samples are
+            % uploaded segment-by-segment, and each segment stores samples of all channels.
             %% Set and connect
             obj.connectSpec;
             obj.setSpec;

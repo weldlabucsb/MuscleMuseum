@@ -156,22 +156,32 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
-<li class="toctree-l2 current active"><a class="reference internal" href="index.html">database</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">database</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="connectPsqlDatabase.html">connectPsqlDatabase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="createReader.html">createReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="createWriter.html">createWriter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="findTimeRangeData.html">findTimeRangeData</a></li>
+<li class="toctree-l3"><a class="reference internal" href="findTodayData.html">findTodayData</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgFetch.html">pgFetch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgFetchHook.html">pgFetchHook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgRead.html">pgRead</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgReadHook.html">pgReadHook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgUpdate.html">pgUpdate</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">pgWrite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgWriteHook.html">pgWriteHook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quoteTableColumn.html">quoteTableColumn</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setDatabase.html">setDatabase</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="../field/index.html">field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">hardware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -396,33 +406,54 @@ document.write(`
 <dt class="sig sig-object mat" id="pgWrite">
 <span class="sig-name descname"><span class="pre">pgWrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">conn</span></em>, <em class="sig-param"><span class="pre">tableName</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/database/func/pgWrite.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pgWrite" title="Link to this definition">#</a></dt>
 <dd><p>Write a MATLAB table to a PostgreSQL database table, adding columns if needed.</p>
-<p>Enhanced version of MATLAB’s <code class="docutils literal notranslate"><span class="pre">sqlwrite</span></code> that handles vector-valued columns
-and automatically adds missing columns to the database table with appropriate
-array types (numeric[], int[], text[]).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>conn</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">database.postgre.connection</span></code></span>) – Open PostgreSQL database connection</p></li>
-<li><p><strong>tableName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Target database table name</p></li>
-<li><p><strong>data</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">table</span></code></span>) – MATLAB table to write to database</p></li>
-<li><p><strong>isForceArray</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">logical,</span> <span class="pre">optional</span></code></span>) – Force new columns to be created as array types (default: false)</p></li>
-</ul>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param conn<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Open database connection</p>
+</dd>
+<dt class="field-even">type conn<span class="colon">:</span></dt>
+<dd class="field-even"><p>database.relational.connection</p>
+</dd>
+<dt class="field-odd">param tableName<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Target table name</p>
+</dd>
+<dt class="field-even">type tableName<span class="colon">:</span></dt>
+<dd class="field-even"><p>string | char</p>
+</dd>
+<dt class="field-odd">param data<span class="colon">:</span></dt>
+<dd class="field-odd"><p>MATLAB table to write</p>
+</dd>
+<dt class="field-even">type data<span class="colon">:</span></dt>
+<dd class="field-even"><p>table</p>
+</dd>
+<dt class="field-odd">param isForceArray<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Force new columns to be arrays when adding</p>
+</dd>
+<dt class="field-even">type isForceArray<span class="colon">:</span></dt>
+<dd class="field-even"><p>logical, optional</p>
 </dd>
 </dl>
 <p><strong>Notes:</strong></p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Extra variables in <code class="docutils literal notranslate"><span class="pre">data</span></code> that do not exist in the DB table are automatically added.</p></li>
-<li><p>Vector-valued cells are mapped to PostgreSQL array column types (numeric[], int[], text[]).</p></li>
-<li><p>Column names are case-sensitive and quoted for PostgreSQL compatibility.</p></li>
+<li><p>Extra variables in <code class="docutils literal notranslate"><span class="pre">data</span></code> that do not exist in the DB table are added with inferred types.</p></li>
+<li><p>Vector-valued cells can be mapped to array column types (numeric[]/int[]/text[]).</p></li>
+<li><p>This function is adapted from MATLAB’s <code class="docutils literal notranslate"><span class="pre">sqlwrite</span></code> to handle vector columns.</p></li>
 </ul>
 </div></blockquote>
-<p><strong>Example:</strong></p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">conn</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">createWriter</span><span class="p">(</span><span class="s">&quot;myDatabase&quot;</span><span class="p">);</span>
-<span class="n">data</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">table</span><span class="p">([</span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;a&quot;</span><span class="p">;</span><span class="w"> </span><span class="s">&quot;b&quot;</span><span class="p">],</span><span class="w"> </span><span class="n">VariableNames</span><span class="p">=[</span><span class="s">&quot;id&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;name&quot;</span><span class="p">]);</span>
-<span class="n">pgWrite</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;myTable&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">);</span>
-</pre></div>
-</div>
+</div></blockquote>
+<p>PGWRITE Write a MATLAB table to a postgresql database table
+pgWrite(conn,tableName,data)</p>
+<blockquote>
+<div><p>conn: connection to pg database
+tableName: database table name
+data: input MATLAB table
+isForceArray: force to create new columns as arrays
+Writes a MATLAB table to a database table. Modified from matlab
+function &lt;sqlwrite&gt;. This function can handle vectors in the input
+table. Extra columns in data that are not in the database table will be
+created in the database table.</p>
+</div></blockquote>
 </dd></dl>
 
 </section>

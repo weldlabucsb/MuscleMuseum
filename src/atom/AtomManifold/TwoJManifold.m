@@ -1,76 +1,42 @@
 classdef TwoJManifold < AtomManifold
-    %:class:`TwoJManifold` ground/excited manifolds (:math:`J_g\rightarrow J_e`).
-    %
-    % Builds combined state list, operators, linewidths, reduced DME, saturation
-    % intensity and Doppler temperature for an alkali D-line transition.
-    %
-    % **Examples:**
-    %
-    % .. code-block:: matlab
-    %
-    %    % Example1: Build D1/D2 manifolds from an alkali atom
-    %    alk = Alkali("Rubidium87");
-    %    D1  = alk.D1;                    % :class:`TwoJManifold` (D1)
-    %    D2  = alk.D2;                    % :class:`TwoJManifold` (D2)
-    %    Isat = D2.SaturationIntensity(max(D2.FGround),max(D2.FGround), ...
-    %                                  max(D2.FExcited),max(D2.FExcited));
-    %
-    % .. code-block:: matlab
-    %
-    %    % Example2: Hamiltonians and dressed states vs bias field
-    %    B   = MagneticField(bias=[0;0;2e-4]);
-    %    Hz  = D2.HamiltonianAtomBiasField(B);
-    %    [tbl,U] = D2.BiasDressedStateList(B);
+    %TWOJ Summary of this class goes here
+    %   Detailed explanation goes here
     
     properties (SetAccess = protected)
-        NGround int32 % Ground principal quantum number
-        LGround int32 % Ground :math:`L`
-        JGround double % Ground :math:`J`
-        FGround double % Ground hyperfine :math:`F`
-        MFGround double % Ground :math:`M_F`
-        HFSCoefficientGround %[A,B] ground hyperfine coefficients (Hz)
-        EnergyGround double % Ground hyperfine energies [Hz]
-        LandegJGround double % Ground Landé :math:`g_J`
-        LandegFGround double % Ground Landé :math:`g_F`
-        NExcited int32 % Excited principal quantum number
-        LExcited int32 % Excited :math:`L`
-        JExcited double % Excited :math:`J`
-        FExcited double % Excited hyperfine :math:`F`
-        MFExcited double % Excited :math:`M_F`
-        HFSCoefficientExcited %[A,B] excited hyperfine coefficients (Hz)
-        EnergyExcited double % Excited hyperfine energies [Hz]
-        LandegJExcited double % Excited Landé :math:`g_J`
-        LandegFExcited double % Excited Landé :math:`g_F`
-        StateList table % Combined state table with labels and flags
-        JOperator cell % Electronic spin operators (block-diagonal excited/ground)
-        IOperator cell % Nuclear spin operators (block-diagonal)
-        FOperator cell % Hyperfine spin operators (block-diagonal)
-        NaturalLinewidth double % Natural linewidth [Hz] (no 2π)
-        LifetimeExcited double % Excited-state lifetime [s]
-        ReducedDipoleMatrixElement double % :math:`\langle J_g\Vert d\Vert J_e\rangle` [C·m]
-        ReducedSaturationIntensity double % Reduced Isat [W/m^2]
-        ReducedSaturationIntensityLu double % Reduced Isat [mW/cm^2]
-        DopplerTemperature double % Doppler temperature [K]
+        NGround int32
+        LGround int32
+        JGround double
+        FGround double
+        MFGround double
+        HFSCoefficientGround %[A,B]
+        EnergyGround double
+        LandegJGround double
+        LandegFGround double
+        NExcited int32
+        LExcited int32
+        JExcited double
+        FExcited double
+        MFExcited double
+        HFSCoefficientExcited %[A,B]
+        EnergyExcited double
+        LandegJExcited double
+        LandegFExcited double
+        StateList table
+        JOperator cell
+        IOperator cell
+        FOperator cell
+        NaturalLinewidth double %One should keep in mind that there is no 2pi for consistency. e.g. for Lithium7 it is 5.8724e6 Hz
+        LifetimeExcited double
+        ReducedDipoleMatrixElement double %Following steck's convention as <Jg||d||Je>, in SI unit.
+        ReducedSaturationIntensity double %In SI unit
+        ReducedSaturationIntensityLu double %In lab unit. mW/cm^2
+        DopplerTemperature double
     end
     
     methods
         function obj = TwoJManifold(atom,nG,lG,jG,nE,lE,jE)
-            % Construct a :class:`TwoJManifold`.
-            %
-            % :param atom: Atom context
-            % :type atom: :class:`Atom`
-            % :param nG: Ground principal quantum number
-            % :type nG: int32
-            % :param lG: Ground :math:`L`
-            % :type lG: int32
-            % :param jG: Ground :math:`J`
-            % :type jG: double
-            % :param nE: Excited principal quantum number
-            % :type nE: int32
-            % :param lE: Excited :math:`L`
-            % :type lE: int32
-            % :param jE: Excited :math:`J`
-            % :type jE: double
+            %TWOJ Construct an instance of this class
+            %   Detailed explanation goes here
 
             %% Set quantum numbers N,L,J
             obj@AtomManifold(atom)
@@ -208,29 +174,9 @@ classdef TwoJManifold < AtomManifold
         end
         
         function DME = DipoleMatrixElement(obj,fG,mfG,fE,mfE,q,U)
-            % Dipole matrix element :math:`\langle f_G,m_F^G| d_q | f_E,m_F^E\rangle` [C·m].
-            %
-            % Selection rule: :math:`m_F^E + q = m_F^G`. Sign of :math:`q`
-            % follows Steck's convention.
-            %
-            % .. math::
-            %
-            %    m_F^E = m_F^G + q
-            %
-            % :param fG: Ground :math:`F`
-            % :type fG: double
-            % :param mfG: Ground :math:`M_F`
-            % :type mfG: double
-            % :param fE: Excited :math:`F'`
-            % :type fE: double
-            % :param mfE: Excited :math:`M_F'`
-            % :type mfE: double
-            % :param q: Spherical component (:math:`-1,0,+1`)
-            % :type q: double
-            % :param U: Basis transform
-            % :type U: double, optional
-            % :return: Dipole matrix element [C·m]
-            % :rtype: double
+            % Dipole Matrix element <fG,mfG|dq|fE,mfE>, in SI unit. The
+            % sign of q is reversed to accomodate to Steck's convention.
+            % Now the selection rule should be mfE + q = mfG.
             arguments
                 obj TwoJManifold
                 fG double
@@ -264,14 +210,9 @@ classdef TwoJManifold < AtomManifold
         end
 
         function dme = DipoleMatrixElementNu(obj,fG,mfG,fE,mfE,q,U)
-            % Dipole matrix element normalized by reduced DME (Steck tables).
-            %
-            % .. math::
-            %
-            %    d_\nu = \frac{\langle f_G m_F^G | d_q | f_E m_F^E \rangle}{\langle J_G \Vert d \Vert J_E \rangle}
-            %
-            % :return: Dimensionless ratio
-            % :rtype: double
+            % Dipole Matrix element <fG,mfG|dq|fE,mfE>, as multiples of the
+            % ReducedDipoleMatrixElement. Same numbers as in Steck's Alkali
+            % D line Data.
             arguments
                 obj TwoJManifold
                 fG double
@@ -285,14 +226,6 @@ classdef TwoJManifold < AtomManifold
         end
 
         function Isat = SaturationIntensity(obj,fG,mfG,fE,mfE,U)
-            % Saturation intensity for specified sublevels.
-            %
-            % .. math::
-            %
-            %    I_{\mathrm{sat}} = \frac{I_{\mathrm{sat}}^{(\mathrm{red})}}{|d_\nu|^2}
-            %
-            % :return: :math:`I_{sat}` [W/m^2]
-            % :rtype: double
             arguments
                 obj TwoJManifold
                 fG double
@@ -311,11 +244,7 @@ classdef TwoJManifold < AtomManifold
         end
 
         function Sigma = LoweringOperator(obj,q,U)
-            % Spherical lowering operator (see Steck Eq. 7.407).
-            %
-            % .. math::
-            %
-            %    \Sigma_q = \sum_{g,e} |g\rangle\langle e|\, d_\nu(g\leftarrow e;q)
+            %See Steck Eq. (7.407)
             arguments
                 obj TwoJManifold
                 q int32
@@ -336,16 +265,6 @@ classdef TwoJManifold < AtomManifold
         end
         
         function rabi = ReducedRabiFrequency(obj,laser)
-            % Reduced Rabi frequency for linearly polarized light.
-            %
-            % .. math::
-            %
-            %    \Omega = -\sqrt{\frac{I}{2 I_{\mathrm{sat}}^{(\mathrm{red})}}}\, \Gamma
-            %
-            % :param laser: Driving field
-            % :type laser: :class:`Laser`
-            % :return: :math:`\Omega` [Hz]
-            % :rtype: double
             arguments
                 obj TwoJManifold
                 laser Laser
@@ -356,18 +275,6 @@ classdef TwoJManifold < AtomManifold
         end
 
         function Ha = HamiltonianAtom(obj,fRot,U)
-            % Diagonal Hamiltonian with rotating-frame shift on excited states.
-            %
-            % .. math::
-            %
-            %    H_a = U^\dagger \, \operatorname{diag}\big(E - f_\mathrm{rot}\,\chi_\mathrm{exc}\big) \, U
-            %
-            % :param fRot: Rotating-frame frequency [Hz]
-            % :type fRot: double, optional
-            % :param U: Basis transform
-            % :type U: double, optional
-            % :return: Hamiltonian matrix [Hz]
-            % :rtype: double
             arguments
                 obj TwoJManifold
                 fRot double = 0
@@ -382,20 +289,7 @@ classdef TwoJManifold < AtomManifold
         end
 
         function Hal = HamiltonianAtomLaser(obj,laser,fRot,U)
-            % Atom-light interaction Hamiltonian :math:`H_\mathrm{AL}(t)`.
-            %
-            % .. math::
-            %
-            %    H_{\mathrm{AL}}(t) = \sum_{q=-1}^{+1} \frac{\Omega^*}{2}\, e_q\, \Sigma_q\, e^{i\Delta t} + \mathrm{h.c.}
-            %
-            % :param laser: Driving field
-            % :type laser: :class:`Laser`
-            % :param fRot: Rotating-frame frequency [Hz]
-            % :type fRot: double, optional
-            % :param U: Basis transform
-            % :type U: double, optional
-            % :return: Function handle H(r,t) [Hz]
-            % :rtype: function_handle
+            % In Hz
             arguments
                 obj TwoJManifold
                 laser Laser
@@ -417,54 +311,7 @@ classdef TwoJManifold < AtomManifold
                 h = h + h';
             end
         end
-
-        function hal = HamiltonianAtomLaserOrigin(obj,laser,fRot,U)
-            % Atom-light interaction Hamiltonian :math:`H_\mathrm{AL}(t=0,r=0)`.
-            %
-            % .. math::
-            %
-            %    H_{\mathrm{AL}}(t) = \sum_{q=-1}^{+1} \frac{\Omega^*}{2}\, e_q\, \Sigma_q\, e^{i\Delta t} + \mathrm{h.c.}
-            %
-            % :param laser: Driving field
-            % :type laser: :class:`Laser`
-            % :param fRot: Rotating-frame frequency [Hz]
-            % :type fRot: double, optional
-            % :param U: Basis transform
-            % :type U: double, optional
-            % :return: Function handle H(r,t) [Hz]
-            % :rtype: function_handle
-            arguments
-                obj TwoJManifold
-                laser Laser
-                fRot double = 0
-                U double = 1
-            end
-            pol = laser.Polarization;
-            OmegaLinear = obj.ReducedRabiFrequency(laser);
-            spacePhase = laser.spacePhaseFunc;
-            Delta = 2*pi*(laser.Frequency - fRot);
-            hal = zeros(obj.NNState);
-            for q = 1:-1:-1
-                hal = hal + conj(OmegaLinear)/2 * sphericalBasisComponent(pol,q) * obj.LoweringOperator(q,U);
-            end
-            hal = hal + hal';
-        end
-
         function Ham = HamiltonianAtomBiasField(obj,B,U)
-            % Zeeman Hamiltonian from :class:`OneJManifold` blocks.
-            %
-            % .. math::
-            %
-            %    H_Z = U^\dagger \, \mathrm{blkdiag}\big(H_Z^{(e)}, H_Z^{(g)}\big) \, U
-            %
-            % where each block uses :math:`H_Z = \mu_B ( g_J \mathbf{J} + g_I \mathbf{I} )\cdot\mathbf{B} / h`.
-            %
-            % :param B: Magnetic field object
-            % :type B: :class:`MagneticField`
-            % :param U: Basis transform
-            % :type U: double, optional
-            % :return: Hamiltonian matrix [Hz]
-            % :rtype: double
              arguments
                 obj TwoJManifold
                 B MagneticField
@@ -478,136 +325,7 @@ classdef TwoJManifold < AtomManifold
             Ham = U'*Ham*U;
             Ham = (Ham + Ham')/2;
         end
-        
-        function dressedStateList = LaserDressedStateListLargeDetuning(obj,laser)
-            % Compute laser-dressed states for large detuning limit.
-            %
-            % Calculates the AC Stark-shifted energy levels for both ground and excited
-            % state manifolds in the presence of a laser field. The method combines
-            % dressed states from separate ground and excited manifolds, properly
-            % indexing and energy-shifting the excited states by the transition frequency.
-            % Valid in the large detuning limit where laser detuning exceeds hyperfine
-            % splitting.
-            %
-            % :param laser: :class:`Laser` object specifying field parameters
-            % :type laser: Laser
-            % :return: Combined state table with AC Stark energy shifts
-            % :rtype: table
-            %
-            % **Returns:**
-            %
-            % Table with columns from :attr:`StateList` plus :attr:`EnergyShift` containing
-            % AC Stark shifts [Hz]. Excited states are energy-shifted by the transition
-            % frequency and indexed after ground states.
-            %
-            % **Notes:**
-            %
-            % The method creates separate :class:`OneJManifold` objects for ground and
-            % excited states, computes their individual AC Stark shifts, then combines
-            % them with proper energy referencing and state indexing.
-            
-            maniG = OneJManifold(obj.Atom,obj.NGround,obj.LGround,obj.JGround);
-            maniE = OneJManifold(obj.Atom,obj.NExcited,obj.LExcited,obj.JExcited);
-            dSListG = maniG.LaserDressedStateListLargeDetuning(laser);
-            dSListE = maniE.LaserDressedStateListLargeDetuning(laser);
-            dSListG.Index = dSListG.Index + numel(obj.MFExcited);
-            dSListE.Energy = dSListE.Energy + obj.Frequency;
-            dressedStateList = [dSListE;dSListG];
-        end
-
-        function [dressedStateList,U,acMap] = LaserDressedStateListSmallDetuning(obj,laser,isPlot,options)
-            % Compute laser-dressed states for small detuning regime using exact diagonalization.
-            %
-            % Calculates AC Stark-shifted energy levels by exactly diagonalizing the combined
-            % atomic and atom-laser interaction Hamiltonians. Valid in the small detuning regime
-            % where the laser detuning is comparable to or smaller than the hyperfine splitting,
-            % allowing application of the rotating wave approximation. Uses adiabatic continuation
-            % via :func:`eigenshuffle` to track eigenstate evolution with laser intensity.
-            %
-            % :param laser: :class:`Laser` object specifying field parameters
-            % :type laser: Laser
-            % :param isPlot: Flag to generate AC Stark shift plot vs intensity
-            % :type isPlot: logical, optional
-            % :param samplingSize: Number of intensity points for adiabatic continuation (default: 1000)
-            % :type samplingSize: double, optional
-            % :return: Dressed state table, unitary transformation matrix, and AC Stark map
-            % :rtype: (table, double, cell)
-            %
-            % **Returns:**
-            %
-            % - **dressedStateList**: Table with :attr:`StateList` columns plus :attr:`EnergyShift` [Hz] and :attr:`DressedState` eigenvectors
-            % - **U**: Unitary transformation matrix connecting bare to dressed states
-            % - **acMap**: Cell array ``{intensityList, energyMatrix}`` for plotting AC Stark shifts vs intensity
-            %
-            % **Notes:**
-            %
-            % The method constructs the total Hamiltonian :math:`H = H_{\text{atom}} + \sqrt{s} H_{\text{AL}}`
-            % where :math:`s` ranges from 0 to 1, corresponding to laser intensities from 0 to the full
-            % intensity. The :func:`eigenshuffle` algorithm ensures consistent eigenstate tracking
-            % during the adiabatic sweep, preventing level crossings from scrambling state assignments.
-            arguments
-                obj TwoJManifold
-                laser Laser
-                isPlot logical = false
-                options.samplingSize double = []
-            end
-
-            if ~isempty(options.samplingSize)
-                samplingSize = options.samplingSize;
-            else
-                % samplingSize = max(round(bias(3)/ dB *20),1000);
-                samplingSize = 1000;
-            end
-
-            Ha = obj.HamiltonianAtom(laser.Frequency);
-            Hal = obj.HamiltonianAtomLaserOrigin(laser,laser.Frequency);
-            scaleList = linspace(0,1,samplingSize);       
-            HMatrix = zeros([size(Ha),samplingSize]);
-            for ii = 1:samplingSize
-                HMatrix(:,:,ii) = Ha + Hal * sqrt(scaleList(ii));
-            end
-            [V,D] = eigenshuffle(HMatrix);
-
-            EnergyShift = D(:,end) - diag(Ha);
-            dressedState = V(:,:,end);
-            DressedState = cell(numel(EnergyShift),1);
-            for ii = 1:numel(EnergyShift)
-                DressedState{ii} = dressedState(:,ii);
-            end
-            zeroFieldState = V(:,:,1);
-            [Index,~] = find(zeroFieldState);
-            dressedStateList = table(Index,EnergyShift,DressedState);
-            dressedStateList = sortrows(dressedStateList,"Index");
-            dressedStateList = join(obj.StateList,dressedStateList);
-            U = dressedStateList.DressedState;
-            U = horzcat(U{:}); %Unitary operator the connect to the dressed states
-
-            intensityList = laser.Intensity * scaleList;
-            [~,sortIndex] = sort(Index);
-            acMap = {intensityList,D(sortIndex,:)};
-
-            if isPlot
-                close(figure(2035))
-                figure(2035)
-                plot(acMap{1} / 10,acMap{2}*1e-6)
-                xlabel('Intensity [$\mathrm{mW}/\mathrm{cm}^2$]',Interpreter='latex')
-                ylabel('Energy In Rotating Frame[MHz]',Interpreter='latex')
-                legend(dressedStateList.Label(:),'interpreter','latex')
-                render
-            end
-        end
-
         function [dressedStateList,U,brMap] = BiasDressedStateList(obj,B,isPlot,options)
-            % Compute dressed states versus bias field and assemble blocks.
-            %
-            % :param B: Magnetic field
-            % :type B: :class:`MagneticField`
-            % :param isPlot: Plot results
-            % :type isPlot: logical, optional
-            % :param samplingSize: Number of bias samples
-            % :type samplingSize: double, optional
-            % :return: Dressed state table, unitary U, and branch map
-            % :rtype: table, double, cell
             arguments
                 obj TwoJManifold
                 B MagneticField
@@ -657,7 +375,7 @@ classdef TwoJManifold < AtomManifold
             if isPlot
                 close(figure(2034))
                 figure(2034)
-                plot(brMap{1},brMap{2}*1e-6)
+                plot(brMap{1}*1e4,brMap{2}*1e-6)
                 xlabel('Bias field [Gauss]',Interpreter='latex')
                 ylabel('Energy [MHz]',Interpreter='latex')
                 legend(sList.Label(:),'interpreter','latex')
@@ -666,10 +384,6 @@ classdef TwoJManifold < AtomManifold
         end
 
         function mimjList = getMIMJ(obj)
-            % Compute :math:`(M_I,M_J)` labels by adiabatic mapping.
-            %
-            % :return: Table of MI, MJ per basis state
-            % :rtype: table
             arguments
                 obj TwoJManifold
                 % isPlot logical = false

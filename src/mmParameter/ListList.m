@@ -1,65 +1,7 @@
 classdef ListList < MmParameter
     %:class:`ListList` stores named numeric lists for parameter sweeps or setups.
     %
-    % Each row defines a list identifier and its :attr:`ListValue` (encoded
-    % numeric array), plus optional convenience fields :attr:`Start`,
-    % :attr:`Stop`, :attr:`Step` useful for generation scripts.
-    %
-    % **Schema (columns, types, defaults, default entries):**
-    %
-    % .. list-table::
-    %    :widths: 22 18 22 38
-    %    :header-rows: 1
-    %
-    %    * - Column
-    %      - Type
-    %      - Default
-    %      - DefaultEntry values
-    %    * - List
-    %      - string
-    %      - None
-    %      - None
-    %    * - ListValue
-    %      - doubleMatrix
-    %      - []
-    %      - []
-    %    * - Start
-    %      - double
-    %      - 0
-    %      - 0
-    %    * - Stop
-    %      - double
-    %      - 0
-    %      - 0
-    %    * - Step
-    %      - double
-    %      - 0
-    %      - 0
-    %
-    % **Foreign keys:**
-    %
-    % (none)
-    %
-    % **Join conditions:**
-    %
-    % (none)
-    %
-    % **Flags:**
-    %
-    % .. list-table::
-    %    :widths: 38 14
-    %    :header-rows: 1
-    %
-    %    * - Property
-    %      - Value
-    %    * - IsIncludeDefaultEntry
-    %      - true
-    %    * - IsFirstColumnUnique
-    %      - true
-    %    * - IsTriggerJoinOnRight
-    %      - false
-    %    * - IsTriggerJoinOnLeft
-    %      - false
+    % Contains :attr:`List` identifiers and their :attr:`ListValue` arrays.
 
     properties
 

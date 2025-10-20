@@ -25,7 +25,7 @@ classdef LinearFrequencyRamp < Waveform
     
     properties
         Amplitude double = 0 % Peak-to-peak amplitude, usually in Volts.
-        Offset double = 0 % Offset, usually in Volts.
+        Offset double = 0 % Offest, usually in Volts.
         StartFrequency double {mustBePositive} = 10 % Linear frequency in Hz - Starting frequency.
         StopFrequency double {mustBePositive} = 100 % Linear frequency in Hz - Ending frequency.
         Phase double = 0 % Initial phase in radians.
@@ -35,11 +35,11 @@ classdef LinearFrequencyRamp < Waveform
         function obj = LinearFrequencyRamp(options)
             %Construct a LinearFrequencyRamp object.
             %
-            % :param samplingRate: Sampling rate in Hz (default: [])
+            % :param samplingRate: Sampling rate in Hz (default: inherited)
             % :type samplingRate: double, optional
             % :param startTime: Start time in seconds (default: 0)
             % :type startTime: double, optional
-            % :param duration: Duration in seconds (default: [])
+            % :param duration: Duration in seconds (default: inherited)
             % :type duration: double, optional
             % :param offset: DC offset (default: 0)
             % :type offset: double, optional
@@ -52,6 +52,12 @@ classdef LinearFrequencyRamp < Waveform
             % :param stopFrequency: Ending frequency in Hz (default: 2)
             % :type stopFrequency: double, optional
             %
+            % **Example:**
+            %
+            % .. code-block:: matlab
+            %
+            %     ramp = LinearFrequencyRamp(startFrequency = 100, stopFrequency = 1000, ...
+            %                                amplitude = 1.0, duration = 0.01);
             arguments
                 options.samplingRate double = [];
                 options.startTime double = 0;

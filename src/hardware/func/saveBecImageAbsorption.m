@@ -1,14 +1,12 @@
 function saveBecImageAbsorption(vid,~,becExp)
-% saveBecImageAbsorption Save 3-frame absorption images and notify analysis.
+% saveBecImage saves acquired becExp images to drives and trigger the
+% becExp's "NewRunFinished" event.
 %
-% Callback for a VideoInput FramesAvailable event that acquires three images
-% ("atom", "light", "dark"), writes them to disk, transfers processed data
-% to the experiment object, and triggers the :code:`NewRunFinished` event.
-%
-% :param vid: VideoInput handle or numeric buffer (Andor path)
-% :type vid: videoinput | double array
-% :param becExp: Experiment controller with Acquisition and paths
-% :type becExp: object
+% saveImageData is a callback function fired by a videoinput
+% FramesAvailable event. It typically acquires three images and saves them
+% as "atom","light","dark", for the calculation of absorption and OD. After
+% that, it transfers the data to becExp and triggers the event
+% "NewRunFinished" for the following data analysis.
 
 %% Set BecExp to be at acquiring
 becExp.IsAcquiring = true;

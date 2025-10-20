@@ -1,67 +1,9 @@
 classdef WaveformLibrary < MmParameter
-    %:class:`WaveformLibrary` stores serialized :class:`Waveform` objects and their parameters.
+    %:class:`VariableList` stores named scalar variables and expressions.
     %
-    % Each row represents a waveform template associated with a
-    % :attr:`WaveformListID`, the waveform :attr:`Type` (class name),
-    % :attr:`SamplingRate`, JSON-encoded :attr:`Parameter` table describing
-    % named parameters, and optional modulation links referencing entries in
-    % :class:`WaveformListLibrary`.
-    %
-    % **Schema (columns, types, defaults):**
-    %
-    % .. list-table::
-    %    :widths: 30 18 28
-    %    :header-rows: 1
-    %
-    %    * - Column
-    %      - Type
-    %      - Default
-    %    * - WaveformListID
-    %      - int64
-    %      - 1
-    %    * - Type
-    %      - string
-    %      - ConstantWave
-    %    * - SamplingRate
-    %      - double
-    %      - 1000
-    %    * - Parameter
-    %      - table
-    %      - None
-    %    * - AmplitudeModulation
-    %      - double
-    %      - 0
-    %    * - FrequencyModulation
-    %      - double
-    %      - 0
-    %    * - PhaseModulation
-    %      - double
-    %      - 0
-    %
-    % **Foreign keys:**
-    %
-    % - ``WaveformListID`` → :class:`WaveformListLibrary` (``ID``)
-    %
-    % **Join conditions:**
-    %
-    % (none; view ``WaveformParameters`` is created for JSON expansion)
-    %
-    % **Flags:**
-    %
-    % .. list-table::
-    %    :widths: 38 14
-    %    :header-rows: 1
-    %
-    %    * - Property
-    %      - Value
-    %    * - IsIncludeDefaultEntry
-    %      - false
-    %    * - IsFirstColumnUnique
-    %      - false
-    %    * - IsTriggerJoinOnRight
-    %      - false
-    %    * - IsTriggerJoinOnLeft
-    %      - false
+    % Each row defines :attr:`Name`, numeric :attr:`Value`, a reference
+    % :attr:`List` name, an :attr:`Equation` string and its evaluated
+    % :attr:`EquationValue` for caching.
 
     properties
 
@@ -102,14 +44,6 @@ classdef WaveformLibrary < MmParameter
         end
 
         function createView(obj)
-            % Create the SQLite view used to expand JSON parameters per row.
-            %
-            % Creates/ensures the ``WaveformParameters`` view which flattens the
-            % JSON-encoded :attr:`Parameter` column into a rowset with columns
-            % ``ID`` (pointing to this table), ``Name``, ``VariableID``, and
-            % ``DefaultValue``. Idempotent: only creates the view if it does not
-            % already exist. Used by :meth:`readParameter` to join with
-            % :class:`VariableList` and resolve current values.
             conn = obj.connectDatabase;
             viewName = "WaveformParameters";
             sql = "SELECT name FROM sqlite_master WHERE type='view' AND name='" + viewName + "';";
@@ -129,17 +63,6 @@ classdef WaveformLibrary < MmParameter
         end
 
         function s = readParameter(obj,id)
-            % Read waveform parameters with variable resolution.
-            %
-            % Returns a struct combining base waveform fields with a parameter
-            % table where variable links are resolved against :class:`VariableList`.
-            %
-            % :param id: Row ID
-            % :type id: double
-            % :return: Struct with fields ``Type``, ``SamplingRate``, modulation
-            %          IDs, and a ``Parameter`` table containing columns
-            %          ``Name``, ``DefaultValue``, ``VariableID``, ``Value``.
-            % :rtype: struct
             conn = obj.connectDatabaseRead;
             %% Read general waveform properties
             sqlquery = "SELECT" + ...
@@ -178,16 +101,6 @@ classdef WaveformLibrary < MmParameter
         end
 
         function wf = loadEntry(obj,id)
-            % Instantiate a :class:`Waveform` object from a database row.
-            %
-            % Calls :meth:`readParameter` and constructs the waveform class with
-            % parameter assignment, resolving optional modulation lists from
-            % :class:`WaveformListLibrary`.
-            %
-            % :param id: Row ID to load
-            % :type id: double
-            % :return: Waveform instance populated from the database
-            % :rtype: :class:`Waveform`
             s = obj.readParameter(id);
             wf = eval(s.Type);
             wf.SamplingRate = s.SamplingRate;
@@ -207,7 +120,7 @@ classdef WaveformLibrary < MmParameter
         end
 
         function wfID = saveEntry(obj,wf,wflID,wfID)
-            % Save a :class:`Waveform` object into the database.
+            % Save a Waveform object into the database
             arguments
                 obj
                 wf
@@ -226,15 +139,6 @@ classdef WaveformLibrary < MmParameter
         end
 
         function wflID = checkVariableBound(obj,varID)
-            % Return dependent waveform lists for a given variable ID.
-            %
-            % Scans ``Parameter`` JSON for occurrences of ``VariableID`` and
-            % returns unique :attr:`WaveformListID` values that reference it.
-            %
-            % :param varID: Target variable ID
-            % :type varID: double
-            % :return: Dependent ``WaveformListID`` values
-            % :rtype: double or []
             conn = obj.connectDatabaseRead;
             sqlquery = "SELECT" + newline + ...
                 "   wl.WaveformListID"  + newline + ...

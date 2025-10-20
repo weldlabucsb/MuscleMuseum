@@ -31,11 +31,11 @@ classdef LinearRamp < TrapezoidalPulse
         function obj = LinearRamp(options)
             %Construct a LinearRamp object.
             %
-            % :param samplingRate: Sampling rate in Hz (default: [])
+            % :param samplingRate: Sampling rate in Hz (default: inherited)
             % :type samplingRate: double, optional
             % :param startTime: Start time in seconds (default: 0)
             % :type startTime: double, optional
-            % :param duration: Total duration in seconds (default: [])
+            % :param duration: Total duration in seconds (default: inherited)
             % :type duration: double, optional
             % :param startValue: Initial ramp value (default: 0)
             % :type startValue: double, optional
@@ -44,6 +44,11 @@ classdef LinearRamp < TrapezoidalPulse
             % :param rampTime: Ramp duration in seconds (default: 0)
             % :type rampTime: double, optional
             %
+            % **Example:**
+            %
+            % .. code-block:: matlab
+            %
+            %     ramp = LinearRamp(startValue = 0, stopValue = 10, rampTime = 0.01);
             arguments
                 options.samplingRate double = [];
                 options.startTime double = 0;

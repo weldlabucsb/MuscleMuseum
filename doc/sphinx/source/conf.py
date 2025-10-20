@@ -70,8 +70,8 @@ html_theme = 'sphinx_book_theme'
 html_copy_source = False
 #html_static_path = ['_static']
 html_theme_options = {
-    "show_navbar_depth": None,
-    "max_navbar_depth": None,
+    "show_navbar_depth": int(2),
+    "max_navbar_depth": int(4),
     "repository_url": "https://github.com/XiaoCasd/MuscleMuseum",
     "use_source_button": True,
     "use_repository_button": True,

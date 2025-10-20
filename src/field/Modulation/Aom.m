@@ -13,14 +13,14 @@ classdef Aom < handle
     %    df2 = a.shiftDP(-1); % -160 MHz
     %
     properties
-        RfFrequency % RF frequency [MHz]
+        RfFrequency %RF frequency in MHz
     end
     
     methods
         function obj = Aom(omegaRf)
             % Construct an :class:`Aom`.
             %
-            % :param omegaRf: RF frequency [MHz]
+            % :param omegaRf: RF frequency in MHz
             % :type omegaRf: double
             obj.RfFrequency = omegaRf;
         end
@@ -30,7 +30,7 @@ classdef Aom < handle
             %
             % :param order: Diffraction order (+/-1, ...)
             % :type order: double
-            % :return: Frequency shift [MHz]
+            % :return: Frequency shift in MHz
             % :rtype: double
             shift = order*obj.RfFrequency;
         end
@@ -40,7 +40,7 @@ classdef Aom < handle
             %
             % :param order: Diffraction order (+/-1, ...)
             % :type order: double
-            % :return: Frequency shift [MHz]
+            % :return: Frequency shift in MHz
             % :rtype: double
             shift = 2*order*obj.RfFrequency;
         end

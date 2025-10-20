@@ -1,12 +1,7 @@
 function U = uncoupledSpinBasisTransformation(j1,j2)
-% Build basis transform from coupled to uncoupled spin basis.
-%
-% :param j1: First total spin
-% :type j1: double
-% :param j2: Second total spin
-% :type j2: double
-% :return: Unitary transform U such that uncoupled = U * coupled
-% :rtype: double
+%uncoupledSpinBasisTransformation 
+%   Transform the basis from the coupled spin basis to the uncoupled
+%   spin basis
 mj1List = magneticAngularMomentum(j1);
 mj2List = magneticAngularMomentum(j2);
 

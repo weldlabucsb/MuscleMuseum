@@ -1,13 +1,5 @@
+% This is a function to set the configuration file
 function setParameter
-% Set up local configuration and populate parameter tables.
-%
-% Reads user variables from ``mmConfig.m`` and updates parameter tables
-% such as :class:`ComputerConfig`, :class:`DatabaseConfig`,
-% :class:`DatabaseServerConfig`, :class:`AcquisitionSetting`,
-% :class:`HardwareList`, :class:`HardwareSetting`, and :class:`BecExpConfig`.
-% Creates device folders under ``HardwareLogOrigin`` and seeds hardware
-% settings. Intended to be run once per environment or whenever settings
-% change.
 disp(newline + "Setting configurations...")
 mmConfig; % run the user-defined script to get user configurations
 varList = string(who).'; %check the user input parameters

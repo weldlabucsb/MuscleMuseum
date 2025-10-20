@@ -13,10 +13,10 @@ classdef Modulation < handle
     %    y = f(0:1e-6:5e-3);
     %
     properties
-        Depth % Modulation depth :math:`\alpha` (unitless or client-defined)
-        Frequency % Modulation frequency :math:`f_m` [Hz]
-        Duration % Modulation duration :math:`T_m` [s]
-        Timing % Start time :math:`t_0` [s]
+        Depth % Modulation depth (unitless or client-defined)
+        Frequency % Modulation frequency :math:`f_m` in [Hz]
+        Duration % Modulation duration :math:`T_m` in [s]
+        Timing % Start time :math:`t_0` in [s]
     end
     
     methods
@@ -48,7 +48,7 @@ classdef Modulation < handle
         function func = timeFunc(obj)
             % Build modulation function :math:`m(t) = \mathbb{1}_{[t_0,t_0+T_m]}(t)\, \alpha\, \sin(2\pi f_m t)`.
             %
-            % :return: Function handle mapping time :math:`t` to :math:`m(t)`
+            % :return: function handle mapping time :math:`t` to :math:`m(t)`
             % :rtype: function_handle
             alpha = obj.Depth;
             freq = obj.Frequency;

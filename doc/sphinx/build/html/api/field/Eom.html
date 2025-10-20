@@ -156,22 +156,29 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../database/index.html">database</a></li>
-<li class="toctree-l2 current active"><a class="reference internal" href="index.html">field</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">field</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Aom.html">Aom</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Eom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GaussianBeam.html">GaussianBeam</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Laser.html">Laser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MagneticField.html">MagneticField</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MagneticPotential.html">MagneticPotential</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Modulation.html">Modulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OpticalLattice.html">OpticalLattice</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OpticalPotential.html">OpticalPotential</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OpticalTrap.html">OpticalTrap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Potential.html">Potential</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">hardware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -411,7 +418,7 @@ document.write(`
 <dd><p>Construct an <a class="reference internal" href="#Eom" title="Eom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Eom</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>omegaRf</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – RF frequency [MHz]</p>
+<dd class="field-odd"><p><strong>omegaRf</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – RF frequency in MHz</p>
 </dd>
 </dl>
 </dd></dl>
@@ -420,7 +427,7 @@ document.write(`
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="Eom.RfFrequency">
 <span class="sig-name descname"><span class="pre">RfFrequency</span></span><a class="headerlink" href="#Eom.RfFrequency" title="Link to this definition">#</a></dt>
-<dd><p>RF frequency [MHz]</p>
+<dd><p>RF frequency in MHz</p>
 </dd></dl>
 
 </dd>
@@ -433,7 +440,7 @@ document.write(`
 <dd class="field-odd"><p><strong>order</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Sideband order (+/-1, …)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Frequency shift [MHz]</p>
+<dd class="field-even"><p>Frequency shift in MHz</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>double</p>

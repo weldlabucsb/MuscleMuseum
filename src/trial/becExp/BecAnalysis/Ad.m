@@ -1,47 +1,33 @@
 classdef Ad < BecAnalysis
-    %:class:`Ad` compute atomic column density (AD) from OD and imaging config.
-    %
-    % Converts optical depth (:class:`Od`) to atomic column density using
-    % a chosen cross section model (:attr:`AdMethod`). Supports uniform and
-    % spatially varying saturation corrections via :attr:`CrossSectionData`
-    % and :attr:`Imaging.SaturationParameterPropagation`. Provides preview
-    % GUI and renders 1D mosaics or 2D density maps, with optional GIF export.
-    %
-    % **Associated Charts:**
-    %   - Chart(1): "AdMix" - Horizontal mosaic or 2D density plot of atomic density
-    %   - Chart(2): "AdAnimation" - Animated GIF showing AD evolution
-    %
-    % **Associated GUIs:**
-    %   - Gui(1): "AtomPreviewer" - Real-time preview of atomic density data
+    %OD Calculate and plot optical depth
+    %   Detailed explanation goes here
 
     properties (Transient)
-        AdData double % Atomic column density :math:`n_\mathrm{col}` per run [m^{-2}]
+        AdData double % Calculated AdData
     end
 
     properties
-        AdMethod string = "StrongLight" % Cross-section model: "TwoLevelWeakLight"|"RandomPolarization"|"UniformStrongLight"|"StrongLight"|"PhaseContrastImaging"
-        Colormap = jet % Colormap function handle for atomic density visualization
+        AdMethod string = "StrongLight"
+        Colormap = jet
     end
 
     properties (SetAccess = private)
-        CrossSectionData double = [] % Cross-section lookup table with columns [:math:`s`, :math:`\sigma(s)/\sigma_0`] for saturation-dependent scattering
+        CrossSectionData double = []
     end
 
     properties (SetObservable)
-        CLim double = [0,8] % Color axis limits for atomic density plots in units of :attr:`Unit` [m^{-2}]
+        CLim double = [0,8]
     end
 
     properties (Constant)
-        Blur = 100 % Gaussian blur kernel size [pixels] applied to saturation-dependent cross-section maps
-        Unit = 1e13; % Display scale factor for atomic density values [m^{-2}]
+        Blur = 100
+        Unit = 1e13;
     end
 
     methods
         function obj = Ad(becExp)
-            % Construct :class:`Ad` analyzer.
-            %
-            % :param becExp: Owning experiment
-            % :type becExp: :class:`BecExp`
+            %OD Construct an instance of this class
+            %   Detailed explanation goes here
             obj@BecAnalysis(becExp)
             obj.Gui(1) = Gui(...
                 name = "AtomPreviewer",...
@@ -80,11 +66,7 @@ classdef Ad < BecAnalysis
     methods
 
         function initialize(obj)
-            % Initialize data storage and preview GUI interface.
-            %
-            % Sets up atomic density data arrays, launches the atomic density
-            % previewer application, configures OD preview mode, and establishes
-            % property change listeners for color limits.
+            % Initialize matrices
             roiSize = obj.BecExp.Roi.CenterSize(3:4);
             obj.AdData = zeros([roiSize,1]);
 
@@ -95,13 +77,6 @@ classdef Ad < BecAnalysis
         end
 
         function update(obj,runIdx)
-            % Compute atomic column density from optical depth for given run.
-            %
-            % Converts optical depth to atomic column density using the selected
-            % cross-section model, accounting for saturation effects when applicable.
-            %
-            % :param runIdx: Run index to process
-            % :type runIdx: double
             becExp = obj.BecExp;
             sigma0 = becExp.Atom.CyclerCrossSection;
             sigmaData = obj.CrossSectionData;
@@ -110,7 +85,7 @@ classdef Ad < BecAnalysis
                 si = sigma0 * interp1(sigmaData(:,1),sigmaData(:,2),s,'linear');
             end
 
-            % Calculate AD from OD using selected cross-section model
+            % Calculate Ad
             switch obj.AdMethod
                 case "TwoLevelWeakLight"
                     obj.AdData(:,:,runIdx) = becExp.Od.OdData(:,:,runIdx) / sigma0;
@@ -191,7 +166,7 @@ classdef Ad < BecAnalysis
                     alpha = 2/3/hbar * (abs(dipoleD1)^2 / (omegaD1 - omegaL) +...
                         abs(dipoleD2)^2 / (omegaD2 - omegaL));
                     
-                    % Final densities from phase shift
+                    %Final Densities
                     obj.AdData(:,:,runIdx)=obj.AdData(:,:,runIdx)/(2*pi/(671e-9))*2*epsilon0/alpha;
                     
             end
@@ -202,20 +177,11 @@ classdef Ad < BecAnalysis
         end
 
         function finalize(obj)
-            % Generate final atomic density visualizations.
-            %
-            % Creates the atomic density mosaic plot and animated GIF showing
-            % the evolution of atomic column density across parameter values.
             obj.plotAdMix
             obj.plotAdAnimation
         end
 
         function show(obj)
-            % Display atomic density previewer and chart windows.
-            %
-            % Initializes the atomic density previewer GUI, configures OD preview
-            % mode, establishes property change listeners, and shows chart figures.
-            % Loads saved data for backwards compatibility when available.
             addlistener(obj,'CLim','PostSet',@obj.handlePropEvents);
             obj.Gui(1).initialize(obj.BecExp)
             obj.Gui(1).App.IsOd = obj.BecExp.IsOdPreview;
@@ -230,10 +196,6 @@ classdef Ad < BecAnalysis
         end
 
         function refresh(obj)
-            % Recompute atomic density for all runs and refresh visualization.
-            %
-            % Reinitializes data storage, updates the preview GUI, reprocesses
-            % all completed runs, and regenerates visualization plots.
             becExp = obj.BecExp;
             nRun = becExp.NCompletedRun;
             roiSize = becExp.Roi.CenterSize(3:4);
@@ -249,46 +211,26 @@ classdef Ad < BecAnalysis
                 obj.update(ii)
             end
 
-            % Redo plotting
+            % Redo ploting
             obj.finalize;
         end
 
         function save(obj)
-            % Save AD data and figure to disk.
-            %
-            % Writes ``AdData.mat`` under :attr:`BecExp.DataAnalysisPath` with
-            % AD values and ROI axes. If the primary chart is enabled, also
-            % saves the PNG figure at :attr:`Chart(1).Path`.
-            %
-            % :return: None
-            % :rtype: void
             adData = obj.AdData;
             x = obj.BecExp.Roi.XList * obj.BecExp.Acquisition.PixelSizeReal;
             y = obj.BecExp.Roi.YList * obj.BecExp.Acquisition.PixelSizeReal;
             scannedVariableList = obj.BecExp.ScannedVariableList;
             save(fullfile(obj.BecExp.DataAnalysisPath,"AdData"),"adData","x","y","scannedVariableList");
             if obj.Chart(1).IsEnabled
-                if ~isempty(obj.Chart(1).Figure)
-                    if isvalid(obj.Chart(1).Figure)
-                        saveas(obj.Chart(1).Figure,obj.Chart(1).Path,'png')
-                    end
-                end
+                saveas(obj.Chart(1).Figure,obj.Chart(1).Path,'png')
             end
         end
 
         function plotAdMix(obj,adData)
-            % Plot AD mosaics (1D scans) or 2D map (2D scans).
-            %
-            % :param adData: Optional AD to plot; defaults to :attr:`AdData`
-            % :type adData: double, optional
-            % :return: None
-            % :rtype: void
-
             arguments
                 obj
                 adData = []
             end
-
             %% Initialize
             fig = obj.Chart(1).initialize;
             if ishandle(fig)
@@ -306,30 +248,18 @@ classdef Ad < BecAnalysis
         end
         
         function plotAdMix1D(obj, fig, adData)
-            % 1D plotting logic (mosaic across runs)
-            %
-            % :param fig: Figure handle
-            % :type fig: matlab.ui.Figure
-            % :param adData: Optional AD to plot; defaults to :attr:`AdData`
-            % :type adData: double, optional
+            %% 1D plotting logic (original implementation)
             ax = gca;
 
             %% Plot AD Data
+            nRun = obj.BecExp.NCompletedRun;
+            cData = cell(1,nRun);
+            runList = obj.BecExp.RunListSorted;
             if isempty(adData)
                 adData = obj.AdData;
             end
-            if ~obj.BecExp.IsDensityAverage
-                xTick = obj.BecExp.ScannedVariableListSorted;
-                adData = adData(:,:,obj.BecExp.RunListSorted);
-            else
-                [xTick,adData] = computeAveErr(obj.BecExp.ScannedVariableList,adData);
-            end
-
-            nRun = numel(xTick);
-            cData = cell(1,nRun);
-
-            for ii = 1:numel(xTick)
-                cData{ii} = adData(:,:,ii);
+            for ii = 1:nRun
+                cData{ii} = adData(:,:,runList(ii));
             end
             mData = horzcat(cData{:}) / obj.Unit;
             img = imagesc(ax,mData);
@@ -378,7 +308,7 @@ classdef Ad < BecAnalysis
             ax.TickDir = "out";
             tickSpace = roiSize(2);
             ax.XTick = (tickSpace/2):tickSpace:(tickSpace*double(nRun)-tickSpace/2);
-            ax.XTickLabel = string(xTick);
+            ax.XTickLabel = string(obj.BecExp.ScannedVariableListSorted);
             set(ax,'box','off')
             ax.Units = "pixels";
             outerpos = ax.OuterPosition;
@@ -387,92 +317,63 @@ classdef Ad < BecAnalysis
         end
         
         function plotAdMix2D(obj, fig, adData)
-            % 2D plotting logic
-            %
-            % :param fig: Figure handle
-            % :type fig: matlab.ui.Figure
-            % :param adData: Optional AD to plot; defaults to :attr:`AdData`
-            % :type adData: double, optional
-            %% Plot OD Data
-            ax = gca;
+            %% 2D plotting logic
+            becExp = obj.BecExp;
+            roi = becExp.Roi;
+            roiSize = roi.CenterSize(3:4);
+            
+            % Get 2D plot data
+            [xData, yData] = obj.get2DPlotData();
+            
+            if isempty(xData) || isempty(yData)
+                % Fallback to 1D plotting if 2D data is not available
+                obj.plotAdMix1D(fig, adData);
+                return;
+            end
+            
+            % Clear figure and create new axes
+            clf(fig);
+            ax = axes(fig);
+            
+            % Use provided adData or default to obj.AdData
             if isempty(adData)
                 adData = obj.AdData;
             end
-            adData = flip(adData,1) / obj.Unit;
-            [xTick,yTick,adData] = computeAveErr2D(...
-                obj.BecExp.ScannedVariableList(1,:), ...
-                obj.BecExp.ScannedVariableList(2,:), ...
-                adData,"None");
-            [r, c, ny, nx] = size(adData);
-            mData = reshape(permute(adData, [1, 3, 2, 4]), r*ny, c*nx);
-            img = imagesc(ax,mData);
-
-            %% Render
-            fz = 20;
-            cb = colorbar(ax);
-            clim(obj.CLim)
-            colormap(ax,obj.Colormap)
             
+            % Create 2D density plot for a representative slice (middle of ROI)
+            midSlice = round(roiSize(1)/2);
+            adSlice = squeeze(adData(midSlice, :, :));
+            
+            % Reshape to 2D grid
+            ad2D = obj.reshapeDataTo2D(adSlice / obj.Unit);
+            
+            % Create density plot
+            imagesc(ax, xData, yData, ad2D);
+            ax.Colormap = obj.Colormap;
+            ax.CLim = obj.CLim;
+            
+            % Add labels and title
+            ax.XLabel.String = becExp.XLabel;
+            ax.XLabel.Interpreter = "latex";
+            ax.XLabel.FontSize = 12;
+            ax.YLabel.String = becExp.YLabel;
+            ax.YLabel.Interpreter = "latex";
+            ax.YLabel.FontSize = 12;
+            ax.Title.String = "TrialName: " + obj.BecExp.Name + ...
+                ", Trial \#" + num2str(obj.BecExp.SerialNumber) + ...
+                " (AD at y=" + num2str(midSlice) + ")";
+            ax.Title.Interpreter = "latex";
+            ax.Title.FontSize = 12;
+            
+            % Add colorbar
+            cb = colorbar(ax);
             cb.Label.Interpreter = "Latex";
             cb.Label.String = "AD [$\times 10^{" + string(log(obj.Unit)/log(10))+"} ~ \mathrm{m}^{-2}$]";
-            cb.Label.FontSize = fz;
-            roiSize = obj.BecExp.Roi.CenterSize(3:4);
-            yxBoundary = obj.BecExp.Roi.YXBoundary;
-            aspect = double(nx)*roiSize(2)/(roiSize(1) * double(ny));
-            figPos = fig.InnerPosition;
-            targetWidth = figPos(3)*0.85;
-            targetHeight = figPos(4)*0.8;
-            ax.Units = "pixels";
-            if targetWidth > targetHeight * aspect
-                ax.Position(4) = targetHeight;
-                ax.Position(3) = targetHeight * aspect;
-            else
-                ax.Position(3) = targetWidth;
-                ax.Position(4) = targetWidth / aspect;
-            end
-            ax.Position(1:2) = [figPos(3)/2 - ax.Position(3)/2,...
-                figPos(4)/2 - ax.Position(4)/2];
-            pbaspect(ax,[aspect,1,1])
-
-            ax.Units = "normalized";
-            ax.XLabel.String = obj.BecExp.XLabel;
-            ax.XLabel.Interpreter = "latex";
-            ax.XLabel.FontSize = fz;
-            ax.YLabel.String = obj.BecExp.YLabel;
-            ax.YLabel.Interpreter = "latex";
-            ax.YLabel.FontSize = fz;
-            ax.Title.String = "TrialName: " + obj.BecExp.Name + ...
-                ", Trial \#" + num2str(obj.BecExp.SerialNumber);
-            ax.Title.Interpreter = "latex";
-            ax.Title.FontSize = fz;
-            ax.FontSize = fz;
-            ax.YDir = "normal";
-
-            renderTicks(img,[1,2],yxBoundary(1):yxBoundary(2))
-            ax.TickDir = "out";
-            tickSpace = roiSize(2);
-            ax.XTick = (tickSpace/2):tickSpace:(tickSpace*double(nx)-tickSpace/2);
-            ax.XTickLabel = string(xTick);
-            tickSpace = roiSize(1);
-            ax.YTick = (tickSpace/2):tickSpace:(tickSpace*double(ny)-tickSpace/2);
-            ax.YTickLabel = string(yTick);
-            set(ax,'box','off')
-            ax.Units = "pixels";
-            outerpos = ax.OuterPosition;
-            fig.Position(4) = fig.Position(3) * outerpos(4)/outerpos(3)*1.05;
-            ax.OuterPosition(2) = 0;
+            cb.Label.FontSize = 12;
         end
 
         function plotAdAnimation(obj)
-            % Create animated GIF across runs from AD data.
-            %
-            % Saves an animated GIF to :attr:`Chart(2).Path` using current AD
-            % color scaling and ROI mid-slice profiles.
-            
             %% Initialize figure
-            if obj.BecExp.Is2DScan
-                obj.Chart(2).IsEnabled = false;
-            end
             fig = obj.Chart(2).initialize;
             if ishandle(fig)
                 figure(fig)
@@ -491,16 +392,11 @@ classdef Ad < BecAnalysis
             roi = becExp.Roi;
             yxBoundary = roi.YXBoundary;
             roiSize = roi.CenterSize(3:4);
+            nRun = becExp.NCompletedRun;
+            runList = obj.BecExp.RunListSorted;
             varName = becExp.ScannedVariable;
-            varUnit = becExp.ScannedVariableUnit;
-            adData = obj.AdData / obj.Unit;
-            if ~obj.BecExp.IsDensityAverage
-                varListSorted = becExp.ScannedVariableListSorted;
-                adData = adData(:,:,becExp.RunListSorted);
-            else
-                [varListSorted,adData] = computeAveErr(becExp.ScannedVariableList,adData);
-            end
-            nRun = numel(varListSorted);
+            varListSorted = becExp.ScannedVariableListSorted;
+            varUnit = becExp.ScannedVariable;
 
             %% Initialize plots
             roiAspect = roiSize(2)/roiSize(1);
@@ -572,9 +468,9 @@ classdef Ad < BecAnalysis
                 for ii = 1:nRun
 
                     % Update plots
-                    img.CData = adData(:,:,ii);
-                    xLine.YData = squeeze(adData(round(roiSize(1)/2),:,ii));
-                    yLine.XData = squeeze(adData(:,round(roiSize(2)/2),ii));
+                    img.CData = obj.AdData(:,:,runList(ii)) / obj.Unit;
+                    xLine.YData = squeeze(obj.AdData(round(roiSize(1)/2),:,runList(ii))) / obj.Unit;
+                    yLine.XData = squeeze(obj.AdData(:,round(roiSize(2)/2),runList(ii))) / obj.Unit;
 
                     % Update title
                     if ismissing(varUnit)
@@ -612,12 +508,6 @@ classdef Ad < BecAnalysis
 
     methods (Static)
         function handlePropEvents(src,evnt)
-            % Handle property change events for color limits and GUI updates.
-            %
-            % :param src: Property metadata object
-            % :type src: meta.property
-            % :param evnt: Event data containing affected object
-            % :type evnt: event.EventData
             switch src.Name
                 case 'CLim'
                     obj = evnt.AffectedObject;

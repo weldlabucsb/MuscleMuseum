@@ -23,65 +23,66 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
     %     Subclasses must implement :meth:`writeDatabase`, :meth:`updateDatabase`,
     %     :meth:`setFolder`, and :meth:`setConfigProperty`.
     properties
-        Description string = "This is a test trial." % Human-readable description of the trial purpose and setup
-        NCompletedRun int32 = 0 % Number of experimental runs completed successfully
-        NRun int32 = 1 % Total number of runs planned for this trial
+        Description string = "This is a test trial."
+        NCompletedRun int32 = 0
+        NRun int32 = 1
+        Is2dScan logical = false
     end
 
     properties (Abstract)
-        ScannedVariable string % Primary scanned parameter name (must be implemented by subclasses)
-        ScannedVariableUnit string % Primary scanned parameter unit string (must be implemented by subclasses)
-        ScannedVariable2 string % Secondary scanned parameter name for 2D scans (must be implemented by subclasses)
-        ScannedVariableUnit2 string % Secondary scanned parameter unit string for 2D scans (must be implemented by subclasses)
+        ScannedVariable string
+        ScannedVariableUnit string  
+        ScannedVariable2 string  
+        ScannedVariableUnit2 string  
     end
 
     properties (SetAccess = protected)
-        DateTime datetime % Date and time when the experiment or simulation was initiated
+        DateTime datetime % The date and time when the experiment/simulation is done.
     end
 
     properties (SetAccess = protected)
-        Name string % Trial name identifier matching the configuration entry
-        DataPath string = "." % Full path to the trial's data storage directory
-        ObjectPath string % Full path to the saved trial object .mat file
-        SerialNumber int32 % Unique database-generated identifier for this trial instance
+        Name string
+        DataPath string = "."
+        ObjectPath string
+        SerialNumber int32
     end
 
     properties (Dependent)
-        IsCompleted logical % True when all planned runs have been completed successfully
-        Is2DScan logical % True for two-dimensional parameter scans (computed from :attr:`ScannedVariable2`)
+        IsCompleted logical
+        Is2DScan logical  % Computed property based on ScannedParameter dimensions
     end
 
     properties (SetAccess = protected, Hidden)
-        ParentPath {mustBeFolder} = "." % Root directory for all trial data storage
-        IsAutoDelete logical = false % Flag to automatically delete empty trials with no completed runs
-        DatabaseName string % PostgreSQL database name for trial persistence
-        DatabaseTableName string % Database table name for this trial type
-        DataPrefix string = "run" % Filename prefix for data files (e.g., "run_1_atom.tif")
-        DataFormat string = ".mat" % File extension for data files
-        DatePath string % Date-organized folder path (year/year.month/month.day)
-        TrialPath string % Full path to this trial's root directory
-        DataAnalysisPath string % Full path to analysis results subdirectory
-        DataGroupSize uint32 = 1 % Number of files per run group for file watcher triggering
-        TrialIndex uint32 = 1 % Index of this trial among trials with same name on same day
-        ControlAppName string % Tag name of associated GUI control panel application
+        ParentPath {mustBeFolder} = "."
+        IsAutoDelete logical = false
+        DatabaseName string
+        DatabaseTableName string
+        DataPrefix string = "run"
+        DataFormat string = ".mat"
+        DatePath string
+        TrialPath string
+        DataAnalysisPath string
+        DataGroupSize uint32 = 1
+        TrialIndex uint32 = 1
+        ControlAppName string
     end
 
     properties (SetAccess = protected, Hidden, Transient)
-        Reader database.postgre.connection % Database connection for reading trial data
-        Writer database.postgre.connection % Database connection for writing trial data
-        FileSystemWatcher % .NET file system watcher for monitoring data directory
-        Watcher event.listener % Event listener for file system changes
-        Analyzer event.listener % Event listener for triggering analysis pipeline
-        ControlApp % Handle to associated GUI control panel application
+        Reader database.postgre.connection
+        Writer database.postgre.connection
+        FileSystemWatcher
+        Watcher event.listener
+        Analyzer event.listener
+        ControlApp
     end
 
     properties (Hidden,Transient)
-        TempData = [] % Temporary storage for current run data during acquisition
-        TempDataPath string % Temporary file paths for data being processed
+        TempData = []
+        TempDataPath string
     end
 
     properties (Hidden)
-        ConfigParameter struct % Configuration parameters loaded from database or file
+        ConfigParameter struct
     end
 
     methods
@@ -310,7 +311,7 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
     end
 
     events
-        NewRunFinished % Event triggered when a new experimental run is detected and ready for analysis
+        NewRunFinished %Triggered when a new run is detected.
     end
 end
 

@@ -43,7 +43,6 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/atom/AtomManifold';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -157,15 +156,30 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active"><a class="reference internal" href="index.html">atom</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">atom</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Alkali.html">Alkali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Atom.html">Atom</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">AtomManifold</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Divalent.html">Divalent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OneFManifold.html">OneFManifold</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OneJManifold.html">OneJManifold</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TwoAtom.html">TwoAtom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TwoJManifold.html">TwoJManifold</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TwoJManifoldDivalent.html">TwoJManifoldDivalent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="angularMomentumList.html">angularMomentumList</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getAtom.html">getAtom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lithiumDME.html">lithiumDME</a></li>
+<li class="toctree-l3"><a class="reference internal" href="magneticAngularMomentum.html">magneticAngularMomentum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="saveAtom.html">saveAtom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="spinMatrices.html">spinMatrices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="strontiumDME.html">strontiumDME</a></li>
+<li class="toctree-l3"><a class="reference internal" href="totalAngularMomentum.html">totalAngularMomentum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uncoupledSpinBasis.html">uncoupledSpinBasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uncoupledSpinBasisTransformation.html">uncoupledSpinBasisTransformation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uncoupledSpinMatrices.html">uncoupledSpinMatrices</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../database/index.html">database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../field/index.html">field</a></li>
@@ -173,6 +187,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -397,41 +412,32 @@ document.write(`
 <dt class="sig sig-object mat" id="AtomManifold">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">AtomManifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/AtomManifold/AtomManifold.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#AtomManifold" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.Heterogeneous</span></code></p>
-<p><a class="reference internal" href="#AtomManifold" title="AtomManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">AtomManifold</span></code></a> base for hyperfine/Zeeman manifolds and transitions.</p>
-<p>Encapsulates an <a class="reference internal" href="Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a> context, the number of states, and
-transition center frequency. Provides derived quantities such as
-wavelength, angular wavenumber, recoil momentum/velocity/energy,
-and recoil temperature.</p>
+<p>TRANSITION Summary of this class goes here
+Detailed explanation goes here</p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="AtomManifold.AtomManifold">
 <span class="sig-name descname"><span class="pre">AtomManifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em><span class="sig-paren">)</span><a class="headerlink" href="#AtomManifold.AtomManifold" title="Link to this definition">#</a></dt>
-<dd><p>Construct an <a class="reference internal" href="#AtomManifold" title="AtomManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">AtomManifold</span></code></a> with an <a class="reference internal" href="Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a> context.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>atom</strong> (<a class="reference internal" href="Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a>) – Atom context</p>
-</dd>
-</dl>
+<dd><p>TRANSITION Construct an instance of this class
+Detailed explanation goes here</p>
 </dd></dl>
 
 </dd>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomManifold.AngularWavenumber">
 <span class="sig-name descname"><span class="pre">AngularWavenumber</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#AtomManifold.AngularWavenumber" title="Link to this definition">#</a></dt>
-<dd><p><span class="math notranslate nohighlight">\(k=2\pi/\lambda\)</span> [rad/m]</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomManifold.Atom">
 <span class="sig-name descname"><span class="pre">Atom</span></span><em class="property"> <span class="pre">Atom</span></em><a class="headerlink" href="#AtomManifold.Atom" title="Link to this definition">#</a></dt>
-<dd><p>Atom context</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomManifold.Frequency">
 <span class="sig-name descname"><span class="pre">Frequency</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#AtomManifold.Frequency" title="Link to this definition">#</a></dt>
-<dd><p>Center-of-gravity transition frequency [Hz]</p>
+<dd><p>The center of gravity transition frequency.</p>
 </dd></dl>
 
 <dl class="mat attribute">
@@ -443,32 +449,28 @@ and recoil temperature.</p>
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomManifold.RecoilEnergy">
 <span class="sig-name descname"><span class="pre">RecoilEnergy</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#AtomManifold.RecoilEnergy" title="Link to this definition">#</a></dt>
-<dd><p><span class="math notranslate nohighlight">\(E_r/h\)</span> [Hz]</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomManifold.RecoilMomentum">
 <span class="sig-name descname"><span class="pre">RecoilMomentum</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#AtomManifold.RecoilMomentum" title="Link to this definition">#</a></dt>
-<dd><p><span class="math notranslate nohighlight">\(p_r=\hbar k\)</span> [kg·m/s]</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomManifold.RecoilTemperature">
 <span class="sig-name descname"><span class="pre">RecoilTemperature</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#AtomManifold.RecoilTemperature" title="Link to this definition">#</a></dt>
-<dd><p><span class="math notranslate nohighlight">\(T_r=2 E_r h/k_B\)</span> [K]</p>
+<dd><p>in K</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomManifold.RecoilVelocity">
 <span class="sig-name descname"><span class="pre">RecoilVelocity</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#AtomManifold.RecoilVelocity" title="Link to this definition">#</a></dt>
-<dd><p><span class="math notranslate nohighlight">\(v_r=p_r/m\)</span> [m/s]</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="AtomManifold.Wavelength">
 <span class="sig-name descname"><span class="pre">Wavelength</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#AtomManifold.Wavelength" title="Link to this definition">#</a></dt>
-<dd><p><span class="math notranslate nohighlight">\(\lambda = c/f\)</span> [m]</p>
-</dd></dl>
+<dd></dd></dl>
 
 </dd>
 </dl>

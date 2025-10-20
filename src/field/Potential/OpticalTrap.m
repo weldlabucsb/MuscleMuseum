@@ -18,7 +18,7 @@ classdef OpticalTrap < OpticalPotential
     end
     
     methods
-        function obj = OpticalTrap(atom,laser,name,options)
+        function obj = OpticalTrap(atom,laser,name)
             % Construct an :class:`OpticalTrap`.
             %
             % :param atom: Atomic species
@@ -31,9 +31,8 @@ classdef OpticalTrap < OpticalPotential
                 atom (1,1) Atom
                 laser (1,1) GaussianBeam
                 name string = string.empty
-                options.atomicState = struct.empty
             end
-           obj@OpticalPotential(atom,laser,name,atomicState = options.atomicState);
+            obj@OpticalPotential(atom,laser,name);
         end
         
         function v0 = get.Depth(obj)
@@ -41,14 +40,7 @@ classdef OpticalTrap < OpticalPotential
             %
             % :return: Trap depth :math:`V_0` in [Hz]
             % :rtype: double
-            atom = obj.Atom;
-            v0 = abs(atom.AcStarkShiftLargeDetuning(...
-                obj.Laser,...
-                obj.AtomicState.N,...
-                obj.AtomicState.L,...
-                obj.AtomicState.J,...
-                obj.AtomicState.F,...
-                obj.AtomicState.MF));
+            v0 =  abs(obj.ScalarPolarizabilityGround * abs(obj.Laser.ElectricFieldAmplitude)^2 / 4);
         end
         function fZ = get.AxialFrequency(obj)
             % Get axial trap frequency :math:`f_z = \frac{1}{2\pi}\sqrt{2 V_0/(m z_R^2)}`.

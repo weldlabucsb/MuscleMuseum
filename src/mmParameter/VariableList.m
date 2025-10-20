@@ -1,61 +1,9 @@
 classdef VariableList < MmParameter
     %:class:`VariableList` stores named scalar variables and expressions.
     %
-    % Each row defines :attr:`Name`, numeric :attr:`DefaultValue`, a logical
-    % grouping :attr:`List`, an :attr:`Equation` string, and the current
-    % evaluated :attr:`CurrentValue` (cache). When referenced by other tables
-    % (e.g., :class:`HardwareSetting`, :class:`WaveformLibrary`), the effective
-    % value is the ``CurrentValue`` if present, otherwise ``DefaultValue``.
-    %
-    % **Schema (columns, types, defaults):**
-    %
-    % .. list-table::
-    %    :widths: 30 18 28
-    %    :header-rows: 1
-    %
-    %    * - Column
-    %      - Type
-    %      - Default
-    %    * - Name
-    %      - string
-    %      - hw_default
-    %    * - DefaultValue
-    %      - double
-    %      - 0
-    %    * - List
-    %      - string
-    %      - None
-    %    * - Equation
-    %      - string
-    %      - None
-    %    * - CurrentValue
-    %      - double
-    %      - 0
-    %
-    % **Foreign keys:**
-    %
-    % (none)
-    %
-    % **Join conditions:**
-    %
-    % (none)
-    %
-    % **Flags:**
-    %
-    % .. list-table::
-    %    :widths: 38 14
-    %    :header-rows: 1
-    %
-    %    * - Property
-    %      - Value
-    %    * - IsIncludeDefaultEntry
-    %      - false
-    %    * - IsFirstColumnUnique
-    %      - true
-    %    * - IsTriggerJoinOnRight
-    %      - false
-    %    * - IsTriggerJoinOnLeft
-    %      - false
+    % Each row defines :attr:`Name`, numeric :attr:`Value`, a reference
+    % :attr:`List` name, an :attr:`Equation` string and its evaluated
+    % :attr:`EquationValue` for caching.
 
     properties
 

@@ -98,14 +98,6 @@ classdef (Abstract) Waveform < handle
         end
 
         function t = convert2Table(obj)
-            %Get a table representation of waveform parameters for UI/database.
-            %
-            % Collects configurable properties, applies scan mappings if present,
-            % and returns a compact table for storage or display.
-            %
-            % :return: Table with columns: Type, SamplingRate, Parameter, and optionally modulation IDs
-            % :rtype: table
-
             %% Get properties from the Waveform
             mc = metaclass(obj);
             Type = string(mc.Name);
@@ -116,7 +108,7 @@ classdef (Abstract) Waveform < handle
             if isa(obj,"ConstantTop")
                 Name(ismember(Name,["Frequency","Phase"]))=[];
             end
-            if ismember(Type, ["LinearRamp","PchipRamp","TanhRamp"])
+            if Type == "LinearRamp"
                 Name(ismember(Name,["Offset","Amplitude","RiseTime","FallTime"]))=[];
             end
             modList = ["AmplitudeModulation","FrequencyModulation","PhaseModulation"];

@@ -1,25 +1,6 @@
 function runLocalTest(testCiceroLogOrigin,samplePath,dataPath,pauseTime)
-% Simulate file-watcher acquisition locally using sample data/logs.
-%
-% Copies triplets of TIFF images and corresponding Cicero ``.clg`` log files
-% from a sample directory into a target data directory with delays between
-% runs, emulating on-the-fly acquisition. Useful for offline testing of
-% :class:`BecExp` without hardware.
-%
-% :param testCiceroLogOrigin: Destination folder watched for new ``.clg`` logs
-% :type testCiceroLogOrigin: char|string
-% :param samplePath: Source directory containing images and logfiles/logFiles
-% :type samplePath: char|string
-% :param dataPath: Destination data folder to receive copied images
-% :type dataPath: char|string
-% :param pauseTime: Delay [s] between consecutive simulated runs
-% :type pauseTime: double
-%
-% **Example:**
-%
-% .. code-block:: matlab
-%
-%    runLocalTest("C:\\tmp\\watch", "C:\\samples", "C:\\tmp\\data", 0.5);
+%RUNLOCALTEST Summary of this function goes here
+%   Detailed explanation goes here
 sampleLogPath = fullfile(samplePath,"logfiles");
 sampleLogPath2 = fullfile(samplePath,"logFiles");
 

@@ -30,17 +30,17 @@ classdef TanhSinePulse < PartialPeriodicWaveform
         function obj = TanhSinePulse(options)
             %Construct a TanhSinePulse object.
             %
-            % :param samplingRate: Sampling rate in Hz (default: [])
+            % :param samplingRate: Sampling rate in Hz (default: inherited)
             % :type samplingRate: double, optional
             % :param startTime: Start time in seconds (default: 0)
             % :type startTime: double, optional
-            % :param duration: Duration in seconds (default: [])
+            % :param duration: Duration in seconds (default: inherited)
             % :type duration: double, optional
-            % :param amplitude: Peak-to-peak amplitude (default: [])
+            % :param amplitude: Peak-to-peak amplitude (default: inherited)
             % :type amplitude: double, optional
             % :param offset: DC offset (default: 0)
             % :type offset: double, optional
-            % :param frequency: Frequency in Hz (default: [])
+            % :param frequency: Frequency in Hz (default: inherited)
             % :type frequency: double, optional
             % :param phase: Initial phase in radians (default: 0)
             % :type phase: double, optional
@@ -49,6 +49,12 @@ classdef TanhSinePulse < PartialPeriodicWaveform
             % :param fallTime: Fall transition time in seconds (default: 0)
             % :type fallTime: double, optional
             %
+            % **Example:**
+            %
+            % .. code-block:: matlab
+            %
+            %     pulse = TanhSinePulse(amplitude = 2.0, frequency = 1000, ...
+            %                           riseTime = 0.001, fallTime = 0.001);
             arguments
                 options.samplingRate double = [];
                 options.startTime double = 0;

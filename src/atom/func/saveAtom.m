@@ -1,8 +1,6 @@
 function saveAtom
-% Save a small set of :class:`Atom` objects to disk for reuse.
-%
-% Saves an ``AtomData.mat`` file under :attr:`Atom.DataPath` containing
-% several pre-constructed atoms.
+%SAVEATOMDATA Summary of this function goes here
+%   Detailed explanation goes here
 atomNameList = ["Lithium7","Rubidium87","Sodium"];
 for ii = 1:numel(atomNameList)
     try 

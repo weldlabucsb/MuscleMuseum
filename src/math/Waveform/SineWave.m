@@ -29,21 +29,26 @@ classdef SineWave < PeriodicWaveform
         function obj = SineWave(options)
             % Construct a :class:`SineWave`.
             %
-            % :param samplingRate: Sampling rate [Hz] (default: [])
+            % :param samplingRate: Sampling rate [Hz] (default: inherited)
             % :type samplingRate: double, optional
             % :param startTime: Start time :math:`t_0` [s] (default: 0)
             % :type startTime: double, optional
-            % :param duration: Duration :math:`T` [s] (default: [])
+            % :param duration: Duration :math:`T` [s] (default: inherited)
             % :type duration: double, optional
-            % :param amplitude: Waveform amplitude (default: [])
+            % :param amplitude: Waveform amplitude (default: inherited)
             % :type amplitude: double, optional
             % :param offset: DC offset (default: 0)
             % :type offset: double, optional
-            % :param frequency: Frequency :math:`f` [Hz] (default: [])
+            % :param frequency: Frequency :math:`f` [Hz] (default: inherited)
             % :type frequency: double, optional
             % :param phase: Phase :math:`\phi` [rad] (default: 0)
             % :type phase: double, optional
             %
+            % **Example:**
+            %
+            % .. code-block:: matlab
+            %
+            %     sine = SineWave(frequency = 1000, amplitude = 1.0, duration = 0.01);
             arguments
                 options.samplingRate double = [];
                 options.startTime double = 0;

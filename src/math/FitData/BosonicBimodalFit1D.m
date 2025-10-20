@@ -1,28 +1,5 @@
 classdef BosonicBimodalFit1D < FitData1D
-    %:class:`BosonicBimodalFit1D` fits a TF condensate + thermal Gaussian.
-    %
-    % Models a one-dimensional atomic density profile as the sum of a
-    % Thomas–Fermi (condensate) component and a thermal (bosonic) Gaussian
-    % wing.
-    %
-    % - **Formula**: :math:`y = A\,\max\{0,1-((x-x_0)/R)^2\}^{3/2} + B\,\mathrm{Bose}(e^{-(x-x_g)^2/(2\sigma_g^2)};2.5) + C`
-    % - **Coefficients**: TF: :math:`A,x_0,R`; Thermal: :math:`B,x_g,\sigma_g`; Offset: :math:`C`
-    %
-    % Provides a multi-stage initialization routine to generate robust
-    % starting values for the final composite fit.
-    %
-    % **Example1:**
-    %
-    % .. code-block:: matlab
-    %
-    %     x = linspace(-5, 5, 201)';
-    %     tf  = 1.5 * max(0, 1 - ((x-0.2)/1.2).^2).^(3/2);
-    %     th  = 0.6 * boseFunctionApprox(exp(-(x+0.4).^2/(2*0.8^2)), 2.5);
-    %     y   = tf + th + 0.05;
-    %     data = [x, y];
-    %     fitObj = BosonicBimodalFit1D(data);
-    %     fitObj.do();
-    %     fitObj.plot();
+    % Thomas-Fermi condensate + thermal Gaussian
 
     properties (Constant)
         ScaleFactor double = 1.1  % Exclusion radius factor
@@ -30,17 +7,11 @@ classdef BosonicBimodalFit1D < FitData1D
 
     methods
         function obj = BosonicBimodalFit1D(rawData)
-            % Construct a :class:`BosonicBimodalFit1D`.
-            %
-            % :param rawData: Input data as n x 2 matrix [x, y]
-            % :type rawData: double array
-            %
             obj@FitData1D(rawData);
         end
 
         function setFormula(obj)
-            % Set the bimodal fit formula (TF + thermal Gaussian).
-            %
+            
             obj.Func = fittype( ...
               ['A*((max(0,1-((x-x0)./R).^2))).^(3/2) + ', ...
                'B*boseFunctionApprox(exp(-(x-xg).^2/(2*sg^2)),2.5) + C'], ...
@@ -49,12 +20,6 @@ classdef BosonicBimodalFit1D < FitData1D
         end
 
         function guessCoefficient(obj)
-            % Generate initial parameter guesses via staged fitting.
-            %
-            % Step 1: Fit the TF core with a clamped profile to get :math:`A,x_0,R,C`.
-            % Step 2: Fit the wings with the thermal component to get :math:`B,x_g,\sigma_g`.
-            % Step 3: Assemble composite start points and bounds.
-            %
             x = obj.RawData(:,1);
             y = obj.RawData(:,2);
 
@@ -117,14 +82,6 @@ classdef BosonicBimodalFit1D < FitData1D
         end
 
         function obj = do(obj)
-            % Perform the composite bimodal fit with optional weighting.
-            %
-            % Down-weights the TF core to stabilize the combined fit; runs the
-            % final fit using the assembled options and stores results.
-            %
-            % :return: Self-reference for method chaining
-            % :rtype: :class:`BosonicBimodalFit1D`
-            %
             % optional: down‐weight the TF core
             x = obj.RawData(:,1);
             y = obj.RawData(:,2);

@@ -46,7 +46,7 @@ classdef WaveformList < handle
     end
 
     properties (Constant)
-        PlotNumberLimit = 1e6 % Maximum number of points to plot before downsampling for display.
+        PlotNumberLimit = 1e6
     end
 
     methods
@@ -388,10 +388,6 @@ classdef WaveformList < handle
         end
 
         function t = convert2Table(obj)
-            %Convert list configuration to a table for serialization.
-            %
-            % :return: Table with list configuration fields suitable for saving
-            % :rtype: table
             Name = obj.Name;
             SamplingRate = obj.SamplingRate;
             ConcatMethod = obj.ConcatMethod;

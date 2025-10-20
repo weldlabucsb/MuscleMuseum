@@ -156,22 +156,32 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
-<li class="toctree-l2 current active"><a class="reference internal" href="index.html">database</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">database</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="connectPsqlDatabase.html">connectPsqlDatabase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="createReader.html">createReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="createWriter.html">createWriter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="findTimeRangeData.html">findTimeRangeData</a></li>
+<li class="toctree-l3"><a class="reference internal" href="findTodayData.html">findTodayData</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgFetch.html">pgFetch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgFetchHook.html">pgFetchHook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgRead.html">pgRead</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgReadHook.html">pgReadHook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgUpdate.html">pgUpdate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgWrite.html">pgWrite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgWriteHook.html">pgWriteHook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quoteTableColumn.html">quoteTableColumn</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">setDatabase</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="../field/index.html">field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">hardware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -395,15 +405,7 @@ document.write(`
 <dl class="mat function">
 <dt class="sig sig-object mat" id="setDatabase">
 <span class="sig-name descname"><span class="pre">setDatabase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/database/func/setDatabase.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#setDatabase" title="Link to this definition">#</a></dt>
-<dd><p>Initialize PostgreSQL database infrastructure for the experiment system.</p>
-<p>Sets up local and remote PostgreSQL databases, creates required databases,
-tables, and user accounts with appropriate permissions. Loads configuration
-from <a class="reference internal" href="../mmParameter/DatabaseServerConfig.html#DatabaseServerConfig" title="DatabaseServerConfig"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">DatabaseServerConfig</span></code></a> and <a class="reference internal" href="../mmParameter/DatabaseConfig.html#DatabaseConfig" title="DatabaseConfig"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">DatabaseConfig</span></code></a>.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">setDatabase</span><span class="p">();</span><span class="w">  </span><span class="c">% Initialize all databases and users</span>
-</pre></div>
-</div>
-<p>Load database configuration</p>
+<dd><p>Load database configuration</p>
 </dd></dl>
 
 </section>

@@ -1,15 +1,9 @@
 classdef ScopeValue < BecAnalysis
-    %:class:`ScopeValue` plot scope-derived values vs scanned variable.
-    %
-    % Reads values captured from hardware logs (via :attr:`BecExp.ScopeData`)
-    % and displays them as errorbar plots, one series per entry in
-    % :attr:`FullValueName`.
-    %
-    % **Associated Charts:**
-    %   - Chart(1): "Scope Value" - Error bar plots of scope measurements vs parameter
+    %OD Summary of this class goes here
+    %   Detailed explanation goes here
 
     properties
-        FullValueName % Scope measurement identifiers (e.g., "ScopeX_Ch1_Rms", "ScopeY_Ch2_Peak")
+        FullValueName
     end
 
     properties (SetAccess = protected)
@@ -17,15 +11,13 @@ classdef ScopeValue < BecAnalysis
     end
 
     properties (Hidden,Transient)
-        ScopeLine % Errorbar plot handles for scope measurement series
+        ScopeLine
     end
 
     methods
         function obj = ScopeValue(becExp)
-            % Construct :class:`ScopeValue` analyzer.
-            %
-            % :param becExp: Owning experiment
-            % :type becExp: :class:`BecExp`
+            %OD Construct an instance of this class
+            %   Detailed explanation goes here
             obj@BecAnalysis(becExp)
             obj.Chart(1) = Chart(...
                 name = "Scope Value",...
@@ -37,11 +29,6 @@ classdef ScopeValue < BecAnalysis
         end
 
         function initialize(obj)
-            % Initialize chart and series for scope values.
-            %
-            % Sets up errorbar plots for each scope measurement identifier in
-            % :attr:`FullValueName`. Creates legend, axis labels, and plot styling.
-            
             %% Check if we can plot scope values
             if isempty(obj.FullValueName)
                 warning("No FullValueName given. Can not plot scope values.")
@@ -100,23 +87,11 @@ classdef ScopeValue < BecAnalysis
         end
 
         function updateData(obj,~)
-            % Reserved for future precomputation of scope data.
-            %
-            % Currently unused as scope values are read directly from
-            % :attr:`BecExp.ScopeData` during plotting.
-            %
-            % :param ~: Unused run index placeholder
-            % :type ~: double
+            % becExp = obj.BecExp;
+            
         end
 
         function updateFigure(obj,~)
-            % Update errorbar series for each selected scope value.
-            %
-            % Reads scope data from :attr:`BecExp.ScopeData` and updates
-            % plot series with averaged values and error bars.
-            %
-            % :param ~: Unused run index placeholder
-            % :type ~: double
             becExp = obj.BecExp;
             paraList = becExp.ScannedParameterList;
             fig = obj.Chart(1).Figure;
@@ -126,7 +101,7 @@ classdef ScopeValue < BecAnalysis
             end
             
             for ii = 1:numel(obj.FullValueName)
-                [x,y,std] = computeAveErr(paraList, becExp.ScopeData.(obj.FullValueName(ii)), becExp.AveragingMethod);
+                [x,y,std] = computeStd(paraList, becExp.ScopeData.(obj.FullValueName(ii)), becExp.AveragingMethod);
                 obj.ScopeLine(ii).XData = x;
                 obj.ScopeLine(ii).YData = y;
                 obj.ScopeLine(ii).YNegativeDelta = std;
@@ -137,7 +112,6 @@ classdef ScopeValue < BecAnalysis
         end
 
         function refresh(obj)
-            % Rebuild and redraw chart from current scope data.
             obj.initialize;
             obj.updateData(obj.BecExp.NCompletedRun)
             obj.updateFigure(obj.BecExp.NCompletedRun)

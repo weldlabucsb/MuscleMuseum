@@ -12,4 +12,5 @@ API Documentation
    math/index
    misc/index
    mmParameter/index
+   mmSetting/index
    trial/index

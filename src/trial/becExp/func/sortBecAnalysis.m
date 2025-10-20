@@ -1,15 +1,7 @@
 function analysisListSorted = sortBecAnalysis(analysisList)
-% Sort analysis method names according to predefined execution order.
-%
-% Ensures BEC analysis modules run in a consistent order so that
-% dependencies are satisfied (e.g., :class:`DensityFit` before
-% :class:`AtomNumber`). Items not listed in the canonical order are
-% appended while preserving their relative order.
-%
-% :param analysisList: List of analysis names
-% :type analysisList: string|string[]|cellstr
-% :return: Sorted list of analysis names
-% :rtype: string
+%SORTANALYSIS Summary of this function goes here
+%   We need to run different analysis in certain order so we have to sort
+%   the analysis methods
 analysisListSorted = analysisList(:);
 allAnalysis = ["DensityFit";"AtomNumber";"Tof";"CenterFit";"KapitzaDirac"];
 extraAnalysis = analysisListSorted(~ismember(analysisListSorted,allAnalysis));

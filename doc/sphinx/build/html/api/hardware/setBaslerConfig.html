@@ -190,6 +190,10 @@
 <li class="toctree-l3"><a class="reference internal" href="VescentSlice.html">VescentSlice</a></li>
 <li class="toctree-l3"><a class="reference internal" href="WaveformGenerator.html">WaveformGenerator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="WgControlPanel.html">WgControlPanel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getAcq.html">getAcq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getPl.html">getPl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getScope.html">getScope</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getWg.html">getWg</a></li>
 <li class="toctree-l3"><a class="reference internal" href="saveBecImageAbsorption.html">saveBecImageAbsorption</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">setBaslerConfig</a></li>
 <li class="toctree-l3"><a class="reference internal" href="setIxon888Config.html">setIxon888Config</a></li>
@@ -199,6 +203,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -422,14 +427,9 @@ document.write(`
 <dl class="mat function">
 <dt class="sig sig-object mat" id="setBaslerConfig">
 <span class="sig-name descname"><span class="pre">setBaslerConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">acq</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/hardware/func/setBaslerConfig.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#setBaslerConfig" title="Link to this definition">#</a></dt>
-<dd><p>setBaslerConfig Configure Basler GenTL camera for absorption imaging.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>acq</strong> (<a class="reference internal" href="Acquisition.html#Acquisition" title="Acquisition"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Acquisition</span></code></a>) – Acquisition instance with connected VideoInput</p>
-</dd>
-</dl>
-<p>Sets hardware trigger on rising edge, logging to memory, and frames per
-trigger suitable for a 3-image absorption sequence.</p>
+<dd><p>SETBASLERCONFIG set Basler camera configuration
+Input must be an “Acquisition” object. The following setup is for
+regular BEC experiment data taking.</p>
 </dd></dl>
 
 </section>

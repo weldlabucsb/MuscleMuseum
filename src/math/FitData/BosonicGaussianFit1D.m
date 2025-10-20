@@ -5,9 +5,6 @@ classdef BosonicGaussianFit1D < FitData1D
     % to experimental data. Uses a Bose function approximation applied to a
     % Gaussian distribution.
     %
-    % - **Formula**: :math:`y = A\,\mathrm{Bose}(e^{-(x-x_0)^2/(2\sigma^2)};2.5) + C`
-    % - **Coefficients**: :math:`A` (amplitude), :math:`x_0` (center), :math:`\sigma` (width), :math:`C` (offset)
-    %
     % **Example1:**
     %
     % .. code-block:: matlab
@@ -44,12 +41,22 @@ classdef BosonicGaussianFit1D < FitData1D
             % :param rawData: Input data as n x 2 matrix [x, y]
             % :type rawData: double array
             %
+            % **Example:**
+            %
+            % .. code-block:: matlab
+            %
+            %     data = [1:10; randn(1,10)].';
+            %     bosonicFit = BosonicGaussianFit1D(data);
+            %
             obj@FitData1D(rawData)
             
         end
 
         function setFormula(obj)
             % Set the bosonic Gaussian fit formula.
+            %
+            % Formula: A*boseFunctionApprox(exp(-(x-x0)^2/(2*sigma^2)), 2.5) + C
+            % Parameters: A (amplitude), x0 (center), sigma (width), C (offset)
             %
             obj.Func = fittype('A*boseFunctionApprox(exp(-(x-x0)^2/(2*sigma^2)),2.5)+C','independent', {'x'},...
                 'coefficients', {'A', 'x0', 'sigma','C'});

@@ -51,24 +51,24 @@ classdef Roi < handle
         function obj = Roi(roiName,options)
             % Constructor for Roi class.
             %
-            % :param roiName: Name of ROI configuration to load
-            % :type roiName: string, optional
-            % :param yxBoundary: ROI boundaries [Y1,Y2,X1,X2]
-            % :type yxBoundary: uint32, optional
-            % :param angle: Rotation angle in degrees
-            % :type angle: double, optional
-            % :param centerSize: ROI center and size [centerY,centerX,sizeY,sizeX]
-            % :type centerSize: double, optional
-            % :param imageSize: Image dimensions [height,width]
-            % :type imageSize: uint32, optional
-            % :param subRoiCenterSize: Sub-ROI specifications
-            % :type subRoiCenterSize: double, optional
-            % :param subRoiNRowColumn: Sub-ROI grid dimensions
-            % :type subRoiNRowColumn: double, optional
-            % :param subRoiSeparation: Sub-ROI separation distances
-            % :type subRoiSeparation: double, optional
-            % :param isSubRoi: Whether this is a sub-ROI
-            % :type isSubRoi: logical, optional
+            % :param roiName: Name of ROI configuration to load (optional)
+            % :type roiName: string
+            % :param options.yxBoundary: ROI boundaries [Y1,Y2,X1,X2] (optional)
+            % :type options.yxBoundary: uint32 array
+            % :param options.angle: Rotation angle in degrees (optional)
+            % :type options.angle: double
+            % :param options.centerSize: ROI center and size [centerY,centerX,sizeY,sizeX] (optional)
+            % :type options.centerSize: double array
+            % :param options.imageSize: Image dimensions [height,width] (optional)
+            % :type options.imageSize: uint32 array
+            % :param options.subRoiCenterSize: Sub-ROI specifications (optional)
+            % :type options.subRoiCenterSize: double array
+            % :param options.subRoiNRowColumn: Sub-ROI grid dimensions (optional)
+            % :type options.subRoiNRowColumn: double array
+            % :param options.subRoiSeparation: Sub-ROI separation distances (optional)
+            % :type options.subRoiSeparation: double array
+            % :param options.isSubRoi: Whether this is a sub-ROI (optional)
+            % :type options.isSubRoi: logical
             %
             % **Example:**
             %

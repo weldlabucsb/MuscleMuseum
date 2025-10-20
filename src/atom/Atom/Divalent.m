@@ -1,20 +1,20 @@
 classdef Divalent < Atom
-    %:class:`Divalent` atom subclass with blue cycling transition properties.
+    %:class:`Divalent` atom subclass with cycling transition properties.
     %
-    % Adds the blue transition manifold and derives frequency, saturation intensity,
-    % and resonant cross-section from ARC/manifold data.
+    % Adds a blue transition manifold, cycler frequency, saturation intensity,
+    % cross-section, and derived quantities from ARC.
     properties(SetAccess=protected)
-        Blue TwoJManifoldDivalent % Blue cycling transition manifold
-        CyclerFrequency double % Cycling transition frequency [Hz]
-        CyclerSaturationIntensity double % Saturation intensity [W/m^2]
-        CyclerCrossSection double % Resonant cross-section [m^2]
+        Blue TwoJManifoldDivalent
+        CyclerFrequency double
+        CyclerSaturationIntensity double
+        CyclerCrossSection double
     end
 
     methods
         function obj = Divalent(atomName)
             % Construct a :class:`Divalent` atom.
             %
-            % :param atomName: Isotope name (ARC-known), e.g., "Strontium88"
+            % :param atomName: Isotope name known to ARC (e.g., "Strontium88")
             % :type atomName: string
             obj@Atom(atomName)
             if obj.Type ~= "Divalent"

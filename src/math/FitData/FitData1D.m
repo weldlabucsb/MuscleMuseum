@@ -40,6 +40,13 @@ classdef (Abstract) FitData1D < FitData
             % :param rawData: Input data as n x 2 matrix [x, y]
             % :type rawData: double array
             %
+            % **Example:**
+            %
+            % .. code-block:: matlab
+            %
+            %     data = [1:10; randn(1,10)].';
+            %     fitObj = GaussianFit1D(data);
+            %
             obj@FitData(rawData)
         end
 

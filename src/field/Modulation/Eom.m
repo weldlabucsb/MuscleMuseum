@@ -11,14 +11,14 @@ classdef Eom < handle
     %    df = e.shift(+1);  % +40 MHz first-order
     %
     properties
-        RfFrequency % RF frequency [MHz]
+        RfFrequency %RF frequency in MHz
     end
     
     methods
         function obj = Eom(omegaRf)
             % Construct an :class:`Eom`.
             %
-            % :param omegaRf: RF frequency [MHz]
+            % :param omegaRf: RF frequency in MHz
             % :type omegaRf: double
             obj.RfFrequency = omegaRf;
         end
@@ -28,7 +28,7 @@ classdef Eom < handle
             %
             % :param order: Sideband order (+/-1, ...)
             % :type order: double
-            % :return: Frequency shift [MHz]
+            % :return: Frequency shift in MHz
             % :rtype: double
             shift = order*obj.RfFrequency;
         end

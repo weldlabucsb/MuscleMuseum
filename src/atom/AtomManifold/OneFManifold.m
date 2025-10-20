@@ -1,44 +1,24 @@
 classdef OneFManifold < AtomManifold
-    %:class:`OneFManifold` single-:math:`F` hyperfine manifold (:math:`M_F`).
-    %
-    % **Examples:**
-    %
-    % .. code-block:: matlab
-    %
-    %    % Example1: Construct a specific F-manifold and get Zeeman Hamiltonian
-    %    alk = Alkali("Rubidium87");
-    %    Fg  = totalAngularMomentum(1/2, alk.I);
-    %    mani = OneFManifold(alk, alk.groundStateN, 0, 1/2, max(Fg));
-    %    B   = MagneticField(bias=[0;0;1e-4]);
-    %    Ha  = mani.HamiltonianAtom();
+    %TWOJ Summary of this class goes here
+    %   Detailed explanation goes here
     
     properties (SetAccess = protected)
-        N int32 % Principal quantum number
-        L int32 % Orbital angular momentum :math:`L`
-        J double % Total electronic angular momentum :math:`J`
-        F double % Total hyperfine angular momentum :math:`F`
-        MF double % Magnetic sublevel :math:`M_F`
-        Energy double % Hyperfine energy shift [Hz]
-        LandegJ double % Landé :math:`g_J`
-        LandegF double % Landé :math:`g_F`
-        StateList table % Table of basis states and properties
-        FOperator % Spin operators :math:`F_{x,y,z}` (cell)
+        N int32
+        L int32
+        J double
+        F double
+        MF double
+        Energy double
+        LandegJ double
+        LandegF double
+        StateList table
+        FOperator
     end
     
     methods
         function obj = OneFManifold(atom,n,l,j,f)
-            % Construct a :class:`OneFManifold`.
-            %
-            % :param atom: Atom context
-            % :type atom: :class:`Atom`
-            % :param n: Principal quantum number
-            % :type n: int32
-            % :param l: Orbital angular momentum :math:`L`
-            % :type l: int32
-            % :param j: Total electronic angular momentum :math:`J`
-            % :type j: double
-            % :param f: Hyperfine :math:`F`
-            % :type f: double
+            %TWOJ Construct an instance of this class
+            %   Detailed explanation goes here
 
             %% Set quantum numbers N,L,J
             obj@AtomManifold(atom)
@@ -100,18 +80,6 @@ classdef OneFManifold < AtomManifold
         end
 
         function Ha = HamiltonianAtom(obj,fRot)
-            % Diagonal Hamiltonian including rotating-frame shift for excited states.
-            %
-            % :param fRot: Rotation-frame frequency [Hz]
-            % :type fRot: double optional
-            % :return: Hamiltonian matrix [Hz]
-            % :rtype: double
-            %
-            % .. math::
-            %
-            %    H_a = \operatorname{diag}\big(E - f_\mathrm{rot}\,\chi_\mathrm{exc}\big)
-            %
-            % where :math:`\chi_\mathrm{exc}` is 1 on excited states and 0 on ground states.
             arguments
                 obj TwoJManifold
                 fRot double = 0

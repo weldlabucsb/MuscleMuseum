@@ -4,21 +4,19 @@ mmParameter
 .. toctree::
    :maxdepth: 2
 
-   AcquisitionSetting
+   AcquisitionConfig
    BecExpConfig
-   BecExpSetting
-   BecExpVariableUnit
+   BecExpParameterUnit
    ComputerConfig
    DatabaseConfig
    DatabaseServerConfig
-   HardwareAssociation
    HardwareList
-   HardwareSetting
    ListList
    MmParameter
-   RoiSetting
+   PhaseLockSetting
+   RoiConfig
+   ScopeSetting
    VariableList
-   WaveformLibrary
-   WaveformListLibrary
-   setParameter
-   updateConfig
+   WaveformGeneratorConfig
+   WaveformGeneratorSetting
+   generateParameter

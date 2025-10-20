@@ -157,22 +157,29 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../database/index.html">database</a></li>
-<li class="toctree-l2 current active"><a class="reference internal" href="index.html">field</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">field</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Aom.html">Aom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Eom.html">Eom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GaussianBeam.html">GaussianBeam</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Laser.html">Laser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MagneticField.html">MagneticField</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MagneticPotential.html">MagneticPotential</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Modulation.html">Modulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OpticalLattice.html">OpticalLattice</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">OpticalPotential</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OpticalTrap.html">OpticalTrap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Potential.html">Potential</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">hardware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmSetting/index.html">mmSetting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
 </ul>
 </details></li>
@@ -395,11 +402,11 @@ document.write(`
 <h1>OpticalPotential<a class="headerlink" href="#opticalpotential" title="Link to this heading">#</a></h1>
 <dl class="mat class">
 <dt class="sig sig-object mat" id="OpticalPotential">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">OpticalPotential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/field/Potential/OpticalPotential.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpticalPotential" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">OpticalPotential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/field/Potential/OpticalPotential.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#OpticalPotential" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="Potential.html#Potential" title="Potential"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Potential</span></code></a>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.Heterogeneous</span></code></p>
 <p><a class="reference internal" href="#OpticalPotential" title="OpticalPotential"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OpticalPotential</span></code></a> is an abstract potential generated by light fields.</p>
 <p>Couples a <a class="reference internal" href="Laser.html#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a> to an <a class="reference internal" href="../atom/Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a> to compute recoil quantities and
-scalar polarizability for ground states (D-lines) via <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">ScalarPolarizabilityGround</span></code>.
+scalar polarizability for ground states (D-lines) via <a class="reference internal" href="#OpticalPotential.ScalarPolarizabilityGround" title="OpticalPotential.ScalarPolarizabilityGround"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">ScalarPolarizabilityGround</span></code></a>.
 Concrete subclasses include
 <a class="reference internal" href="OpticalTrap.html#OpticalTrap" title="OpticalTrap"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OpticalTrap</span></code></a> and <a class="reference internal" href="OpticalLattice.html#OpticalLattice" title="OpticalLattice"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OpticalLattice</span></code></a>.</p>
 <p><strong>Example:</strong></p>
@@ -411,7 +418,7 @@ Concrete subclasses include
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="OpticalPotential.OpticalPotential">
-<span class="sig-name descname"><span class="pre">OpticalPotential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalPotential.OpticalPotential" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">OpticalPotential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalPotential.OpticalPotential" title="Link to this definition">#</a></dt>
 <dd><p>Construct an <a class="reference internal" href="#OpticalPotential" title="OpticalPotential"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OpticalPotential</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -453,6 +460,12 @@ Concrete subclasses include
 <dt class="sig sig-object mat" id="OpticalPotential.RecoilVelocity">
 <span class="sig-name descname"><span class="pre">RecoilVelocity</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#OpticalPotential.RecoilVelocity" title="Link to this definition">#</a></dt>
 <dd><p><span class="math notranslate nohighlight">\(v_r = p_r/m\)</span> (m/s)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalPotential.ScalarPolarizabilityGround">
+<span class="sig-name descname"><span class="pre">ScalarPolarizabilityGround</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#OpticalPotential.ScalarPolarizabilityGround" title="Link to this definition">#</a></dt>
+<dd><p>Scalar polarizability <span class="math notranslate nohighlight">\(\alpha_0\)</span> (Hz / (V/m)^2)</p>
 </dd></dl>
 
 </dd>

@@ -1,12 +1,7 @@
 function [J1,J2] = uncoupledSpinMatrices(j1,j2)
-% Build uncoupled spin operators :math:`\mathbf{J}_1,\mathbf{J}_2` in the coupled basis.
-%
-% :param j1: First total spin :math:`j_1`
-% :type j1: double
-% :param j2: Second total spin :math:`j_2`
-% :type j2: double
-% :return: Cells of 3 matrices for each spin (x,y,z) in the :math:`|j,m\rangle` basis
-% :rtype: cell, cell
+%uncoupledSpinMatrices 
+%   j1 and j2 couple to get j3. Get the uncoupled angular
+%   momentum spin matrices under the j3 basis
 J1 = spinMatrices(j1);
 nj1 = 2*j1 + 1;
 J2 = spinMatrices(j2);
@@ -40,9 +35,9 @@ J2 = {J2x;J2y;J2z};
 % J3 = arrayfun(@(r) blkdiag(F{r,:}),(1:3)','UniformOutput',false);
 
 for ii = 1:3
-    J1{ii} = (J1{ii}+J1{ii}')/2; % Hermitize
+    J1{ii} = (J1{ii}+J1{ii}')/2;
     J2{ii} = (J2{ii}+J2{ii}')/2;
-    J1{ii}(abs(J1{ii}) < 1e-8) = 0; % Clean tiny numerical noise
+    J1{ii}(abs(J1{ii}) < 1e-8) = 0;
     J2{ii}(abs(J2{ii}) < 1e-8) = 0;
 end
 
