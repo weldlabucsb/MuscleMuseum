@@ -417,6 +417,39 @@ classdef TwoJManifold < AtomManifold
                 h = h + h';
             end
         end
+
+        function hal = HamiltonianAtomLaserOrigin(obj,laser,fRot,U)
+            % Atom-light interaction Hamiltonian :math:`H_\mathrm{AL}(t=0,r=0)`.
+            %
+            % .. math::
+            %
+            %    H_{\mathrm{AL}}(t) = \sum_{q=-1}^{+1} \frac{\Omega^*}{2}\, e_q\, \Sigma_q\, e^{i\Delta t} + \mathrm{h.c.}
+            %
+            % :param laser: Driving field
+            % :type laser: :class:`Laser`
+            % :param fRot: Rotating-frame frequency [Hz]
+            % :type fRot: double, optional
+            % :param U: Basis transform
+            % :type U: double, optional
+            % :return: Function handle H(r,t) [Hz]
+            % :rtype: function_handle
+            arguments
+                obj TwoJManifold
+                laser Laser
+                fRot double = 0
+                U double = 1
+            end
+            pol = laser.Polarization;
+            OmegaLinear = obj.ReducedRabiFrequency(laser);
+            spacePhase = laser.spacePhaseFunc;
+            Delta = 2*pi*(laser.Frequency - fRot);
+            hal = zeros(obj.NNState);
+            for q = 1:-1:-1
+                hal = hal + conj(OmegaLinear)/2 * sphericalBasisComponent(pol,q) * obj.LoweringOperator(q,U);
+            end
+            hal = hal + hal';
+        end
+
         function Ham = HamiltonianAtomBiasField(obj,B,U)
             % Zeeman Hamiltonian from :class:`OneJManifold` blocks.
             %
@@ -445,6 +478,125 @@ classdef TwoJManifold < AtomManifold
             Ham = U'*Ham*U;
             Ham = (Ham + Ham')/2;
         end
+        
+        function dressedStateList = LaserDressedStateListLargeDetuning(obj,laser)
+            % Compute laser-dressed states for large detuning limit.
+            %
+            % Calculates the AC Stark-shifted energy levels for both ground and excited
+            % state manifolds in the presence of a laser field. The method combines
+            % dressed states from separate ground and excited manifolds, properly
+            % indexing and energy-shifting the excited states by the transition frequency.
+            % Valid in the large detuning limit where laser detuning exceeds hyperfine
+            % splitting.
+            %
+            % :param laser: :class:`Laser` object specifying field parameters
+            % :type laser: Laser
+            % :return: Combined state table with AC Stark energy shifts
+            % :rtype: table
+            %
+            % **Returns:**
+            %
+            % Table with columns from :attr:`StateList` plus :attr:`EnergyShift` containing
+            % AC Stark shifts [Hz]. Excited states are energy-shifted by the transition
+            % frequency and indexed after ground states.
+            %
+            % **Notes:**
+            %
+            % The method creates separate :class:`OneJManifold` objects for ground and
+            % excited states, computes their individual AC Stark shifts, then combines
+            % them with proper energy referencing and state indexing.
+            
+            maniG = OneJManifold(obj.Atom,obj.NGround,obj.LGround,obj.JGround);
+            maniE = OneJManifold(obj.Atom,obj.NExcited,obj.LExcited,obj.JExcited);
+            dSListG = maniG.LaserDressedStateListLargeDetuning(laser);
+            dSListE = maniE.LaserDressedStateListLargeDetuning(laser);
+            dSListG.Index = dSListG.Index + numel(obj.MFExcited);
+            dSListE.Energy = dSListE.Energy + obj.Frequency;
+            dressedStateList = [dSListE;dSListG];
+        end
+
+        function [dressedStateList,U,acMap] = LaserDressedStateListSmallDetuning(obj,laser,isPlot,options)
+            % Compute laser-dressed states for small detuning regime using exact diagonalization.
+            %
+            % Calculates AC Stark-shifted energy levels by exactly diagonalizing the combined
+            % atomic and atom-laser interaction Hamiltonians. Valid in the small detuning regime
+            % where the laser detuning is comparable to or smaller than the hyperfine splitting,
+            % allowing application of the rotating wave approximation. Uses adiabatic continuation
+            % via :func:`eigenshuffle` to track eigenstate evolution with laser intensity.
+            %
+            % :param laser: :class:`Laser` object specifying field parameters
+            % :type laser: Laser
+            % :param isPlot: Flag to generate AC Stark shift plot vs intensity
+            % :type isPlot: logical, optional
+            % :param samplingSize: Number of intensity points for adiabatic continuation (default: 1000)
+            % :type samplingSize: double, optional
+            % :return: Dressed state table, unitary transformation matrix, and AC Stark map
+            % :rtype: (table, double, cell)
+            %
+            % **Returns:**
+            %
+            % - **dressedStateList**: Table with :attr:`StateList` columns plus :attr:`EnergyShift` [Hz] and :attr:`DressedState` eigenvectors
+            % - **U**: Unitary transformation matrix connecting bare to dressed states
+            % - **acMap**: Cell array ``{intensityList, energyMatrix}`` for plotting AC Stark shifts vs intensity
+            %
+            % **Notes:**
+            %
+            % The method constructs the total Hamiltonian :math:`H = H_{\text{atom}} + \sqrt{s} H_{\text{AL}}`
+            % where :math:`s` ranges from 0 to 1, corresponding to laser intensities from 0 to the full
+            % intensity. The :func:`eigenshuffle` algorithm ensures consistent eigenstate tracking
+            % during the adiabatic sweep, preventing level crossings from scrambling state assignments.
+            arguments
+                obj TwoJManifold
+                laser Laser
+                isPlot logical = false
+                options.samplingSize double = []
+            end
+
+            if ~isempty(options.samplingSize)
+                samplingSize = options.samplingSize;
+            else
+                % samplingSize = max(round(bias(3)/ dB *20),1000);
+                samplingSize = 1000;
+            end
+
+            Ha = obj.HamiltonianAtom(laser.Frequency);
+            Hal = obj.HamiltonianAtomLaserOrigin(laser,laser.Frequency);
+            scaleList = linspace(0,1,samplingSize);       
+            HMatrix = zeros([size(Ha),samplingSize]);
+            for ii = 1:samplingSize
+                HMatrix(:,:,ii) = Ha + Hal * sqrt(scaleList(ii));
+            end
+            [V,D] = eigenshuffle(HMatrix);
+
+            EnergyShift = D(:,end) - diag(Ha);
+            dressedState = V(:,:,end);
+            DressedState = cell(numel(EnergyShift),1);
+            for ii = 1:numel(EnergyShift)
+                DressedState{ii} = dressedState(:,ii);
+            end
+            zeroFieldState = V(:,:,1);
+            [Index,~] = find(zeroFieldState);
+            dressedStateList = table(Index,EnergyShift,DressedState);
+            dressedStateList = sortrows(dressedStateList,"Index");
+            dressedStateList = join(obj.StateList,dressedStateList);
+            U = dressedStateList.DressedState;
+            U = horzcat(U{:}); %Unitary operator the connect to the dressed states
+
+            intensityList = laser.Intensity * scaleList;
+            [~,sortIndex] = sort(Index);
+            acMap = {intensityList,D(sortIndex,:)};
+
+            if isPlot
+                close(figure(2035))
+                figure(2035)
+                plot(acMap{1} / 10,acMap{2}*1e-6)
+                xlabel('Intensity [$\mathrm{mW}/\mathrm{cm}^2$]',Interpreter='latex')
+                ylabel('Energy In Rotating Frame[MHz]',Interpreter='latex')
+                legend(dressedStateList.Label(:),'interpreter','latex')
+                render
+            end
+        end
+
         function [dressedStateList,U,brMap] = BiasDressedStateList(obj,B,isPlot,options)
             % Compute dressed states versus bias field and assemble blocks.
             %
@@ -505,7 +657,7 @@ classdef TwoJManifold < AtomManifold
             if isPlot
                 close(figure(2034))
                 figure(2034)
-                plot(brMap{1}*1e4,brMap{2}*1e-6)
+                plot(brMap{1},brMap{2}*1e-6)
                 xlabel('Bias field [Gauss]',Interpreter='latex')
                 ylabel('Energy [MHz]',Interpreter='latex')
                 legend(sList.Label(:),'interpreter','latex')

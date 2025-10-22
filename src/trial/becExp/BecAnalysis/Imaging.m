@@ -167,9 +167,9 @@ classdef Imaging < BecAnalysis
             ax = findobj(fig,'Type','Axes');
 
             % Find x, y, and error plot data
-            [xLight,yLight,stdLight] = computeStd(varList,obj.LightMean);
-            [xDark,yDark,stdDark] = computeStd(varList,obj.DarkMean);
-            [xSat,ySat,stdSat] = computeStd(varList,obj.SaturationParameterMean);
+            [xLight,yLight,stdLight] = computeAveErr(varList,obj.LightMean);
+            [xDark,yDark,stdDark] = computeAveErr(varList,obj.DarkMean);
+            [xSat,ySat,stdSat] = computeAveErr(varList,obj.SaturationParameterMean);
 
             % Update imaging counts plots
             l = findobj(ax(1),'Type','ErrorBar');
@@ -225,7 +225,7 @@ classdef Imaging < BecAnalysis
             
             % Create density plot for saturation parameter
             imagesc(ax1, xData, yData, sat2D);
-            ax1.Colormap = jet;
+            ax1.Colormap = sky;
             colorbar(ax1);
             ax1.XLabel.String = becExp.XLabel;
             ax1.XLabel.Interpreter = "latex";
@@ -244,7 +244,7 @@ classdef Imaging < BecAnalysis
             % Create combined plot (light - dark)
             combined2D = light2D - dark2D;
             imagesc(ax2, xData, yData, combined2D);
-            ax2.Colormap = jet;
+            ax2.Colormap = sky;
             colorbar(ax2);
             ax2.XLabel.String = becExp.XLabel;
             ax2.XLabel.Interpreter = "latex";

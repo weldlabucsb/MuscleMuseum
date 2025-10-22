@@ -5,7 +5,7 @@ classdef (Abstract) Sim < Trial
 
     properties
         Output
-        WallTime double = 11.5*3600
+        WallTime double = 86400 % in [s]
         SimRun
     end
 

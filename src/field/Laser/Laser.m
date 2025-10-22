@@ -17,10 +17,10 @@ classdef Laser < matlab.mixin.Heterogeneous & handle
     properties
         Wavelength (1,1) double = NaN % Wavelength :math:`\lambda` in [m]
         Frequency (1,1) double = NaN % Linear frequency :math:`f` in [Hz]
-        Polarization (3,1) double = [NaN;NaN;NaN] % Jones polarization vector :math:`(E_x,E_y,E_z)`
+        Polarization (3,1) double = [1;0;0] % Jones polarization vector :math:`(E_x,E_y,E_z)`. The definition here is the conjugate of wiki's
         Phase (1,1) double = 0 % Optical phase :math:`\phi` in [rad]
-        Direction (3,1) double = [NaN;NaN;NaN] % Propagation unit vector :math:`\hat{\mathbf{k}} = (x,y,z)`
-        Angle (1,2) double = [NaN,NaN] % Spherical angles :math:`(\theta,\phi)` in [rad]
+        Direction (3,1) double = [0;0;1] % Propagation unit vector :math:`\hat{\mathbf{k}} = (x,y,z)`
+        Angle (1,2) double = [0,0] % Spherical angles :math:`(\theta,\phi)` in [rad]
         Intensity double = NaN % Intensity :math:`I` in [W/m^2]
         Power double = NaN % Optical power :math:`P` in [W]
     end
@@ -60,10 +60,10 @@ classdef Laser < matlab.mixin.Heterogeneous & handle
             arguments
                 options.frequency = NaN
                 options.wavelength = NaN
-                options.polarization = [NaN;NaN;NaN]
+                options.polarization = [1;0;0]
                 options.phase = 0
-                options.direction = [NaN;NaN;NaN]
-                options.angle = [NaN,NaN]
+                options.direction = [0;0;1]
+                options.angle = [0,0]
                 options.intensity = NaN
                 options.power = NaN
             end

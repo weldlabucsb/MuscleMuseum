@@ -283,6 +283,45 @@ classdef OneJManifold < AtomManifold
                 render
             end
         end
+        
+        function dressedStateList = LaserDressedStateListLargeDetuning(obj,laser)
+            % Compute laser-dressed states for large detuning limit.
+            %
+            % Calculates AC Stark energy shifts for all hyperfine states in the manifold
+            % due to a laser field. The method computes the total AC Stark shift including
+            % scalar, vector, and tensor contributions for each :math:`|F,M_F\rangle` state.
+            % Valid in the large detuning limit where the laser detuning is much larger
+            % than the hyperfine splitting.
+            %
+            % :param laser: :class:`Laser` object specifying field parameters (frequency, intensity, polarization, direction)
+            % :type laser: Laser
+            % :return: State table with AC Stark energy shifts
+            % :rtype: table
+            %
+            % **Returns:**
+            %
+            % Table identical to :attr:`StateList` with additional :attr:`EnergyShift` column
+            % containing the AC Stark shift :math:`\Delta E` [Hz] for each state. The shift
+            % includes scalar (:math:`\propto I`), vector (:math:`\propto I \cdot M_F`), and
+            % tensor (:math:`\propto I \cdot (3M_F^2 - F(F+1))`) contributions.
+            %
+            % **Notes:**
+            %
+            % The quantization axis is assumed to be aligned with the :math:`z`-axis.
+            % For each state, the method calls :meth:`Atom.AcStarkShiftLargeDetuning`
+            % with quantum numbers :math:`(n,\ell,j,f,m_f)` extracted from the state table.
+            
+            dressedStateList = obj.StateList;
+            dressedStateList.EnergyShift = arrayfun(@(x) obj.Atom.AcStarkShiftLargeDetuning(...
+                laser,...
+                dressedStateList.N(x),...
+                dressedStateList.L(x),...
+                dressedStateList.J(x),...
+                dressedStateList.F(x),...
+                dressedStateList.MF(x),...
+                [0,0]), dressedStateList.Index);
+        end
+
         function [dressedStateList,U] = BiasDressedStateListTest(obj,B,isPlot)
             % Test variant of bias-field dressed states (alternate indexing).
             %
@@ -355,6 +394,7 @@ classdef OneJManifold < AtomManifold
                 render
             end
         end
+        
         function mimjList = getMIMJ(obj,isPlot)
             % Map zero-field states to uncoupled projections (M_I, M_J) by adiabatic following.
             %

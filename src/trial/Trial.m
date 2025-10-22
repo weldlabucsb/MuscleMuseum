@@ -26,7 +26,6 @@ classdef (Abstract) Trial < handle & matlab.mixin.SetGetExactNames & dynamicprop
         Description string = "This is a test trial." % Human-readable description of the trial purpose and setup
         NCompletedRun int32 = 0 % Number of experimental runs completed successfully
         NRun int32 = 1 % Total number of runs planned for this trial
-        Is2dScan logical = false % Flag indicating whether this trial scans two parameters simultaneously
     end
 
     properties (Abstract)

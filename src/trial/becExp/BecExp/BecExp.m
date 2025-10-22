@@ -20,6 +20,7 @@ classdef BecExp < Trial
         AnalysisMethod string % Ordered list of active analysis module names
         CloudCenter double % Cloud center coordinates [:math:`y_0`, :math:`x_0`] from previous measurement [pixels]
         AveragingMethod string = "StdErr" % Data averaging method: "None"|"StdErr"|"Std"
+        IsDensityAverage logical = false % Flag to control averaging when saving Od and Ad data and figures
     end
 
     properties(Dependent)
@@ -63,12 +64,12 @@ classdef BecExp < Trial
     end
 
     properties (Dependent,Hidden)
-        ScannedVariableList % 1D array or 2×N matrix of scanned parameter values across runs
-        RunListSorted % Run indices sorted by ascending scanned parameter value(s)
-        ScannedVariableListSorted % Scanned parameter values sorted in ascending order
+        ScannedVariableList % 1D array or 2×N matrix of scanned variable values across runs
+        RunListSorted % Run indices sorted by ascending scanned variable value(s)
+        ScannedVariableListSorted % Scanned variable values sorted in ascending order
         XLabel % LaTeX-formatted axis label with units for primary scanned variable
         YLabel % LaTeX-formatted y-axis label with units for secondary variable (2D scans only)
-        VariableGrid % Meshgrid structure containing X, Y grids for 2D parameter scans
+        VariableGrid % Meshgrid structure containing X, Y grids for 2D variable scans
     end
 
     properties (Constant,Hidden)
@@ -121,7 +122,7 @@ classdef BecExp < Trial
             % Analysis settings
             if ~isLoad
                 obj.AnalysisMethod = rmmissing(["Od";"Imaging";"Ad";...
-                    obj.AnalysisMethod]);
+                    obj.AnalysisMethod(:)]);
                 obj.AnalysisMethod(obj.AnalysisMethod == "None") = [];
                 obj.addAnalysis(obj.AnalysisMethod);
             end
@@ -199,65 +200,9 @@ classdef BecExp < Trial
             % :return: Parameter values per run - 1D array or 2×N matrix
             % :rtype: double
             if obj.Is2DScan
-                % For 2D scans, return a 2xN matrix with both parameters
-                var1 = obj.ScannedVariable;
-                var2 = obj.ScannedVariable2;
-                
-                % Get first parameter values
-                switch var1
-                    case "RunIndex"
-                        varList1 = double(1:obj.NCompletedRun);
-                    case "CiceroLogTime"
-                        if ~isempty(obj.CiceroLogTime)
-                            varList1 = obj.CiceroLogTime;
-                            varList1 = varList1 - varList1(1);
-                            varList1 = seconds(varList1);
-                        else
-                            varList1 = [];
-                        end
-                    otherwise
-                        if isfield(obj.CiceroData,var1)
-                            varList1 = obj.CiceroData.(var1);
-                        elseif isfield(obj.HardwareData,var1)
-                            varList1 = obj.HardwareData.(var1);
-                        else
-                            obj.updateScopeData
-                            if isfield(obj.ScopeData,var1)
-                                varList1 = obj.ScopeData.(var1);
-                            else
-                                varList1 = [];
-                            end
-                        end
-                end
-                
-                % Get second parameter values
-                switch var2
-                    case "RunIndex"
-                        varList2 = double(1:obj.NCompletedRun);
-                    case "CiceroLogTime"
-                        if ~isempty(obj.CiceroLogTime)
-                            varList2 = obj.CiceroLogTime;
-                            varList2 = varList2 - varList2(1);
-                            varList2 = seconds(varList2);
-                        else
-                            varList2 = [];
-                        end
-                    otherwise
-                        if isfield(obj.CiceroData,var2)
-                            varList2 = obj.CiceroData.(var2);
-                        elseif isfield(obj.HardwareData,var2)
-                            varList2 = obj.HardwareData.(var2);
-                        else
-                            obj.updateScopeData
-                            if isfield(obj.ScopeData,var2)
-                                varList2 = obj.ScopeData.(var2);
-                            else
-                                varList2 = [];
-                            end
-                        end
-                end
-                
-                % Return 2xN matrix
+                % For 2D scans, return a 2xN matrix with both parameters             
+                varList1 = obj.getVariableList(obj.ScannedVariable);
+                varList2 = obj.getVariableList(obj.ScannedVariable2);
                 if ~isempty(varList1) && ~isempty(varList2)
                     varList = [varList1; varList2];
                 else
@@ -265,31 +210,37 @@ classdef BecExp < Trial
                 end
             else
                 % 1D scan - original logic
-                switch obj.ScannedVariable
-                    case "RunIndex"
-                        varList = double(1:obj.NCompletedRun);
-                    case "CiceroLogTime"
-                        if ~isempty(obj.CiceroLogTime)
-                            varList = obj.CiceroLogTime;
-                            varList = varList - varList(1);
-                            varList = seconds(varList);
+                varList = obj.getVariableList(obj.ScannedVariable);
+            end
+        end
+
+        function varList = getVariableList(obj,varName)
+            switch varName
+                case "None"
+                    varList = [];
+                case "RunIndex"
+                    varList = double(1:obj.NCompletedRun);
+                case "CiceroLogTime"
+                    if ~isempty(obj.CiceroLogTime)
+                        varList = obj.CiceroLogTime;
+                        varList = varList - varList(1);
+                        varList = seconds(varList);
+                    else
+                        varList = [];
+                    end
+                otherwise
+                    if isfield(obj.CiceroData,varName)
+                        varList = obj.CiceroData.(varName);
+                    elseif isfield(obj.HardwareData,varName)
+                        varList = obj.HardwareData.(varName);
+                    else
+                        obj.updateScopeData
+                        if isfield(obj.ScopeData,varName)
+                            varList = obj.ScopeData.(varName);
                         else
                             varList = [];
                         end
-                    otherwise
-                        if isfield(obj.CiceroData,obj.ScannedVariable)
-                            varList = obj.CiceroData.(obj.ScannedVariable);
-                        elseif isfield(obj.HardwareData,obj.ScannedVariable)
-                            varList = obj.HardwareData.(obj.ScannedVariable);
-                        else
-                            obj.updateScopeData
-                            if isfield(obj.ScopeData,obj.ScannedVariable)
-                                varList = obj.ScopeData.(obj.ScannedVariable);
-                            else
-                                varList = [];
-                            end
-                        end
-                end
+                    end
             end
         end
 
@@ -337,10 +288,10 @@ classdef BecExp < Trial
             
             sP = obj.ScannedVariable2;
             sP = strrep(sP,'_','\_');
-            if obj.ScannedVariable2Unit == "None"
+            if obj.ScannedVariableUnit2 == "None"
                 yLabel = sP;
             else
-                yLabel = sP + "~[$\mathrm{" + obj.ScannedVariable2Unit + "}$]";
+                yLabel = sP + "~[$\mathrm{" + obj.ScannedVariableUnit2 + "}$]";
             end
         end
 
@@ -421,9 +372,6 @@ classdef BecExp < Trial
                 drp = obj.DeletedRunVariableList(~ismember(obj.DeletedRunVariableList,obj.ScannedVariableList));
             end
         end
-    end
-
-    methods
 
         function setAnalyzer(obj)
             % Set up event listener for automated analysis upon run completion.
@@ -722,6 +670,19 @@ classdef BecExp < Trial
             obj.Analyzer.Enabled = true;
         end
 
+        function save(obj)
+            if obj.NCompletedRun == 0
+                return
+            end
+            warning off
+            for ii = 1:numel(obj.AnalysisMethod)
+                obj.(obj.AnalysisMethod(ii)).save;
+                obj.(obj.AnalysisMethod(ii)).close;
+            end
+            warning on
+            obj.update
+        end
+
         function stop(obj)
             % Stop acquisition, finalize analysis, and clean up resources.
             %
@@ -849,7 +810,7 @@ classdef BecExp < Trial
             end
         end
 
-        function refresh(obj,anaylsisName)
+        function refresh(obj,anaylsisName,isRefreshData)
             % Recompute analysis data and refresh visualizations.
             %
             % Reprocesses all run data through the analysis pipeline and updates
@@ -861,10 +822,17 @@ classdef BecExp < Trial
             arguments
                 obj BecExp
                 anaylsisName string = string.empty
+                isRefreshData logical = false
             end
             if obj.IsHoldRefresh
                 obj.displayLog("Refresh is on hold.")
                 return
+            end
+
+            if isRefreshData
+                refreshMethod = "refreshData";
+            else
+                refreshMethod = "refresh";
             end
 
             nAnalysis = numel(obj.AnalysisMethod);
@@ -877,19 +845,19 @@ classdef BecExp < Trial
                 obj.displayLog("Refreshing the figures.")
                 if isempty(anaylsisName)
                     for ii = 1:nAnalysis
-                        obj.(obj.AnalysisMethod(ii)).refresh;
+                        obj.(obj.AnalysisMethod(ii)).(refreshMethod);
                     end
                 elseif ~isscalar(anaylsisName)
                     error("Input must be a string scalar.")
                 elseif ~ismember(anaylsisName,vertcat(obj.AnalysisOrder{:}))
                     warning(anaylsisName + " is not in AnalysisOrder. Will refresh all.")
                     for ii = 1:nAnalysis
-                        obj.(obj.AnalysisMethod(ii)).refresh;
+                        obj.(obj.AnalysisMethod(ii)).(refreshMethod);
                     end
                 else
                     % First refresh [anaylsisName]
                     if ismember(anaylsisName,obj.AnalysisMethod)
-                        obj.(anaylsisName).refresh
+                        obj.(anaylsisName).(refreshMethod)
                     end
 
                     % Then refresh everthing after [anaylsisName]
@@ -900,19 +868,27 @@ classdef BecExp < Trial
                         aMethodIdx = find(ismember(obj.AnalysisMethod,afterAnalysis),1);
                         if ~isempty(aMethodIdx)
                             for ii = aMethodIdx:nAnalysis
-                                obj.(obj.AnalysisMethod(ii)).refresh;
+                                obj.(obj.AnalysisMethod(ii)).(refreshMethod);
                             end
                         else
                             % Refresh everthing that are not in AanalysisOrder
                             extraAnalysis = obj.AnalysisMethod(~ismember(obj.AnalysisMethod,vertcat(obj.AnalysisOrder{:})));
                             for ii = 1:numel(extraAnalysis)
-                                obj.(extraAnalysis(ii)).refresh;
+                                obj.(extraAnalysis(ii)).(refreshMethod);
                             end
                         end
                     end
                 end
                 obj.displayLog("Refresh done.")
             end
+        end
+
+        function refreshData(obj,anaylsisName)
+            arguments
+                obj BecExp
+                anaylsisName string = string.empty
+            end
+            obj.refresh(anaylsisName,true)
         end
 
         function refreshFigure(obj)

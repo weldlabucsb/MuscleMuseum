@@ -397,19 +397,40 @@ document.write(`
 <dt class="sig sig-object mat" id="Alkali">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Alkali</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atomName</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/src/atom/Atom/Alkali.m"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Alkali" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a></p>
-<p><a class="reference internal" href="#Alkali" title="Alkali"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Alkali</span></code></a> utilities for alkali atoms and D-line transitions.</p>
-<p>On construction, computes D1/D2 manifolds, ground/excited <a class="reference internal" href="AtomManifold.html#AtomManifold" title="AtomManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">AtomManifold</span></code></a>
-objects, and key transition properties (cycling/repump frequencies,
-saturation intensities, and cross-sections).</p>
+<p><a class="reference internal" href="#Alkali" title="Alkali"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Alkali</span></code></a> provides utilities for alkali atoms and D-line transitions.</p>
+<p>This class extends the base <a class="reference internal" href="Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a> class to provide specialized
+functionality for alkali atoms. On construction, it automatically computes
+D1 and D2 manifolds, ground and excited state <a class="reference internal" href="AtomManifold.html#AtomManifold" title="AtomManifold"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">AtomManifold</span></code></a> objects,
+and calculates key transition properties including cycling and repumper
+frequencies, saturation intensities, and absorption cross-sections. The class
+also provides methods for computing AC Stark shifts and polarizabilities
+in the large detuning limit.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Create a lithium-7 atom and access its properties</span>
+<span class="n">li</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Alkali</span><span class="p">(</span><span class="s">&quot;Lithium7&quot;</span><span class="p">);</span>
+<span class="n">cycFreq</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">li</span><span class="p">.</span><span class="n">CyclerFrequency</span><span class="p">;</span><span class="w">           </span><span class="c">% D2 cycling transition frequency [Hz]</span>
+<span class="n">Isat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">li</span><span class="p">.</span><span class="n">CyclerSaturationIntensity</span><span class="p">;</span><span class="w">    </span><span class="c">% Saturation intensity [W/m^2]</span>
+<span class="n">crossSec</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">li</span><span class="p">.</span><span class="n">CyclerCrossSection</span><span class="p">;</span><span class="w">       </span><span class="c">% Absorption cross-section [m^2]</span>
+</pre></div>
+</div>
+<p><strong>Notes:</strong></p>
+<p>The class follows Daniel Steck’s conventions for transition matrix elements
+and uses data from the ARC (Alkali Rydberg Calculator) Python package with
+custom modifications for improved accuracy.</p>
 <div class="members docutils container">
 <dl>
 <dt>Constructor Summary</dt><dd><dl class="mat method">
 <dt class="sig sig-object mat" id="Alkali.Alkali">
 <span class="sig-name descname"><span class="pre">Alkali</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atomName</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Alkali.Alkali" title="Link to this definition">#</a></dt>
 <dd><p>Construct an <a class="reference internal" href="#Alkali" title="Alkali"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Alkali</span></code></a> atom and compute D-line manifolds.</p>
+<p>Creates an alkali atom object, initializes D1/D2 transition manifolds,
+ground and excited state manifolds, and computes cycling and repumper
+transition properties including frequencies, saturation intensities,
+and absorption cross-sections. All calculations are performed at zero
+magnetic field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>atomName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Atom/isotope name (ARC-known), e.g., “Lithium7”</p>
+<dd class="field-odd"><p><strong>atomName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Atom/isotope name recognized by ARC, e.g., “Lithium7”, “Rubidium87”</p>
 </dd>
 </dl>
 </dd></dl>
@@ -418,91 +439,219 @@ saturation intensities, and cross-sections).</p>
 <dt>Property Summary</dt><dd><dl class="mat attribute">
 <dt class="sig sig-object mat" id="Alkali.CyclerCrossSection">
 <span class="sig-name descname"><span class="pre">CyclerCrossSection</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Alkali.CyclerCrossSection" title="Link to this definition">#</a></dt>
-<dd><p>Cycling transition resonant cross section, in m^2.</p>
+<dd><p>D2 cycling transition resonant absorption cross-section <span class="math notranslate nohighlight">\(\sigma_0\)</span> [m^2]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Alkali.CyclerFrequency">
 <span class="sig-name descname"><span class="pre">CyclerFrequency</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Alkali.CyclerFrequency" title="Link to this definition">#</a></dt>
-<dd><p>Cycling transition frequency at zero field, in Hz.</p>
+<dd><p>D2 cycling transition frequency <span class="math notranslate nohighlight">\(F_g^{\max} \rightarrow F_e^{\max}\)</span> at zero field [Hz]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Alkali.CyclerSaturationIntensity">
 <span class="sig-name descname"><span class="pre">CyclerSaturationIntensity</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Alkali.CyclerSaturationIntensity" title="Link to this definition">#</a></dt>
-<dd><p>Cycling transition saturation intensity, in W/m^2.</p>
+<dd><p>D2 cycling transition saturation intensity <span class="math notranslate nohighlight">\(I_{\text{sat}}\)</span> [W/m^2]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Alkali.CyclerSaturationIntensityLu">
 <span class="sig-name descname"><span class="pre">CyclerSaturationIntensityLu</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Alkali.CyclerSaturationIntensityLu" title="Link to this definition">#</a></dt>
-<dd><p>Cycling transition saturation intensity, in mW/cm^2.</p>
+<dd><p>D2 cycling transition saturation intensity <span class="math notranslate nohighlight">\(I_{\text{sat}}\)</span> [mW/cm^2]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Alkali.D1">
 <span class="sig-name descname"><span class="pre">D1</span></span><em class="property"> <span class="pre">TwoJManifold</span></em><a class="headerlink" href="#Alkali.D1" title="Link to this definition">#</a></dt>
-<dd><p>Alkali D1 manifold: <span class="math notranslate nohighlight">\((L=0,J=1/2) \leftrightarrow (L=1,J=1/2)\)</span>.</p>
+<dd><p>D1 line transition manifold: <span class="math notranslate nohighlight">\(nS_{1/2} \leftrightarrow nP_{1/2}\)</span> with combined ground/excited hyperfine structure</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Alkali.D1Excited">
 <span class="sig-name descname"><span class="pre">D1Excited</span></span><em class="property"> <span class="pre">OneJManifold</span></em><a class="headerlink" href="#Alkali.D1Excited" title="Link to this definition">#</a></dt>
-<dd><p>Alkali D1 excited manifold: <span class="math notranslate nohighlight">\((L=1,J=1/2)\)</span>.</p>
+<dd><p>D1 excited state manifold: <span class="math notranslate nohighlight">\(nP_{1/2}\)</span> with hyperfine structure <span class="math notranslate nohighlight">\(F,M_F\)</span></p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Alkali.D2">
 <span class="sig-name descname"><span class="pre">D2</span></span><em class="property"> <span class="pre">TwoJManifold</span></em><a class="headerlink" href="#Alkali.D2" title="Link to this definition">#</a></dt>
-<dd><p>Alkali D2 manifold: <span class="math notranslate nohighlight">\((L=0,J=1/2) \leftrightarrow (L=1,J=3/2)\)</span>.</p>
+<dd><p>D2 line transition manifold: <span class="math notranslate nohighlight">\(nS_{1/2} \leftrightarrow nP_{3/2}\)</span> with combined ground/excited hyperfine structure</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Alkali.D2Excited">
 <span class="sig-name descname"><span class="pre">D2Excited</span></span><em class="property"> <span class="pre">OneJManifold</span></em><a class="headerlink" href="#Alkali.D2Excited" title="Link to this definition">#</a></dt>
-<dd><p>Alkali D2 excited manifold: <span class="math notranslate nohighlight">\((L=1,J=3/2)\)</span>.</p>
+<dd><p>D2 excited state manifold: <span class="math notranslate nohighlight">\(nP_{3/2}\)</span> with hyperfine structure <span class="math notranslate nohighlight">\(F,M_F\)</span></p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Alkali.DGround">
 <span class="sig-name descname"><span class="pre">DGround</span></span><em class="property"> <span class="pre">OneJManifold</span></em><a class="headerlink" href="#Alkali.DGround" title="Link to this definition">#</a></dt>
-<dd><p>Alkali D line ground manifold: <span class="math notranslate nohighlight">\((L=0,J=1/2)\)</span>.</p>
+<dd><p>Ground state manifold: <span class="math notranslate nohighlight">\(nS_{1/2}\)</span> with hyperfine structure <span class="math notranslate nohighlight">\(F,M_F\)</span></p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Alkali.RepumperCrossSection">
 <span class="sig-name descname"><span class="pre">RepumperCrossSection</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Alkali.RepumperCrossSection" title="Link to this definition">#</a></dt>
-<dd><p>Repump transition resonant cross section, in m^2.</p>
+<dd><p>D2 repumper transition resonant absorption cross-section <span class="math notranslate nohighlight">\(\sigma_0\)</span> [m^2]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Alkali.RepumperFrequency">
 <span class="sig-name descname"><span class="pre">RepumperFrequency</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Alkali.RepumperFrequency" title="Link to this definition">#</a></dt>
-<dd><p>Repump transition frequency at zero field, in Hz.</p>
+<dd><p>D2 repumper transition frequency <span class="math notranslate nohighlight">\(F_g^{\max-1} \rightarrow F_e^{\max-1}\)</span> at zero field [Hz]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Alkali.RepumperSaturationIntensity">
 <span class="sig-name descname"><span class="pre">RepumperSaturationIntensity</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Alkali.RepumperSaturationIntensity" title="Link to this definition">#</a></dt>
-<dd><p>Repump transition saturation intensity, in W/m^2. Assume the repumper also has sigma+ polarization.</p>
+<dd><p>D2 repumper transition saturation intensity <span class="math notranslate nohighlight">\(I_{\text{sat}}\)</span> assuming <span class="math notranslate nohighlight">\(\sigma^+\)</span> polarization [W/m^2]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Alkali.RepumperSaturationIntensityLu">
 <span class="sig-name descname"><span class="pre">RepumperSaturationIntensityLu</span></span><em class="property"> <span class="pre">double</span></em><a class="headerlink" href="#Alkali.RepumperSaturationIntensityLu" title="Link to this definition">#</a></dt>
-<dd><p>Repump transition saturation intensity, in mW/cm^2.</p>
+<dd><p>D2 repumper transition saturation intensity <span class="math notranslate nohighlight">\(I_{\text{sat}}\)</span> [mW/cm^2]</p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Alkali.Spinor1">
 <span class="sig-name descname"><span class="pre">Spinor1</span></span><em class="property"> <span class="pre">OneFManifold</span></em><a class="headerlink" href="#Alkali.Spinor1" title="Link to this definition">#</a></dt>
-<dd><p>Alkali first ground F manifold: <span class="math notranslate nohighlight">\(L=0,J=1/2,F=min{|I-J|,|I+J|}\)</span>.</p>
+<dd><p>Lower ground hyperfine manifold: <span class="math notranslate nohighlight">\(nS_{1/2}, F = |I - J|\)</span> with magnetic sublevels <span class="math notranslate nohighlight">\(M_F\)</span></p>
 </dd></dl>
 
 <dl class="mat attribute">
 <dt class="sig sig-object mat" id="Alkali.Spinor2">
 <span class="sig-name descname"><span class="pre">Spinor2</span></span><em class="property"> <span class="pre">OneFManifold</span></em><a class="headerlink" href="#Alkali.Spinor2" title="Link to this definition">#</a></dt>
-<dd><p>Alkali second ground F manifold: <span class="math notranslate nohighlight">\(L=0,J=1/2,F=max{|I-J|,|I+J|}\)</span>.</p>
+<dd><p>Upper ground hyperfine manifold: <span class="math notranslate nohighlight">\(nS_{1/2}, F = I + J\)</span> with magnetic sublevels <span class="math notranslate nohighlight">\(M_F\)</span></p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Alkali.AcStarkShiftLargeDetuning">
+<span class="sig-name descname"><span class="pre">AcStarkShiftLargeDetuning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">l</span></em>, <em class="sig-param"><span class="pre">j</span></em>, <em class="sig-param"><span class="pre">f</span></em>, <em class="sig-param"><span class="pre">mF</span></em>, <em class="sig-param"><span class="pre">qAxisAngle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Alkali.AcStarkShiftLargeDetuning" title="Link to this definition">#</a></dt>
+<dd><p>Compute total AC Stark shift for a hyperfine state.</p>
+<p>Calculates the complete AC Stark shift including scalar, vector, and
+tensor contributions for a given hyperfine state in the presence of
+a laser field. The calculation is valid in the large detuning limit
+where the detuning is much larger than the hyperfine splitting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>laser</strong> (<span><a class="reference internal" href="../field/Laser.html#Laser" title="Laser"><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">Laser</span></code></a></span>) – <a class="reference internal" href="../field/Laser.html#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a> object specifying field parameters</p></li>
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Principal quantum number</p></li>
+<li><p><strong>l</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Orbital angular momentum quantum number</p></li>
+<li><p><strong>j</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Total electronic angular momentum quantum number</p></li>
+<li><p><strong>f</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Total hyperfine angular momentum quantum number</p></li>
+<li><p><strong>mF</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Magnetic sublevel quantum number</p></li>
+<li><p><strong>qAxisAngle</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double(1,2),</span> <span class="pre">optional</span></code></span>) – Quantization axis spherical angles <span class="math notranslate nohighlight">\([\theta,\phi]\)</span> [rad] (default: laser direction)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Total AC Stark shift <span class="math notranslate nohighlight">\(\Delta E\)</span> [Hz]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+<p><strong>Notes:</strong></p>
+<p>The total shift is: <span class="math notranslate nohighlight">\(\Delta E = \Delta E_0 + \Delta E_1 + \Delta E_2\)</span>
+where <span class="math notranslate nohighlight">\(\Delta E_0\)</span> is the scalar shift, <span class="math notranslate nohighlight">\(\Delta E_1\)</span> is the
+vector shift proportional to <span class="math notranslate nohighlight">\(M_F\)</span>, and <span class="math notranslate nohighlight">\(\Delta E_2\)</span> is the
+tensor shift proportional to <span class="math notranslate nohighlight">\((3M_F^2 - F(F+1))\)</span>.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Alkali.ScalarPolarizabilityLargeDetuning">
+<span class="sig-name descname"><span class="pre">ScalarPolarizabilityLargeDetuning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fL</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">l</span></em>, <em class="sig-param"><span class="pre">j</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Alkali.ScalarPolarizabilityLargeDetuning" title="Link to this definition">#</a></dt>
+<dd><p>Compute scalar polarizability for large detuning limit.</p>
+<p>Calculates the scalar polarizability <span class="math notranslate nohighlight">\(\alpha_0\)</span> in the limit where
+the laser detuning is much larger than the hyperfine splitting. Uses
+Steck’s formulation (Eq. 7.491) with contributions from both D1 and D2
+transitions for ground states, and single-line contributions for excited states.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fL</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Laser frequency [Hz]</p></li>
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Principal quantum number</p></li>
+<li><p><strong>l</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Orbital angular momentum quantum number</p></li>
+<li><p><strong>j</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Total electronic angular momentum quantum number</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Scalar polarizability <span class="math notranslate nohighlight">\(\alpha_0\)</span> [Hz/(V/m)^2]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+<p><strong>Notes:</strong></p>
+<p>The polarizability is computed using:</p>
+<div class="math notranslate nohighlight">
+\[\alpha_0 = \frac{2}{3\hbar} \sum_e \frac{\omega_e |\langle g \| d \| e \rangle|^2}{\omega_e^2 - \omega_L^2}\]</div>
+<p>where the sum runs over allowed electric dipole transitions.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Alkali.TensorPolarizabilityLargeDetuning">
+<span class="sig-name descname"><span class="pre">TensorPolarizabilityLargeDetuning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fL</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">l</span></em>, <em class="sig-param"><span class="pre">j</span></em>, <em class="sig-param"><span class="pre">f</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Alkali.TensorPolarizabilityLargeDetuning" title="Link to this definition">#</a></dt>
+<dd><p>Compute tensor polarizability for large detuning limit.</p>
+<p>Calculates the tensor polarizability <span class="math notranslate nohighlight">\(\alpha_2\)</span> in the limit where
+the laser detuning is much larger than the hyperfine splitting. Uses
+Steck’s formulation (Eq. 7.491) with Wigner 6j symbols. Returns zero
+for <span class="math notranslate nohighlight">\(F=0\)</span> or <span class="math notranslate nohighlight">\(F=1/2\)</span> states.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fL</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Laser frequency [Hz]</p></li>
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Principal quantum number</p></li>
+<li><p><strong>l</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Orbital angular momentum quantum number</p></li>
+<li><p><strong>j</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Total electronic angular momentum quantum number</p></li>
+<li><p><strong>f</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Total hyperfine angular momentum quantum number</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor polarizability <span class="math notranslate nohighlight">\(\alpha_2\)</span> [Hz/(V/m)^2]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+<p><strong>Notes:</strong></p>
+<p>The tensor polarizability contributes to quadratic Zeeman shifts
+proportional to <span class="math notranslate nohighlight">\((3M_F^2 - F(F+1))\)</span> and is responsible for
+differential light shifts between magnetic sublevels.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Alkali.VectorPolarizabilityLargeDetuning">
+<span class="sig-name descname"><span class="pre">VectorPolarizabilityLargeDetuning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">fL</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">l</span></em>, <em class="sig-param"><span class="pre">j</span></em>, <em class="sig-param"><span class="pre">f</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Alkali.VectorPolarizabilityLargeDetuning" title="Link to this definition">#</a></dt>
+<dd><p>Compute vector polarizability for large detuning limit.</p>
+<p>Calculates the vector polarizability <span class="math notranslate nohighlight">\(\alpha_1\)</span> in the limit where
+the laser detuning is much larger than the hyperfine splitting. Uses
+Steck’s formulation (Eq. 7.491) with Wigner 6j symbols to account for
+hyperfine coupling. Returns zero for <span class="math notranslate nohighlight">\(F=0\)</span> states.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fL</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Laser frequency [Hz]</p></li>
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Principal quantum number</p></li>
+<li><p><strong>l</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">int32</span></code></span>) – Orbital angular momentum quantum number</p></li>
+<li><p><strong>j</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Total electronic angular momentum quantum number</p></li>
+<li><p><strong>f</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Total hyperfine angular momentum quantum number</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Vector polarizability <span class="math notranslate nohighlight">\(\alpha_1\)</span> [Hz/(V/m)^2]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+<p><strong>Notes:</strong></p>
+<p>The vector polarizability contributes to Zeeman shifts proportional to
+<span class="math notranslate nohighlight">\(M_F\)</span> and couples electronic and nuclear angular momenta through
+the hyperfine interaction.</p>
 </dd></dl>
 
 </dd>
