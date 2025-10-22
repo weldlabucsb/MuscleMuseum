@@ -13,7 +13,7 @@ classdef DensityFit < BecAnalysis
     %   - Gui(1): "DensityFitDisplay" - Interactive profile fitting interface
 
     properties
-        FitMethod string = "BosonicGaussianFit1D" % 1D profile fit model: \"GaussianFit1D\" or \"BosonicGaussianFit1D\"
+        FitMethod string = "BosonicGaussianFit1D" % 1D profile fit model: \"GaussianFit1D\" or \"BosonicGaussianFit1D\" or "\WeightedMean"
         FitData % Fit objects array with dimensions (x/y direction, run, subROI)
         DensityLimX double = [0,1] % X-direction density plot limits [min, max] automatically updated during fitting
         DensityLimY double = [0,1] % Y-direction density plot limits [min, max] automatically updated during fitting
@@ -27,6 +27,8 @@ classdef DensityFit < BecAnalysis
         CondensateSize % Condensate radii [:math:`R_{x,c}`; :math:`R_{y,c}`] per run/subROI [m]
         CondensateCentralDensity % Condensate central column density per run/subROI [m^{-2}]
         BackGroundDensity % Background density level from fits per run/subROI [m^{-2}]
+        WeightedMeanPosition % Calculated Weighted Mean Position
+        WeightedStandardDeviation % Calculated Standard Deviation of cloud from Weighted Mean
     end
 
     properties (Hidden, Transient)
@@ -77,6 +79,8 @@ classdef DensityFit < BecAnalysis
             obj.CondensateSize = zeros(2,1,nSub);
             obj.CondensateCentralDensity = zeros(1,1,nSub);
             obj.BackGroundDensity = zeros(1,1,nSub);
+            obj.WeightedMeanPosition = zeros(2,1,nSub);
+            obj.WeightedStandardDeviation = zeros(2,1,nSub);
 
             %% Initialize fit objects
             switch obj.FitMethod
@@ -263,6 +267,11 @@ classdef DensityFit < BecAnalysis
 
             %% Assign values to properties
             for ii = runIdx
+                if isempty(becExp.Roi.SubRoi)
+                    adData = becExp.Ad.AdData(:,:,runIdx(ii));
+                else
+                    adData = becExp.Roi.selectSub(becExp.Ad.AdData(:,:,runIdx(ii)));
+                end
                 for jj = 1:nSub
                     switch obj.FitMethod
                         case "GaussianFit1D"
@@ -283,7 +292,31 @@ classdef DensityFit < BecAnalysis
                                 [obj.FitData(1,ii,jj).Coefficient(3);obj.FitData(2,ii,jj).Coefficient(3)];
                             obj.ThermalCloudCentralDensity(1,ii,jj) = ...
                                 mean(amp*boseFunction(1,2)/sqrt(pi)./flip(obj.ThermalCloudSize(:,ii,jj)));
+
+                        
                     end
+                    if isempty(becExp.Roi.SubRoi)
+                        xList = obj.BecExp.Roi.XList;
+                        yList = obj.BecExp.Roi.YList;
+                        xRaw = sum(adData,1).'*px;
+                        yRaw = sum(adData,2)*px;
+                    else
+                        xList = obj.BecExp.Roi.SubRoi(jj).XList;
+                        yList = obj.BecExp.Roi.SubRoi(jj).YList;
+                        xRaw = sum(adData{jj},1).'*px;
+                        yRaw = sum(adData{jj},2)*px;
+                    end
+                    meanxpos=sum(dot(xList, xRaw))/sum(xRaw);
+                    meanypos=sum(dot(yList, yRaw))/sum(yRaw);
+
+                    obj.WeightedMeanPosition(1,ii,jj) = px * sum(dot(xList, xRaw))/sum(xRaw);
+                    obj.WeightedMeanPosition(2,ii,jj) = px * sum(dot(yList, yRaw))/sum(yRaw);
+                    
+                    obj.WeightedStandardDeviation(1,ii,jj) = px * ...
+                        sqrt(sum(dot((xList-meanxpos).^2, xRaw))/(((length(xList)-1)/length(xList))*sum(xRaw)));
+                    obj.WeightedStandardDeviation(2,ii,jj) = px * ...
+                        sqrt(sum(dot((yList-meanypos).^2, yRaw))/(((length(yList)-1)/length(yList))*sum(yRaw)));
+
                 end
             end
         end

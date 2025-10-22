@@ -127,7 +127,7 @@ classdef AtomNumber < BecAnalysis
                 % Initialize thermal and condensate plots
                 if ismember("DensityFit",becExp.AnalysisMethod)
                     switch becExp.DensityFit.FitMethod
-                        case {"GaussianFit1D","BosonicGaussianFit1D"}
+                        case {"GaussianFit1D","BosonicGaussianFit1D","WeightedMean"}
                             for ii = 1:nSub
                                 obj.ThermalLine(ii) = errorbar(ax,1,1,[]);
                                 obj.ThermalLine(ii).Marker = mOrder(ii);

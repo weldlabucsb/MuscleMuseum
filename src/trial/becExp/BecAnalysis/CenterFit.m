@@ -16,6 +16,7 @@ classdef CenterFit < BecAnalysis
         FitDataCondensate % Reserved for future condensate center trajectory fits
         IsSaveCenter logical = false % Flag to save mean center position to CloudCenterData.mat for reuse
         MinimumFitNumber = 1 % Minimum number of runs required to perform the selected fit model
+        IsUseWeighted = 0 % Logic to determine whether to use the fitted position or the weighted mean position of the cloud center.
     end
 
     properties (SetAccess = protected)
@@ -57,6 +58,7 @@ classdef CenterFit < BecAnalysis
                 loc = [0.3919,0.032],...
                 size = [0.3069,0.57]...
                 );
+            obj.IsUseWeighted=becExp.IsUseWeightedPosition;
         end
 
         function initialize(obj)
@@ -152,7 +154,7 @@ classdef CenterFit < BecAnalysis
                 hold(ax1,'on')
                 hold(ax2,'on')
                 switch becExp.DensityFit.FitMethod
-                    case {"GaussianFit1D","BosonicGaussianFit1D"}
+                    case {"GaussianFit1D","BosonicGaussianFit1D", "WeightedMean"}
                         % X data lines
                         co = ax1.ColorOrder;
                         obj.ThermalXLine = errorbar(ax1,1,1,[]);
@@ -193,7 +195,7 @@ classdef CenterFit < BecAnalysis
             if ishandle(fig)
                 %% Initialize table data
                 switch becExp.DensityFit.FitMethod
-                    case {"GaussianFit1D","BosonicGaussianFit1D"}
+                    case {"GaussianFit1D","BosonicGaussianFit1D", "WeightedMean"}
                         %% Thermal fit only
                         data{1,1} = 'Thermal Cloud Center Mean in x';
                         data{1,2} = '';
@@ -321,18 +323,25 @@ classdef CenterFit < BecAnalysis
             end
 
             %% Update data
+            if obj.IsUseWeighted
+                centerData=becExp.DensityFit.WeightedMeanPosition;
+            else
+                centerData=becExp.DensityFit.ThermalCloudCenter;
+            end
             switch becExp.DensityFit.FitMethod
+                
+
                 case {"GaussianFit1D","BosonicGaussianFit1D"}
                     %% Thermal fit only
-                    obj.ThermalCloudCenterMean = mean(becExp.DensityFit.ThermalCloudCenter,2);
-                    obj.ThermalCloudCenterRange = max(becExp.DensityFit.ThermalCloudCenter,[],2) - ...
-                        min(becExp.DensityFit.ThermalCloudCenter,[],2);
+                    obj.ThermalCloudCenterMean = mean(centerData,2);
+                    obj.ThermalCloudCenterRange = max(centerData,[],2) - ...
+                        min(centerData,[],2);
                     if becExp.NCompletedRun >= obj.MinimumFitNumber
                         switch obj.FitMethod
                             case "LinearFit1D"
                                 %% Linear Fit
                                 for xx = 1:2
-                                    obj.FitDataThermal(xx).RawData = [varList,becExp.DensityFit.ThermalCloudCenter(xx,:).'];
+                                    obj.FitDataThermal(xx).RawData = [varList,centerData(xx,:).'];
                                     obj.FitDataThermal(xx).do;
                                 end
                                 obj.ThermalCloudCenterSlope = ...
@@ -340,7 +349,7 @@ classdef CenterFit < BecAnalysis
                             case "ParabolicFit1D"
                                 %% Parabolic Fit
                                 for xx = 1:2
-                                    obj.FitDataThermal(xx).RawData = [varList,becExp.DensityFit.ThermalCloudCenter(xx,:).'];
+                                    obj.FitDataThermal(xx).RawData = [varList,centerData(xx,:).'];
                                     obj.FitDataThermal(xx).do;
                                 end
                                 if isTimeUnit(becExp.ScannedVariableUnit)
@@ -353,7 +362,7 @@ classdef CenterFit < BecAnalysis
                             case "SineFit1D"
                                 %% Sine Fit
                                 for xx = 1:2
-                                    obj.FitDataThermal(xx).RawData = [varList,becExp.DensityFit.ThermalCloudCenter(xx,:).'];
+                                    obj.FitDataThermal(xx).RawData = [varList,centerData(xx,:).'];
                                     obj.FitDataThermal(xx).do;
                                 end
                                 obj.ThermalCloudCenterSloshAmplitude = ...
@@ -370,7 +379,7 @@ classdef CenterFit < BecAnalysis
                             case {"TriangleFit1D","IsoscelesTriangleFit1D"}
                                 %% Sine Fit
                                 for xx = 1:2
-                                    obj.FitDataThermal(xx).RawData = [varList,becExp.DensityFit.ThermalCloudCenter(xx,:).'];
+                                    obj.FitDataThermal(xx).RawData = [varList,centerData(xx,:).'];
                                     obj.FitDataThermal(xx).do;
                                 end
                                 obj.ThermalCloudCenterSloshAmplitude = ...
@@ -407,6 +416,12 @@ classdef CenterFit < BecAnalysis
             end
             px = becExp.Acquisition.PixelSizeReal;
 
+            if obj.IsUseWeighted
+                centerData=becExp.DensityFit.WeightedMeanPosition;
+            else
+                centerData=becExp.DensityFit.ThermalCloudCenter;
+            end
+
             switch becExp.DensityFit.FitMethod
                 case {"GaussianFit1D","BosonicGaussianFit1D"}
                     %% Thermal fit only
@@ -416,9 +431,9 @@ classdef CenterFit < BecAnalysis
                     obj.ParaTable.Data{4,2} = num2str(obj.ThermalCloudCenterRange(2)/px,'%.2f');
                     if becExp.NCompletedRun >= 1 && becExp.NCompletedRun < obj.MinimumFitNumber
                         obj.ThermalXLine.XData = obj.BecExp.ScannedVariableList;
-                        obj.ThermalXLine.YData = obj.BecExp.DensityFit.ThermalCloudCenter(1,:) / px;
+                        obj.ThermalXLine.YData = centerData(1,:) / px;
                         obj.ThermalYLine.XData = obj.BecExp.ScannedVariableList;
-                        obj.ThermalYLine.YData = obj.BecExp.DensityFit.ThermalCloudCenter(2,:) / px;
+                        obj.ThermalYLine.YData = centerData(2,:) / px;
                     elseif becExp.NCompletedRun >= obj.MinimumFitNumber
                         rawXT = obj.FitDataThermal(1).RawData;
                         rawYT = obj.FitDataThermal(2).RawData;
@@ -498,7 +513,7 @@ classdef CenterFit < BecAnalysis
                 TrialName = becExp.Name;
                 px = becExp.Acquisition.PixelSizeReal;
                 switch becExp.DensityFit.FitMethod
-                    case {"GaussianFit1D","BosonicGaussianFit1D"}
+                    case {"GaussianFit1D","BosonicGaussianFit1D", "WeightedMean"}
                         Center = obj.ThermalCloudCenterMean;
                 end
                 Center = reshape(flip(Center),1,2) / px; % Use ROI coordinates convention.
