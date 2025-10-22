@@ -118,7 +118,7 @@ classdef ScopeValue < BecAnalysis
             % :param ~: Unused run index placeholder
             % :type ~: double
             becExp = obj.BecExp;
-            paraList = becExp.ScannedParameterList;
+            paraList = becExp.ScannedVariableList;
             fig = obj.Chart(1).Figure;
             if becExp.NCompletedRun < 1 ...
                     || (isempty(fig) || ~ishandle(fig))
