@@ -52,25 +52,6 @@ userParameters = join([intersect(userParameters,varList),defaultParameters],",")
 t = eval("table("+userParameters+")");
 updateConfig("ComputerConfig",t)
 
-%% Set database configuration
-Name = "simulation";
-if exist('BecExpDatabaseName','var')
-    Name = [Name;BecExpDatabaseName];
-end
-TableList = {    
-["master_equation_simulation",...
-    "gross_pitaevskii_equation_simulation",...
-    "schrodinger_equation_simulation",...
-    "fokker_planck_equation_simulation",...
-    "lattice_schrodinger_equation_simulation_1d",...
-    "lattice_fourier_simulation_1d"]...
-    };
-if exist('BecExpDatabaseTableName','var')
-    TableList = {TableList{1};BecExpDatabaseTableName};
-end
-t = table(Name,TableList); %This saves exp/sim database names and the names of the tables
-updateConfig("DatabaseConfig",t)
-
 %% Set database server configuration
 if exist('ServerName','var')
     Name = ServerName;
@@ -238,8 +219,8 @@ end
 
 disp("Done.")
 
-%% Check other setting
-disp(newline + "Checking user settings...")
+%% Check exp setting
+disp(newline + "Checking experiment-related user settings...")
 settingList = [
     "ListList";
     "VariableList";
@@ -256,5 +237,54 @@ for ii = 1:numel(settingList)
     p.checkTable;
 end
 disp("Done.")
+
+%% Check sim setting
+disp(newline + "Checking simulation-related user settings...")
+if exist("SimParentPath","var")
+    DatabaseName = "simulation";
+    DatabaseTableName = string.empty;
+    p = SimSetting;
+    p.checkTable;
+    userParameter = [
+        "ParentPath";
+        "DatabaseName";
+        "DataPrefix";
+        "DataFormat";
+        "IsAutoDelete";
+        ];
+    userParameter2 = intersect("Sim"+userParameter,varList);
+    userParameter = replace(userParameter2,"Sim","");
+    s = struct;
+    for ii = 1:numel(userParameter)
+        s.(userParameter(ii)) = eval(userParameter2(ii));
+    end
+    s.TrialName = "Test";
+    
+    if exist("LatticeSeSim1D_DatabaseTableName","var")
+        s.SimName = "LatticeSeSim1D";
+        s.ParentPath = fullfile(SimParentPath,"LatticeSeSim1D");
+        s.DatabaseTableName = LatticeSeSim1D_DatabaseTableName;
+        DatabaseTableName = [DatabaseTableName,s.DatabaseTableName];
+        p.updateEntry(s,["SimName","TrialName"])
+    end
+end
+
+disp("Done.")
+
+%% Set database configuration
+if exist("DatabaseName","var") && exist("DatabaseTableName","var") && ~isempty(DatabaseTableName)
+    if exist('BecExpDatabaseName','var')
+        Name = [DatabaseName;BecExpDatabaseName];
+    else
+        Name = DatabaseName;
+    end
+    if exist('BecExpDatabaseTableName','var')
+        TableList = {DatabaseTableName;BecExpDatabaseTableName};
+    else
+        TableList = {DatabaseTableName};
+    end
+    t = table(Name,TableList); %This saves exp/sim database names and the names of the tables
+    updateConfig("DatabaseConfig",t)
+end
 
 end

@@ -710,43 +710,72 @@ classdef MmParameter < handle
             arguments
                 obj
                 t
-                keyColumnName (1,1) string = "ID"
+                keyColumnName string = "ID"
             end
             if isempty(t)
                 return
-            elseif ~ismember(keyColumnName,obj.ColumnNameAll)
+            elseif any(~ismember(keyColumnName,obj.ColumnNameAll))
                 obj.throwError("The keyColumnName does not match any database table column name.")
             else
                 tOrigin = t;
                 t = prepareInputTable(obj,t);
-                if ~ismember(keyColumnName,t.Properties.VariableNames)
+                if any(~ismember(keyColumnName,t.Properties.VariableNames))
                     obj.throwError("The keyColumnName does not match any input table column name.")
                 end
             end
 
-            % rewrite entries if they match the key
-            conn = obj.connectDatabase;
-            columnValue = t.(keyColumnName);
-            nrow = fetch(conn,"SELECT COUNT(*) FROM "+obj.TableName);
-            if nrow.("COUNT(*)") ~= 0
-                rf = rowfilter(keyColumnName);
-                rfList = arrayfun(@(x) rf.(keyColumnName) == x,columnValue,UniformOutput=false);
-                sqlupdate(conn,obj.TableName,t,rfList)
-            end
+            if isscalar(keyColumnName)
+                % rewrite entries if they match the scalar key
+                conn = obj.connectDatabase;
+                columnValue = t.(keyColumnName);
+                nrow = fetch(conn,"SELECT COUNT(*) FROM "+obj.TableName);
+                if nrow.("COUNT(*)") ~= 0
+                    rf = rowfilter(keyColumnName);
+                    rfList = arrayfun(@(x) rf.(keyColumnName) == x,columnValue,UniformOutput=false);
+                    sqlupdate(conn,obj.TableName,t,rfList)
+                end
 
-            % write extra entries if they don't exist
-            sqlquery = "SELECT " + keyColumnName + " FROM " + obj.TableName;
-            columnValueDb = fetch(conn,sqlquery);
-            columnValueDb = columnValueDb.(keyColumnName);
-            if ~isempty(columnValueDb)
-                extraEntry = setdiff(columnValue,columnValueDb);
+                % write extra entries if they don't exist
+                sqlquery = "SELECT " + keyColumnName + " FROM " + obj.TableName;
+                columnValueDb = fetch(conn,sqlquery);
+                columnValueDb = columnValueDb.(keyColumnName);
+                if ~isempty(columnValueDb)
+                    extraEntry = setdiff(columnValue,columnValueDb);
+                else
+                    extraEntry = columnValue;
+                end
+                close(conn)
+                if ~isempty(extraEntry)
+                    t = tOrigin(ismember(tOrigin.(keyColumnName), extraEntry),:);
+                    obj.writeEntry(t);
+                end
             else
-                extraEntry = columnValue;
-            end
-            close(conn)
-            if ~isempty(extraEntry)
-                t = tOrigin(ismember(tOrigin.(keyColumnName), extraEntry),:);
-                obj.writeEntry(t);
+                % rewrite entries if they match the vector key
+                conn = obj.connectDatabase;
+                columnValue = table2cell(t(:,keyColumnName));
+                nrow = fetch(conn,"SELECT COUNT(*) FROM "+obj.TableName);
+                if nrow.("COUNT(*)") ~= 0
+                    rfList = arrayfun(@(x) constructRowfilterAnd(keyColumnName,columnValue(x,:)), ...
+                        1:numel(keyColumnName),UniformOutput=false);
+                    sqlupdate(conn,obj.TableName,t,rfList)
+                end
+
+                % write extra entries if they don't exist
+                % for ii = 1:height(t)
+                %     sqlquery = "SELECT " + keyColumnName + " FROM " + obj.TableName;
+                %     columnValueDb = fetch(conn,sqlquery);
+                %     columnValueDb = columnValueDb.(keyColumnName);
+                %     if ~isempty(columnValueDb)
+                %         extraEntry = setdiff(columnValue,columnValueDb);
+                %     else
+                %         extraEntry = columnValue;
+                %     end
+                %     close(conn)
+                %     if ~isempty(extraEntry)
+                %         t = tOrigin(ismember(tOrigin.(keyColumnName), extraEntry),:);
+                %         obj.writeEntry(t);
+                %     end
+                % end
             end
         end
 

@@ -13,6 +13,7 @@ classdef TwoColorSineSquaredPulse < Waveform
         Frequency2 double = [];  % Carrier frequency for color 2
         Phase1 double = 0;       % Carrier phase for color 1
         Phase2 double = 0;       % Carrier phase for color 2
+        Offset double = 0;
     end
 
     methods
