@@ -248,10 +248,12 @@ classdef AtomNumber < BecAnalysis
                 if ismember("DensityFit",becExp.AnalysisMethod)
                     tThermal = uitab(tg, 'Title', 'Thermal');
                     tgThermal = uitabgroup(tThermal);
-                    switch becExp.DensityFit.FitMethod
-                        case {"GaussianFit1D","BosonicGaussianFit1D"}
-                            obj.ThermalLine(ii) = obj.initializeImage(tgThermal,titleStr,nSub,xLabel,yLabel,ii,"Thermal",false);
-                            obj.ThermalError(ii) = obj.initializeImage(tgThermal,titleStr,nSub,xLabel,yLabel,ii,"Thermal",true);
+                    for ii = 1:nSub
+                        switch becExp.DensityFit.FitMethod
+                            case {"GaussianFit1D","BosonicGaussianFit1D"}
+                                obj.ThermalLine(ii) = obj.initializeImage(tgThermal,titleStr,nSub,xLabel,yLabel,ii,"Thermal",false);
+                                obj.ThermalError(ii) = obj.initializeImage(tgThermal,titleStr,nSub,xLabel,yLabel,ii,"Thermal",true);
+                        end
                     end
                 end
 
@@ -281,7 +283,7 @@ classdef AtomNumber < BecAnalysis
             cb = colorbar;
             if nSub > 1 && obj.IsShowNormalized
                 ax.CLim = [0,1];
-                cb.Label = [];
+                cb.Label.String = [];
             else
                 if ~isError
                     ax.CLim = obj.YLim;

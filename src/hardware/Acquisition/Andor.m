@@ -125,7 +125,7 @@ classdef Andor < Acquisition
             %     Pausing is not supported by the current Andor worker example.
             %     Use :meth:`stopCamera` to end an acquisition.
             % [ret] = AbortAcquisition();
-            % CheckWarning(ret);
+            % CheckError(ret);
         end
 
         function stopCamera(obj)
@@ -172,10 +172,6 @@ classdef Andor < Acquisition
             %   the specified bit depth, and sent to the client via ``cdq``.
             % - Message ``Stop`` aborts acquisition, closes shutter, and shuts down SDK.
             % Send the worker queue to the client
-            isUseTimeout=1;
-            timeoutTime=1.5;
-            firstpictime=convertTo(datetime, 'posixtime')+9999;
-            imagecollecting=0;
             wq = parallel.pool.PollableDataQueue;
             send(cq,wq);
 
@@ -199,7 +195,8 @@ classdef Andor < Acquisition
             isAcq = false;
             acqMode = "Absorption";
             bitPerSample = 16;
-            FreeInternalMemory();
+            imageCount = 0;
+            
 
             while true
                 pause(0.1)
@@ -208,23 +205,23 @@ classdef Andor < Acquisition
                     if datarcvd && data.Message == "SetParameter"
                         %% Set temperature
                         [ret]=SetCoolerMode(1);     % Camera temperature is maintained on ShutDown
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret]=CoolerON();           %   Turn on temperature cooler
-                        CheckWarning(ret);
+                        CheckError(ret);
 
                         %% Set other parameters
                         [ret]=SetExposureTime(data.ExposureTime);     %   Set exposure time in second  THIS IS THE USUAL VALUE
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret]=SetReadMode(4);                         %   Set read mode; 4 for Image
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret]=SetShutter(1, 1, 0, 0);                 %   Open Shutter
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret,XPixels, YPixels]=GetDetector;           %   Get the CCD size
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret]=SetImage(1, 1, 1, XPixels, 1, YPixels); %   Set the image size
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret]=SetEMCCDGain(1);                        %   Set EMCCD gain
-                        CheckWarning(ret);
+                        CheckError(ret);
                         bitPerSample = data.BitPerSample;
 
                         %% Set acquisition mode
@@ -234,25 +231,29 @@ classdef Andor < Acquisition
                                 groupSize = 3;
 
                                 [ret]=SetAcquisitionMode(3);        %   Set acquisition mode; 3 for Kinetic Series
-                                CheckWarning(ret);
+                                CheckError(ret);
                                 [ret]=SetNumberKinetics(groupSize);
-                                CheckWarning(ret);
+                                CheckError(ret);
                                 [ret]=SetTriggerMode(1);            %   Set external trigger mode
-                                CheckWarning(ret);
+                                CheckError(ret);
                         end
-                        isSet = true;                      
+                        isSet = true;
+                        mData = zeros(YPixels,XPixels,groupSize);
                     end
                 elseif ~isAcq
                     [data,datarcvd] = poll(wq,10);
                     if datarcvd && data.Message == "Start"
                         %% Start acquisition
                         [ret] = FreeInternalMemory();
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret] = StartAcquisition();
-                        CheckWarning(ret);
+                        CheckError(ret);
                         isAcq = true;
+                        [~, lastGotten, ~] = GetNumberNewImages();% Find the starting index of the buffer.
                     end
                 else
+                    %% Acuiqision
+
                     % Setting this return value to avoid evaluation of the "if" statement
                     % for saving a new image if there is no new image.
                     atmcd.DRV_NO_NEW_DATA;
@@ -263,22 +264,23 @@ classdef Andor < Acquisition
                     % if the "newest image" in the buffer was already retreived.
                     [~, firstIndex, lastIndex] = GetNumberNewImages();
 
-                    %% Send image data to the client
+                    if lastGotten~=lastIndex
+                        indexToGet = firstIndex;
 
-                    if ((lastIndex - firstIndex + 1) >=1) && ((lastIndex - firstIndex + 1) < groupSize) && ~imagecollecting
-                        firstpictime=convertTo(datetime, 'posixtime');
-                        imagecollecting=1;
-                    end
-                    if (lastIndex - firstIndex + 1) == groupSize
-                        switch acqMode
-                            case "Absorption"
-                                [~, mData, ~, ~] = GetImages(firstIndex, lastIndex, ...
-                                    prod([XPixels,YPixels,groupSize]));
-                                mData = reshape(mData, XPixels, YPixels, groupSize);
-                                for ii = 1:groupSize
-                                    mData(:,:,ii) = flip(transpose(mData(:,:,ii)),1);
-                                end
+                        % Retreive the oldest new image from the camera buffer.
+                        [ret, imageData, ~, ~] = GetImages(indexToGet, indexToGet, XPixels * YPixels);
 
+                        % Update the last gotten image.
+                        lastGotten = firstIndex;
+
+                        if ret == atmcd.DRV_SUCCESS % data returned
+                            imageCount = imageCount + 1;
+                            imageData = flip(transpose(reshape(imageData, XPixels, YPixels)),1);
+                            mData(:,:,imageCount) = imageData;
+
+                            % Send image data to the client
+                            if imageCount == groupSize
+                                imageCount = 0;
                                 switch bitPerSample
                                     case 8
                                         mData = uint8(mData);
@@ -288,22 +290,12 @@ classdef Andor < Acquisition
                                         mData = uint32(mData);
                                 end
                                 send(cdq,mData)
+                                [ret] = FreeInternalMemory();
+                                CheckError(ret);
+                                [ret] = StartAcquisition();
+                                CheckError(ret);
+                            end
                         end
-                        firstpictime=convertTo(datetime, 'posixtime')+9999;
-                        imagecollecting=0;
-						[ret] = FreeInternalMemory();
-                        CheckWarning(ret);
-                        [ret] = StartAcquisition();
-                        CheckWarning(ret);
-                    end
-                    if convertTo(datetime,'posixtime')>(firstpictime+timeoutTime) && imagecollecting==1 && isUseTimeout
-                        
-						[ret] = FreeInternalMemory();
-                        CheckWarning(ret);
-                        [ret] = StartAcquisition();
-                        CheckWarning(ret);
-                        firstpictime=convertTo(datetime, 'posixtime')+9999;
-                        imagecollecting=0;
                     end
                     
                     %% Stop
@@ -311,11 +303,11 @@ classdef Andor < Acquisition
                     if datarcvd && data.Message == "Stop"
                         disp("stopping camera")
                         [ret] = AbortAcquisition();
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret]=SetShutter(1, 2, 1, 1);
-                        CheckWarning(ret);
+                        CheckError(ret);
                         [ret] = AndorShutDown();
-                        CheckWarning(ret);
+                        CheckError(ret);
                         break
                     end
                 end
