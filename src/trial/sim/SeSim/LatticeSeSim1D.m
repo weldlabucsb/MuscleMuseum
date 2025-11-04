@@ -4,19 +4,21 @@ classdef LatticeSeSim1D < SpaceTimeSim
 
     properties(SetAccess = private)
         Atom Atom
-        Manifold (1,1) string
-        StateIndex double
+        AtomicState struct
         Laser cell
+        WallLaser cell
         MagneticField cell
         LatticeModulation cell
+        WallModulation cell
         FieldModulation cell
         OpticalLattice OpticalLattice
+        OpticalWall cell
         MagneticPotential MagneticPotential
         InitialCondition InitialCondition
     end
 
     properties
-        ScannedParameterList
+        ScannedVariableList
     end
 
     methods
@@ -24,8 +26,7 @@ classdef LatticeSeSim1D < SpaceTimeSim
             arguments
                 trialName string
                 options1.atom Atom
-                options1.manifold string
-                options1.stateIndex double
+                options1.atomicState struct
                 options1.totalTime double
                 options1.timeStep double
                 options1.spaceOrigin double = [0;0;0]
@@ -34,18 +35,19 @@ classdef LatticeSeSim1D < SpaceTimeSim
                 options1.boundaryCondition string = "Periodic"
                 options1.output string
                 options2.laser cell
+                options2.wallLaser cell
                 options2.magneticField cell
                 options2.latticeModulation cell
                 options2.fieldModulation cell
+                options2.wallModulation cell
                 options2.initialCondition InitialCondition
             end
-            obj@SpaceTimeSim(trialName,"LatticeSeSim1DConfig");
+            obj@SpaceTimeSim(trialName,"LatticeSeSim1D");
 
             %% Atom setting
-            try
-                obj.Atom = Alkali(obj.ConfigParameter.AtomName);
-            catch
-                obj.Atom = Divalent(obj.ConfigParameter.AtomName);
+            if isfield(obj.ConfigParameter,'Parameter') && isstruct(obj.ConfigParameter.Parameter) &&...
+                    isfield(obj.ConfigParameter.Parameter,"AtomName")
+                obj.Atom = getAtom(obj.ConfigParameter.Parameter.AtomName);
             end
 
             %% Change parameters if they are manually set
@@ -63,29 +65,24 @@ classdef LatticeSeSim1D < SpaceTimeSim
             end
 
             %% Set output parameter
-            nSpaceStep = getNSpaceStep(obj.SpaceRange,obj.SpaceStep);
-            if ~isempty(obj.Output)
-                output = rmmissing(["Time";strtrim(split(obj.Output,";"))]);
-            else
-                error("No output variable specified")
-            end
-            load("Config.mat","LatticeSeSim1DOutput")
-            output = LatticeSeSim1DOutput(ismember(LatticeSeSim1DOutput.VariableName,output),:);
-            if ~isempty(output(output.VariableName == "WaveFunction",:))
-                output(output.VariableName == "WaveFunction",:).Size = nSpaceStep;
-            end
-            obj.Output = output;
+            obj.setOutput
+            obj.setWaveFunctionSize
 
-            %% Find scanned parameter
+            %% Find scanned variable
             nPara = cellfun(@numel,struct2cell(options2));
             obj.NRun = max(nPara);
             if any(nPara(nPara~=obj.NRun)>1)
                 error("Parameter lengths do not match")
             else
-                scannedParaIdx = find(nPara==obj.NRun);
-                scannedParameterName = string(field2(scannedParaIdx));
-                scannedParameterName = scannedParameterName(1);
+                scannedVariableIdx = find(nPara==obj.NRun);
+                scannedVariableName = string(field2(scannedVariableIdx));
+                if ~isempty(scannedVariableName)
+                    scannedVariableName = scannedVariableName(1);
+                else
+                    scannedVariableName = "laser";
+                end
             end
+            obj.ScannedVariable = scannedVariableName;
 
             %% Construct modulations
             if isempty(obj.LatticeModulation)
@@ -100,26 +97,45 @@ classdef LatticeSeSim1D < SpaceTimeSim
                     duration = 1e-3, ...
                     frequency = 1);};
             end
+            if isempty(obj.WallModulation)
+                obj.WallModulation = {SineWave(...
+                    amplitude = 0, ...
+                    duration = 1e-3, ...
+                    frequency = 1);};
+                if ~isempty(obj.WallLaser)
+                    obj.WallModulation = repmat(obj.WallModulation,1,numel(obj.WallLaser{1}));
+                end
+            end
 
             %% Construct OpticalLattice and MagneticPotential
             for ii = 1:obj.NRun
                 if ii == 1
                     obj.OpticalLattice(1) = OpticalLattice(obj.Atom,obj.Laser{1},...
-                        manifold=obj.Manifold,stateIndex=obj.StateIndex);
+                        atomicState=obj.AtomicState);
                     if ~isempty(obj.MagneticField)
                         obj.MagneticPotential(1) = MagneticPotential(obj.Atom,obj.MagneticField{1},...
-                            manifold=obj.Manifold,stateIndex=obj.StateIndex);
+                            atomicState=obj.AtomicState);
                     else
                         obj.MagneticPotential(1) = MagneticPotential(obj.Atom,MagneticField(bias=[0;0;0]),...
-                            manifold=obj.Manifold,stateIndex=obj.StateIndex);
+                            atomicState=obj.AtomicState);
+                    end
+                    if ~isempty(obj.WallLaser)
+                        obj.OpticalWall{1} = arrayfun(@(x) OpticalWall(obj.Atom,x,...
+                            atomicState=obj.AtomicState),obj.WallLaser{1});
+                    else
+                        obj.OpticalWall{1} = OpticalWall(obj.Atom,GaussianBeam(wavelength = 1e-6,intensity=0,waist=[1;1]),...
+                            atomicState=obj.AtomicState);
                     end
                 else
-                    if scannedParameterName == "laser"
+                    if scannedVariableName == "laser"
                         obj.OpticalLattice(ii) = OpticalLattice(obj.Atom,obj.Laser{ii},...
-                            manifold=obj.Manifold,stateIndex=obj.StateIndex);
-                    elseif scannedParameterName == "magneticField"
+                            atomicState=obj.AtomicState);
+                    elseif scannedVariableName == "magneticField"
                         obj.MagneticPotential(ii) = MagneticPotential(obj.Atom,obj.MagneticField{ii},...
-                            manifold=obj.Manifold,stateIndex=obj.StateIndex);
+                            atomicState=obj.AtomicState);
+                    elseif scannedVariableName == "wallLaser"
+                        obj.OpticalWall{ii} = arrayfun(@(x) OpticalWall(obj.Atom,x,...
+                            atomicState=obj.AtomicState),obj.WallLaser{ii});
                     end
                 end
             end
@@ -138,7 +154,7 @@ classdef LatticeSeSim1D < SpaceTimeSim
                 varargin = struct2pairs(options);
                 obj.SimRun(ii) = SeSim1DRun(obj,varargin{:});
                 obj.SimRun(ii).RunIndex = ii;
-                if scannedParameterName == "initialCondition" || numel(obj.InitialCondition) == obj.NRun
+                if scannedVariableName == "initialCondition" || numel(obj.InitialCondition) == obj.NRun
                     obj.SimRun(ii).InitialCondition = obj.InitialCondition(ii);
                 else
                     obj.SimRun(ii).InitialCondition = obj.InitialCondition;
@@ -150,39 +166,69 @@ classdef LatticeSeSim1D < SpaceTimeSim
             dir = obj.Laser{1}(1).Direction;
             r = dir * x;
             for ii = 1:obj.NRun
-                switch scannedParameterName
+                switch scannedVariableName
                     case "laser"
                         lFunc = obj.OpticalLattice(ii).spaceFunc;
-                        bFunc = obj.MagneticPotential(1).spaceFuncHighField;
+                        lFunc2 = arrayfun(@(x) obj.OpticalWall{1}(x).spaceFunc,1:numel(obj.OpticalWall{1}),'UniformOutput',false);
+                        bFunc = obj.MagneticPotential(1).spaceFunc;
                         lmFunc = {obj.LatticeModulation{1}.TimeFunc};
                         fmFunc = {obj.FieldModulation{1}.TimeFunc};
+                        wmFunc = arrayfun(@(x) obj.WallModulation{1}(x).TimeFunc,1:numel(obj.WallModulation{1}),'UniformOutput',false);
                     case "magneticField"
                         lFunc = obj.OpticalLattice(1).spaceFunc;
-                        bFunc = obj.MagneticPotential(ii).spaceFuncHighField;
+                        lFunc2 = arrayfun(@(x) obj.OpticalWall{1}(x).spaceFunc,1:numel(obj.OpticalWall{1}),'UniformOutput',false);
+                        bFunc = obj.MagneticPotential(ii).spaceFunc;
                         lmFunc = {obj.LatticeModulation{1}.TimeFunc};
                         fmFunc = {obj.FieldModulation{1}.TimeFunc};
+                        wmFunc = arrayfun(@(x) obj.WallModulation{1}(x).TimeFunc,1:numel(obj.WallModulation{1}),'UniformOutput',false);
                     case "latticeModulation"
                         lFunc = obj.OpticalLattice(1).spaceFunc;
-                        bFunc = obj.MagneticPotential(1).spaceFuncHighField;
+                        lFunc2 = arrayfun(@(x) obj.OpticalWall{1}(x).spaceFunc,1:numel(obj.OpticalWall{1}),'UniformOutput',false);
+                        bFunc = obj.MagneticPotential(1).spaceFunc;
                         lmFunc = {obj.LatticeModulation{ii}.TimeFunc};
                         fmFunc = {obj.FieldModulation{1}.TimeFunc};
+                        wmFunc = arrayfun(@(x) obj.WallModulation{1}(x).TimeFunc,1:numel(obj.WallModulation{1}),'UniformOutput',false);
                     case "fieldModulation"
                         lFunc = obj.OpticalLattice(1).spaceFunc;
-                        bFunc = obj.MagneticPotential(1).spaceFuncHighField;
+                        lFunc2 = arrayfun(@(x) obj.OpticalWall{1}(x).spaceFunc,1:numel(obj.OpticalWall{1}),'UniformOutput',false);
+                        bFunc = obj.MagneticPotential(1).spaceFunc;
                         lmFunc = {obj.LatticeModulation{1}.TimeFunc};
                         fmFunc = {obj.FieldModulation{ii}.TimeFunc};
+                        wmFunc = arrayfun(@(x) obj.WallModulation{1}(x).TimeFunc,1:numel(obj.WallModulation{1}),'UniformOutput',false);
                     case "initialCondition"
                         lFunc = obj.OpticalLattice(1).spaceFunc;
-                        bFunc = obj.MagneticPotential(1).spaceFuncHighField;
+                        lFunc2 = arrayfun(@(x) obj.OpticalWall{1}(x).spaceFunc,1:numel(obj.OpticalWall{1}),'UniformOutput',false);
+                        bFunc = obj.MagneticPotential(1).spaceFunc;
                         lmFunc = {obj.LatticeModulation{1}.TimeFunc};
                         fmFunc = {obj.FieldModulation{1}.TimeFunc};
+                        wmFunc = arrayfun(@(x) obj.WallModulation{1}(x).TimeFunc,1:numel(obj.WallModulation{1}),'UniformOutput',false);
+                    case "wallLaser"
+                        lFunc = obj.OpticalLattice(1).spaceFunc;
+                        lFunc2 = arrayfun(@(x) obj.OpticalWall{ii}(x).spaceFunc,1:numel(obj.OpticalWall{ii}),'UniformOutput',false);
+                        bFunc = obj.MagneticPotential(1).spaceFunc;
+                        lmFunc = {obj.LatticeModulation{1}.TimeFunc};
+                        fmFunc = {obj.FieldModulation{1}.TimeFunc};
+                        wmFunc = arrayfun(@(x) obj.WallModulation{1}(x).TimeFunc,1:numel(obj.WallModulation{1}),'UniformOutput',false);
+                    case "wallModulation"
+                        lFunc = obj.OpticalLattice(1).spaceFunc;
+                        lFunc2 = arrayfun(@(x) obj.OpticalWall{1}(x).spaceFunc,1:numel(obj.OpticalWall{1}),'UniformOutput',false);
+                        bFunc = obj.MagneticPotential(1).spaceFunc;
+                        lmFunc = {obj.LatticeModulation{1}.TimeFunc};
+                        fmFunc = {obj.FieldModulation{1}.TimeFunc};
+                        wmFunc = arrayfun(@(x) obj.WallModulation{ii}(x).TimeFunc,1:numel(obj.WallModulation{ii}),'UniformOutput',false);
                 end
+                dx = x(2) - x(1);
                 Vl = lFunc(r).';
+                Vl2 = cellfun(@(F) F(r).',lFunc2,"UniformOutput",false);
+                Vl2t = @(t) 0;
+                for jj = 1:numel(lFunc2)
+                    Vl2t = @(t) Vl2t(t) + circshift(Vl2{jj},round(wmFunc{jj}(t)/dx));
+                end
                 Vb = bFunc(r).';
                 Vb = Vb - max(Vb);
                 lmFuncSum = @(x) sum(cellfun(@(F) F(x),lmFunc));
                 fmFuncSum = @(x) sum(cellfun(@(F) F(x),fmFunc));
-                obj.SimRun(ii).Potential = @(t) (1+lmFuncSum(t)) * Vl + (1+fmFuncSum(t)) * Vb;
+                obj.SimRun(ii).Potential = @(t) (1+lmFuncSum(t)) * Vl + (1+fmFuncSum(t)) * Vb + Vl2t(t);
             end
             obj.update
         end
@@ -199,6 +245,45 @@ classdef LatticeSeSim1D < SpaceTimeSim
             render
         end
 
+        function showSpaceTime(obj)
+            for ii = 1:obj.NRun
+                obj.SimRun(ii).showSpaceTime;
+                close all
+            end
+        end
+
+        function showQuasimomentumTime(obj,n)
+            x = obj.SimRun(1).SpaceList;
+            ol = obj.OpticalLattice(1);
+            if isempty(ol.BlochState)
+                ol.computeAll1D(2000,n,x)
+            end
+            for ii = 1:obj.NRun
+                if numel(obj.OpticalLattice) > 1
+                    ol = obj.OpticalLattice(ii);
+                    if isempty(ol.BlochState)
+                        ol.computeAll1D(2000,n,x)
+                    end
+                end
+                qList = ol.QuasiMomentumList;
+                kL = ol.Laser.AngularWavenumber;
+                psi = obj.SimRun(ii).readRun("WaveFunction");
+                
+                qDist = ol.computeQuasimomentumDistribution1D(psi,n);
+                t = obj.SimRun(ii).TimeList * 1e3;
+                fig = figure(8911 + round(rand * 1000));
+                img = imagesc(qDist.');
+                renderTicks(img,t,qList/kL)
+                xlabel("$t~[\mathrm{ms}]$",'Interpreter','latex')
+                ylabel("$q~[\hbar k_\mathrm{L}]$",'Interpreter','latex')
+                title("Trial " + obj.SerialNumber + ", Run " + ii)
+                clim([0,max(qDist(:))])
+                render
+                exportgraphics(fig,fullfile(obj.DataAnalysisPath,"run"+obj.SimRun(ii).RunIndex+"_qTime.png"),Resolution=300)
+                close all
+            end
+        end
+
         function  setConfigProperty(obj,s)
             %This method compares the properties of the handle object 'obj' with
             %the fields of a structure 'struct'. Then it sets the properties to the
@@ -210,6 +295,13 @@ classdef LatticeSeSim1D < SpaceTimeSim
             [~,ia,ib] = intersect(propList,fieldList);
             structcell = struct2cell(s);
             set(obj,propList(ia)',structcell(ib)')
+            if isfield(s,"Parameter") && isstruct(s.Parameter)
+                p = s.Parameter;
+                fieldList = fieldnames(p);
+                [~,ia,ib] = intersect(propList,fieldList);
+                structcell = struct2cell(p);
+                set(obj,propList(ia)',structcell(ib)')
+            end
         end
 
         function updateDatabase(obj)
@@ -231,6 +323,37 @@ classdef LatticeSeSim1D < SpaceTimeSim
             sData.SpaceRange = sData.SpaceRange.';
             tData = struct2table(sData,AsArray=true);
             pgWrite(obj.Writer,obj.DatabaseTableName,tData);
+        end
+
+        function updateTrialType(obj,trialName)
+            arguments
+                obj
+                trialName string = string.empty
+            end
+            p = obj.SimSetting;
+
+            s = struct(obj);
+            s.OutputVariableName = obj.Output.VariableName;
+            s.ParentPath = obj.ParentPath;
+            s.DatabaseName = obj.DatabaseName;
+            s.DatabaseTableName = obj.DatabaseTableName;
+            para = struct;
+            para.AtomName = s.Atom;
+            para.TotalTime = s.TotalTime;
+            para.TimeStep = s.TimeStep;
+            para.SavePeriod = s.SavePeriod;
+            para.AveragePeriod = s.AveragePeriod;
+            para.SpaceRange = s.SpaceRange;
+            para.SpaceStep = s.SpaceStep;
+            s.Parameter = para;
+            if isempty(trialName)
+                s.TrialName = obj.Name;
+            else
+                s.TrialName = trialName;
+            end
+            s.SimName = string(class(obj));
+
+            p.updateEntry(s,["SimName","TrialName"])
         end
 
     end

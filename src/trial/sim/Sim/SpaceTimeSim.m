@@ -16,12 +16,20 @@ classdef (Abstract) SpaceTimeSim < Sim
     end
     
     methods
-        function obj = SpaceTimeSim(trialName,config)
+        function obj = SpaceTimeSim(trialName,simName)
             %TIMESIM Construct an instance of this class
             %   Detailed explanation goes here
-            obj@Sim(trialName,config);
+            obj@Sim(trialName,simName);
         end
         
+        function setWaveFunctionSize(obj)
+            output = obj.Output;
+            if ~isempty(output) && ~isempty(output(output.VariableName == "WaveFunction",:))
+                nSpaceStep = getNSpaceStep(obj.SpaceRange,obj.SpaceStep);
+                output(output.VariableName == "WaveFunction",:).Size = nSpaceStep;
+            end
+            obj.Output = output;
+        end
     end
 end
 

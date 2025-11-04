@@ -287,7 +287,7 @@ classdef Alkali < Atom
             alpha2 = alpha2 / hbar / 2 / pi; % Change unit to Hz/(V/m)^2
         end
     
-        function deltaE = AcStarkShiftLargeDetuning(obj,laser,n,l,j,f,mF,qAxisAngle)
+        function dE = AcStarkShiftLargeDetuning(obj,laser,n,l,j,f,mF,qAxisAngle)
             % Compute total AC Stark shift for a hyperfine state.
             %
             % Calculates the complete AC Stark shift including scalar, vector, and
@@ -370,10 +370,59 @@ classdef Alkali < Atom
                 deltaE2 = - alpha2 * (3 * abs(EPlus(3))^2 - abs(E)^2 / 4) / 2 * ...
                 (3 * mF ^ 2 - f * (f + 1)) / f / (2 * f - 1);
             end
-            deltaE = deltaE0 + deltaE1 + deltaE2;
+            dE = deltaE0 + deltaE1 + deltaE2;
 
             % reset laser angle
             laser.rotateToAngle(oldAngle);
+        end
+    
+        function dEdB = ZeemanShiftFactorLowField(obj,n,l,j,f,mF)
+            gF = obj.ArcObj.getLandegfExact(l,j,f);
+            muB = Constants.SI("muB");
+            h = Constants.SI("hbar") * 2 * pi;
+            dEdB = mF * gF * muB / h;
+        end
+
+        function dEdB = ZeemanShiftFactorHighField(obj,n,l,j,f,mF)
+            if l == 0
+                sList = obj.DGround.StateList;
+            else
+                if j == 1/2
+                    sList = obj.D1Excited.StateList;
+                elseif j == 3/2
+                    sList = obj.D2Excited.StateList;
+                end
+            end
+            stateIdx = sList.L == l & sList.J == j & sList.F == f & sList.MF == mF;
+            mJ = sList.MJ(stateIdx);
+            gJ = sList.gJ(stateIdx);
+            mI = sList.MI(stateIdx);
+            gI = sList.gI(stateIdx);
+            muB = Constants.SI("muB");
+            h = Constants.SI("hbar") * 2 * pi;
+            dEdB = (mJ * gJ + mI * gI) * muB / h;
+        end
+
+        function dEdB = ZeemanShiftFactor(obj,bias,n,l,j,f,mF)
+            if l == 0
+                sList = obj.DGround.StateList;
+            else
+                if j == 1/2
+                    sList = obj.D1Excited.StateList;
+                elseif j == 3/2
+                    sList = obj.D2Excited.StateList;
+                end
+            end
+
+            energyList = sList.Energy;
+            hfs = max(energyList) - min(energyList);
+            eFactL = obj.ZeemanShiftFactorLowField(n,l,j,f,mF);
+            eFactH = obj.ZeemanShiftFactorHighField(n,l,j,f,mF);
+            if abs(bias * eFactL) < hfs / 10
+                dEdB = eFactL;
+            else
+                dEdB = eFactH;
+            end
         end
     end
 

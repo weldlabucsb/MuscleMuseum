@@ -21,7 +21,15 @@ classdef (Abstract) SpaceSim < Sim
             % :type config: string | table | struct
             obj@Sim(trialName,config);
         end
-        
+
+        function setWaveFunctionSize(obj)
+            output = obj.Output;
+            if ~isempty(output) && ~isempty(output(output.VariableName == "WaveFunction",:))
+                nSpaceStep = getNSpaceStep(obj.SpaceRange,obj.SpaceStep);
+                output(output.VariableName == "WaveFunction",:).Size = nSpaceStep;
+            end
+            obj.Output = output;
+        end
     end
 end
 

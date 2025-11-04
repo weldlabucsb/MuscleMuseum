@@ -237,6 +237,8 @@ if exist("SimParentPath","var")
     DatabaseTableName = string.empty;
     p = SimSetting;
     p.checkTable;
+    p2 = SimOutput;
+    p2.checkTable;
     userParameter = [
         "ParentPath";
         "DatabaseName";
@@ -255,9 +257,18 @@ if exist("SimParentPath","var")
     if exist("LatticeSeSim1D_DatabaseTableName","var")
         s.SimName = "LatticeSeSim1D";
         s.ParentPath = fullfile(SimParentPath,"LatticeSeSim1D");
+        s.DataBaseName = SimDatabaseName;
         s.DatabaseTableName = LatticeSeSim1D_DatabaseTableName;
+        s.OutputVariableName = LatticeSeSim1D_OutputVariableName;
         DatabaseTableName = [DatabaseTableName,s.DatabaseTableName];
         p.updateEntry(s,["SimName","TrialName"])
+        t = cell2table( ...
+            { ...
+            s.SimName,   "Time",         "t",     1; ...
+            s.SimName,   "WaveFunction", "psicj", 1; ...
+            },...
+            "VariableNames",["SimName","VariableName","RuntimeName","Size"]);
+        p2.updateEntry(t,["SimName","VariableName"])
     end
 end
 
