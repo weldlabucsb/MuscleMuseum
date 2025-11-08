@@ -144,13 +144,15 @@ classdef SeSim1DRun < TimeSimRun & SpaceSimRun
             n = abs(psi).^2;
             x = obj.SpaceList * 1e6;
             t = obj.TimeList * 1e3;
-            figure(8911)
+            fig = figure(8911 + round(rand * 1000));
             img = imagesc(n.');
             renderTicks(img,t,x)
             xlabel("$t~[\mathrm{ms}]$",'Interpreter','latex')
             ylabel("$y~[\mu\mathrm{m}]$",'Interpreter','latex')
+            title("Run " + obj.RunIndex)
             clim([0,max(n(1,:))])
             render
+            exportgraphics(fig,fullfile(obj.DataAnalysisPath,"run"+obj.RunIndex+"_spacetime.png"),Resolution=300)
         end
 
         function output = showPeak(obj)
@@ -165,7 +167,9 @@ classdef SeSim1DRun < TimeSimRun & SpaceSimRun
                 plot(t,xMax);
                 xlabel("$t~[\mathrm{ms}]$",'Interpreter','latex')
                 ylabel("$y~[\mu\mathrm{m}]$",'Interpreter','latex')
-                % render
+                render
+                savefig(fullfile(obj.DataAnalysisPath,"run"+obj.RunIndex+"_peak.fig"))
+                exportgraphics(gcf,fullfile(obj.DataAnalysisPath,"run"+obj.RunIndex+"_peak.png"),Resolution=300)
             else
                 output = [t(:) / 1e3,xMax(:) / 1e6];
             end

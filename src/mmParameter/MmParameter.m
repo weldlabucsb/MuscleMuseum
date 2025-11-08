@@ -702,6 +702,8 @@ classdef MmParameter < handle
 
         function updateEntry(obj, t, keyColumnName)
             % Upsert rows using ``sqlupdate`` for matching keys and ``sqlwrite`` for new rows.
+            % It can handle multiple keyColumnName when these key columns
+            % are scalar columns.
             %
             % :param t: Input rows to write (all schema columns, any order)
             % :type t: table or struct
@@ -756,26 +758,32 @@ classdef MmParameter < handle
                 nrow = fetch(conn,"SELECT COUNT(*) FROM "+obj.TableName);
                 if nrow.("COUNT(*)") ~= 0
                     rfList = arrayfun(@(x) constructRowfilterAnd(keyColumnName,columnValue(x,:)), ...
-                        1:numel(keyColumnName),UniformOutput=false);
+                        1:height(t),UniformOutput=false);
                     sqlupdate(conn,obj.TableName,t,rfList)
                 end
 
                 % write extra entries if they don't exist
-                % for ii = 1:height(t)
-                %     sqlquery = "SELECT " + keyColumnName + " FROM " + obj.TableName;
-                %     columnValueDb = fetch(conn,sqlquery);
-                %     columnValueDb = columnValueDb.(keyColumnName);
-                %     if ~isempty(columnValueDb)
-                %         extraEntry = setdiff(columnValue,columnValueDb);
-                %     else
-                %         extraEntry = columnValue;
-                %     end
-                %     close(conn)
-                %     if ~isempty(extraEntry)
-                %         t = tOrigin(ismember(tOrigin.(keyColumnName), extraEntry),:);
-                %         obj.writeEntry(t);
-                %     end
-                % end
+                keyColumnName = keyColumnName(:).';
+                columnValue = string(columnValue);
+                keyColumnType = obj.TableColumn(keyColumnName);
+                isStrCol = contains(keyColumnType,"string");
+                extraEntry = false(1,height(t));
+                for ii = 1:height(t)
+                    whereClause1 = join(keyColumnName(isStrCol) + " = '" + columnValue(ii,isStrCol) + "'"," AND ");
+                    whereClause2 = join(keyColumnName(~isStrCol) + " = " + columnValue(ii,~isStrCol)," AND ");
+                    whereClause = [whereClause1,whereClause2];
+                    whereClause(ismissing(whereClause)) = [];
+                    whereClause = " WHERE " + join(whereClause," AND ");
+                    sqlquery = "SELECT ID FROM " + obj.TableName + whereClause;
+                    idDb = fetch(conn,sqlquery);
+                    if isempty(idDb)
+                        extraEntry(ii) = true;
+                    end
+                end
+                if any(extraEntry)
+                    obj.writeEntry(tOrigin(extraEntry,:));
+                end
+                close(conn)
             end
         end
 
@@ -1207,6 +1215,54 @@ classdef MmParameter < handle
             end
 
             sqlquery = "SELECT * FROM " + obj.TableName + " WHERE " + obj.TableName + "." + keyColumnName + " IN " + inList + ";";
+            t = fetch(conn,sqlquery);
+            t = obj.convertOutputTable(t,IsHideId);
+            close(conn)
+        end
+
+        function t = readEntryTwoKey(obj,keyColumnValue,keyColumnValue2,keyColumnName,keyColumnName2,IsHideId)
+            % Read entries filtered by a key column and values.
+            %
+            % When a single column is requested, a vector is returned instead of a table.
+            %
+            % :param keyColumnName: Column to filter on
+            % :type keyColumnName: string
+            % :param keyColumnValue: Key values to match (vector)
+            % :type keyColumnValue: vector
+            % :return: Table of selected columns, or a vector when a single column is requested
+            % :rtype: table or vector
+            arguments
+                obj
+                keyColumnValue {mustBeVector(keyColumnValue)} %Key column1 values
+                keyColumnValue2 {mustBeVector(keyColumnValue2)} %Key column2 values
+                keyColumnName (1,1) string  %Key column1 name
+                keyColumnName2 (1,1) string = "ID" %Key column2 name (optional)
+                IsHideId logical = false
+            end
+            cols = obj.ColumnNameAll;
+            if any(~ismember([keyColumnName,keyColumnName2],cols))
+                obj.throwError("Wrong keyColumnName or readColumnName.")
+            end
+            conn = obj.connectDatabaseRead;
+            if keyColumnName == "ID" || ~contains(obj.TableColumn(keyColumnName), "string")
+                inList = "(" + join(string(keyColumnValue), ",") + ")";
+            else
+                vals = string(keyColumnValue);
+                vals = replace(vals, "'", "''");
+                inList = "('" + join(vals, "','") + "')";
+            end
+
+            if keyColumnName2 == "ID" || ~contains(obj.TableColumn(keyColumnName2), "string")
+                inList2 = "(" + join(string(keyColumnValue2), ",") + ")";
+            else
+                vals = string(keyColumnValue2);
+                vals = replace(vals, "'", "''");
+                inList2 = "('" + join(vals, "','") + "')";
+            end
+
+            sqlquery = "SELECT * FROM " + obj.TableName +...
+                " WHERE " + obj.TableName + "." + keyColumnName + " IN " + inList + ...
+                " AND " + obj.TableName + "." + keyColumnName2 + " IN " + inList2 + ";";
             t = fetch(conn,sqlquery);
             t = obj.convertOutputTable(t,IsHideId);
             close(conn)

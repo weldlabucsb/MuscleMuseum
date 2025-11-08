@@ -808,9 +808,9 @@ classdef OpticalLattice < OpticalPotential
                 kL = obj.Laser.AngularWavenumber;
                 dk = 2 * pi / numel(x) / dx; % Momentum grid size
                 q = -kL:dk:kL; % Sampling quasi-momentum
-                [~,~,phi] = obj.computeBand1D(q,0:n,x);
+                [~,~,phi] = obj.computeBand1D(q,0:max(n),x);
             else
-                phi = obj.BlochStateList;
+                phi = obj.BlochState;
                 if max(n) > max(obj.BandIndexMax)
                     error("n is too large. Change BandIndexMax or reset n.")
                 end
@@ -824,6 +824,54 @@ classdef OpticalLattice < OpticalPotential
 
         end
 
+        function qDist = computeQuasimomentumDistribution1D(obj,psicj,n,x)
+            arguments
+                obj OpticalLattice
+                psicj double
+                n double {mustBeInteger,mustBeNonnegative} = 2
+                x double {mustBeVector} = double.empty(1,0)
+            end
+
+            %% Input validation
+            if ~ismatrix(psicj)
+                error("Incorrect dimension of psi.")
+            elseif isempty(x)
+                if ~isempty(obj.SpaceList)
+                    nx = numel(obj.SpaceList);
+                    dx = obj.SpaceList(2) - obj.SpaceList(1); % Spatial grid size
+                else
+                    error("Need to specify x.")
+                end
+            else
+                nx = numel(x);
+            end
+            if size(psicj,1) == nx
+                psicj = psicj'; % The spatial dimension of psi must be the second dimension.
+            elseif size(psicj,2) ~= nx
+                error("Incorrect dimension of psi.")
+            end
+
+            %% Get bands
+            if ~isempty(x)
+                kL = obj.Laser.AngularWavenumber;
+                dk = 2 * pi / numel(x) / dx; % Momentum grid size
+                q = -kL:dk:kL; % Sampling quasi-momentum
+                [~,~,phi] = obj.computeBand1D(q,0:max(n),x);
+            else
+                phi = obj.BlochState;
+                if max(n) > max(obj.BandIndexMax)
+                    error("n is too large. Change BandIndexMax or reset n.")
+                end
+                q = obj.QuasiMomentumList;
+            end
+
+            %% Compute population
+            qDist = zeros(size(psicj,1),numel(q),numel(n));
+            for nIdx = 1:numel(n)
+                qDist(:,:,nIdx) = abs(psicj * phi(:,:,n(nIdx)+1) * dx).^2;
+            end
+        end
+        
         function pop = computeBandPopulationFourier1D(obj,ucj,q,n)
             % Compute band populations from Fourier-periodic part :math:`u(x)`.
             %
@@ -1023,7 +1071,7 @@ classdef OpticalLattice < OpticalPotential
             qRes = -qRes;
         end
 
-        function computeAll1D(obj,nq,n)
+        function computeAll1D(obj,nq,n,x)
             % Precompute bands, plane-wave coeffs, and couplings on a uniform q-grid.
             %
             % :param nq: Number of q samples
@@ -1034,6 +1082,7 @@ classdef OpticalLattice < OpticalPotential
                 obj OpticalLattice
                 nq double {mustBeInteger,mustBePositive} = 1e4
                 n double {mustBeVector,mustBeInteger,mustBeNonnegative} = 3
+                x double {mustBeVector} = double.empty(1,0);
             end
             kL = obj.Laser.AngularWavenumber;
             q = linspace(-kL,kL,nq + 1);
@@ -1041,7 +1090,13 @@ classdef OpticalLattice < OpticalPotential
             obj.QuasiMomentumList = q;
             obj.BandIndexMax = n;
 
-            [E,Fjn] = computeBand1D(obj,q,0:n);
+            if isempty(x)
+                [E,Fjn] = computeBand1D(obj,q,0:n);
+            else
+                [E,Fjn,phi] = computeBand1D(obj,q,0:n,x);
+                obj.BlochState = phi;
+                obj.SpaceList = x;
+            end
             obj.BandIndexMaxFourier = size(Fjn,1);
             obj.BandEnergy = E;
             obj.BlochStateFourier = Fjn;
@@ -1072,7 +1127,7 @@ classdef OpticalLattice < OpticalPotential
             end
             phase = exp(1i * phase);
 
-            phi = obj.BlochStateList;
+            phi = obj.BlochState;
             u = obj.BlochStatePeriodicList;
 
             for nIdx = 1:nBand
@@ -1084,7 +1139,7 @@ classdef OpticalLattice < OpticalPotential
             phi = phi ./ sqrt(sum(abs(phi).^2,1) * dx);
             u = u ./ sqrt(sum(abs(u(cellIdx,:,:)).^2,1) * dx);
 
-            obj.BlochStateList = phi;
+            obj.BlochState = phi;
             obj.BlochStatePeriodicList = u;
 
         end

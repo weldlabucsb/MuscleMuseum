@@ -7,6 +7,15 @@ classdef (Abstract) Sim < Trial
         Output
         WallTime double = 86400 % in [s]
         SimRun
+        ScannedVariable string = "None" % Primary scanned parameter name (must be implemented by subclasses)
+        ScannedVariableUnit string = "None" % Primary scanned parameter unit string (must be implemented by subclasses)
+        ScannedVariable2 string = "None" % Secondary scanned parameter name for 2D scans (must be implemented by subclasses)
+        ScannedVariableUnit2 string = "None" % Secondary scanned parameter unit string for 2D scans (must be implemented by subclasses)
+    end
+
+    properties (SetAccess = private, Hidden)
+        SimOutput SimOutput
+        SimSetting SimSetting
     end
 
     properties(Dependent,Hidden)
@@ -14,19 +23,50 @@ classdef (Abstract) Sim < Trial
     end
 
     methods
-        function obj = Sim(trialName,config)
+        function obj = Sim(trialName,simName)
             % Construct a :class:`Sim`.
             %
             % :param trialName: Simulation name
             % :type trialName: string
-            % :param config: Config table/struct or name
-            % :type config: string | table | struct
-            obj@Trial(trialName,config);
+            % :param simName: Config table/struct or name
+            % :type simName: string | table | struct
+            p = SimSetting;
+            s = p.readEntryTwoKey(simName,trialName,"SimName","TrialName");
+            if isempty(s)
+                s = p.readEntryTwoKey(simName,"Test","SimName","TrialName");
+            end
+            obj@Trial(trialName,s);
         end
 
         function uRunIdx = get.UncompletedRunIndex(obj)
             % Indices of runs not yet completed.
             uRunIdx = find(~[obj.SimRun.IsCompleted]);
+        end
+
+        function setParameterTable(obj)
+            obj.SimOutput = SimOutput;
+            obj.SimSetting = SimSetting;
+        end
+
+        function setOutput(obj)
+            if ~isempty(obj.Output) && isstring(obj.Output)
+                output = obj.Output;
+            else
+                output = obj.ConfigParameter.OutputVariableName;
+            end
+
+            if isempty(output) || any(output == "None")
+                error("No output variable specified")
+            end
+
+            if isa(obj,"TimeSim") || isa(obj,"SpaceTimeSim")
+                output = ["Time";output];
+            end
+            output = unique(output);
+
+            t = obj.SimOutput.readEntry(string(class(obj)),"SimName");
+            output = t(ismember(t.VariableName,output),:);
+            obj.Output = output;
         end
 
         function check(obj,isWarning)
@@ -95,9 +135,14 @@ classdef (Abstract) Sim < Trial
             todayData = pgFetch(obj.Writer,query);
             obj.TrialIndex = size(todayData,1) + 1;
 
+            %% Find trial number
+            sqlQuery = "SELECT last_value FROM " + "public."""+obj.DatabaseTableName+"_SerialNumber_seq"";";
+            data = pgFetch(obj.Writer,sqlQuery);
+            trialNumber = data.last_value + 1;
+
             %% Create data folders
             obj.DataPath = fullfile(obj.TrialPath,...
-                yyyy+mm+dd+trialDelimiter+num2str(obj.TrialIndex));
+                yyyy+mm+dd+trialDelimiter+num2str(obj.TrialIndex) + trialDelimiter + "Trial" + trialDelimiter + trialNumber);
             obj.DataAnalysisPath = fullfile(obj.DataPath,'dataAnalysis');
             obj.ObjectPath = fullfile(obj.DataAnalysisPath, ...
                 obj.Name+yyyy+mm+dd+trialDelimiter+num2str(obj.TrialIndex)+'.mat');
