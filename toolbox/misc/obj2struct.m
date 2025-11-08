@@ -12,7 +12,7 @@ function S = obj2struct(x, opt, depth, seenHandles, propertyFilter)
     %   If the propertyFilter is empty {}, All object properties
     %   are returned
         
-    if depth > opt.MaxDepth || isempty(x)
+    if isempty(x)
         S = struct(); 
         return;
     end
@@ -77,8 +77,18 @@ function S = obj2struct(x, opt, depth, seenHandles, propertyFilter)
               iscategorical(x)
         S = x;
         return
+    elseif numel(x) > 1
+        S = arrayfun(@(o) obj2struct(o, opt, depth, seenHandles, propertyFilter), x, 'UniformOutput',false);
+        S = [S{:}];
+        return
     end
-    
+
+
+    if depth > opt.MaxDepth
+        S = struct(); 
+        return;
+    end
+
     %unknown datatype
     meta = metaclass(x);
     props = meta.PropertyList;
