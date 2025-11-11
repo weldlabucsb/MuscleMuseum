@@ -1535,6 +1535,68 @@ classdef BecExp < Trial
             end
         end
 
+        function S = exportToStruct(obj, propertyFilter, opts)
+            % Recursively converts the class object's properties to a struct
+            %
+            % propertyFilter only returns object properites explicitly
+            % listed in the cell unless it is empty.
+            % Filters can be nested:
+            % Ex. {depth0_prop1, {depth0_prop2, {depth1_prop1, depth1_prop2}}}
+            % If the propertyFilter is empty {}, All object properties
+            % are returned
+            %
+            % opts filters object properties by attribute and depth. opts
+            % will filter out elements in the propertyFilter if they have
+            % an excluded attribute
+            %
+            % adData is only accessible after it has been written to the file
+            % AdData.mat at the DataAnalysisPath
+
+            arguments
+              obj
+              propertyFilter = {
+                  "AdData", ...
+                  "CiceroData", ...
+                  "HardwareData", ...
+                  "ScannedVariableList", ...
+                  "ScannedVariableList2"
+              }
+              opts.IncludeHidden    (1,1) logical = true
+              opts.IncludeTransient (1,1) logical = true
+              opts.IncludeDependent (1,1) logical = true
+              opts.MaxDepth         (1,1) double  {mustBeNonnegative} = 100
+            end
+
+            isAdDataRequested = any(cellfun(@(c) isequal(c, "AdData"), propertyFilter));
+
+            if numel(obj) > 1
+                S = arrayfun(@(o) obj2struct(o, opts, 0, {}, propertyFilter), obj, 'UniformOutput', false);
+                S = [S{:}];
+                if isAdDataRequested
+                    for k = 1:numel(obj)
+                        currentObj = obj(k);
+                        adDataFile = fullfile(currentObj.DataAnalysisPath, "AdData.mat");
+                        if isfile(adDataFile)
+                            loadedData = load(adDataFile, "adData");
+                            S(k).AdData = loadedData.adData;
+                        else
+                            warning('AdData.mat not found for object %d at: %s', k, adDataFile);
+                        end
+                    end
+                end
+            else
+                S = obj2struct(obj, opts, 0, {}, propertyFilter);
+                if isAdDataRequested
+                    adDataFile = fullfile(obj.DataAnalysisPath, "AdData.mat");          
+                    if isfile(adDataFile)
+                        loadedData = load(adDataFile, "adData");
+                        S.AdData = loadedData.adData;
+                    else
+                        warning('AdData.mat not found at: %s', adDataFile);
+                    end
+                end
+            end
+        end
     end
 
     methods (Hidden)
