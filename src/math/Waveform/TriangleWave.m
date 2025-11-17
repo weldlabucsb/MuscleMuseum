@@ -95,8 +95,8 @@ classdef TriangleWave < PeriodicWaveform
             Amax=offset+amp/2;
             Tr=T*balance;
             function waveOut = tFunc(t)
-                waveOut = (mod((t + phi), T) < Tr) .* (Amin + (Amax - Amin) .* mod((t + phi), T) / Tr) + ...
-                (mod((t + phi), T) >= Tr) .* (Amax -  (Amax - Amin) .* (mod((t + phi), T) - Tr) / (T - Tr));
+                waveOut = (mod((t + phi/(2*pi)*T), T) < Tr) .* (Amin + (Amax - Amin) .* mod((t + phi/(2*pi)*T), T) / Tr) + ...
+                (mod((t + phi/(2*pi)*T), T) >= Tr) .* (Amax -  (Amax - Amin) .* (mod((t + phi/(2*pi)*T), T) - Tr) / (T - Tr));
             end
         end
     end
