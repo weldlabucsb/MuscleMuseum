@@ -550,35 +550,57 @@ classdef TwoJManifold < AtomManifold
                 laser Laser
                 isPlot logical = false
                 options.samplingSize double = []
+                options.B = []
+                options.U = []
             end
 
             if ~isempty(options.samplingSize)
                 samplingSize = options.samplingSize;
             else
                 % samplingSize = max(round(bias(3)/ dB *20),1000);
-                samplingSize = 1000;
+                samplingSize = 2500;
+            end
+
+            if ~isempty(options.B)
+                if isempty(options.U)
+                    error("If B field is provided, the transformation should also be provided")
+                else
+                    U = options.U;
+                    Ham = U'*obj.HamiltonianAtomBiasField(options.B)*U;
+                end
+            else
+                Ham = 0;
             end
 
             Ha = obj.HamiltonianAtom(laser.Frequency);
+            Ha0 = Ha;
             Hal = obj.HamiltonianAtomLaserOrigin(laser,laser.Frequency);
+            if ~isempty(options.U)
+                Ha = U'*Ha*U;
+                Hal = U'*Ha*U;
+            end
             scaleList = linspace(0,1,samplingSize);       
             HMatrix = zeros([size(Ha),samplingSize]);
             for ii = 1:samplingSize
-                HMatrix(:,:,ii) = Ha + Hal * sqrt(scaleList(ii));
+                HMatrix(:,:,ii) = Ha + Ham + Hal * sqrt(scaleList(ii));
             end
             [V,D] = eigenshuffle(HMatrix);
 
-            EnergyShift = D(:,end) - diag(Ha);
+            EnergyShift = D(:,end) - diag(Ha+Ham);
+            BiasEnergyShift = diag(Ha+Ham) - diag(Ha0);
             dressedState = V(:,:,end);
             DressedState = cell(numel(EnergyShift),1);
             for ii = 1:numel(EnergyShift)
                 DressedState{ii} = dressedState(:,ii);
             end
             zeroFieldState = V(:,:,1);
-            [Index,~] = find(zeroFieldState);
-            dressedStateList = table(Index,EnergyShift,DressedState);
+            [~,Index] = max(abs(zeroFieldState));
+            Index = Index.';
+            dressedStateList = table(Index,EnergyShift,DressedState,BiasEnergyShift);
             dressedStateList = sortrows(dressedStateList,"Index");
             dressedStateList = join(obj.StateList,dressedStateList);
+            dressedStateList.Energy = dressedStateList.Energy + dressedStateList.BiasEnergyShift;
+            dressedStateList.BiasEnergyShift = [];
             U = dressedStateList.DressedState;
             U = horzcat(U{:}); %Unitary operator the connect to the dressed states
 
@@ -587,7 +609,7 @@ classdef TwoJManifold < AtomManifold
             acMap = {intensityList,D(sortIndex,:)};
 
             if isPlot
-                close(figure(2035))
+                close(figure(20324))
                 figure(2035)
                 plot(acMap{1} / 10,acMap{2}*1e-6)
                 xlabel('Intensity [$\mathrm{mW}/\mathrm{cm}^2$]',Interpreter='latex')
