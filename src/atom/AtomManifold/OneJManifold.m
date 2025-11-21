@@ -240,11 +240,12 @@ classdef OneJManifold < AtomManifold
                 samplingSize = min(samplingSize,5000);
             end
             
-            BList = arrayfun(@(b) MagneticField(bias=[0;0;b]),linspace(0,bias(3),samplingSize));
-            HList = arrayfun(@(b) obj.HamiltonianAtom + obj.HamiltonianAtomBiasField(b),BList,UniformOutput=false);
-            HMatrix = zeros([size(HList{1}),samplingSize]);
+            Ha = obj.HamiltonianAtom;
+            Ham = obj.HamiltonianAtomBiasField(B);
+            HMatrix = zeros([size(Ha),samplingSize]);
+            scaleFactor = linspace(0,1,samplingSize);
             for ii = 1:samplingSize
-                HMatrix(:,:,ii) = HList{ii};
+                HMatrix(:,:,ii) = Ha + Ham * scaleFactor(ii);
             end
             [V,D] = eigenshuffle(HMatrix);
             EnergyShift = D(:,end);
@@ -262,9 +263,8 @@ classdef OneJManifold < AtomManifold
             U = dressedStateList.DressedState;
             U = horzcat(U{:}); %Unitary operator the connect to the dressed states
 
-            biasList = [BList.Bias];
             [~,sortIndex] = sort(Index);
-            biasList = biasList(3,:);
+            biasList = norm(B.Bias) * scaleFactor;
             brMap = {biasList,D(sortIndex,:)};
 
             if isPlot
