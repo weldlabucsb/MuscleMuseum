@@ -103,7 +103,7 @@ classdef LatticeSeSim1D < SpaceTimeSim
                     duration = 1e-3, ...
                     frequency = 1);};
                 if ~isempty(obj.WallLaser)
-                    obj.WallModulation = repmat(obj.WallModulation,1,numel(obj.WallLaser{1}));
+                    obj.WallModulation{1} = repmat(obj.WallModulation{1},1,numel(obj.WallLaser{1}));
                 end
             end
 

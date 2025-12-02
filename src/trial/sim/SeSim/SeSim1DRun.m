@@ -155,6 +155,12 @@ classdef SeSim1DRun < TimeSimRun & SpaceSimRun
             exportgraphics(fig,fullfile(obj.DataAnalysisPath,"run"+obj.RunIndex+"_spacetime.png"),Resolution=300)
         end
 
+        function [psicj,time] = showTimeSlice(obj,idx)
+            m = matfile(obj.RunPath);
+            psicj = m.WaveFunction(idx,:);
+            time = m.Time(idx,:);
+        end
+
         function output = showPeak(obj)
             psi = obj.readRun("WaveFunction");
             n = abs(psi).^2;
