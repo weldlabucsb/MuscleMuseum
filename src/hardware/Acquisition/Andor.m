@@ -271,9 +271,8 @@ classdef Andor < Acquisition
                         [ret, imageData, ~, ~] = GetImages(indexToGet, indexToGet, XPixels * YPixels);
 
                         % Update the last gotten image.
-                        lastGotten = firstIndex;
-
                         if ret == atmcd.DRV_SUCCESS % data returned
+                            lastGotten = firstIndex;
                             imageCount = imageCount + 1;
                             imageData = flip(transpose(reshape(imageData, XPixels, YPixels)),1);
                             mData(:,:,imageCount) = imageData;
