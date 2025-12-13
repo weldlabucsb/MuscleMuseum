@@ -196,6 +196,14 @@ classdef Andor < Acquisition
             acqMode = "Absorption";
             bitPerSample = 16;
             imageCount = 0;
+
+            % Logger Setup
+            logFolder = "C:\Data\AndorDebugLogs\";
+            logName = string(datestr(now, 'mmddyy-HHMMSS')) + ".txt";  
+            fullLogPath = fullfile(logFolder, logName);
+            if ~exist(logFolder, 'dir'); mkdir(logFolder); end
+            Logger = logger(fullLogPath,0);
+            Logger.info("Beginning Andor Loop")
             
 
             while true
@@ -230,9 +238,7 @@ classdef Andor < Acquisition
                                 acqMode = "Absorption";
                                 groupSize = 3;
 
-                                [ret]=SetAcquisitionMode(3);        %   Set acquisition mode; 3 for Kinetic Series
-                                CheckError(ret);
-                                [ret]=SetNumberKinetics(groupSize);
+                                [ret]=SetAcquisitionMode(5);        %   Run till abort
                                 CheckError(ret);
                                 [ret]=SetTriggerMode(1);            %   Set external trigger mode
                                 CheckError(ret);
@@ -249,7 +255,12 @@ classdef Andor < Acquisition
                         [ret] = StartAcquisition();
                         CheckError(ret);
                         isAcq = true;
-                        [~, lastGotten, ~] = GetNumberNewImages();% Find the starting index of the buffer.
+                        [ret, lastGotten, lastIndex] = GetNumberNewImages();% Find the starting index of the buffer.
+
+                        if (ret == atmcd.DRV_SUCCESS || ret == atmcd.DRV_NO_NEW_DATA) Logger.info('GNNI: R-%d, FI-%d, LI-%d', ret, lastGotten, lastIndex);
+                        else Logger.error('GNNI: R-%d, FI-%d, LI-%d', ret, lastGotten, lastIndex); end
+                        Logger.info("Beginning Acquisition");
+                        GroupNumber = 1;
                     end
                 else
                     %% Acuiqision
@@ -262,15 +273,19 @@ classdef Andor < Acquisition
                     % Updates when GetImages is called, but after having gotten all the
                     % images, it returns first = last = "the newest image that exists" even
                     % if the "newest image" in the buffer was already retreived.
-                    [~, firstIndex, lastIndex] = GetNumberNewImages();
+                    [ret, firstIndex, lastIndex] = GetNumberNewImages();
 
+                    if (ret == atmcd.DRV_SUCCESS) Logger.info('GNNI: R-%d, FI-%d, LI-%d', ret, firstIndex, lastIndex);
+                    elseif (ret ~= atmcd.DRV_NO_NEW_DATA) Logger.error('GNNI: R-%d, FI-%d, LI-%d', ret, firstIndex, lastIndex); end
+                    
                     if lastGotten~=lastIndex
                         indexToGet = firstIndex;
 
                         % Retreive the oldest new image from the camera buffer.
-                        [ret, imageData, ~, ~] = GetImages(indexToGet, indexToGet, XPixels * YPixels);
-
-                        % Update the last gotten image.
+                        [ret, imageData, validfirst, validlast] = GetImages(indexToGet, indexToGet, XPixels * YPixels);
+                        if (ret == atmcd.DRV_SUCCESS) Logger.info('GI: R-%d, VF-%d, VL-%d', ret, validfirst, validlast);
+                        elseif (ret ~= atmcd.DRV_NO_NEW_DATA) Logger.error('GI: R-%d, VF-%d, VL-%d', ret, validfirst, validlast); end
+                        
                         if ret == atmcd.DRV_SUCCESS % data returned
                             lastGotten = firstIndex;
                             imageCount = imageCount + 1;
@@ -288,11 +303,9 @@ classdef Andor < Acquisition
                                     case 32
                                         mData = uint32(mData);
                                 end
-                                send(cdq,mData)
-                                [ret] = FreeInternalMemory();
-                                CheckError(ret);
-                                [ret] = StartAcquisition();
-                                CheckError(ret);
+                                send(cdq,mData);
+                                Logger.info("Sent Data Group %d", GroupNumber)
+                                GroupNumber = GroupNumber + 1;
                             end
                         end
                     end
@@ -300,7 +313,8 @@ classdef Andor < Acquisition
                     %% Stop
                     [data,datarcvd] = poll(wq);
                     if datarcvd && data.Message == "Stop"
-                        disp("stopping camera")
+                        Logger.info("Stopping Camera");
+                        disp("stopping camera");
                         [ret] = AbortAcquisition();
                         CheckError(ret);
                         [ret]=SetShutter(1, 2, 1, 1);
