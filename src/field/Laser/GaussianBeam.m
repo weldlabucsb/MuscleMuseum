@@ -78,6 +78,19 @@ classdef GaussianBeam < Laser
            % :rtype: double
            I = obj.Power/obj.Waist(1)/obj.Waist(2)/pi;
         end
+        function obj = set.Waist(obj,val)
+            if isscalar(val)
+                val = [val;val];
+            end
+            if (norm(val - obj.Waist)>eps || any(isnan(obj.Waist)) ) && all(~isnan(val))
+                obj.Waist = val;
+                if ~isnan(obj.Power)
+                    obj.Intensity = 2 * obj.Power / obj.Waist(1) / obj.Waist(2) / pi;
+                elseif ~isnan(obj.Intensity)
+                    obj.Power = obj.Intensity * obj.Waist(1) * obj.Waist(2) * pi / 2;
+                end
+            end
+        end
     end
 end
 

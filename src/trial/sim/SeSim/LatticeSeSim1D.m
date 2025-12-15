@@ -280,6 +280,7 @@ classdef LatticeSeSim1D < SpaceTimeSim
                 clim([0,max(qDist(:))])
                 render
                 exportgraphics(fig,fullfile(obj.DataAnalysisPath,"run"+obj.SimRun(ii).RunIndex+"_qTime.png"),Resolution=300)
+                savefig(fullfile(obj.DataAnalysisPath,"run"+obj.SimRun(ii).RunIndex+"_qTime.fig"))
                 close all
             end
         end
