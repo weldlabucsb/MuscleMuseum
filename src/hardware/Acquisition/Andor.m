@@ -252,6 +252,8 @@ classdef Andor < Acquisition
                         %% Start acquisition
                         [ret] = FreeInternalMemory();
                         CheckError(ret);
+                        [ret] = atmcdmex('SetMetaData', 1);
+                        CheckError(ret);
                         [ret] = StartAcquisition();
                         CheckError(ret);
                         isAcq = true;
@@ -285,8 +287,12 @@ classdef Andor < Acquisition
                         [ret, imageData, validfirst, validlast] = GetImages(indexToGet, indexToGet, XPixels * YPixels);
                         if (ret == atmcd.DRV_SUCCESS) Logger.info('GI: R-%d, VF-%d, VL-%d', ret, validfirst, validlast);
                         elseif (ret ~= atmcd.DRV_NO_NEW_DATA) Logger.error('GI: R-%d, VF-%d, VL-%d', ret, validfirst, validlast); end
-                        
+
                         if ret == atmcd.DRV_SUCCESS % data returned
+                            [ret, ~, pfTimeFromStart] = GetMetaDataInfo(indexToGet);%atmcdmex('GetMetaDataInfo', indexToGet);
+                            if (ret == atmcd.DRV_SUCCESS) Logger.info('GMDI: R-%d, TFS-%d', ret, pfTimeFromStart);
+                            else Logger.warn('GMDI: R-%d, TFS-%d', ret, pfTimeFromStart); end
+                            
                             lastGotten = firstIndex;
                             imageCount = imageCount + 1;
                             imageData = flip(transpose(reshape(imageData, XPixels, YPixels)),1);
