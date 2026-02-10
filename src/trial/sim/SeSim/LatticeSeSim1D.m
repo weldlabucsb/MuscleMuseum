@@ -237,12 +237,17 @@ classdef LatticeSeSim1D < SpaceTimeSim
             psicj = obj.SimRun(runIdx).readRun("WaveFunction");
             x = obj.SimRun(1).SpaceList;
             t = obj.SimRun(1).TimeListAvg * 1e3;
-            pop = obj.OpticalLattice.computeBandPopulation1D(psicj,max(bandNumber),x);
-            bandNumber = bandNumber + 1;
-            pop = pop(:,bandNumber);
+            ol = obj.OpticalLattice(1);
+            if isempty(ol.BlochState)
+                ol.computeAll1D(2000,max(bandNumber),x)
+            end
+            pop = obj.OpticalLattice.computeBandPopulation1D(psicj,bandNumber,double.empty(0,1));
             figure(2943)
             plot(t,pop)
             render
+            exportgraphics(gcf,fullfile(obj.DataAnalysisPath,"run"+runIdx+"_bandPopTime.png"),Resolution=300)
+            savefig(fullfile(obj.DataAnalysisPath,"run"+runIdx+"_bandPopTime.fig"))
+            close all
         end
 
         function showSpaceTime(obj)

@@ -568,6 +568,8 @@ classdef TwoJManifold < AtomManifold
                     U = options.U;
                     Ham = obj.HamiltonianAtomBiasField(options.B,U);
                 end
+            elseif ~isempty(options.U)
+                error("If U is provided, the magnetic field should asl be provided.")
             else
                 Ham = 0;
                 U = 1;

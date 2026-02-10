@@ -814,6 +814,7 @@ classdef OpticalLattice < OpticalPotential
                 if max(n) > max(obj.BandIndexMax)
                     error("n is too large. Change BandIndexMax or reset n.")
                 end
+                dx = obj.SpaceList(2) - obj.SpaceList(1);
             end
 
             %% Compute population
