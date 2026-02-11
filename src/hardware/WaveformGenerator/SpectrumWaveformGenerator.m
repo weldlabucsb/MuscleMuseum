@@ -130,9 +130,9 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             %% Get the minimum segment size
             enabledChannel = [];
             for ii = 1:obj.NChannel
-                if isempty(obj.WaveformList{ii})
-                    continue
-                elseif obj.IsOutput(ii) == false
+                if obj.IsOutput(ii) == false || isempty(obj.WaveformList{ii}) || obj.WaveformList{ii}.IsEmpty
+                    % set output to zero if no waveform
+                    [~,obj.Device] = spcMSetupAnalogOutputChannel(obj.Device, ii-1, 0, 0, 0, obj.RegMap('SPCM_STOPLVL_ZERO'), 0, 0);
                     continue
                 else
                     enabledChannel = [enabledChannel,ii];
