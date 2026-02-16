@@ -78,15 +78,6 @@ function [data,metadata] = pgFetch(connect,second_input,varargin)
 
 %   Copyright 2022 The MathWorks, Inc.
 
-%First check to see if the subclass supports this method
-subclass = metaclass(connect);
-fetchHookMethod = subclass.MethodList(string({subclass.MethodList.Name}) == "fetchHook");
-definingClass = fetchHookMethod.DefiningClass;
-if definingClass ~= subclass
-    %This class does not support fetch, so error out
-    error(message('database:database"MethodNotSupported','fetch',class(connect)));
-end
-
 %Check for a valid connection
 if ~isopen(connect)
     error(message("database:database:invalidConnection"))
