@@ -1,267 +1,174 @@
-function pgUpdate(connect,tablename, data, filter, varargin)
-% Update PostgreSQL database table rows using row filters and MATLAB table data.
+function pgUpdate(conn, tableName, data, filter, varargin)
+%pgUpdate Update PostgreSQL rows preserving Case Sensitivity and Arrays.
 %
-% Updates existing database rows matching the provided filters with new data
-% from a MATLAB table. Automatically adds missing columns as array types when
-% needed and handles vector-valued data appropriately.
+%   Features:
+%   1. Resolves RowFilter case-sensitivity issues by quoting variables.
+%   2. Automatically adds missing columns (Schema Evolution).
+%   3. Serializes MATLAB vectors to PostgreSQL arrays ("{1,2,3}").
 %
-% :param connect: Open PostgreSQL database connection
-% :type connect: database.postgre.connection
-% :param tablename: Target database table name
-% :type tablename: string
-% :param data: MATLAB table containing new data values
-% :type data: table
-% :param filter: Row filters specifying which rows to update (one per table row)
-% :type filter: matlab.io.RowFilter
-% :param isForceArray: Force new columns to be created as array types (default: false)
-% :type isForceArray: logical, optional
-%
-% **Example:**
-%
-% .. code-block:: matlab
-%
-%    conn = createWriter("myDatabase");
-%    rf = rowfilter("SerialNumber");
-%    rf = rf.SerialNumber == 1234;
-%    pgUpdate(conn, "myTable", newData, rf);
+%   Syntax:
+%       pgUpdate(conn, "MyTable", data, rowFilters)
 
-[connect,tablename,data,filter,varargin{:}] = convertCharsToStrings(connect,tablename, data, filter, varargin{:});
+    % 1. Input Parsing
+    p = inputParser;
+    addRequired(p, "conn", @(x) validateattributes(x, "database.relational.connection", "scalar"));
+    addRequired(p, "tableName", @(x) validateattributes(x, ["string", "char"], "scalartext"));
+    addRequired(p, "data", @(x) validateattributes(x, "table", {}));
+    addRequired(p, "filter"); 
+    addParameter(p, "isForceArray", false, @islogical);
+    parse(p, conn, tableName, data, filter, varargin{:});
+    
+    isForceArray = p.Results.isForceArray;
+    tableName = string(tableName);
+    
+    if isempty(data), return; end
 
-%Parse inputs
-p = inputParser;
-
-p.addRequired("connect",@(x)validateattributes(x,"database.relational.connection","scalar"));
-p.addRequired("tablename",@(x)validateattributes(x,["string" "char"],"scalartext"));
-p.addRequired("data",@(x)validateattributes(x,"table",{}));
-p.addRequired("filter",@(x)validateattributes(x,["string","matlab.io.RowFilter","cell"],"vector"));
-p.addParameter("Catalog","",@(x)validateattributes(x,["string" "char"],"scalartext"));
-p.addParameter("Schema","",@(x)validateattributes(x,["string" "char"],"scalartext"));
-p.addParameter("isForceArray",false)
-
-p.parse(connect,tablename,data,filter,varargin{:});
-isForceArray = p.Results.isForceArray;
-
-%Check for a valid connection
-if ~isopen(connect)
-    error(message("database:database:invalidConnection"));
-end
-
-if isa(filter,"matlab.io.RowFilter")
-    filter = {filter};
-end
-
-nfilter = numel(filter);
-for ii = 1:nfilter
-    vNames = properties(filter{ii});
-    nNames = numel(vNames);
-    for jj = 1:nNames
-        filter{ii} = replaceVariableNames(filter{ii},vNames{jj},['"',vNames{jj},'"']);
-    end
-end
-
-if ~all(cellfun(@(x)isa(x,"matlab.io.RowFilter"),filter))
-    error('Cell array must have maltab.io.Rowfilters');
-end
-
-
-%Datamine table information
-catalog = string(p.Results.Catalog);
-schema = string(p.Results.Schema);
-tablename = string(p.Results.tablename);
-columnNames = string(data.Properties.VariableNames);
-columnNames = arrayfun(@(x) """" + x + """",columnNames); %Add "" for column names for case-sensitivity in pg
-
-% g1781499 - Split tablename to see if there is catalog and/or schema name attached
-temp_tablename = strsplit(tablename,".");
-tablename = string(temp_tablename(end));
-otherparts = "";
-switch numel(temp_tablename)
-    case 1
-        % do nothing
-    case 2
-        if isempty(connect.Schemas)
-            catalog = string(temp_tablename(end-1));
+    if isa(filter, "matlab.io.RowFilter")
+        if height(data) == 1
+            filter = {filter};
         else
-            schema = string(temp_tablename(end-1));
-        end
-    otherwise
-        schema = string(temp_tablename(end-1));
-        catalog = string(temp_tablename(end-2));
-        otherparts = string(strjoin(temp_tablename(1:end-3)));
-end
-
-%g2197693 Remove identifier quotes before running sqlfind to avoid a bad
-%matching pattern
-% identifier = connect.getIdentifier();
-identifier = """";
-tableNameToMatch = tablename;
-if strlength(tableNameToMatch) > 1 && startsWith(tableNameToMatch,identifier) ...
-        && endsWith(tableNameToMatch,identifier)
-    tableNameToMatch = extractBetween(tableNameToMatch,1,strlength(tableNameToMatch),...
-        'Boundaries','exclusive');
-end
-
-catalogNameToMatch = catalog;
-if strlength(catalogNameToMatch) > 1 && startsWith(catalogNameToMatch,identifier) ...
-        && endsWith(catalogNameToMatch,identifier)
-    catalogNameToMatch = extractBetween(catalogNameToMatch,1,strlength(catalogNameToMatch),...
-        'Boundaries','exclusive');
-end
-
-schemaNameToMatch = schema;
-if strlength(schemaNameToMatch) > 1 && startsWith(schemaNameToMatch,identifier) ...
-        && endsWith(schemaNameToMatch,identifier)
-    schemaNameToMatch = extractBetween(schemaNameToMatch,1,strlength(schemaNameToMatch),...
-        'Boundaries','exclusive');
-end
-
-%Serach for a table that matches the given name
-tabledata = sqlfind(connect,tableNameToMatch,"Catalog",catalogNameToMatch,"Schema",schemaNameToMatch);
-
-if ~isempty(tabledata.Table)
-    %Remove any entries that are not an exact match
-    tabledata(cellfun(@(x)~strcmpi(x,char(tableNameToMatch)),tabledata.Table),:) = [];
-end
-
-if height(tabledata) > 1
-    %Error if multiple tables match the name
-    error(message('database:database:MultipleTableEntries',tableNameToMatch,"Catalog","Schema"));
-elseif height(tabledata) < 1
-    %No table was found
-    error(message('database:database:TableNonexistent',tableNameToMatch));
-end
-
-%Add the schema and catalog to the table name
-if schema.strlength ~= 0
-    tablename = schema + "." + tablename;
-end
-
-if catalog.strlength ~= 0
-    tablename = catalog + "." + tablename;
-end
-
-% g1781499 - This is needed if using fully qualified table-name. Generally fully
-% qualified table-name has only 3 parts, but with cloud solutions one can
-% add server-name as well for certain databases.
-if numel(temp_tablename) > 3
-    tablename = otherparts + "." + tablename;
-end
-
-%If the input was a rowfilter, we need to construct a new
-%UPDATE statment for each row. we can't use a prepared
-%statement as we can't be sure that the structure of each
-%query will be the same.
-
-%First Verify that the number of RowFilter objects matches
-%the table's height
-if length(filter) ~= height(data)
-    error('Number of filters must match the height of the table');
-end
-
-noRowTable = fetch(connect,"SELECT * FROM "+tablename+" WHERE FALSE;");
-columnnamesDB = noRowTable.Properties.VariableNames;
-columnnamesDB = cellfun(@(x) """"+string(x)+"""",columnnamesDB);
-columnCompare = ismember(columnNames,columnnamesDB);
-if ~all(columnCompare)
-    addedColumnNames = columnNames(~columnCompare);
-    [data,columnTypes] = database.internal.utilities.TypeMapper.matlabToDatabaseTypes(connect,data,connect.DatabaseProductName);
-    [data,columnTypes,columnNames] = database.internal.utilities.TypeMapper.modifyData(data,columnTypes,columnNames);
-    firstRowData = table2cell(data(1,:));
-    for ii = 1:numel(columnNames)
-        if numel(firstRowData{ii})>1 || isForceArray
-            if isa(firstRowData{ii},'float')
-                columnTypes(ii) = "numeric[]";
-            elseif isa(firstRowData{ii},'integer')
-                columnTypes(ii) = "int[]";
-            elseif isa(firstRowData{ii},'string')
-                columnTypes(ii) = "text[]";
-            end
-        end
-    end
-    addedColumnTypes = columnTypes(~columnCompare);
-    query = "ALTER TABLE "+tablename;
-    for ii = 1:numel(addedColumnNames)
-        query = query + " ADD COLUMN " + addedColumnNames(ii) + " " + addedColumnTypes(ii);
-        if ii ~= numel(addedColumnNames)
-            query = query + ',';
-        end
-    end
-    query = query + ";";
-    execute(connect,query)
-end
-
-%get list of columns that are arrays
-query = "SELECT column_name, data_type FROM information_schema.columns WHERE table_name = '" + tablename + "'" ;
-out = pgFetch(connect,query);
-aNames = out(out.data_type == "ARRAY",:).column_name;
-aNames = cellfun(@(x) """"+string(x)+"""",aNames);
-aNames = string(aNames);
-
-query = strings(height(data),1);
-%Convert all logicals to numerics before string conversion
-data = varfun(@(x)database.postgre.connection.logical2Numeric(x),data);
-
-for n = 1:height(data)
-    querybuilder = database.internal.utilities.SQLQueryBuilder;
-    tCell = table2cell(data(n,:));
-    emptyIdx = cellfun(@isempty,tCell);
-    tCell(emptyIdx) = {''};
-    for ii = 1:numel(tCell)
-        if numel(tCell{ii})>1 || isForceArray || ismember(columnNames(ii),aNames)
-            if isempty(tCell{ii})
-                tCell{ii} = "{}";
-            elseif isa(tCell{ii},"numeric")
-                tCell{ii} = "{"+regexprep(num2str(tCell{ii}),'\s+',',')+"}";
-            elseif isa(tCell{ii},"string")
-                tCell{ii} = "{" + strjoin(arrayfun(@(x) """" + x + """",tCell{ii}),",") + "}";
-                tCell{ii} = strrep(tCell{ii},"'","''");
-            end
-        else
-            tCell{ii} = string(tCell{ii});
-            tCell{ii} = strrep(tCell{ii},"'","''");
-        end
-    end
-    tCellStr = string(tCell);
-    missingVals = ismissing(tCellStr) | strlength(tCellStr) == 0;
-    tCell(missingVals) = [];
-    columnNames(missingVals) = [];
-
-    querybuilder = querybuilder.update(tablename,columnNames,tCell,connect.DatabaseProductName);
-    dispatcher = database.internal.utilities.SQLFilterDispatcher();
-    querybuilder = dispatcher.dispatch(filter{n},querybuilder,connect.DatabaseProductName);
-    query(n) = querybuilder.SQLQuery;
-end
-
-oldState = connect.AutoCommit;
-connect.AutoCommit = 'off';
-
-try
-    for n = 1:length(query)
-        execute(connect,query(n));
-    end
-catch ME
-    if strcmpi(oldState,"on")
-        try
-            execute(connect,"ROLLBACK");
-        catch
+            error("Single RowFilter provided for multiple rows of data.");
         end
     end
 
-    % Reset auto-commit to original value
-    connect.AutoCommit = oldState;
-    error(message("database:database:WriteTableDriverError",connect.DatabaseProductName,string(ME.message)));
-end
-
-% If update succeeds, first COMMIT whatever was written and then
-% reset preferences
-if strcmpi(oldState,"on")
+    % 2. Schema Evolution (Check & Add Missing Columns)
     try
-        execute(connect,"COMMIT");
-    catch
+        % Fetch schema to check columns
+        querySchema = "SELECT * FROM " + tableName + " WHERE FALSE";
+        schemaTable = fetch(conn, querySchema);
+        dbCols = string(schemaTable.Properties.VariableNames);
+        
+        inputCols = string(data.Properties.VariableNames);
+        missingCols = inputCols(~ismember(inputCols, dbCols));
+        
+        if ~isempty(missingCols)
+            alterStmts = strings(0);
+            for col = missingCols
+                colData = data.(col);
+                % Determine Column Type (Array vs Scalar)
+                isVec = iscell(colData) || (size(colData, 2) > 1 && ~ischar(colData));
+                sqlType = "text"; 
+                if isnumeric(colData)
+                    if isVec || isForceArray, sqlType = "numeric[]"; else, sqlType = "numeric"; end
+                elseif isstring(colData) || iscellstr(colData)
+                    if isVec || isForceArray, sqlType = "text[]"; else, sqlType = "text"; end
+                elseif islogical(colData)
+                    sqlType = "boolean";
+                end
+                
+                alterStmts(end+1) = "ADD COLUMN """ + col + """ " + sqlType; %#ok<AGROW>
+            end
+            execute(conn, "ALTER TABLE " + tableName + " " + join(alterStmts, ", "));
+            
+            % Update our known list of DB columns after adding new ones
+            dbCols = [dbCols, missingCols]; 
+        end
+    catch ME
+        warning("Schema update warning: " + ME.message);
+    end
+
+    % 3. Pre-Process Data Strings (Performance)
+    varNames = string(data.Properties.VariableNames);
+    quotedVarNames = """" + varNames + """"; 
+    
+    numRows = height(data);
+    numCols = width(data);
+    dataStr = strings(numRows, numCols);
+    
+    for c = 1:numCols
+        colName = varNames(c);
+        colData = data.(colName);
+        
+        isArrayCol = iscell(colData) || (isnumeric(colData) && size(colData,2)>1) || isForceArray;
+        
+        if isArrayCol
+            dataStr(:, c) = helperMatlabToPgArray(colData); 
+        else
+            % Scalar handling
+            if isnumeric(colData) || islogical(colData)
+                if islogical(colData), colData = double(colData); end
+                vals = string(colData);
+                vals(ismissing(vals)) = "NULL";
+                dataStr(:, c) = vals;
+            else
+                % Strings: Escape single quotes
+                vals = string(colData);
+                isMiss = ismissing(vals);
+                vals = "'" + strrep(vals, "'", "''") + "'";
+                vals(isMiss) = "NULL";
+                dataStr(:, c) = vals;
+            end
+        end
+    end
+
+    % 4. Execute Updates Row-by-Row
+    try
+        for i = 1:numRows
+            rf = filter{i};
+            
+            % Since RowFilter is opaque, we iterate through ALL known table columns.
+            % We attempt to replace the variable name in the filter with its quoted version.
+            % Example: replaces TrialID with "TrialID" inside the filter object.
+            
+            quotedRF = rf; 
+            for col = dbCols
+                try
+                   % This will only succeed if 'col' is actually used in the filter
+                   quotedRF = replaceVariableNames(quotedRF, col, """" + col + """");
+                catch
+                   % Ignore if the variable isn't in this specific filter
+                end
+            end
+            
+            % Step A: Find the row using the QUOTED filter
+            targetRows = sqlread(conn, tableName, "RowFilter", quotedRF, "VariableNamingRule", "preserve");
+            
+            if isempty(targetRows), continue; end
+            
+            % Step B: Construct WHERE clause using the Primary Key (First Column)
+            idColName = targetRows.Properties.VariableNames{1};
+            idValue = targetRows.(idColName)(1);
+            
+            if isnumeric(idValue)
+                 whereClause = """" + idColName + """ = " + string(idValue);
+            else
+                 safeVal = strrep(string(idValue), "'", "''");
+                 whereClause = """" + idColName + """ = '" + safeVal + "'";
+            end
+
+            % Step C: Manual UPDATE
+            setParts = quotedVarNames + " = " + dataStr(i, :);
+            setClause = join(setParts, ", ");
+            
+            sql = "UPDATE " + tableName + " SET " + setClause + " WHERE " + whereClause;
+            execute(conn, sql);
+        end
+    catch ME
+        rethrow(ME);
     end
 end
 
-% Reset auto-commit to original value
-connect.AutoCommit = oldState;
-
+function strCol = helperMatlabToPgArray(colData)
+    % Helper to convert MATLAB vectors/cells to Postgres "{...}" strings
+    rows = size(colData, 1);
+    strCol = strings(rows, 1);
+    for k = 1:rows
+        if iscell(colData), val = colData{k}; else, val = colData(k, :); end
+        if isempty(val)
+            strCol(k) = "'{}'";
+            continue;
+        end
+        if isnumeric(val) || islogical(val)
+            if islogical(val), val = double(val); end
+            content = join(string(val), ",");
+            strCol(k) = "'{" + content + "}'";
+        else
+            valStr = string(val);
+            valStr = strrep(valStr, '"', '\"');
+            content = join("""" + valStr + """", ",");
+            finalStr = "{" + content + "}";
+            finalStr = strrep(finalStr, "'", "''"); 
+            strCol(k) = "'" + finalStr + "'";
+        end
+    end
 end
