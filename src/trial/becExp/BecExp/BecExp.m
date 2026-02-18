@@ -100,8 +100,8 @@ classdef BecExp < Trial
             obj@Trial(trialName,config,isLoad);
 
             % Variable mapping
-            if ~isempty(obj.ConfigParameter.VariableMapping)
-                s = obj.ConfigParameter.VariableMapping;
+            s = obj.ConfigParameter.VariableMapping;
+            if ~isempty(s) && s ~= "None"
                 obj.VariableMapping = dictionary(s(:,1),s(:,2));
             end
 
