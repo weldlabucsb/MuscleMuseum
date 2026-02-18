@@ -38,6 +38,7 @@ classdef WaveformList < handle
         TimeStep % Time step between samples (1/SamplingRate).
         RepeatMode string % Repeat mode for hardware control ('Repeat' or 'RepeatTilTrigger').
         WaveformPrepared Table % Table containing prepared waveform segments with play modes and repeat counts.
+        IsEmpty logical % If this waveform has no WaveformOrigin or all WaveformOrigin has zero duration
     end
 
     properties (SetAccess = protected)
@@ -77,7 +78,7 @@ classdef WaveformList < handle
             %     sine = SineWave(frequency = 1000, amplitude = 1.0);
             %     list = WaveformList(name = 'myList', waveformOrigin = {sine}, samplingRate = 10000);
             arguments
-                name string
+                name string = "Test"
                 options.samplingRate double = 1e3
                 options.concatMethod string = "Sequential"
                 options.patchMethod string = "Continue"
@@ -112,6 +113,21 @@ classdef WaveformList < handle
                 rM = "RepeatTilTrigger";
             else
                 rM = "Repeat";
+            end
+        end
+
+        function ie = get.IsEmpty(obj)
+            ie = true;
+            if ~isempty(obj.WaveformOrigin)
+                if ~isempty(obj.WaveformOrigin{1})
+                    dura = 0;
+                    for ii = 1:numel(obj.WaveformOrigin)
+                        dura = dura + obj.WaveformOrigin{ii}.Duration;
+                    end
+                    if dura > 0
+                        ie = false;
+                    end
+                end
             end
         end
 
@@ -155,6 +171,9 @@ classdef WaveformList < handle
             switch obj.ConcatMethod
                 case "Sequential"
                     for ii = 1:nWave
+                        if obj.WaveformOrigin{ii}.Duration == 0
+                            continue
+                        end
                         if isa(obj.WaveformOrigin{ii},"PeriodicWaveform") && (obj.WaveformOrigin{ii}.NPeriodPerCycle ~= 0)
                             if isa(obj.WaveformOrigin{ii},"ConstantWave")
                                 obj.WaveformOrigin{ii}.Frequency = obj.SamplingRate;
@@ -243,11 +262,15 @@ classdef WaveformList < handle
                         end
                     end
             end
-            Sample = Sample.';
-            PlayMode = PlayMode.';
-            NRepeat = NRepeat.';
-            t = table(Sample,PlayMode,NRepeat);
-            obj.NSample = sum(cellfun(@numel,Sample));
+            if ~isempty(Sample{1})
+                Sample = Sample.';
+                PlayMode = PlayMode.';
+                NRepeat = NRepeat.';
+                t = table(Sample,PlayMode,NRepeat);
+                obj.NSample = sum(cellfun(@numel,Sample));
+            else
+                t = table.empty;
+            end
         end
 
         function sample = get.Sample(obj)

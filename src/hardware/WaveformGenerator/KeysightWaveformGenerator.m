@@ -105,11 +105,9 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
             %% Upload to channels
             for ii = 1:obj.NChannel
                 %% Check waveform and output
-                if isempty(obj.WaveformList{ii})
+                if obj.IsOutput(ii) == false || isempty(obj.WaveformList{ii}) || obj.WaveformList{ii}.IsEmpty
                     outputStr = "OUTPut" + string(ii);
                     writeline(v,outputStr + " 0") % Stop output if no waveform
-                    continue
-                elseif obj.IsOutput(ii) == false
                     continue
                 end
 

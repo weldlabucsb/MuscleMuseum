@@ -103,7 +103,7 @@ classdef LatticeSeSim1D < SpaceTimeSim
                     duration = 1e-3, ...
                     frequency = 1);};
                 if ~isempty(obj.WallLaser)
-                    obj.WallModulation = repmat(obj.WallModulation,1,numel(obj.WallLaser{1}));
+                    obj.WallModulation{1} = repmat(obj.WallModulation{1},1,numel(obj.WallLaser{1}));
                 end
             end
 
@@ -237,12 +237,17 @@ classdef LatticeSeSim1D < SpaceTimeSim
             psicj = obj.SimRun(runIdx).readRun("WaveFunction");
             x = obj.SimRun(1).SpaceList;
             t = obj.SimRun(1).TimeListAvg * 1e3;
-            pop = obj.OpticalLattice.computeBandPopulation1D(psicj,max(bandNumber),x);
-            bandNumber = bandNumber + 1;
-            pop = pop(:,bandNumber);
+            ol = obj.OpticalLattice(1);
+            if isempty(ol.BlochState)
+                ol.computeAll1D(2000,max(bandNumber),x)
+            end
+            pop = obj.OpticalLattice.computeBandPopulation1D(psicj,bandNumber,double.empty(0,1));
             figure(2943)
             plot(t,pop)
             render
+            exportgraphics(gcf,fullfile(obj.DataAnalysisPath,"run"+runIdx+"_bandPopTime.png"),Resolution=300)
+            savefig(fullfile(obj.DataAnalysisPath,"run"+runIdx+"_bandPopTime.fig"))
+            close all
         end
 
         function showSpaceTime(obj)
@@ -280,6 +285,7 @@ classdef LatticeSeSim1D < SpaceTimeSim
                 clim([0,max(qDist(:))])
                 render
                 exportgraphics(fig,fullfile(obj.DataAnalysisPath,"run"+obj.SimRun(ii).RunIndex+"_qTime.png"),Resolution=300)
+                savefig(fullfile(obj.DataAnalysisPath,"run"+obj.SimRun(ii).RunIndex+"_qTime.fig"))
                 close all
             end
         end

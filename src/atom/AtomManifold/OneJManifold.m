@@ -264,7 +264,7 @@ classdef OneJManifold < AtomManifold
             U = horzcat(U{:}); %Unitary operator the connect to the dressed states
 
             [~,sortIndex] = sort(Index);
-            biasList = norm(B.Bias)*scaleFactor;
+            biasList = norm(B.Bias) * scaleFactor;
             brMap = {biasList,D(sortIndex,:)};
 
             if isPlot
