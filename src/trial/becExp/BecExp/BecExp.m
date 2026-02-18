@@ -54,6 +54,7 @@ classdef BecExp < Trial
         VariableList % Live table of current hardware variable values
         HardwareAssociation % Mapping table linking trial configurations to hardware settings
         HardwareLogPath string % Destination hardware log folder path within trial directory
+        VariableMapping % Lookup table mapping variable IDs to analysis parameters 
     end
 
     properties (SetAccess = private)
@@ -98,6 +99,11 @@ classdef BecExp < Trial
             end
             obj@Trial(trialName,config,isLoad);
 
+            % Variable mapping
+            if ~isempty(obj.ConfigParameter.VariableMapping)
+                s = obj.ConfigParameter.VariableMapping;
+                obj.VariableMapping = dictionary(s(:,1),s(:,2));
+            end
 
             % Atom setting
             obj.Atom = getAtom(obj.ConfigParameter.AtomName);
