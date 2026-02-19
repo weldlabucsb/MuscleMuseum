@@ -40,6 +40,8 @@ classdef CenterFit < BecAnalysis
         ThermalXFitLine % Plot handle for thermal x-center fit line
         ThermalYLine % Plot handle for thermal y-center data points
         ThermalYFitLine % Plot handle for thermal y-center fit line
+        ReferenceXLine
+        ReferenceYLine
         ParaTable % UI table handle for displaying fit parameters and results
     end
 
@@ -147,10 +149,21 @@ classdef CenterFit < BecAnalysis
                 ax2.Box = "on";
                 ax2.XGrid = "on";
                 ax2.YGrid = "on";
-
-                %% Initialize plots, based on DensityFit method
+                
                 hold(ax1,'on')
                 hold(ax2,'on')
+                
+                % Plot reference
+                if becExp.IsShowCenterReference && becExp.CenterReferenceID ~= 0
+                    ref = becExp.BecExpData.readValue(becExp.CenterReferenceID,"CloudCenter","TrialID");
+                    ref = becExp.Roi.noRotationFull2Full(ref);
+                    obj.ReferenceXLine = yline(ax1,ref(2),...
+                        LineStyle="-",Color='k',LineWidth=2);
+                    obj.ReferenceYLine = yline(ax2,ref(1),...
+                        LineStyle="-",Color='k',LineWidth=2);
+                end
+
+                %% Initialize plots, based on DensityFit method
                 switch becExp.DensityFit.FitMethod
                     case {"GaussianFit1D","BosonicGaussianFit1D"}
                         % X data lines
@@ -167,7 +180,7 @@ classdef CenterFit < BecAnalysis
                         obj.ThermalXFitLine = line(ax1,1,1);
                         obj.ThermalXFitLine.LineWidth = 2;
                         obj.ThermalXFitLine.Color = co(1,:);
-                        legend(ax1,"Thermal Data","Thermal Fit");
+                        legend([obj.ThermalXLine,obj.ThermalXFitLine],["Thermal Data","Thermal Fit"]);
 
                         % Y data lines
                         co = ax2.ColorOrder;
@@ -183,7 +196,7 @@ classdef CenterFit < BecAnalysis
                         obj.ThermalYFitLine = line(ax2,1,1);
                         obj.ThermalYFitLine.LineWidth = 2;
                         obj.ThermalYFitLine.Color = co(1,:);
-                        legend(ax2,"Thermal Data","Thermal Fit");
+                        legend([obj.ThermalYLine,obj.ThermalYFitLine],["Thermal Data","Thermal Fit"]);
                 end
                 hold(ax1,'off')
                 hold(ax2,'off')
@@ -493,23 +506,17 @@ classdef CenterFit < BecAnalysis
 
             % save center data
             if obj.IsSaveCenter
-                load("CloudCenterData.mat","CloudCenter")
-                TrialNameList = CloudCenter.TrialName;
-                TrialName = becExp.Name;
+                TrialID = becExp.ConfigParameter.ID;
                 px = becExp.Acquisition.PixelSizeReal;
                 switch becExp.DensityFit.FitMethod
                     case {"GaussianFit1D","BosonicGaussianFit1D"}
-                        Center = obj.ThermalCloudCenterMean;
+                        CloudCenter = obj.ThermalCloudCenterMean;
                 end
-                Center = reshape(flip(Center),1,2) / px; % Use ROI coordinates convention.
-                Center = becExp.Roi.full2NoRotationFull(Center); % Convert to no-rotation full coordinates
-                t = table(TrialName,Center);
-                if ~ismember(TrialName,TrialNameList)
-                    CloudCenter = [CloudCenter;t];
-                else
-                    CloudCenter(TrialNameList == TrialName,:) = t;
-                end
-                save(which("CloudCenterData.mat"),"CloudCenter")
+                CloudCenter = reshape(flip(CloudCenter),1,2) / px; % Use ROI coordinates convention.
+                CloudCenter = becExp.Roi.full2NoRotationFull(CloudCenter); % Convert to no-rotation full coordinates
+                t = table(TrialID,CloudCenter);
+                p = becExp.BecExpData;
+                p.updateEntry(t,"TrialID");
             end
         end
 

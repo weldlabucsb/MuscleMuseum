@@ -218,6 +218,7 @@ settingList = [
     "ListList";
     "VariableList";
     "BecExpSetting";
+    "BecExpData";
     "BecExpVariableUnit";
     "RoiSetting";
     "WaveformLibrary";

@@ -33,10 +33,12 @@ classdef BecExp < Trial
     properties(Hidden)
         ScannedVariableID (1,1) double = 1 % Primary variable ID in :class:`BecExpVariableUnit` lookup table
         ScannedVariableID2 (1,1) double = 0 % Secondary variable ID for 2D parameter scans (0 = none)
+        CenterReferenceID (1,1) double = 0
         IsAutoAcquire logical = false % Flag to automatically control camera acquisition from MATLAB
         IsHoldRefresh logical = false % Flag to temporarily disable figure refresh during operations
         IsAcquiring logical = false % Flag indicating whether images are currently being acquired
         IsOdPreview logical = false % Flag to toggle optical depth preview mode in analysis GUIs
+        IsShowCenterReference logical = false
     end
 
     properties (Hidden,Transient)
@@ -53,6 +55,7 @@ classdef BecExp < Trial
         HardwareList % Configuration table for hardware devices and their settings
         VariableList % Live table of current hardware variable values
         HardwareAssociation % Mapping table linking trial configurations to hardware settings
+        BecExpData
         HardwareLogPath string % Destination hardware log folder path within trial directory
         VariableMapping % Lookup table mapping variable IDs to analysis parameters 
     end
@@ -101,7 +104,7 @@ classdef BecExp < Trial
 
             % Variable mapping
             s = obj.ConfigParameter.VariableMapping;
-            if ~isempty(s) && s ~= "None"
+            if ~isempty(s) && ~isscalar(s)
                 obj.VariableMapping = dictionary(s(:,1),s(:,2));
             end
 
@@ -115,15 +118,6 @@ classdef BecExp < Trial
             obj.Acquisition.ImageFormat = obj.DataFormat;
             obj.Acquisition.ImagePrefix = obj.DataPrefix;
             obj.Roi = Roi(obj.ConfigParameter.RoiName,imageSize = obj.Acquisition.ImageSize);
-
-            % Cloud center
-            if ~ismissing(obj.ConfigParameter.CloudCenterReference)
-                load("CloudCenterData.mat","CloudCenter")
-                if ismember(obj.ConfigParameter.CloudCenterReference,CloudCenter.TrialName)
-                    obj.CloudCenter = ...
-                        CloudCenter(CloudCenter.TrialName == obj.ConfigParameter.CloudCenterReference,:).Center;
-                end
-            end
 
             % Analysis settings
             if ~isLoad
@@ -150,6 +144,7 @@ classdef BecExp < Trial
             obj.HardwareList = HardwareList;
             obj.VariableList = VariableList;
             obj.HardwareAssociation = HardwareAssociation;
+            obj.BecExpData = BecExpData;
         end
         
         function var1 = get.ScannedVariable(obj)
