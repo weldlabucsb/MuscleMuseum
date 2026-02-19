@@ -176,10 +176,10 @@ classdef Andor < Acquisition
             send(cq,wq);
 
             % Initialize the Andor SDK library
-            try
-                AndorShutDown();
-            catch
-            end
+            % try
+            %     AndorShutDown();
+            % catch
+            % end
             try
                 ret=AndorInitialize('');
                 CheckError(ret);
@@ -204,18 +204,180 @@ classdef Andor < Acquisition
             if ~exist(logFolder, 'dir'); mkdir(logFolder); end
             Logger = logger(fullLogPath,0);
             Logger.info("Beginning Andor Loop")
+            gain=21; % this is real emccd gain (20x min)
+            checktemp=0; % (0 = no monitoring) use this to monitor camera temperature before chillerON -- debugging mainly
+            stabilizewait=0; % time to wait for temp to stabilize (s)
+            waitduration = 1; % time btwn temp checks for stabilization (s)
             
+            % testing this out -------------- (nh) ----------------------
+            % this is to readout the return status (instead of e.g. 20035)
+            function txt = andorRetString(ret)
+                switch ret
+                    case atmcd.DRV_SUCCESS
+                        txt = "SUCCESS";
+                    case atmcd.DRV_TEMP_OFF
+                        txt = "Note: TEMP_OFF";
+                    case atmcd.DRV_TEMP_STABILIZED
+                        txt = "Note: TEMP_STABILIZED";
+                    case atmcd.DRV_TEMP_NOT_REACHED
+                        txt = "Note: TEMP_NOT_REACHED";
+                    case atmcd.DRV_TEMP_DRIFT
+                        txt = "Note: TEMP_DRIFT";
+                    case atmcd.DRV_TEMP_NOT_STABILIZED
+                        txt = "Note: TEMP_NOT_STABILIZED";
+                    case atmcd.DRV_ACQUIRING
+                        txt = "Note: ACQUIRING";
+                    case atmcd.DRV_NOT_INITIALIZED
+                        txt = "Note: NOT_INITIALIZED";
+                    otherwise
+                        txt = "ERROR";
+                end
+            end
+
+            function logAndor(Logger, label, ret, varargin)
+                statusTxt = andorRetString(ret);
+            
+                isSuccess = (ret == atmcd.DRV_SUCCESS);
+                isTempStatus = contains(statusTxt,"TEMP");
+            
+                % only show numeric code for real errors
+                showCode = ~(isSuccess || isTempStatus);
+            
+                % build value string if present
+                hasValue = (nargin >= 4);
+                if hasValue
+                    value = varargin{1};
+                    if label == "IsCoolerOn"
+                        if value == 1
+                            valueStr = "ON";
+                        elseif value == 0
+                            valueStr = "OFF";
+                        else
+                            valueStr = sprintf('UNKNOWN (%d)', value);
+                        end
+                    else
+                        if numel(varargin) >= 2
+                            units = varargin{2};
+                            valueStr = sprintf('%g %s', value, units);
+                        else
+                            valueStr = sprintf('%g', value);
+                        end
+                    end
+                end     
+                % ---- Logging ----
+                if isSuccess || isTempStatus
+                    % INFO-level logging
+                    if hasValue
+                        Logger.info('%s → %s | value = %s', label, statusTxt, valueStr);
+                    else
+                        Logger.info('%s → %s', label, statusTxt);
+                    end
+                else
+                    % ERROR-level logging
+                    if hasValue
+                        Logger.error('%s → %s (%d) | value = %s', label, statusTxt, ret, valueStr);
+                    else
+                        Logger.error('%s → %s (%d)', label, statusTxt, ret);
+                    end
+                end
+            end
+            % to monitor temp after shutdown
+            function monitorCooler(durationMinutes, intervalSec, Logger)          
+                    if nargin < 1 || isempty(durationMinutes)
+                        durationMinutes = 5;
+                    end
+                    if nargin < 2 || isempty(intervalSec)
+                        intervalSec = 30;
+                    end
+                
+                    Logger.info('Starting temperature monitoring BEFORE initializing coolerON() for %d minutes, interval %d s', ...
+                        durationMinutes, intervalSec);
+                
+                    tStart = tic;
+                
+                    while toc(tStart) < durationMinutes*60
+                        try
+                            [ret, temp] = GetTemperature();
+                
+                            if ret == atmcd.DRV_SUCCESS || contains(andorRetString(ret),"TEMP")
+                                Logger.info('GetTemperature → %s | value = %.2f °C', ...
+                                    andorRetString(ret), temp);
+                            else
+                                Logger.warn('GetTemperature failed → code %d', ret);
+                            end
+                
+                        catch ME
+                            Logger.error('Error reading temperature: %s', ME.message);
+                        end
+                
+                        pause(intervalSec);
+                    end
+                
+                    Logger.info('Finished temperature monitoring');
+                end
+
+            % (nh) end of test above ----------------------------------
+
 
             while true
                 pause(0.1)
                 if ~isSet
                     [data,datarcvd] = poll(wq,10);
                     if datarcvd && data.Message == "SetParameter"
+                        %% Check Temp on startup and state of cooler
+                        % intial cooler monitoring -----------------
+                        if checktemp
+                            monitorCooler(5, 60, Logger); 
+                        else
+                            pause(5)
+                        end
+                        [ret, status] = IsCoolerOn();
+                        logAndor(Logger, 'IsCoolerOn', ret, status);
+                        [ret, temperature] = GetTemperature();
+                        logAndor(Logger, 'GetTemperature()', ret, temperature, '°C');
+                        % [ret, tmin, tmax] = GetTemperatureRange();
+                        % logAndor(Logger, 'GetTemperatureRange MIN', ret, tmin, '°C');
+                        % logAndor(Logger, 'GetTemperatureRange MAX', ret, tmax, '°C');
+
+                        % 
+
                         %% Set temperature
                         [ret]=SetCoolerMode(1);     % Camera temperature is maintained on ShutDown
                         CheckError(ret);
+                        logAndor(Logger, 'SetCoolerMode(1)', ret);
+
+                        [ret] = SetTemperature(-50);
+                        logAndor(Logger, 'SetTemperature(-50)', ret);
+
+                        
                         [ret]=CoolerON();           %   Turn on temperature cooler
                         CheckError(ret);
+                        logAndor(Logger, 'CoolerOn()', ret);
+
+                        %(nh) trying out temp stabilization wait-----------
+                        % Wait for temperature to stabilize
+                        tStart = tic;
+                        while true
+                            pause(waitduration); % wait a couple of seconds between checks
+                            [ret, temp] = GetTemperature();
+                            logAndor(Logger, 'GetTemperature()', ret, temp, '°C');
+                        
+                            if ret == atmcd.DRV_TEMP_STABILIZED
+                                Logger.info('Temperature stabilized at %.1f °C', temp);
+                                break;
+                            end
+                        
+                            % Optional timeout to avoid infinite loop
+                            if toc(tStart) > stabilizewait  % 5 minutes if 300
+                                Logger.warn('Temperature not stabilized after wait period');
+                                break;
+                            end
+                        end
+                        % (nh) end of temp stabilization monitoring -----
+
+                        %% Check Temp after setting systems
+                        [ret, temperature] = GetTemperature();
+                        logAndor(Logger, 'GetTemperature()', ret, temperature, '°C');
 
                         %% Set other parameters
                         [ret]=SetExposureTime(data.ExposureTime);     %   Set exposure time in second  THIS IS THE USUAL VALUE
@@ -223,21 +385,70 @@ classdef Andor < Acquisition
                         [ret]=SetReadMode(4);                         %   Set read mode; 4 for Image
                         CheckError(ret);
                         [ret]=SetShutter(1, 1, 0, 0);                 %   Open Shutter
+
                         CheckError(ret);
                         [ret,XPixels, YPixels]=GetDetector;           %   Get the CCD size
                         CheckError(ret);
                         [ret]=SetImage(1, 1, 1, XPixels, 1, YPixels); %   Set the image size
                         CheckError(ret);
-                        [ret]=SetEMCCDGain(1);                        %   Set EMCCD gain
+                        
+                         
+                        % (nh) adding in these lines as a test ----------
+                        [ret, nPreAmp] = GetNumberPreAmpGains();
+                        % logAndor(Logger, 'GetNumberPreAmpGains', ret, nPreAmp);
+                        % ^ removing log, since we confirmed preamp works
+                        
+                        % setting preamp = 2 here, confirming it's act. 2
+                        preAmpIndex = -1;
+                        for i = 0:nPreAmp-1
+                            [ret, gainVal] = GetPreAmpGain(i);
+                            %Logger.info('PreAmp index %d → gain %.2f', i, gainVal);
+                            if abs(gainVal - 2.0) < 0.01
+                                preAmpIndex = i;
+                            end
+                        end
+
+                        if preAmpIndex < 0
+                            Logger.error('Requested preamp gain 2x not available');
+                        else
+                            [ret] = SetPreAmpGain(preAmpIndex);
+                            logAndor(Logger, 'SetPreAmpGain(2x)', ret);
+                        end
+                        % [ret, state] = GetBaselineClamp();
+                        % logRet(Logger, 'GetBaselineClamp()', state); ---
+                        % OK, baseline is enabled
+                        % (nh) end of test code -------------------------
+                        
+                        [ret]=SetEMGainMode(3);
                         CheckError(ret);
+                        [ret]=SetEMCCDGain(gain-1);                        %   Set EMCCD gain
+                        CheckError(ret);
+                        
+                        if gain>20
+                            [ret]=SetCountConvertMode(1);
+                            CheckError(ret);
+                            logAndor(Logger, 'SetCountConvertMode(1)', ret);
+                            imagegain=1;
+                            [ret] = IsCountConvertModeAvailable(1);
+                            logAndor(Logger, 'IsCountConvertModeAvailable(1)', ret);
+                            [ret, gain] = GetEMCCDGain();
+                            logAndor(Logger, 'GetEMCCDGain()', ret, gain);
+                        else
+                            [ret]=SetCountConvertMode(0); %cannot convert to electrons for gain<20
+                            CheckError(ret);
+                            imagegain=gain/5; %Rough e/adc with preamp gain 2 is about 5 from datasheet, so this gives rough post amp counts to electron conversion.   
+                        end
+                            %End of edited codes
                         bitPerSample = data.BitPerSample;
+
+                        
 
                         %% Set acquisition mode
                         switch data.AcquisitionMode
                             case "Absorption"
                                 acqMode = "Absorption";
                                 groupSize = 3;
-
+                                
                                 [ret]=SetAcquisitionMode(5);        %   Run till abort
                                 CheckError(ret);
                                 [ret]=SetTriggerMode(1);            %   Set external trigger mode
@@ -245,6 +456,12 @@ classdef Andor < Acquisition
                         end
                         isSet = true;
                         mData = zeros(YPixels,XPixels,groupSize);
+                        Logger.info("Settings complete.")
+                       
+                        %% Check Temp after setting systems
+                        [ret, temperature] = GetTemperature();
+                        logAndor(Logger, 'GetTemperature', ret, temperature, '°C');
+
                     end
                 elseif ~isAcq
                     [data,datarcvd] = poll(wq,10);
@@ -296,6 +513,7 @@ classdef Andor < Acquisition
                             lastGotten = firstIndex;
                             imageCount = imageCount + 1;
                             imageData = flip(transpose(reshape(imageData, XPixels, YPixels)),1);
+                            imageData = imageData/imagegain;
                             mData(:,:,imageCount) = imageData;
 
                             % Send image data to the client
@@ -312,6 +530,10 @@ classdef Andor < Acquisition
                                 send(cdq,mData);
                                 Logger.info("Sent Data Group %d", GroupNumber)
                                 GroupNumber = GroupNumber + 1;
+
+                                % added this to check temperature again: 
+                                [ret, temperature] = GetTemperature();
+                                logAndor(Logger, 'GetTemperature', ret, temperature, '°C');
                             end
                         end
                     end
@@ -323,10 +545,15 @@ classdef Andor < Acquisition
                         disp("stopping camera");
                         [ret] = AbortAcquisition();
                         CheckError(ret);
+
+                        [ret, status] = IsCoolerOn();
+                        logAndor(Logger, 'IsCoolerOn', ret, status);
+                        
                         [ret]=SetShutter(1, 2, 1, 1);
                         CheckError(ret);
                         [ret] = AndorShutDown();
                         CheckError(ret);
+
                         break
                     end
                 end
