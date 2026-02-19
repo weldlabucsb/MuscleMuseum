@@ -550,6 +550,16 @@ classdef BecExp < Trial
                             obj.AtomNumber.FitMethod = obj.ConfigParameter.AtomNumberFitMethod;
                         case "CenterFit"
                             obj.CenterFit.FitMethod = obj.ConfigParameter.CenterFitMethod;
+                        case "KapitzaDirac"
+                            obj.KapitzaDirac.Wavelength = obj.ConfigParameter.KdParameter.Wavelength;
+                            obj.KapitzaDirac.LatticeAxis = obj.ConfigParameter.KdParameter.LatticeAxis;
+                            obj.KapitzaDirac.OrderMax = obj.ConfigParameter.KdParameter.OrderMax;
+                            obj.KapitzaDirac.RoiSize = obj.ConfigParameter.KdParameter.RoiSize;
+                            obj.KapitzaDirac.RoiMethod = obj.ConfigParameter.KdParameter.RoiMethod;
+                            obj.KapitzaDirac.KdFitMethod = obj.ConfigParameter.KdParameter.KdFitMethod;
+                            obj.KapitzaDirac.ParameterMethod = obj.ConfigParameter.KdParameter.ParameterMethod;
+                            obj.KapitzaDirac.ScanType = obj.ConfigParameter.KdParameter.ScanType;
+                            obj.KapitzaDirac.ScopeChannel = obj.ConfigParameter.KdParameter.ScopeChannel;
                     end
                 end
 
