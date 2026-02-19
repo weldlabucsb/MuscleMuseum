@@ -26,6 +26,7 @@ classdef Imaging < BecAnalysis
 
     properties (SetAccess = protected, Hidden)
         Prefactor % Conversion prefactor :math:`\hbar\omega/(\text{pixel area} \cdot I_\mathrm{sat} \cdot t_\mathrm{unit})` for saturation parameter
+        ImagingTimeVariable string
     end
 
     properties (Dependent)
@@ -51,6 +52,13 @@ classdef Imaging < BecAnalysis
                 size = [0.3069,0.3995]...
                 );
 
+            % Get Imaging time variable name
+            try
+                obj.ImagingTimeVariable = obj.BecExp.VariableMapping("ImagingTime");
+            catch
+                error("ImagingTime Variable was not properly set in MmConfig. Can not do Imaging analyis.")
+            end
+
             % Calcualte the prefactor
             Isat = becExp.Atom.CyclerSaturationIntensity;
             pixelSize = becExp.Acquisition.PixelSize;
@@ -59,7 +67,7 @@ classdef Imaging < BecAnalysis
             c = Constants.SI("c");
             omega = 2*pi*becExp.Atom.CyclerFrequency;
             lambda = 2*pi*c/omega;
-            obj.ImagingTimeUnit = becExp.VariableUnitSetting.readValue("t_image","ScannedVariableUnit","ScannedVariable");
+            obj.ImagingTimeUnit = becExp.VariableUnitSetting.readValue(obj.ImagingTimeVariable,"ScannedVariableUnit","ScannedVariable");
             mul = unit2SI(obj.ImagingTimeUnit);
             obj.Prefactor = hbar*omega/(pixelSize/mag)^2/Isat/mul;
 
@@ -131,7 +139,7 @@ classdef Imaging < BecAnalysis
             darkData = roiData(:,:,3)/eff;
             obj.LightMean(runIdx) = mean(lightData(:));
             obj.DarkMean(runIdx) = mean(darkData(:));
-            t = becExp.CiceroData.t_image(runIdx);
+            t = becExp.CiceroData.(obj.ImagingTimeVariable)(runIdx);
             obj.ImagingTime(runIdx) = t;
             obj.SaturationParameterMean(runIdx) = pf * (obj.LightMean(runIdx) - obj.DarkMean(runIdx)) / t;
             obj.SaturationParameterPropagation(:,:,runIdx) = pf * (atomData + becExp.Od.CameraLightData(:,:,runIdx) / eff) / 2 / t;
@@ -281,7 +289,7 @@ classdef Imaging < BecAnalysis
             pf = obj.Prefactor;
             obj.LightMean = squeeze(mean(roiData(:,:,:,2)/qe,[1,2])).';
             obj.DarkMean = squeeze(mean(roiData(:,:,:,3)/qe,[1,2])).';
-            t = becExp.CiceroData.t_image;
+            t = becExp.CiceroData.(obj.ImagingTimeVariable);
             obj.ImagingTime = t;
             obj.SaturationParameterMean = pf * (obj.LightMean - obj.DarkMean) ./ t;
             t = reshape(t,1,1,becExp.NCompletedRun);

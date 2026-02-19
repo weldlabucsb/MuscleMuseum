@@ -8,8 +8,17 @@ classdef KapitzaDirac < BecAnalysis
     % **Associated Charts:**
     %   - Chart(1): "Kapitza Dirac" - Diffraction order population analysis (future implementation)
     
-    properties (SetAccess = protected)
-        % Reserved for future diffraction order populations and fit results
+    properties
+        Wavelength (1,1) double = 1064e-9
+        LatticeAxis string = "Y"
+        OrderMax (1,1) double = 2
+        OrderMaxFinal (1,1) double
+        RoiSize (1,1) double = 50
+        RoiMethod string = "Auto"
+        KdFitMethod string = "TDSE"
+        ParameterMethod string = "ReadVariable"
+        ScanType string = "Power"
+        ScopeChannel string = "LatticeScope_ch1"
     end
 
     properties (Constant)
@@ -21,7 +30,12 @@ classdef KapitzaDirac < BecAnalysis
     end
 
     properties (Hidden,Transient)
-        % Reserved for future plot handles and GUI elements
+        RawLine
+        RawFitLine
+    end
+
+    properties (Dependent)
+        OpticalLattice OpticalLattice
     end
     
     methods
@@ -35,9 +49,19 @@ classdef KapitzaDirac < BecAnalysis
                 name = "Kapitza Dirac",...
                 num = 32, ...
                 fpath = fullfile(becExp.DataAnalysisPath,"KapitzaDirac"),...
-                loc = [0.3919,0.032],...
-                size = [0.6081,0.57]...
+                loc = [0.6936,0.032],...
+                size = [0.3069,0.57]...
                 );
+        end
+
+        function ol = get.OpticalLattice(obj)
+            switch obj.LatticeAxis
+                case "X"
+                    dir = [1,0,0];
+                case "Y"
+                    dir = [0,1,0];
+            end
+            ol = OpticalLattice(obj.BecExp.Atom,laser(wavelength=obj.Wavelength,direction=dir));
         end
         
         function initialize(obj)
@@ -50,6 +74,39 @@ classdef KapitzaDirac < BecAnalysis
             if ~ishandle(fig)
                 return
             end
+
+            becExp = obj.BecExp;
+            if obj.RoiMethod == "Manual"
+                nRoi = obj.BecExp.Roi.NSub;
+                if mod(nRoi,2) == 0
+                    error("The number of subrois must be odd for Kd fit.")
+                else
+                    obj.OrderMaxFinal = floor(nRoi/2);
+                end
+            else
+                obj.OrderMaxFinal = obj.OrderMax;
+            end
+
+            % Initialize lines
+            ax = gca;
+            co = ax.ColorOrder;
+            mOrder = markerOrder();
+            obj.RawLine = matlab.graphics.chart.primitive.ErrorBar.empty;
+            obj.RawFitLine = matlab.graphics.chart.primitive.Line.empty;
+            for ii = 1:(1+obj.OrderMaxFinal)
+                obj.RawLine(ii) = errorbar(ax,1,1,[]);
+                obj.RawLine(ii).Marker = mOrder(ii);
+                obj.RawLine(ii).MarkerFaceColor = co(ii,:);
+                obj.RawLine(ii).MarkerEdgeColor = co(ii,:)*.5;
+                obj.RawLine(ii).MarkerSize = 8;
+                obj.RawLine(ii).LineWidth = 2;
+                obj.RawLine(ii).Color = co(ii,:);
+                obj.RawLine(ii).CapSize = 0;
+                obj.RawFitLine(ii) = line(ax,1,1);
+                obj.RawFitLine(ii).LineWidth = 2;
+                obj.RawFitLine(ii).Color = co(ii,:);
+            end
+            % legendStrRaw = arrayfun(@(x) "Raw " + x,1:nSub);
         end
 
         function updateData(obj,runIdx)
@@ -61,7 +118,6 @@ classdef KapitzaDirac < BecAnalysis
             %
             % :param runIdx: Run index to process
             % :type runIdx: double
-            becExp = obj.BecExp;
         end
 
         function updateFigure(obj,~)
@@ -72,36 +128,49 @@ classdef KapitzaDirac < BecAnalysis
             %
             % :param ~: Unused run index placeholder
             % :type ~: double
-            if ishandle(obj.Chart(1).Figure)
-                fig = figure(obj.Chart(1).Figure);
-            else
-                return
-            end
             % TODO: plot diffraction order populations vs parameter
         end
 
-    end
-
-    methods (Static)
-        function handlePropEvents(src,evnt)
-            % Handle property change events for plot display settings.
-            %
-            % :param src: Property metadata object
-            % :type src: meta.property
-            % :param evnt: Event data containing affected object
-            % :type evnt: event.EventData
-            switch src.Name
-                case 'YLim'
-                    obj = evnt.AffectedObject;
-                    for ii = 1:numel(obj.Chart)
-                        if ishandle(obj.Chart(ii).Figure)
-                            fig = obj.Chart(ii).Figure;
-                            ax = fig.CurrentAxes;
-                            ax.YLim = obj.YLim;
-                        end
-                    end
+        function generateRoi(obj)
+            becExp = obj.BecExp;
+            if obj.RoiMethod == "Auto" && becExp.NCompletedRun >= 1
+                try
+                    TofTimeVariable = becExp.VariableMapping("TofTime");
+                catch
+                    error("TofTime Variable was not properly set in MmConfig. Can not generate Roi for Kd analyis.")
+                end
+                unit = becExp.VariableUnitSetting.readValue(TofTimeVariable,"ScannedVariableUnit","ScannedVariable");
+                Tof = becExp.CiceroData.(TofTimeVariable);
+                Tof = Tof(1) * unit2SI(unit);
+                if Tof == 0
+                    error("Can not do Kd analyis when Tof = 0.")
+                end
+                hbar = Constants.SI("hbar");
+                seperation = 2 * hbar * 2 * pi / obj.Wavelength / becExp.Atom.mass * Tof;
+                seperation = round(seperation / becExp.Acquisition.PixelSizeReal);
+                if becExp.CenterReferenceID ~= 0
+                    ref = becExp.BecExpData.readValue(becExp.CenterReferenceID,"CloudCenter","TrialID");
+                    ref = becExp.Roi.noRotationFull2Full(ref);
+                else
+                    error("Center reference was not defined. Can not generate Roi for Kd analyis.")
+                end
+                switch obj.LatticeAxis
+                    case "X"
+                        subNRowColumn = [1,obj.OrderMax * 2 + 1];
+                    case "Y"
+                        subNRowColumn = [obj.OrderMax * 2 + 1,1];
+                end
+                subCenterSize = [ref,obj.RoiSize,obj.RoiSize];
+                becExp.Roi.SubRoiSeparation = seperation;
+                becExp.Roi.SubRoiNRowColumn = subNRowColumn;
+                becExp.Roi.SubRoiCenterSize = subCenterSize;
+                becExp.Ad.Gui(1).App.Roi.SubRoiSeparation = seperation;
+                becExp.Ad.Gui(1).App.Roi.SubRoiNRowColumn = subNRowColumn;
+                becExp.Ad.Gui(1).App.Roi.SubRoiCenterSize = subCenterSize;
+                becExp.refresh
             end
         end
+
     end
 end
 

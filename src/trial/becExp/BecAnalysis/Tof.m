@@ -23,6 +23,10 @@ classdef Tof < BecAnalysis
         PhaseSpaceDensity double % Peak phase-space density :math:`n\lambda_\mathrm{dB}^3` [dimensionless]
     end
 
+    properties (SetAccess = protected, Hidden)
+        TofTimeVariable string
+    end
+
     properties (Hidden,Transient)
         ThermalXLine % Plot handle for thermal x-radius data points
         ThermalXFitLine % Plot handle for thermal x-radius fit line
@@ -51,13 +55,20 @@ classdef Tof < BecAnalysis
                 loc = [0.6936,0.032],...
                 size = [0.3069,0.57]...
                 );
+
+            % Get Tof time variable name
+            try 
+                obj.TofTimeVariable = obj.BecExp.VariableMapping("TofTime");
+            catch
+                error("TofTime Variable was not properly set in MmConfig. Can not do TOF analyis.")
+            end
         end
 
         function initialize(obj)
             % Prepare figure and parameter table; validate prerequisites.
 
             %% Check if we can do TOF analysis
-            if obj.BecExp.ScannedVariable ~= "TOF"
+            if obj.BecExp.ScannedVariable ~= obj.TofTimeVariable
                 warning("Scanned Variable is not TOF. Can not do TOF analysis")
                 return
             elseif ~ismember("DensityFit",obj.BecExp.AnalysisMethod)
@@ -174,7 +185,7 @@ classdef Tof < BecAnalysis
         function updateData(obj,~)
             % Fit R^2 vs t_TOF^2 and derive thermodynamic parameters.
             becExp = obj.BecExp;
-            if becExp.ScannedVariable ~= "TOF" || becExp.NCompletedRun < 2 ||...
+            if becExp.ScannedVariable ~= obj.TofTimeVariable || becExp.NCompletedRun < 2 ||...
                     ~ismember("DensityFit",obj.BecExp.AnalysisMethod) ||...
                     ~isempty(obj.BecExp.Roi.SubRoi)
                 return
@@ -203,7 +214,7 @@ classdef Tof < BecAnalysis
             % Update R^2 vs t_TOF^2 plots and parameter table.
             becExp = obj.BecExp;
             fig = obj.Chart(1).Figure;
-            if becExp.ScannedVariable ~= "TOF" || becExp.NCompletedRun < 2 ...
+            if becExp.ScannedVariable ~= obj.TofTimeVariable || becExp.NCompletedRun < 2 ...
                     || (isempty(fig) || ~ishandle(fig)) || ~ismember("DensityFit",obj.BecExp.AnalysisMethod) ||...
                     ~isempty(obj.BecExp.Roi.SubRoi)
                 return

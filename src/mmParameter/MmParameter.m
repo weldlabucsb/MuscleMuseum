@@ -1172,7 +1172,7 @@ classdef MmParameter < handle
             end
             conn = obj.connectDatabaseRead;
             t = sqlread(conn,obj.TableName);
-            t = obj.convertOutputTable(t,IsHideId);
+            t = obj.convertOutputTable(t,IsHideId,false);
             close(conn)
         end
 
@@ -1406,7 +1406,7 @@ classdef MmParameter < handle
             close(conn)
         end
 
-        function t = convertOutputTable(obj,t,IsHideId)
+        function t = convertOutputTable(obj,t,IsHideId,IsConvert2Struct)
             % Convert SQLite-stored values back to MATLAB types.
             %
             % Converts matrix-encoded strings and logical columns to their corresponding
@@ -1420,6 +1420,7 @@ classdef MmParameter < handle
                 obj
                 t table
                 IsHideId logical = false
+                IsConvert2Struct logical = true
             end
 
             if isempty(t)
@@ -1483,7 +1484,7 @@ classdef MmParameter < handle
             end
 
             % Remove cell and convert to struct if input is one-row
-            if height(t) == 1
+            if height(t) == 1 && IsConvert2Struct
                 t = table2struct(t);
             end
         end

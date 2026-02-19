@@ -182,6 +182,7 @@ if exist("BecExpDataPrefix","var")
         "OdColormap";
         "AtomName";
         "ImagingStageList";
+        "VariableMapping";
     ];
     userParameter2 = intersect("BecExp"+userParameter,varList);
     userParameter = replace(userParameter2,"BecExp","");
@@ -217,6 +218,7 @@ settingList = [
     "ListList";
     "VariableList";
     "BecExpSetting";
+    "BecExpData";
     "BecExpVariableUnit";
     "RoiSetting";
     "WaveformLibrary";
