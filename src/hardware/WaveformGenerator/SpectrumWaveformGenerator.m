@@ -313,9 +313,9 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                 spcMErrorMessageStdOut(obj.Device, 'Error: Card function not supported by this example\n', false);
             elseif bitand(obj.Device.featureMap, obj.RegMap('SPCM_FEAT_SEQUENCE')) == 0
                 spcMErrorMessageStdOut(obj.Device, 'Error: Sequence Mode Option not installed. Example was done especially for this option!\n', false);
-            elseif string(obj.Device.errorText) ~= "No Error"
-                obj.closeSpec
-                error(obj.Device.errorText)
+            % elseif string(obj.Device.errorText) ~= "No Error"
+            %     obj.closeSpec
+            %     error(obj.Device.errorText)
             else
                 status = true;
             end
