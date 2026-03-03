@@ -71,6 +71,11 @@ classdef KapitzaDirac < BecAnalysis
                 return
             end
 
+            % Error handling
+            if ~isprop(obj,"AtomNumber")
+                becExp.displayLog("AtomNumber analysis is required for conducting Kd analysis.","error")
+            end
+
             becExp = obj.BecExp;
             if obj.RoiMethod == "Manual"
                 nRoi = obj.BecExp.Roi.NSub;
@@ -153,11 +158,6 @@ classdef KapitzaDirac < BecAnalysis
             becExp = obj.BecExp;
             obj.initialize
             obj.generateRoi
-
-            % Error handling
-            if ~isprop(obj,"AtomNumber")
-                becExp.displayLog("AtomNumber analysis is required for conducting Kd analysis.","error")
-            end
         end
 
         function generateRoi(obj)

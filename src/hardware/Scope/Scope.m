@@ -36,6 +36,7 @@ classdef (Abstract) Scope < Hardware
         Sample double % Latest acquired samples [nCh x NSample]
         SampleUnit string % Engineering unit for samples (e.g., "V")
         NSampleMax double % Maximum supported samples per record
+        TrapezoidalFit TrapezoidalFit
     end
 
     properties (Dependent)
@@ -52,6 +53,9 @@ classdef (Abstract) Scope < Hardware
         SineFrequency % Fitted sine frequency per enabled channel [Hz]
         SinePhase % Fitted sine phase per enabled channel [rad]
         SineOffset % Fitted sine DC offset per enabled channel
+        TrapezoidalAmplitude
+        TrapezoidalDuration
+        TrapezoidalOffset
     end
 
     methods
@@ -177,6 +181,66 @@ classdef (Abstract) Scope < Hardware
             sF = obj.SineFit;
             for ii = 1:sum(obj.IsEnabled)
                 sineC(ii) = sF(ii).Coefficient(4);
+            end
+        end
+
+        function doTrapezFit(obj)
+            % Fit each channel with a sine model using :class:`SineFit1D`.
+            %
+            % :return: Sine fits for enabled channels
+            % :rtype: :class:`SineFit1D` array
+            if ~isempty(obj.TrapezoidalFit)
+                return
+            end
+            data = obj.Sample;
+            t = obj.TimeList;
+            for ii = 1:size(data,1)
+                obj.TrapezoidalFit(ii) = SineFit1D([t.',data(ii,:).']);
+                obj.TrapezoidalFit(ii).do;
+            end
+            obj.saveObject
+        end
+
+        function trapezA = get.TrapezoidalAmplitude(obj)
+            % Get sine-fit amplitudes for enabled channels.
+            %
+            % :return: Amplitudes
+            % :rtype: double column vector
+            obj.doTrapezFit
+            tF = obj.TrapezoidalFit;
+            trapezA = zeros(sum(obj.IsEnabled),1);
+            for ii = 1:sum(obj.IsEnabled)
+                trapezA(ii) = tF(ii).Coefficient(5);
+            end
+        end
+
+        function trapezC = get.TrapezoidalOffset(obj)
+            % Get sine-fit amplitudes for enabled channels.
+            %
+            % :return: Amplitudes
+            % :rtype: double column vector
+            obj.doTrapezFit
+            tF = obj.TrapezoidalFit;
+            trapezC = zeros(sum(obj.IsEnabled),1);
+            for ii = 1:sum(obj.IsEnabled)
+                trapezC(ii) = tF(ii).Coefficient(6);
+            end
+        end
+
+        function trapezT = get.TrapezoidalDuration(obj)
+            % Get sine-fit amplitudes for enabled channels.
+            %
+            % :return: Amplitudes
+            % :rtype: double column vector
+            obj.doTrapezFit
+            tF = obj.TrapezoidalFit;
+            trapezT = zeros(sum(obj.IsEnabled),1);
+            for ii = 1:sum(obj.IsEnabled)
+                t0 = tF(ii).Coefficient(1);
+                te = tF(ii).Coefficient(2);
+                tr = tF(ii).Coefficient(3);
+                tf = tF(ii).Coefficient(4);
+                trapezT(ii) = te - t0 - (tr + tf)/2;
             end
         end
 
