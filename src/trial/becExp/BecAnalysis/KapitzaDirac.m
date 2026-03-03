@@ -18,11 +18,17 @@ classdef KapitzaDirac < BecAnalysis
         KdFitMethod string = "TDSE"
         ParameterMethod string = "ReadVariable"
         ScanType string = "Power"
-        ScopeChannel string = "LatticeScope_ch1"
+        ScopeChannel string
     end
 
     properties (SetAccess = protected)
-        PulseDuration
+        PulseTime
+        PulaseAmplitude
+    end
+
+    properties (SetAccess = protected, Hidden)
+        PulseTimeVariable
+        PulseAmplitudeVariable
     end
 
     properties (Hidden,Transient)
@@ -70,13 +76,38 @@ classdef KapitzaDirac < BecAnalysis
             if ~ishandle(fig)
                 return
             end
-
-            % Error handling
-            if ~isprop(obj,"AtomNumber")
-                becExp.displayLog("AtomNumber analysis is required for conducting Kd analysis.","error")
+            
+            becExp = obj.BecExp;
+            %% Error handling
+            if ~isprop(becExp,"AtomNumber")
+                becExp.addAnalysis("AtomNumber")
+                becExp.refresh("AtomNumber")
             end
 
-            becExp = obj.BecExp;
+            switch obj.ParameterMethod
+                case "ReadVariable"
+                    try
+                        obj.PulseTimeVariable = becExp.VariableMapping("KdPulseTime");
+                    catch
+                        becExp.displayLog("KdPulseTime Variable was not properly set in MmConfig. Can not do Kd analyis when ParameterMethod is set to ReadVariable.","error")
+                    end
+                    try
+                        obj.PulseAmplitudeVariable = becExp.VariableMapping("KdPulseAmplitude");
+                    catch
+                        becExp.displayLog("KdPulseAmplitude Variable was not properly set in MmConfig. Can not do Kd analyis when ParameterMethod is set to ReadVariable.","error")
+                    end
+                case "FitScope"
+                    if isempty(obj.ScopeChannel) || count(obj.ScopeChannel,"_") ~= 1
+                        becExp.displayLog("ScopeChannel is not set properly. It has to be ScopeName_ChannelNumber. Can not do Kd analyis when ParameterMethod is set to FitScope","error")
+                    end
+                    svStr = obj.ScopeChannel + "_" + ["TrapezoidalAmplitude","TrapezoidalDuration","TrapezoidalOffset"];
+                    if ~isprop(becExp,"ScopeValue")
+                        becExp.addAnalysis("ScopeValue")
+                        becExp.refresh("ScopeValue")
+                    end
+                    becExp.ScopeValue.FullValueName = unique([becExp.ScopeValue.FullValueName,svStr]);
+            end
+
             if obj.RoiMethod == "Manual"
                 nRoi = obj.BecExp.Roi.NSub;
                 if mod(nRoi,2) == 0
@@ -88,7 +119,7 @@ classdef KapitzaDirac < BecAnalysis
                 obj.OrderMaxFinal = obj.OrderMax;
             end
 
-            % Initialize lines
+            %% Initialize lines
             ax = gca;
             hold(ax,"on")
             co = ax.ColorOrder;
@@ -111,7 +142,7 @@ classdef KapitzaDirac < BecAnalysis
             end
             hold(ax,"off")
 
-            % Render
+            %% Render
             ax.Box = "on";
             ax.XGrid = "on";
             ax.YGrid = "on";
@@ -141,9 +172,18 @@ classdef KapitzaDirac < BecAnalysis
             %
             % :param runIdx: Run index to process
             % :type runIdx: double
+            switch obj.ParameterMethod
+                case "ReadVariable"
+                    obj.PulseTime = obj.BecExp.CiceroData.(obj.PulseTimeVariable);
+                    obj.PulseAmplitude = obj.BecExp.CiceroData.(obj.PulseAmplitudeVariable);
+                case "FitScope"
+                    obj.PulseTime = obj.BecExp.ScopeData.(obj.ScopeChannel + "_TrapezoidalDuration");
+                    obj.PulseAmplitude = obj.BecExp.ScopeData.(obj.ScopeChannel + "_TrapezoidalAmplitude") + ...
+                        obj.BecExp.ScopeData.(obj.ScopeChannel + "_TrapezoidalOffset");
+            end
         end
 
-        function updateFigure(obj,~)
+        function updateFigure(obj,runIdx)
             % Update diffraction order population plots.
             %
             % **TODO:** Implement visualization of diffraction order populations
@@ -152,12 +192,15 @@ classdef KapitzaDirac < BecAnalysis
             % :param ~: Unused run index placeholder
             % :type ~: double
             % TODO: plot diffraction order populations vs parameter
+            if obj.BecExp.NCompletedRun == 1 && runIdx == 1
+                obj.generateRoi
+            end
         end
 
         function fit(obj)
             becExp = obj.BecExp;
-            obj.initialize
-            obj.generateRoi
+            % obj.initialize
+            % obj.generateRoi
         end
 
         function generateRoi(obj)
