@@ -17,8 +17,10 @@ p = DatabaseServerConfig;
 svConfig = p.readTable;
 p = DatabaseConfig;
 dbConfig = p.readTable;
-localServer = svConfig(svConfig.Name == "localhost",:);
-remoteServer = svConfig(svConfig.Name ~= "localhost",:);
+% localServer = svConfig(svConfig.Name == "localhost",:);
+% remoteServer = svConfig(svConfig.Name ~= "localhost",:);
+localServer = svConfig(1,:);
+remoteServer = svConfig(2,:);
 
 for isLocal = [true,false]
     if isLocal
