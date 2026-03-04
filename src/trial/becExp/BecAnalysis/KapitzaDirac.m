@@ -18,15 +18,17 @@ classdef KapitzaDirac < BecAnalysis
         KdFitMethod string = "TDSE"
         ParameterMethod string = "ReadVariable"
         ScanType string = "Power"
-        ScopeChannel string = "LatticeScope_ch1"
+        ScopeChannel string
     end
 
-    properties (Constant)
-        % Reserved for future physical constants and calibration factors
+    properties (SetAccess = protected)
+        PulseTime
+        PulaseAmplitude
     end
 
-    properties (SetObservable)
-        % Reserved for future plot display settings and toggles
+    properties (SetAccess = protected, Hidden)
+        PulseTimeVariable
+        PulseAmplitudeVariable
     end
 
     properties (Hidden,Transient)
@@ -74,12 +76,42 @@ classdef KapitzaDirac < BecAnalysis
             if ~ishandle(fig)
                 return
             end
-
+            
             becExp = obj.BecExp;
+            %% Error handling
+            if ~isprop(becExp,"AtomNumber")
+                becExp.addAnalysis("AtomNumber")
+                becExp.refresh("AtomNumber")
+            end
+
+            switch obj.ParameterMethod
+                case "ReadVariable"
+                    try
+                        obj.PulseTimeVariable = becExp.VariableMapping("KdPulseTime");
+                    catch
+                        becExp.displayLog("KdPulseTime Variable was not properly set in MmConfig. Can not do Kd analyis when ParameterMethod is set to ReadVariable.","error")
+                    end
+                    try
+                        obj.PulseAmplitudeVariable = becExp.VariableMapping("KdPulseAmplitude");
+                    catch
+                        becExp.displayLog("KdPulseAmplitude Variable was not properly set in MmConfig. Can not do Kd analyis when ParameterMethod is set to ReadVariable.","error")
+                    end
+                case "FitScope"
+                    if isempty(obj.ScopeChannel) || count(obj.ScopeChannel,"_") ~= 1
+                        becExp.displayLog("ScopeChannel is not set properly. It has to be ScopeName_ChannelNumber. Can not do Kd analyis when ParameterMethod is set to FitScope","error")
+                    end
+                    svStr = obj.ScopeChannel + "_" + ["TrapezoidalAmplitude","TrapezoidalDuration","TrapezoidalOffset"];
+                    if ~isprop(becExp,"ScopeValue")
+                        becExp.addAnalysis("ScopeValue")
+                        becExp.refresh("ScopeValue")
+                    end
+                    becExp.ScopeValue.FullValueName = unique([becExp.ScopeValue.FullValueName,svStr]);
+            end
+
             if obj.RoiMethod == "Manual"
                 nRoi = obj.BecExp.Roi.NSub;
                 if mod(nRoi,2) == 0
-                    error("The number of subrois must be odd for Kd fit.")
+                    becExp.displayLog("The number of subrois must be odd for Kd fit.","error")
                 else
                     obj.OrderMaxFinal = floor(nRoi/2);
                 end
@@ -87,8 +119,9 @@ classdef KapitzaDirac < BecAnalysis
                 obj.OrderMaxFinal = obj.OrderMax;
             end
 
-            % Initialize lines
+            %% Initialize lines
             ax = gca;
+            hold(ax,"on")
             co = ax.ColorOrder;
             mOrder = markerOrder();
             obj.RawLine = matlab.graphics.chart.primitive.ErrorBar.empty;
@@ -102,11 +135,32 @@ classdef KapitzaDirac < BecAnalysis
                 obj.RawLine(ii).LineWidth = 2;
                 obj.RawLine(ii).Color = co(ii,:);
                 obj.RawLine(ii).CapSize = 0;
+                obj.RawLine(ii).LineStyle = 'none';
                 obj.RawFitLine(ii) = line(ax,1,1);
                 obj.RawFitLine(ii).LineWidth = 2;
                 obj.RawFitLine(ii).Color = co(ii,:);
             end
-            % legendStrRaw = arrayfun(@(x) "Raw " + x,1:nSub);
+            hold(ax,"off")
+
+            %% Render
+            ax.Box = "on";
+            ax.XGrid = "on";
+            ax.YGrid = "on";
+            ax.FontSize = 12;
+            ax.YLabel.Interpreter = "latex";
+            ax.YLabel.String = "$P_n$";
+            ax.XLabel.Interpreter = "latex";
+            switch obj.ScanType
+                case "Time"
+                    ax.XLabel.String = "$t_{\mathrm{pulse}}~[\mu\mathrm{s}]$";
+                case "Power"
+                    ax.XLabel.String = "Optical Power $[\mathrm{V}]$";
+            end
+            ax.YLim = [0,1];
+            ax.Title.Interpreter = "latex";
+            ax.Title.String = "Fit Result";
+            legendStrRaw = arrayfun(@(x) "$n = " + x + "$",0:obj.OrderMaxFinal);
+            legend(obj.RawLine,legendStrRaw(:),'Interpreter','latex')         
         end
 
         function updateData(obj,runIdx)
@@ -118,9 +172,18 @@ classdef KapitzaDirac < BecAnalysis
             %
             % :param runIdx: Run index to process
             % :type runIdx: double
+            switch obj.ParameterMethod
+                case "ReadVariable"
+                    obj.PulseTime = obj.BecExp.CiceroData.(obj.PulseTimeVariable);
+                    obj.PulseAmplitude = obj.BecExp.CiceroData.(obj.PulseAmplitudeVariable);
+                case "FitScope"
+                    obj.PulseTime = obj.BecExp.ScopeData.(obj.ScopeChannel + "_TrapezoidalDuration");
+                    obj.PulseAmplitude = obj.BecExp.ScopeData.(obj.ScopeChannel + "_TrapezoidalAmplitude") + ...
+                        obj.BecExp.ScopeData.(obj.ScopeChannel + "_TrapezoidalOffset");
+            end
         end
 
-        function updateFigure(obj,~)
+        function updateFigure(obj,runIdx)
             % Update diffraction order population plots.
             %
             % **TODO:** Implement visualization of diffraction order populations
@@ -129,21 +192,33 @@ classdef KapitzaDirac < BecAnalysis
             % :param ~: Unused run index placeholder
             % :type ~: double
             % TODO: plot diffraction order populations vs parameter
+            if obj.BecExp.NCompletedRun == 1 && runIdx == 1
+                obj.generateRoi
+            end
+        end
+
+        function fit(obj)
+            becExp = obj.BecExp;
+            % obj.initialize
+            % obj.generateRoi
         end
 
         function generateRoi(obj)
             becExp = obj.BecExp;
-            if obj.RoiMethod == "Auto" && becExp.NCompletedRun >= 1
+            if obj.RoiMethod == "Auto"
+                if becExp.NCompletedRun == 0
+                    becExp.displayLog("Can not generate KD ROIs without knowing thet TofTime. Please run the experiment once.","error")
+                end
                 try
                     TofTimeVariable = becExp.VariableMapping("TofTime");
                 catch
-                    error("TofTime Variable was not properly set in MmConfig. Can not generate Roi for Kd analyis.")
+                    becExp.displayLog("TofTime Variable was not properly set in MmConfig. Can not generate Roi for Kd analyis.","error")
                 end
                 unit = becExp.VariableUnitSetting.readValue(TofTimeVariable,"ScannedVariableUnit","ScannedVariable");
                 Tof = becExp.CiceroData.(TofTimeVariable);
                 Tof = Tof(1) * unit2SI(unit);
                 if Tof == 0
-                    error("Can not do Kd analyis when Tof = 0.")
+                    becExp.displayLog("Can not do Kd analyis when Tof = 0.","error")
                 end
                 hbar = Constants.SI("hbar");
                 seperation = 2 * hbar * 2 * pi / obj.Wavelength / becExp.Atom.mass * Tof;
@@ -152,7 +227,7 @@ classdef KapitzaDirac < BecAnalysis
                     ref = becExp.BecExpData.readValue(becExp.CenterReferenceID,"CloudCenter","TrialID");
                     ref = becExp.Roi.noRotationFull2Full(ref);
                 else
-                    error("Center reference was not defined. Can not generate Roi for Kd analyis.")
+                    becExp.displayLog("Center reference was not defined. Can not generate Roi for Kd analyis.","error")
                 end
                 switch obj.LatticeAxis
                     case "X"

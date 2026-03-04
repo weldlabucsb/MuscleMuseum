@@ -77,8 +77,8 @@ classdef BecExp < Trial
     end
 
     properties (Constant,Hidden)
-        AnalysisOrder = {"Od";"Imaging";"Ad";...
-            "DensityFit";["AtomNumber";"Tof";"CenterFit";"KapitzaDirac"];"ScopeValue"} % Analysis execution order groups defining dependencies
+        AnalysisOrder = {"Od";"Imaging";"Ad";"ScopeValue";...
+            "DensityFit";["AtomNumber";"Tof";"CenterFit"];"KapitzaDirac"} % Analysis execution order groups defining dependencies
     end
 
     methods
