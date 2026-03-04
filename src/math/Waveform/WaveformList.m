@@ -31,6 +31,7 @@ classdef WaveformList < handle
         WaveformOrigin cell % Cell array of waveform objects to be combined.
         SamplingRate double % In Hz - Sampling rate for all waveforms in the list.
         NPeriodPerCycle double = 10 % Number of cycles for periodic waveforms.
+        TransformFunction string = "None" % To transform the waveform. Must be a function defined in matlab's search path.
     end
 
     properties (Dependent)
@@ -264,6 +265,9 @@ classdef WaveformList < handle
             end
             if ~isempty(Sample{1})
                 Sample = Sample.';
+                if ~isempty(obj.TransformFunction) && obj.TransformFunction ~= "None"
+                    Sample = cellfun(@(x) feval(obj.TransformFunction,x),Sample,'UniformOutput',false);
+                end
                 PlayMode = PlayMode.';
                 NRepeat = NRepeat.';
                 t = table(Sample,PlayMode,NRepeat);
@@ -326,7 +330,11 @@ classdef WaveformList < handle
                     out = out + funcList{jj}(t - tShift(jj));
                 end
             end
-            func = @(t) timeFunc(t);
+            if ~isempty(obj.TransformFunction) && obj.TransformFunction ~= "None"
+                func = @(t) feval(obj.TransformFunction,timeFunc(t));
+            else
+                func = @(t) timeFunc(t);
+            end
         end
 
         function plot(obj,ax)
@@ -422,10 +430,11 @@ classdef WaveformList < handle
             PatchConstant = obj.PatchConstant;
             IsTriggerAdvance = obj.IsTriggerAdvance;
             NPeriodPerCycle = obj.NPeriodPerCycle;
+            TransformFunction = obj.TransformFunction;
             if isnan(NPeriodPerCycle)
                 NPeriodPerCycle = 0;
             end
-            t = table(Name,SamplingRate,ConcatMethod,PatchMethod,PatchConstant,IsTriggerAdvance,NPeriodPerCycle);
+            t = table(Name,SamplingRate,ConcatMethod,PatchMethod,PatchConstant,IsTriggerAdvance,NPeriodPerCycle,TransformFunction);
         end
     end
 end
