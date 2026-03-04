@@ -70,10 +70,10 @@ classdef CenterFit < BecAnalysis
             becExp = obj.BecExp;
             %% Check if we have DensityFit and Sub-ROIs
             if ~ismember("DensityFit",obj.BecExp.AnalysisMethod)
-                warning("No DensityFit. Can not do CenterFit analysis")
+                becExp.displayLog("No DensityFit. Can not do CenterFit analysis","warning")
                 return
             elseif ~isempty(obj.BecExp.Roi.SubRoi)
-                warning("Can not do CenterFit analysis for sub-ROIs.")
+                becExp.displayLog("Can not do CenterFit analysis for sub-ROIs.","warning")
                 return
             end
 
