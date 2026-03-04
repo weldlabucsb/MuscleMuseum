@@ -96,6 +96,7 @@ classdef DatabaseServerConfig < MmParameter
                 ] ...
                 );
             obj.IsIncludeDefaultEntry = false;
+            obj.IsFirstColumnUnique = false;
         end
     end
 end
