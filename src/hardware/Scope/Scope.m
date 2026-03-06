@@ -198,7 +198,6 @@ classdef (Abstract) Scope < Hardware
                 obj.TrapezoidalFit(ii) = TrapezoidalFit([t.',data(ii,:).']);
                 obj.TrapezoidalFit(ii).do;
             end
-            obj.saveObject
         end
 
         function trapezA = get.TrapezoidalAmplitude(obj)
