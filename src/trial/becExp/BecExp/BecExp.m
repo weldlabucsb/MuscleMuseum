@@ -60,7 +60,7 @@ classdef BecExp < Trial
         VariableMapping % Lookup table mapping variable IDs to analysis parameters 
     end
 
-    properties (SetAccess = private)
+    properties (SetAccess = public)
         CiceroData struct % Aggregated Cicero sequence variables per run from log files
         HardwareData struct % Aggregated hardware measurement values per run from device logs
         ScopeData struct % Aggregated oscilloscope-derived measurement values per run
@@ -1100,6 +1100,23 @@ classdef BecExp < Trial
                 end
             end
 
+            %% Delete ScopeData
+            if ~isempty(obj.ScopeData)
+                names = fieldnames(obj.ScopeData);
+                if numel(obj.ScopeData.(names{1})) ~= NComp
+                    warning("ScopeData size is different from the completed run number. Will try to read Cicero log files.")
+                end
+                if numel(obj.ScopeData.(names{1})) ~= NComp
+                    warning("ScopeData size is different from the completed run number. Will not delete corresponding data in CiceroData.")
+                else
+                    deleteIdx = runIdx(runIdx<=NComp);
+                    sData = obj.ScopeData;
+                    mData = cell2mat(struct2cell(sData));
+                    mData(:,deleteIdx) = [];
+                    obj.ScopeData = cell2struct(num2cell(mData,2),fieldnames(obj.ScopeData));
+                end
+            end
+
             %% Delete Cicero files
             fList = dir(fullfile(ciceroLogPath,"*.clg"));
             cLogList = string({fList.name});
@@ -1458,7 +1475,7 @@ classdef BecExp < Trial
             if contains(obj.ScannedVariable,"Scope","IgnoreCase",true)
                 fullValueName = [fullValueName,obj.ScannedVariable];
             end
-            if isprop(obj,"ScopeValue") && ~isempty(obj.ScopeValue.FullValueName)
+            if isprop(obj,"ScopeValue") && ~isempty(obj.ScopeValue.FullValueName) && (obj.ScopeValue.FullValueName(1)) ~= "" && (obj.ScopeValue.FullValueName(1)) ~= "None"
                 fullValueName = [fullValueName,obj.ScopeValue.FullValueName];
             end
             if isempty(fullValueName)

@@ -118,9 +118,16 @@ classdef KapitzaDirac < BecAnalysis
                     svStr = obj.ScopeChannel + "_" + ["TrapezoidalAmplitude","TrapezoidalDuration","TrapezoidalOffset"];
                     if ~isprop(becExp,"ScopeValue")
                         becExp.addAnalysis("ScopeValue")
+                    end
+                    oldFVN = becExp.ScopeValue.FullValueName;
+                    if ~isempty(oldFVN) && oldFVN(1) ~="" && oldFVN(1) ~= "None"
+                        becExp.ScopeValue.FullValueName = unique([oldFVN,svStr]);
+                    else
+                        becExp.ScopeValue.FullValueName = svStr;
+                    end
+                    if ~isempty(setdiff(oldFVN,becExp.ScopeValue.FullValueName)) || ~isempty(setdiff(becExp.ScopeValue.FullValueName,oldFVN))
                         becExp.refresh("ScopeValue")
                     end
-                    becExp.ScopeValue.FullValueName = unique([becExp.ScopeValue.FullValueName,svStr]);
             end
 
             if obj.RoiMethod == "Manual"
@@ -140,7 +147,7 @@ classdef KapitzaDirac < BecAnalysis
             hold(ax,"on")
             co = ax.ColorOrder;
             mOrder = markerOrder();
-            obj.RawLine = matlab.graphics.chart.primitive.ErrorBar.empty;
+            obj.RawLine = matlab.graphics.chart.primitive.Line.empty;
             obj.RawFitLine = matlab.graphics.chart.primitive.Line.empty;
             for ii = 1:(1+obj.OrderMaxFinal)
                 obj.RawLine(ii) = errorbar(ax,1,1,[]);
@@ -276,10 +283,10 @@ classdef KapitzaDirac < BecAnalysis
 
             % Display
             ax.Title.String = "$t_{\mathrm{pulse}} = " + mean(obj.PulseTime(:)) * 1e6 + "~\mu\mathrm{s}$, " + ...
-                "$V_0 ~\mathrm{in} ~ E_{\mathrm{R}} = " + num2str(obj.DepthOverAmplitude) + "\times \mathrm{Power} + " + mean(obj.PulseOffset(:)) + "$";
+                "$V_0 ~\mathrm{in} ~ E_{\mathrm{R}} = " + num2str(obj.DepthOverAmplitude) + "\times (\mathrm{Power} - " + mean(obj.PulseOffset(:)) + ")$";
             for ii = 1:obj.OrderMaxFinal + 1
-               obj.RawFitLine(ii).XData = linspace(min(p),max(p),1000);
-               obj.RawFitLine(ii).YData = KdInterp{ii}(obj.RawFitLine(ii).XData);
+               obj.RawFitLine(ii).XData = linspace(min(p),max(p),1000) + mean(obj.PulseOffset(:));
+               obj.RawFitLine(ii).YData = KdInterp{ii}(obj.DepthOverAmplitude * obj.RawFitLine(ii).XData);
             end
         end
 
@@ -305,7 +312,6 @@ classdef KapitzaDirac < BecAnalysis
                 seperation = round(seperation / becExp.Acquisition.PixelSizeReal);
                 if becExp.CenterReferenceID ~= 0
                     ref = becExp.BecExpData.readValue(becExp.CenterReferenceID,"CloudCenter","TrialID");
-                    ref = becExp.Roi.noRotationFull2Full(ref);
                 else
                     becExp.displayLog("Center reference was not defined. Can not generate Roi for Kd analyis.","error")
                 end

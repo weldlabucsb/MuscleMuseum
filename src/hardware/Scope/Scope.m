@@ -195,10 +195,9 @@ classdef (Abstract) Scope < Hardware
             data = obj.Sample;
             t = obj.TimeList;
             for ii = 1:size(data,1)
-                obj.TrapezoidalFit(ii) = SineFit1D([t.',data(ii,:).']);
+                obj.TrapezoidalFit(ii) = TrapezoidalFit([t.',data(ii,:).']);
                 obj.TrapezoidalFit(ii).do;
             end
-            obj.saveObject
         end
 
         function trapezA = get.TrapezoidalAmplitude(obj)
