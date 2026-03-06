@@ -118,9 +118,16 @@ classdef KapitzaDirac < BecAnalysis
                     svStr = obj.ScopeChannel + "_" + ["TrapezoidalAmplitude","TrapezoidalDuration","TrapezoidalOffset"];
                     if ~isprop(becExp,"ScopeValue")
                         becExp.addAnalysis("ScopeValue")
+                    end
+                    oldFVN = becExp.ScopeValue.FullValueName;
+                    if ~isempty(oldFVN) && oldFVN(1) ~="" && oldFVN(1) ~= "None"
+                        becExp.ScopeValue.FullValueName = unique([oldFVN,svStr]);
+                    else
+                        becExp.ScopeValue.FullValueName = svStr;
+                    end
+                    if ~isempty(setdiff(oldFVN,becExp.ScopeValue.FullValueName)) || ~isempty(setdiff(becExp.ScopeValue.FullValueName,oldFVN))
                         becExp.refresh("ScopeValue")
                     end
-                    becExp.ScopeValue.FullValueName = unique([becExp.ScopeValue.FullValueName,svStr]);
             end
 
             if obj.RoiMethod == "Manual"
@@ -305,7 +312,6 @@ classdef KapitzaDirac < BecAnalysis
                 seperation = round(seperation / becExp.Acquisition.PixelSizeReal);
                 if becExp.CenterReferenceID ~= 0
                     ref = becExp.BecExpData.readValue(becExp.CenterReferenceID,"CloudCenter","TrialID");
-                    ref = becExp.Roi.noRotationFull2Full(ref);
                 else
                     becExp.displayLog("Center reference was not defined. Can not generate Roi for Kd analyis.","error")
                 end
