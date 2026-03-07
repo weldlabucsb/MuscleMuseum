@@ -361,6 +361,10 @@ classdef KapitzaDirac < BecAnalysis
             end
         end
 
+        function finalize(obj)
+            
+        end
+
     end
 end
 
