@@ -11,6 +11,7 @@ classdef KapitzaDirac < BecAnalysis
     properties
         Wavelength (1,1) double = 1064e-9
         LatticeAxis string = "Y"
+        Waist (1,1) double = 100e-6
         OrderMax (1,1) double = 2
         OrderMaxFinal (1,1) double
         RoiSize (1,1) double = 50
@@ -19,6 +20,7 @@ classdef KapitzaDirac < BecAnalysis
         ParameterMethod string = "ReadVariable"
         ScanType string = "Power"
         ScopeChannel string
+        CloudSize (1,1) double = 10e-6
     end
 
     properties (SetAccess = protected)
@@ -48,7 +50,7 @@ classdef KapitzaDirac < BecAnalysis
     end
 
     properties (Constant)
-        DepthMaxEr = 200
+        DepthMaxEr = 250
         DepthStepEr = 0.01
         OrderMaxTDSE = 20
     end
@@ -76,7 +78,7 @@ classdef KapitzaDirac < BecAnalysis
                 case "Y"
                     dir = [0,1,0];
             end
-            ol = OpticalLattice(obj.BecExp.Atom,Laser(wavelength=obj.Wavelength,direction=dir));
+            ol = OpticalLattice(obj.BecExp.Atom,GaussianBeam(wavelength=obj.Wavelength,direction=dir,waist=obj.Waist));
         end
         
         function initialize(obj)
@@ -142,14 +144,36 @@ classdef KapitzaDirac < BecAnalysis
                 obj.OrderMaxFinal = obj.OrderMax;
             end
 
-            %% Initialize lines
-            ax = gca;
-            hold(ax,"on")
-            co = ax.ColorOrder;
+            %% Initialize plots
+            t = tiledlayout(fig,1+obj.OrderMaxFinal, 1);
+            t.TileSpacing = 'tight';
+            t.Padding = 'tight';
+
             mOrder = markerOrder();
             obj.RawLine = matlab.graphics.chart.primitive.Line.empty;
             obj.RawFitLine = matlab.graphics.chart.primitive.Line.empty;
             for ii = 1:(1+obj.OrderMaxFinal)
+                ax = nexttile(t);
+                ax.YLim = [0,1];
+                ax.FontSize = 12;
+                ax.YLabel.Interpreter = "latex";
+                ax.YLabel.String = "$P_" + (ii-1) +"$";
+                if ii ~= (1+obj.OrderMaxFinal)
+                    ax.XTickLabel = [];
+                else
+                    ax.XLabel.Interpreter = "latex";
+                    switch obj.ScanType
+                        case "Time"
+                            ax.XLabel.String = "$t_{\mathrm{pulse}}~[\mu\mathrm{s}]$";
+                        case "Power"
+                            ax.XLabel.String = "Optical Power $[\mathrm{V}]$";
+                    end
+                end
+                ax.Box = "on";
+                ax.XGrid = "on";
+                ax.YGrid = "on";
+                hold(ax,"on")
+                co = ax.ColorOrder;
                 obj.RawLine(ii) = errorbar(ax,1,1,[]);
                 obj.RawLine(ii).Marker = mOrder(ii);
                 obj.RawLine(ii).MarkerFaceColor = co(ii,:);
@@ -162,28 +186,11 @@ classdef KapitzaDirac < BecAnalysis
                 obj.RawFitLine(ii) = line(ax,1,1);
                 obj.RawFitLine(ii).LineWidth = 2;
                 obj.RawFitLine(ii).Color = co(ii,:);
+                hold(ax,"off")
             end
-            hold(ax,"off")
-
-            %% Render
-            ax.Box = "on";
-            ax.XGrid = "on";
-            ax.YGrid = "on";
-            ax.FontSize = 12;
-            ax.YLabel.Interpreter = "latex";
-            ax.YLabel.String = "$P_n$";
-            ax.XLabel.Interpreter = "latex";
-            switch obj.ScanType
-                case "Time"
-                    ax.XLabel.String = "$t_{\mathrm{pulse}}~[\mu\mathrm{s}]$";
-                case "Power"
-                    ax.XLabel.String = "Optical Power $[\mathrm{V}]$";
-            end
-            ax.YLim = [0,1];
-            ax.Title.Interpreter = "latex";
-            ax.Title.String = "Fit Result";
-            legendStrRaw = arrayfun(@(x) "$n = " + x + "$",0:obj.OrderMaxFinal);
-            legend(obj.RawLine,legendStrRaw(:),'Interpreter','latex')         
+            t.Title.Interpreter = "latex";
+            t.Title.String = "Fit Result";
+            
         end
 
         function updateData(obj,runIdx)
@@ -236,29 +243,51 @@ classdef KapitzaDirac < BecAnalysis
         function fit(obj)
             becExp = obj.BecExp;
 
+            % trim data
+            pAmp = obj.PulseAmplitude(:);
+            pTime = obj.PulseTime(:);
+            pOffset = obj.PulseOffset(:);
+            if obj.ParameterMethod == "ReadScope"
+                idx0 = pAmp >= (max(pAmp)/100);
+                pAmp = pAmp(idx0);
+                pTime = pTime(idx0);
+                pOffset = pOffset(idx0);
+            else
+                idx0 = 1:numel(pAmp);
+            end
+
             % update raw data plot
             for ii = 1:numel(obj.RawLine)
-                obj.RawLine(ii).YData = obj.RawOrderFraction(:,:,ii);
+                obj.RawLine(ii).YData = obj.RawOrderFraction(:,idx0,ii);
                 switch obj.ScanType
                     case "Time"
-                        obj.RawLine(ii).XData = obj.PulseTime;
+                        obj.RawLine(ii).XData = pTime;
                     case "Power"
-                        obj.RawLine(ii).XData = obj.PulseAmplitude;
+                        obj.RawLine(ii).XData = pAmp + pOffset;
                 end
             end
 
             % Precompute Kd Data
             Er = obj.OpticalLattice.RecoilEnergy;
             depthList = (0:obj.DepthStepEr:obj.DepthMaxEr) * Er;
-            if obj.KdFitMethod == "TDSE" && isempty(obj.KdDataPrecompute)
-                becExp.displayLog("Pre-computing KD data...")
-                obj.KdDataPrecompute = computeKd(...
-                    obj.OpticalLattice,...
-                    depthList,...
-                    mean(obj.PulseTime(:)),...
-                    obj.OrderMaxTDSE);
-                becExp.displayLog("Done...")
+            becExp.displayLog("Pre-computing KD data...")
+            switch obj.KdFitMethod
+                case "TDSE"
+                    obj.KdDataPrecompute = computeKd(...
+                        obj.OpticalLattice,...
+                        depthList,...
+                        mean(obj.PulseTime(:)),...
+                        obj.OrderMaxTDSE);
+                case "TDSEAverage"
+                    obj.KdDataPrecompute = computeKd(...
+                        obj.OpticalLattice,...
+                        depthList,...
+                        mean(obj.PulseTime(:)),...
+                        obj.OrderMaxTDSE,...
+                        false,...
+                        obj.CloudSize);
             end
+            becExp.displayLog("Done...")
 
             % Interpolate
             KdInterp = cell(1,obj.OrderMaxFinal + 1);
@@ -268,25 +297,24 @@ classdef KapitzaDirac < BecAnalysis
             end
 
             % Error function
-            p = obj.PulseAmplitude(:);
             rawFrac = squeeze(obj.RawOrderFraction);
-            errFun = @(k) sum(arrayfun(@(jj) sum(abs(KdInterp{jj}(k * p) - rawFrac(:,jj)).^2),1:obj.OrderMax+1));
+            errFun = @(k) sum(arrayfun(@(jj) sum(abs(KdInterp{jj}(k * pAmp) - rawFrac(:,jj)).^2),1:obj.OrderMax+1));
 
             % Optimization
-            kMax = obj.DepthMaxEr / (max(p) + eps);
+            kMax = obj.DepthMaxEr / (max(pAmp) + eps);
             kCandidates = linspace(0, kMax, 100);
             vals = arrayfun(@(k) errFun(k), kCandidates);
             [~,idx] = min(vals);
             k0 = max(kCandidates(idx), 1e-9);
             obj.DepthOverAmplitude = fminsearch(errFun,k0);
-            ax = findobj(obj.Chart(1).Figure,'Type','Axes');
 
             % Display
-            ax.Title.String = "$t_{\mathrm{pulse}} = " + mean(obj.PulseTime(:)) * 1e6 + "~\mu\mathrm{s}$, " + ...
-                "$V_0 ~\mathrm{in} ~ E_{\mathrm{R}} = " + num2str(obj.DepthOverAmplitude) + "\times (\mathrm{Power} - " + mean(obj.PulseOffset(:)) + ")$";
+            t = findobj(obj.Chart(1).Figure,'Type','TiledLayout');
+            t.Title.String = "$t_{\mathrm{pulse}} = " + mean(pTime(:)) * 1e6 + "~\mu\mathrm{s}$, " + ...
+                "$V_0 ~\mathrm{in} ~ E_{\mathrm{R}} = " + num2str(obj.DepthOverAmplitude) + "\times (\mathrm{Voltage} - " + mean(pOffset) + ")$";
             for ii = 1:obj.OrderMaxFinal + 1
-               obj.RawFitLine(ii).XData = linspace(min(p),max(p),1000) + mean(obj.PulseOffset(:));
-               obj.RawFitLine(ii).YData = KdInterp{ii}(obj.DepthOverAmplitude * obj.RawFitLine(ii).XData);
+               obj.RawFitLine(ii).XData = linspace(min(pAmp),max(pAmp),1e3) + mean(pOffset);
+               obj.RawFitLine(ii).YData = KdInterp{ii}(obj.DepthOverAmplitude * (obj.RawFitLine(ii).XData - mean(pOffset)));
             end
         end
 

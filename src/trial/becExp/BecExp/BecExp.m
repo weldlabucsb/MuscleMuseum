@@ -60,7 +60,7 @@ classdef BecExp < Trial
         VariableMapping % Lookup table mapping variable IDs to analysis parameters 
     end
 
-    properties (SetAccess = public)
+    properties (SetAccess = private)
         CiceroData struct % Aggregated Cicero sequence variables per run from log files
         HardwareData struct % Aggregated hardware measurement values per run from device logs
         ScopeData struct % Aggregated oscilloscope-derived measurement values per run
@@ -1106,15 +1106,11 @@ classdef BecExp < Trial
                 if numel(obj.ScopeData.(names{1})) ~= NComp
                     warning("ScopeData size is different from the completed run number. Will try to read Cicero log files.")
                 end
-                if numel(obj.ScopeData.(names{1})) ~= NComp
-                    warning("ScopeData size is different from the completed run number. Will not delete corresponding data in CiceroData.")
-                else
-                    deleteIdx = runIdx(runIdx<=NComp);
-                    sData = obj.ScopeData;
-                    mData = cell2mat(struct2cell(sData));
-                    mData(:,deleteIdx) = [];
-                    obj.ScopeData = cell2struct(num2cell(mData,2),fieldnames(obj.ScopeData));
-                end
+                deleteIdx = runIdx(runIdx<=NComp);
+                sData = obj.ScopeData;
+                mData = cell2mat(struct2cell(sData));
+                mData(:,deleteIdx) = [];
+                obj.ScopeData = cell2struct(num2cell(mData,2),fieldnames(obj.ScopeData));
             end
 
             %% Delete Cicero files
