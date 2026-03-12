@@ -560,8 +560,12 @@ classdef BecExp < Trial
                             obj.KapitzaDirac.ParameterMethod = obj.ConfigParameter.KdParameter.ParameterMethod;
                             obj.KapitzaDirac.ScanType = obj.ConfigParameter.KdParameter.ScanType;
                             obj.KapitzaDirac.ScopeChannel = obj.ConfigParameter.KdParameter.ScopeChannel;
-                            obj.KapitzaDirac.Waist = obj.ConfigParameter.KdParameter.Waist;
-                            obj.KapitzaDirac.CloudSize = obj.ConfigParameter.KdParameter.CloudSize;
+                            if isfield(obj.ConfigParameter.KdParameter,'Waist')
+                                obj.KapitzaDirac.Waist = obj.ConfigParameter.KdParameter.Waist;
+                            end
+                            if isfield(obj.ConfigParameter.KdParameter,'CloudSize')
+                                obj.KapitzaDirac.CloudSize = obj.ConfigParameter.KdParameter.CloudSize;
+                            end
                     end
                 end
 
