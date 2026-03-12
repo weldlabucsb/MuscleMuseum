@@ -225,7 +225,7 @@ classdef KapitzaDirac < BecAnalysis
             rightWing = temp(:,:,(omf+2):end);
             obj.RawOrderFraction = zeros([size(temp,[1,2]),omf+1]);
             obj.RawOrderFraction(:,:,1) = temp(:,:,omf+1);
-            obj.RawOrderFraction(:,:,2:end) = flip(leftWing,3) + rightWing;
+            obj.RawOrderFraction(:,:,2:end) = (flip(leftWing,3) + rightWing)/2;
             obj.RawOrderFraction = obj.RawOrderFraction ./ sum(obj.RawOrderFraction,3);
         end
 
@@ -358,6 +358,17 @@ classdef KapitzaDirac < BecAnalysis
                 becExp.Ad.Gui(1).App.Roi.SubRoiNRowColumn = subNRowColumn;
                 becExp.Ad.Gui(1).App.Roi.SubRoiCenterSize = subCenterSize;
                 becExp.refresh
+            end
+        end
+
+        function save(obj)
+            % Save all charts associated with this analysis module.
+            %
+            % Calls the save method on each :class:`Chart` instance to persist
+            % figures to disk in the trial's analysis directory.
+            obj.fit
+            for ii = 1:numel(obj.Chart)
+                obj.Chart(ii).save;
             end
         end
 

@@ -139,9 +139,9 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
 
                 %% Upload
                 for jj = 1:nWave
-                    dataBlock = t.Sample{jj} ./ scaleFactor;
+                    dataBlock = t.Sample{jj} ./ scaleFactor * 32767;
                     dataBlock = dataBlock(:).'; % data block has to be a row vector
-                    dataBlock = single(dataBlock); % reduce memory use
+                    dataBlock = int16(dataBlock); % convert to int16 format
 
                     %% Map play mode string
                     switch t.PlayMode(jj)
@@ -158,7 +158,7 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
                     end
 
                     %% Write arb segment data into the device
-                    header = char(sprintf(sourceStr+":DATA:ARBitrary" + " %s,",arbSegName(jj)));
+                    header = char(sprintf(sourceStr+":DATA:ARBitrary:DAC" + " %s,",arbSegName(jj)));
                     writebinblock2(v,dataBlock,obj.DataType,header) % Write data into arb segment
                     arbToSeq{jj}=sprintf('%s,%d,%s,%s,%d',arbSegName(jj),t.NRepeat(jj),playMode,markerModeList{jj},markerLocList(jj));
                 end
