@@ -25,6 +25,7 @@ classdef Keysight33500B < KeysightWaveformGenerator
             obj.OutputMode = ["Normal","Normal"];
             obj.TriggerSource = ["External","External"];
             obj.TriggerSlope = ["Rise","Rise"];
+            obj.TriggerDelay = [0,0];
             obj.Memory = 16e6;
             obj.SamplingRate = [250e6,250e6];
             obj.SamplingRateLimit = 250e6;

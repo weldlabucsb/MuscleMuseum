@@ -10,6 +10,7 @@ classdef (Abstract) WaveformGenerator < Hardware
         SamplingRate double % Sampling rate per channel [Hz]
         TriggerSource string {mustBeMember(TriggerSource,{'External','Software','Immediate'})} = "External" % Trigger source
         TriggerSlope string {mustBeMember(TriggerSlope,{'Rise','Fall'})} = "Rise" % Trigger edge
+        TriggerDelay double {mustBeNonnegative} = 0
         OutputMode string {mustBeMember(OutputMode,{'Gated','Normal'})} = "Normal" % Output mode
         IsOutput logical % Per-channel output enables
         OutputLoad string {mustBeMember(OutputLoad,{'50','Infinity'})} = "50" % Output load selection

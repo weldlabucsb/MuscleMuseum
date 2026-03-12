@@ -72,6 +72,9 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
                         writeline(v, triggerStr + ":SLOPe NEG");
                 end
 
+                % Trigger delay
+                writeline(v, sprintf(triggerStr + ':DELay %g', obj.TriggerDelay(ii)));
+
                 % Output mode
                 if obj.IsOutput(ii)
                     switch obj.OutputMode(ii)
