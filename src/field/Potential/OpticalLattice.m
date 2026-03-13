@@ -37,16 +37,11 @@ classdef OpticalLattice < OpticalPotential
     properties (Dependent)
         LatticeSpacing % Lattice spacing :math:`a=\lambda/2` in [m]
         DepthLaser % Depth from laser intensity :math:`V_0` in [Hz]
-        AxialFrequencyLaser % Axial frequency :math:`f_z` in [Hz] from laser-derived depth
-        AxialFrequencyKd % Axial frequency :math:`f_z` in [Hz] from KD depth
-        AxialFrequencySpec % Axial frequency :math:`f_z` in [Hz] from spectroscopic depth
-        RadialFrequencyLaser % Radial frequency :math:`f_\rho` in [Hz] from laser-derived depth
-        RadialFrequencyKd % Radial frequency :math:`f_\rho` in [Hz] from KD depth
-        RadialFrequencySpec % Radial frequency :math:`f_\rho` in [Hz] from spectroscopic depth
         Depth % Best-available depth :math:`V_0` in [Hz]
         DepthLu % Dimensionless depth :math:`V_0/E_r` (in recoil units)
         AxialFrequency % Best-available :math:`f_z` in [Hz]
         RadialFrequency % Best-available :math:`f_\rho` in [Hz]
+        HarmonicFrequency % Best-available :math:`f_0` in [Hz]
     end
 
     methods
@@ -95,54 +90,6 @@ classdef OpticalLattice < OpticalPotential
                 obj.AtomicState.MF));
         end
 
-        function fZ = get.AxialFrequencyLaser(obj)
-            % Axial frequency from laser-derived depth.
-            %
-            % :return: :math:`f_z` in [Hz]
-            % :rtype: double
-            fZ = obj.computeAxialFrequency(obj.DepthLaser);
-        end
-
-        function fZ = get.AxialFrequencyKd(obj)
-            % Axial frequency from Kapitza-Dirac-derived depth.
-            %
-            % :return: :math:`f_z` in [Hz]
-            % :rtype: double
-            fZ = obj.computeAxialFrequency(obj.DepthKd);
-        end
-
-        function fZ = get.AxialFrequencySpec(obj)
-            % Axial frequency from spectroscopic depth.
-            %
-            % :return: :math:`f_z` in [Hz]
-            % :rtype: double
-            fZ = obj.computeAxialFrequency(obj.DepthSpec);
-        end
-
-        function fRho = get.RadialFrequencyLaser(obj)
-            % Radial frequency from laser-derived depth.
-            %
-            % :return: :math:`f_\rho` in [Hz]
-            % :rtype: double
-            fRho = obj.computeRadialFrequency(obj.DepthLaser);
-        end
-
-        function fRho = get.RadialFrequencyKd(obj)
-            % Radial frequency from Kapitza-Dirac-derived depth.
-            %
-            % :return: :math:`f_\rho` in [Hz]
-            % :rtype: double
-            fRho = obj.computeRadialFrequency(obj.DepthKd);
-        end
-
-        function fRho = get.RadialFrequencySpec(obj)
-            % Radial frequency from spectroscopic depth.
-            %
-            % :return: :math:`f_\rho` in [Hz]
-            % :rtype: double
-            fRho = obj.computeRadialFrequency(obj.DepthSpec);
-        end
-
         function v0 = get.Depth(obj)
             % Best-available lattice depth.
             %
@@ -166,68 +113,43 @@ classdef OpticalLattice < OpticalPotential
         end
 
         function fZ = get.AxialFrequency(obj)
-            % Best-available axial frequency.
+            % Compute axial frequency
             %
-            % :return: :math:`f_z` in [Hz]
-            % :rtype: double
-            if ~isempty(obj.DepthSpec)
-                fZ = obj.AxialFrequencySpec;
-            elseif ~isempty(obj.DepthKd)
-                fZ = obj.AxialFrequencyKd;
+            if class(obj.Laser) == "GaussianBeam"
+                m = obj.Atom.mass;
+                v0 = 2 * pi * Constants.SI("hbar") * obj.Depth;
+                zR = obj.Laser.RayleighRange;
+                fZ = sqrt(2 * v0 / m / zR^2) / 2 / pi;
             else
-                fZ = obj.AxialFrequencyLaser;
+                fZ = NaN;
             end
         end
 
         function fRho = get.RadialFrequency(obj)
-            % Best-available radial frequency.
-            %
-            % :return: :math:`f_\rho` in [Hz]
-            % :rtype: double
-            if ~isempty(obj.RadialFrequencySlosh)
-                fRho = obj.RadialFrequencySlosh;
-            elseif ~isempty(obj.DepthSpec)
-                fRho = obj.RadialFrequencySpec;
-            elseif ~isempty(obj.DepthKd)
-                fRho = obj.RadialFrequencyKd;
-            else
-                fRho = obj.RadialFrequencyLaser;
-            end
-        end
-
-    end
-
-    methods
-
-        function fZ = computeAxialFrequency(obj,depth)
-            % Compute axial frequency :math:`f_z = \sqrt{V_0/(m\,\lambda^2)}` up to constants.
-            %
-            % :param depth: Lattice depth :math:`V_0` in [Hz]
-            % :type depth: double
-            % :return: :math:`f_z` in [Hz]
-            % :rtype: double
-            lambda = obj.Laser.Wavelength;
-            m = obj.Atom.mass;
-            v0 =  2 * pi * Constants.SI("hbar") * depth;
-            fZ = sqrt(v0 / m / lambda^2);
-        end
-
-        function fRho = computeRadialFrequency(obj,depth)
             % Compute radial frequency :math:`f_\rho = \frac{1}{2\pi}\sqrt{4 V_0/(m w_0^2)}` for Gaussian beam.
             %
-            % :param depth: Lattice depth :math:`V_0` in [Hz]
-            % :type depth: double
-            % :return: :math:`f_\rho` in [Hz]
-            % :rtype: double
             if class(obj.Laser) == "GaussianBeam"
                 w0 = sqrt(prod(obj.Laser.Waist));
                 m = obj.Atom.mass;
-                v0 = 2 * pi * Constants.SI("hbar") * depth;
+                v0 = 2 * pi * Constants.SI("hbar") * obj.Depth;
                 fRho = sqrt(4 * v0 / m / w0^2) / 2 / pi;
             else
                 fRho = NaN;
             end
         end
+
+        function f0 = get.HarmonicFrequency(obj)
+            % Compute harmonic frequency :math:`f_0 = \sqrt{2V_0/(m\,\lambda^2)}` up to constants.
+            %
+            lambda = obj.Laser.Wavelength;
+            m = obj.Atom.mass;
+            v0 =  2 * pi * Constants.SI("hbar") * obj.Depth;
+            f0 = sqrt(2 * v0 / m / lambda^2);
+        end
+
+    end
+
+    methods
 
         function func = spaceFunc(obj)
             % Build lattice potential :math:`V(\mathbf{r})` for 1D standing wave or Gaussian.
@@ -1017,6 +939,7 @@ classdef OpticalLattice < OpticalPotential
 
 
         end
+        
         function qRes = computeTransitionQuasiMomentumFast1D(obj,freq,n1,n2)
             % Approximate resonant :math:`q` using linearized :math:`\Delta E(q)` near two roots.
             %
