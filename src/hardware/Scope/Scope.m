@@ -67,6 +67,31 @@ classdef (Abstract) Scope < Hardware
             obj@Hardware(resourceName,name)
         end
 
+        function set.NSample(obj,val)
+            if isempty(obj.SamplingRateMax)
+                obj.NSample = val;
+            else
+                sr = val / obj.Duration;
+                if sr > obj.SamplingRateMax
+                    obj.NSample = obj.SamplingRateMax * obj.Duration;
+                else
+                    obj.NSample = val;
+                end
+            end
+        end
+
+        function set.Duration(obj,val)
+            if isempty(obj.SamplingRateMax)
+                obj.Duration = val;
+            else
+                obj.Duration = val;
+                sr = obj.NSample / val;
+                if sr > obj.SamplingRateMax
+                    obj.NSample = obj.SamplingRateMax * val;
+                end
+            end
+        end
+
         function tL = get.TimeList(obj)
             % Get time vector of the acquired record.
             %
