@@ -4,8 +4,7 @@ classdef LatticeFourierSeSim1D < TimeSim
 
     properties(SetAccess = private)
         Atom Atom
-        Manifold (1,1) string
-        StateIndex double
+        AtomicState struct
         Laser cell
         MagneticField cell
         LatticeModulation cell
@@ -24,8 +23,7 @@ classdef LatticeFourierSeSim1D < TimeSim
             arguments
                 trialName string
                 options1.atom Atom
-                options1.manifold string
-                options1.stateIndex double
+                options1.atomicState struct
                 options1.totalTime double
                 options1.timeStep double
                 options1.output string
@@ -35,13 +33,12 @@ classdef LatticeFourierSeSim1D < TimeSim
                 options2.fieldModulation cell
                 options2.initialCondition InitialCondition
             end
-            obj@TimeSim(trialName,"LatticeFourierSeSim1DConfig");
+            obj@TimeSim(trialName,"LatticeFourierSeSim1D");
 
             %% Atom setting
-            try
-                obj.Atom = Alkali(obj.ConfigParameter.AtomName);
-            catch
-                obj.Atom = Divalent(obj.ConfigParameter.AtomName);
+            if isfield(obj.ConfigParameter,'Parameter') && isstruct(obj.ConfigParameter.Parameter) &&...
+                    isfield(obj.ConfigParameter.Parameter,"AtomName")
+                obj.Atom = getAtom(obj.ConfigParameter.Parameter.AtomName);
             end
 
             %% Change parameters if they are manually set
@@ -59,17 +56,10 @@ classdef LatticeFourierSeSim1D < TimeSim
             end
 
             %% Set output parameter
-            if ~isempty(obj.Output)
-                output = rmmissing(["Time";strtrim(split(obj.Output,";"))]);
-            else
-                error("No output variable specified")
+            obj.setOutput
+            if any(obj.Output.VariableName == "WaveFunction")
+                obj.Output(obj.Output.VariableName == "WaveFunction",:).Size = numel(obj.InitialCondition(1).WaveFunction);
             end
-            load("Config.mat","LatticeFourierSeSim1DOutput")
-            output = LatticeFourierSeSim1DOutput(ismember(LatticeFourierSeSim1DOutput.VariableName,output),:);
-            if ~isempty(output(output.VariableName == "WaveFunction",:))
-                output(output.VariableName == "WaveFunction",:).Size = numel(obj.InitialCondition(1).WaveFunction);
-            end
-            obj.Output = output;
 
             %% Find scanned parameter
             nPara = cellfun(@numel,struct2cell(options2));
@@ -82,8 +72,7 @@ classdef LatticeFourierSeSim1D < TimeSim
 
             %% Set LatticeFourierSeSim1DRun parameters
             options0.atom = obj.Atom;
-            options0.manifold = obj.Manifold;
-            options0.stateIndex = obj.StateIndex;
+            options0.atomicState = obj.AtomicState;
             options0.totalTime = obj.TotalTime;
             options0.timeStep = obj.TimeStep;
             obj.SimRun = LatticeFourierSeSim1DRun.empty;

@@ -5,8 +5,7 @@ classdef LatticeFourierSeSim1DRun < TimeSimRun
     
     properties
         Atom Atom
-        Manifold (1,1) string
-        StateIndex double
+        AtomicState struct
         Laser Laser
         MagneticField MagneticField
         LatticeModulation WaveformList
@@ -26,8 +25,7 @@ classdef LatticeFourierSeSim1DRun < TimeSimRun
             arguments
                 sim1D
                 options.atom Atom
-                options.manifold string
-                options.stateIndex double
+                options.atomicState struct
                 options.totalTime double
                 options.timeStep double
                 options.initialCondition InitialCondition
@@ -47,10 +45,10 @@ classdef LatticeFourierSeSim1DRun < TimeSimRun
 
             % Set potential
             obj.OpticalLattice = OpticalLattice(obj.Atom,obj.Laser,...
-                manifold=obj.Manifold,stateIndex=obj.StateIndex);
+                atomicState=obj.AtomicState);
             if ~isempty(obj.MagneticField)
                 obj.MagneticPotential = MagneticPotential(obj.Atom,obj.MagneticField,...
-                    manifold=obj.Manifold,stateIndex=obj.StateIndex);
+                    atomicState=obj.AtomicState);
             end
 
             % Compute FOverHbar

@@ -5,8 +5,8 @@ classdef (Abstract) TimeSimRun < SimRun
         InitialTime double = 0
         TotalTime (1,1) double
         TimeStep (1,1) double
-        SavePeriod = 1
-        AveragePeriod = 1
+        SavePeriod = 1e3
+        AveragePeriod = 200
         InitialCondition InitialCondition
     end
 
@@ -50,6 +50,7 @@ classdef (Abstract) TimeSimRun < SimRun
             % Time grid from :attr:`InitialTime` to :attr:`TotalTime`.
             tList = obj.InitialTime : obj.TimeStep : obj.TotalTime;
         end
+        
         function tListAvg = get.TimeListAvg(obj)
             % Subsampled time grid for averages with period :attr:`AveragePeriod`.
             aP = obj.AveragePeriod;

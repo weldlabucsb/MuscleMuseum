@@ -272,6 +272,23 @@ if exist("SimParentPath","var")
             "VariableNames",["SimName","VariableName","RuntimeName","Size"]);
         p2.updateEntry(t,["SimName","VariableName"])
     end
+
+    if exist("LatticeFourierSeSim1D_DatabaseTableName","var")
+        s.SimName = "LatticeFourierSeSim1D";
+        s.ParentPath = fullfile(SimParentPath,"LatticeFourierSeSim1D");
+        s.DataBaseName = SimDatabaseName;
+        s.DatabaseTableName = LatticeFourierSeSim1D_DatabaseTableName;
+        s.OutputVariableName = LatticeFourierSeSim1D_OutputVariableName;
+        DatabaseTableName = [DatabaseTableName,s.DatabaseTableName];
+        p.updateEntry(s,["SimName","TrialName"])
+        t = cell2table( ...
+            { ...
+            s.SimName,   "Time",         "t",     1; ...
+            s.SimName,   "WaveFunction", "ucj", 1; ...
+            },...
+            "VariableNames",["SimName","VariableName","RuntimeName","Size"]);
+        p2.updateEntry(t,["SimName","VariableName"])
+    end
 end
 
 disp("Done.")
