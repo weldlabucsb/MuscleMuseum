@@ -1533,6 +1533,14 @@ classdef BecExp < Trial
             end
         end
 
+        function scopeData = loadScope(obj,sName,runIdx)
+            try
+                scopeData = loadVar(fullfile(obj.HardwareLogPath,obj.DataPrefix + "_" + num2str(runIdx)) + "_" + sName + ".mat");
+            catch
+                error(sName+" has no data fetched in HardwareLogPath.")
+            end
+        end
+
         function writeDatabase(obj)
             % Write trial metadata to PostgreSQL database.
             %
