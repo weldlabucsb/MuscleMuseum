@@ -230,7 +230,7 @@ classdef HardwareSetting < MmParameter
              if ~isempty(value)
                  value = value.DefaultValue;
              else
-                 value = 0;
+                 value = "0";
              end
              close(conn)
         end
