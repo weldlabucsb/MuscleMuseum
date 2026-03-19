@@ -186,6 +186,14 @@ classdef (Abstract) SiglentScope < Scope
             fprintf('(internal timer on read()) -- Transfer Speed %.4f s\n', toc(tInternal));
         end
 
+        function startFromEdge(obj)
+            v = obj.VisaObj;
+            tdiv_str = writeread(v, 'TIM:SCAL?');
+            tdiv = str2double(regexp(tdiv_str, '[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?', 'match', 'once'));
+            delayValue = 5 * tdiv; 
+            writeline(v, sprintf(':TIMebase:DELay %e', delayValue));
+        end
+
         function status = check(obj)
             if isempty(obj.VisaObj)
                 status = false;
