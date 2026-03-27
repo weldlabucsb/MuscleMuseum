@@ -31,6 +31,7 @@ classdef Keysight33600A < KeysightWaveformGenerator
             obj.SamplingRateLimit = 1e9;
             obj.WaveformList = cell(1,obj.NChannel);
             obj.OutputLimit = [10,10];
+            obj.Offset = [0,0];
         end
     
     end

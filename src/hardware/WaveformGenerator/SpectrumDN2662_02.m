@@ -32,6 +32,7 @@ classdef SpectrumDN2662_02 < SpectrumWaveformGenerator
             obj.WaveformList = cell(1,obj.NChannel);
             obj.DisabledProperty = ["TriggerSlope","OutputMode","TriggerDelay"];
             obj.OutputLimit = [0.08,2];
+            obj.Offset = [0,0];
         end
             
     end
