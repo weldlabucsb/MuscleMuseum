@@ -51,9 +51,9 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
                 writeline(v, sprintf(sourceStr + ':FUNCtion:ARBitrary:SRATe %g MHZ', obj.SamplingRate(ii) * 1e-6)); % Sampling rate
                 writeline(v, sprintf(sourceStr + ':VOLTage:HIGH %g', 2.0)); % Voltage high
                 writeline(v, sprintf(sourceStr + ':VOLTage:LOW %g', -2.0)); % Voltage low
-                writeline(v, sprintf(sourceStr + ':VOLTage:OFFset %g', 0)); % Voltage offset
+                writeline(v, sprintf(sourceStr + ':VOLTage:OFFset %g', obj.Offset(ii))); % Voltage offset
                 writeline(v, sprintf(sourceStr + ':FUNCtion:ARBitrary:PTPeak %g', 1)); % Set arbitray waveform p2p
-                
+
                 % Trigger source
                 switch obj.TriggerSource(ii)
                     case "External"
@@ -117,13 +117,16 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
                 %% Add begining and ending zero waveforms for triggering
                 obj.WaveformList{ii}.SamplingRate = obj.SamplingRate(ii);
                 t = obj.WaveformList{ii}.WaveformPrepared;
-                Sample = {zeros(1,35)};
+                Sample = {ones(1,35) * obj.Offset(ii)};
                 PlayMode = "OnceWaitTrigger";
                 NRepeat = 0;
                 t0 = table(Sample,PlayMode,NRepeat);
                 PlayMode = "Repeat";
                 te = table(Sample,PlayMode,NRepeat);
                 t = [t0;t;te];
+                for jj = 1:size(t,1)
+                    t(jj,:).Sample{1} = t(jj,:).Sample{1};
+                end
 
                 %% Initialize parameters
                 nWave = size(t,1);

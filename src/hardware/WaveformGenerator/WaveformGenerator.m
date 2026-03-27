@@ -15,6 +15,7 @@ classdef (Abstract) WaveformGenerator < Hardware
         IsOutput logical % Per-channel output enables
         OutputLoad string {mustBeMember(OutputLoad,{'50','Infinity'})} = "50" % Output load selection
         WaveformList cell % Per-channel waveform list objects
+        Offset double = 0
     end
 
     properties (SetAccess=protected)

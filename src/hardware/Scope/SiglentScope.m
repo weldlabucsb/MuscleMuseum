@@ -6,7 +6,7 @@ classdef (Abstract) SiglentScope < Scope
     % -- Pulls raw 16-bit waveform data
     % -- Uses WAV:PRE? for scaling (Siglent format)
 
-    properties (Access = protected)
+    properties (Access = public,Transient)
         VisaObj % visadev object
     end
 
@@ -28,7 +28,7 @@ classdef (Abstract) SiglentScope < Scope
                 writeline(obj.VisaObj, "*CLS");
 
                 idn = writeread(obj.VisaObj, "*IDN?");
-                fprintf("Connected to: %s\n", idn);
+                % fprintf("Connected to: %s\n", idn);
 
             catch ME
                 error("Failed to connect to scope at %s: %s", obj.ResourceName, ME.message);
@@ -131,24 +131,22 @@ classdef (Abstract) SiglentScope < Scope
             end
 
             v = obj.VisaObj;
-            tInternal = tic;
+            % tInternal = tic;
 
             enabledChans = find(obj.IsEnabled);
             numEnabled = numel(enabledChans);
 
             obj.Sample = zeros(numEnabled, obj.NSample);
 
+            writeline(v,'STOP')
             for ii = 1:numEnabled
-                if ii >= 2
-                    pause(0.1)
-                end
                 idx = enabledChans(ii);
 
                 % Select channel
                 % writeline(v, 'WFSU TYPE,WORD');
                 % writeline(v, 'CFMT DEF9,WORD,BIN');
 
-                flush(v, "input");
+                % flush(v, "input");
 
                 % Get Vertical Gain (Volts/Div) and Offset
                 % 1. Read the raw string responses from the scope
@@ -166,24 +164,31 @@ classdef (Abstract) SiglentScope < Scope
                 % Request waveform
                 writeline(v, sprintf('C%g:WF? DAT2', idx));
 
-                charRead = '';
-                while charRead ~= ','
-                    charRead = read(v, 1, 'char');
-                end
+                % charRead = '';
+                % while charRead ~= ','
+                %     charRead = read(v, 1, 'char');
+                % end
                 rawData = readbinblock(v,'int8');
-                obj.Sample(ii, :) = (double(rawData) .* (vdiv / 25)) - voffset;
+                % writeline(v,":WAVeform:PRE?");
+                % pre = readbinblock(v,'uint8');
+                
+                obj.Sample(ii, :) = (double(rawData) .* (vdiv / 30)) - voffset;
+                % read(v,1,"char")
+                % writeline(v,"*OPC?")
+                % readline(v)
 
-                flush(v, "input");
+                % flush(v, "input");
 
             end
-
+            writeline(v,'ARM')
+            obj.set
             obj.SampleUnit = "V";
 
-            if ismethod(obj, 'saveObject')
-                obj.saveObject();
-            end
+            % if ismethod(obj, 'saveObject')
+                obj.saveObject;
+            % end
 
-            fprintf('(internal timer on read()) -- Transfer Speed %.4f s\n', toc(tInternal));
+            % fprintf('(internal timer on read()) -- Transfer Speed %.4f s\n', toc(tInternal));
         end
 
         function startFromEdge(obj)
