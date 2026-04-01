@@ -138,7 +138,7 @@ classdef (Abstract) SiglentScope < Scope
 
             obj.Sample = zeros(numEnabled, obj.NSample);
 
-            writeline(v,'STOP')
+            writeline(v,':TRIGger:STOP')
             for ii = 1:numEnabled
                 idx = enabledChans(ii);
 
@@ -162,7 +162,9 @@ classdef (Abstract) SiglentScope < Scope
                 voffset = str2double(voffset_matches{end});
                 
                 % Request waveform
-                writeline(v, sprintf('C%g:WF? DAT2', idx));
+                writeline(v, sprintf(':WAVeform:SOURce C%g', idx));
+                writeline(v, sprintf(':WAVeform:DATA?'));
+                % writeline(v, sprintf('C%g:WF? DAT2', idx));
 
                 % charRead = '';
                 % while charRead ~= ','
@@ -178,10 +180,11 @@ classdef (Abstract) SiglentScope < Scope
                 % readline(v)
 
                 % flush(v, "input");
+                % pause(0.1)
 
             end
-            writeline(v,'ARM')
-            obj.set
+            writeline(v,':TRIGger:RUN')
+            % obj.set
             obj.SampleUnit = "V";
 
             % if ismethod(obj, 'saveObject')
@@ -197,6 +200,11 @@ classdef (Abstract) SiglentScope < Scope
             tdiv = str2double(regexp(tdiv_str, '[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?', 'match', 'once'));
             delayValue = 5 * tdiv; 
             writeline(v, sprintf(':TIMebase:DELay %e', delayValue));
+        end
+
+        function trigger(obj)
+            v = obj.VisaObj;
+            writeline(v,":TRIGger:MODE FTRIG")
         end
 
         function status = check(obj)
