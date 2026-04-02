@@ -32,6 +32,7 @@ classdef WaveformList < handle
         SamplingRate double % In Hz - Sampling rate for all waveforms in the list.
         NPeriodPerCycle double = 10 % Number of cycles for periodic waveforms.
         TransformFunction string = "None" % To transform the waveform. Must be a function defined in matlab's search path.
+        OverrideFunction string = "None" % To override the waveform output. Can take variable input. Must be a function that outputs a WaveformList.
     end
 
     properties (Dependent)
@@ -148,6 +149,14 @@ classdef WaveformList < handle
                 if nWave == 0
                     return
                 end
+            end
+
+            %% Set override function
+            if obj.OverrideFunction ~= "None"
+                wfl = eval(obj.OverrideFunction);
+                wfl.SamplingRate = obj.SamplingRate;
+                t = wfl.WaveformPrepared;
+                return
             end
 
             %% Set sampling rate
