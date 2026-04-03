@@ -39,8 +39,9 @@ classdef WaveformList < handle
         Sample % Combined waveform samples as a vector.
         TimeStep % Time step between samples (1/SamplingRate).
         RepeatMode string % Repeat mode for hardware control ('Repeat' or 'RepeatTilTrigger').
-        WaveformPrepared Table % Table containing prepared waveform segments with play modes and repeat counts.
+        % WaveformPrepared Table % Table containing prepared waveform segments with play modes and repeat counts.
         IsEmpty logical % If this waveform has no WaveformOrigin or all WaveformOrigin has zero duration
+        OverrideWaveformList
     end
 
     properties (SetAccess = protected)
@@ -133,7 +134,30 @@ classdef WaveformList < handle
             end
         end
 
-        function t = get.WaveformPrepared(obj)
+        function wfl = get.OverrideWaveformList(obj)
+            if obj.OverrideFunction ~= "None"
+                funcName = regexp(obj.OverrideFunction, '^\w+', 'match', 'once');
+                vars = regexp(obj.OverrideFunction, '(?<=\(|\,)\s*(\w+)\s*(?=\,|\))', 'match');
+                if ~isempty(vars)
+                    p = VariableList;
+                    t = p.readColumn(["Name","CurrentValue"]);
+                    dict = dictionary(t.Name,t.CurrentValue);
+                    freeVarIdx = ~ismember(vars,dict.keys);
+                    varEval = zeros(1,numel(vars));
+                    varEval(~freeVarIdx) = dict(vars(~freeVarIdx));
+                    varEval(freeVarIdx) = double(vars(freeVarIdx));
+                    varEval = num2cell(varEval);
+                    wfl = feval(funcName,varEval{:});
+                else
+                    wfl = feval(funcName);
+                end
+                wfl.SamplingRate = obj.SamplingRate;
+            else
+                wfl = {};
+            end
+        end
+
+        function t = WaveformPrepared(obj)
             %Prepare waveform segments for hardware output.
             %
             % Combines individual waveforms according to the concatenation method
@@ -153,8 +177,7 @@ classdef WaveformList < handle
 
             %% Set override function
             if obj.OverrideFunction ~= "None"
-                wfl = eval(obj.OverrideFunction);
-                wfl.SamplingRate = obj.SamplingRate;
+                wfl = obj.OverrideWaveformList;
                 t = wfl.WaveformPrepared;
                 return
             end
@@ -318,6 +341,11 @@ classdef WaveformList < handle
                 end
             end
 
+            if obj.OverrideFunction ~= "None"
+                func = obj.OverrideWaveformList.TimeFunc;
+                return
+            end
+
             %% Construct waveform time function handle
             tShift = zeros(1,nWave);
             if obj.ConcatMethod == "Sequential"
@@ -361,6 +389,11 @@ classdef WaveformList < handle
             arguments
                 obj WaveformList
                 ax = []
+            end
+
+            if obj.OverrideFunction ~= "None"
+                obj.OverrideWaveformList.plot(ax)
+                return
             end
             
             sr = obj.SamplingRate;
@@ -440,10 +473,11 @@ classdef WaveformList < handle
             IsTriggerAdvance = obj.IsTriggerAdvance;
             NPeriodPerCycle = obj.NPeriodPerCycle;
             TransformFunction = obj.TransformFunction;
+            OverrideFunction = obj.OverrideFunction;
             if isnan(NPeriodPerCycle)
                 NPeriodPerCycle = 0;
             end
-            t = table(Name,SamplingRate,ConcatMethod,PatchMethod,PatchConstant,IsTriggerAdvance,NPeriodPerCycle,TransformFunction);
+            t = table(Name,SamplingRate,ConcatMethod,PatchMethod,PatchConstant,IsTriggerAdvance,NPeriodPerCycle,TransformFunction,OverrideFunction);
         end
     end
 end
