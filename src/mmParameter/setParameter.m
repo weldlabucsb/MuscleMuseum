@@ -130,7 +130,7 @@ if ~isempty(t)
         if isfolder(HardwareLogOrigin)
             arrayfun(@createFolder,DataPath);
         else
-            warning("Can not find the hardware log folder. Check your setConfig")
+            warning("Can not find the hardware log folder. Check your mmConfig")
         end
     else
         error("HardwareLogOrigin must be defined when hardware is used.")
@@ -142,20 +142,22 @@ else
     newId = [];
 end
 
+% Sync sqlite with mmConfig settings
 deleteId = setdiff(oldId,newId);
 if ~isempty(deleteId)
     p.deleteEntry(deleteId)
 end
 
-extraId = setdiff(newId,oldId);
-if ~isempty(extraId)
-    for ii = 1:numel(extraId)
-        extraDeviceModel = p.readValue(extraId(ii),"DeviceModel");
-        extraName = p.readValue(extraId(ii),"Name");
+% Maintain HardwareSetting integrity
+if ~isempty(newId)
+    for ii = 1:numel(newId)
+        extraDeviceModel = p.readValue(newId(ii),"DeviceModel");
+        extraName = p.readValue(newId(ii),"Name");
         hw = eval(extraDeviceModel + "('xxx',extraName)");
         p.saveEntry(hw,true);
     end
 end
+
 
 %% Set BEC experiment configuration
 if exist("BecExpDataPrefix","var")
