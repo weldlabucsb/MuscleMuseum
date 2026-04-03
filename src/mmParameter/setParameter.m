@@ -137,7 +137,7 @@ if ~isempty(t)
     end
     t.DataPath = DataPath;
     p.updateEntry(t,"Name")
-    newId = p.readColumn("ID");
+    newId = p.readValue(t.Name,"ID","Name");
 else
     newId = [];
 end
