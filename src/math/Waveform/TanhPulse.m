@@ -84,7 +84,25 @@ classdef TanhPulse < PartialPeriodicWaveform & ConstantTop
             tf = obj.FallTime;
             trCenter = t0 + tr / 2;
             tfCenter = te - tf / 2;
-            func = @tFunc;
+            if tf == 0
+                func = @trFunc;
+            elseif tr == 0
+                func = @tfFunc;
+            else
+                func = @tFunc;
+            end
+            function waveOut = trFunc(t)
+                waveOut = (t>=t0 & t<=(te)) .* ...
+                    (((tanh((t-trCenter)./(tr).* 2 * pi) - 1)./2 .* (t<=(t0+tr))...
+                     + 1) .*...
+                    amp + offset);
+            end
+            function waveOut = tfFunc(t)
+                waveOut = (t>=t0 & t<=(te)) .* ...
+                    ((...
+                    - (tanh((t-tfCenter)./(tf).* 2 * pi) + 1)./2 .* (t>=(te-tf)) + 1) .*...
+                    amp + offset);
+            end
             function waveOut = tFunc(t)
                 waveOut = (t>=t0 & t<=(te)) .* ...
                     (((tanh((t-trCenter)./(tr).* 2 * pi) - 1)./2 .* (t<=(t0+tr))...
