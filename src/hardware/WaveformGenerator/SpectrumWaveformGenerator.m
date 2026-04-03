@@ -155,6 +155,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                 otherwise
                     segmentSizeMinimum = 96;
             end
+            offset = obj.Offset(enabledChannel);
             
             %% Load prepared waveforms
             t = cell(1,nEnabledChannel);
@@ -162,6 +163,31 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                 obj.WaveformList{enabledChannel(ii)}.SamplingRate = obj.SamplingRate(1);
                 obj.WaveformList{enabledChannel(ii)}.NPeriodPerCycle = 0; % For spectrum AWG, we don't want to split a periodic waveform into parts and upload
                 t{ii} = obj.WaveformList{enabledChannel(ii)}.WaveformPrepared; % Load the prepared waveforms
+            end
+
+            %% Stitch trigger delay
+            delay = round(obj.TriggerDelay(enabledChannel) * obj.SamplingRate(1));
+            if nEnabledChannel == 1 || all(delay == delay(1))
+                errorCode = spcm_dwSetParam_i32(obj.Device, obj.RegMap('SPC_TRIG_DELAY'), delay(1));
+            else
+                % If we have any differetial trigger delay, we have to patch
+                % those un-delayed channels, which means we have to stitch
+                % all segments into one piece
+                errorCode = spcm_dwSetParam_i32(obj.Device, obj.RegMap('SPC_TRIG_DELAY'), 0);
+                maxDelay = max(delay);
+                sampleLength = numel(obj.WaveformList{enabledChannel(1)}.NSample);
+                for ii = 1:nEnabledChannel
+                    sample = obj.WaveformList{enabledChannel(ii)}.Sample;
+                    sample = [...
+                        ones(1,delay(ii)) * offset(ii),...
+                        sample,...
+                        ones(1,sampleLength + maxDelay - delay(ii)) * offset(ii) ...
+                        ] ;
+                    t{ii}(2:end,:) = [];
+                    t{ii}.Sample = {sample};
+                    t{ii}.PlayMode = "Repeat";
+                    t{ii}.NRepeat = 1;
+                end   
             end
 
             %% Check numbers of waveforms of each channel
