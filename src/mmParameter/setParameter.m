@@ -148,16 +148,24 @@ if ~isempty(deleteId)
     p.deleteEntry(deleteId)
 end
 
-% Maintain HardwareSetting integrity
-if ~isempty(newId)
-    for ii = 1:numel(newId)
-        extraDeviceModel = p.readValue(newId(ii),"DeviceModel");
-        extraName = p.readValue(newId(ii),"Name");
+extraId = setdiff(newId,oldId);
+if ~isempty(extraId)
+    for ii = 1:numel(extraId)
+        extraDeviceModel = p.readValue(extraId(ii),"DeviceModel");
+        extraName = p.readValue(extraId(ii),"Name");
         hw = eval(extraDeviceModel + "('xxx',extraName)");
         p.saveEntry(hw,true);
     end
 end
 
+% Maintain hardware setting integrity
+oldId = setdiff(newId,extraId);
+if ~isempty(oldId)
+    for ii = 1:numel(oldId)
+        hw = p.loadEntry(oldId(ii));
+        p.saveEntry(hw,true);
+    end
+end
 
 %% Set BEC experiment configuration
 if exist("BecExpDataPrefix","var")
