@@ -143,18 +143,19 @@ if ~isempty(t)
         if isfolder(HardwareLogOrigin)
             arrayfun(@createFolder,DataPath);
         else
-            warning("Can not find the hardware log folder. Check your setConfig")
+            warning("Can not find the hardware log folder. Check your mmConfig")
         end
     else
         error("HardwareLogOrigin must be defined when hardware is used.")
     end
     t.DataPath = DataPath;
     p.updateEntry(t,"Name")
-    newId = p.readColumn("ID");
+    newId = p.readValue(t.Name,"ID","Name");
 else
     newId = [];
 end
 
+% Sync sqlite with mmConfig settings
 deleteId = setdiff(oldId,newId);
 if ~isempty(deleteId)
     p.deleteEntry(deleteId)
@@ -166,6 +167,15 @@ if ~isempty(extraId)
         extraDeviceModel = p.readValue(extraId(ii),"DeviceModel");
         extraName = p.readValue(extraId(ii),"Name");
         hw = eval(extraDeviceModel + "('xxx',extraName)");
+        p.saveEntry(hw,true);
+    end
+end
+
+% Maintain hardware setting integrity
+oldId = setdiff(newId,extraId);
+if ~isempty(oldId)
+    for ii = 1:numel(oldId)
+        hw = p.loadEntry(oldId(ii));
         p.saveEntry(hw,true);
     end
 end

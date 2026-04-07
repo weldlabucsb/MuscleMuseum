@@ -113,6 +113,7 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
                     writeline(v,outputStr + " 0") % Stop output if no waveform
                     continue
                 end
+                tic;
 
                 %% Add begining and ending zero waveforms for triggering
                 obj.WaveformList{ii}.SamplingRate = obj.SamplingRate(ii);
@@ -183,7 +184,9 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
                 %% Check if upload is successful
                 s = obj.check;
                 if s
-                    disp(obj.Name + " channel" + num2str(ii) + " uploaded [" + obj.WaveformList{ii}.Name +"] successfully.")
+                    t = toc;
+                    disp(obj.Name + " channel" + num2str(ii) +...
+                        " uploaded [" + obj.WaveformList{ii}.Name +"] successfully in " + t + " seconds.")
                     obj.saveObject;
                 else
                     obj.set

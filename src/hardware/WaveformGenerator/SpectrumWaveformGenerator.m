@@ -131,8 +131,9 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             enabledChannel = [];
             for ii = 1:obj.NChannel
                 if obj.IsOutput(ii) == false || isempty(obj.WaveformList{ii}) || obj.WaveformList{ii}.IsEmpty
-                    % set output to zero if no waveform
-                    [~,obj.Device] = spcMSetupAnalogOutputChannel(obj.Device, ii-1, 0, 0, 0, obj.RegMap('SPCM_STOPLVL_ZERO'), 0, 0);
+                    % turn off output if no waveform
+                    reg = ['SPC_ENABLEOUT',num2str(ii - 1)];
+                    errorcode = spcm_dwSetParam_i32(obj.Device, obj.RegMap(reg), 0);
                     continue
                 else
                     enabledChannel = [enabledChannel,ii];
@@ -155,6 +156,13 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                 otherwise
                     segmentSizeMinimum = 96;
             end
+            tic;
+
+            %% Check offset
+            offset = obj.Offset(enabledChannel);
+            if any(abs(offset) > obj.OutputLimit(2)/2)
+                error("The output offset is out of the limit.")
+            end
             
             %% Load prepared waveforms
             t = cell(1,nEnabledChannel);
@@ -162,6 +170,32 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                 obj.WaveformList{enabledChannel(ii)}.SamplingRate = obj.SamplingRate(1);
                 obj.WaveformList{enabledChannel(ii)}.NPeriodPerCycle = 0; % For spectrum AWG, we don't want to split a periodic waveform into parts and upload
                 t{ii} = obj.WaveformList{enabledChannel(ii)}.WaveformPrepared; % Load the prepared waveforms
+            end
+
+            %% Stitch trigger delay
+            delay = round(obj.TriggerDelay(enabledChannel) * obj.SamplingRate(1));
+            if nEnabledChannel == 1 || all(delay == delay(1))
+                errorCode = spcm_dwSetParam_i32(obj.Device, obj.RegMap('SPC_TRIG_DELAY'), delay(1));
+            else
+                % If we have any differetial trigger delay, we have to patch
+                % those un-delayed channels, which means we have to stitch
+                % all segments into one piece to make all channels have the
+                % same number of samples
+                errorCode = spcm_dwSetParam_i32(obj.Device, obj.RegMap('SPC_TRIG_DELAY'), 0);
+                maxDelay = max(delay);
+                sampleLength = numel(obj.WaveformList{enabledChannel(1)}.NSample);
+                for ii = 1:nEnabledChannel
+                    sample = obj.WaveformList{enabledChannel(ii)}.Sample;
+                    sample = [...
+                        ones(1,delay(ii)) * offset(ii),...
+                        sample,...
+                        ones(1,sampleLength + maxDelay - delay(ii)) * offset(ii) ...
+                        ] ;
+                    t{ii}(2:end,:) = [];
+                    t{ii}.Sample = {sample};
+                    t{ii}.PlayMode = "Repeat";
+                    t{ii}.NRepeat = 1;
+                end
             end
 
             %% Check numbers of waveforms of each channel
@@ -220,13 +254,13 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
 
             %% Tailor the waveforms (segment sizes and scaling)
             sample = cell(nWave,nEnabledChannel);
-            scale=32767;            
+            scale  = 32767;            
 
             for jj = 1:nWave
                 segSize = zeros(1,nEnabledChannel);
                 for ii = 1:nEnabledChannel
                     if jj == nWave
-                        sample{jj,ii} = zeros(1,segmentSizeMinimum);
+                        sample{jj,ii} = ones(1,segmentSizeMinimum) * offset(ii);
                     else
                         sample{jj,ii} = t{ii}.Sample{jj};
                     end
@@ -259,7 +293,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                             [~,obj.Device] = spcMSetupSequenceStep(obj.Device,ii-1,ii,ii-1,1,1);
                     end
                 else
-                    [~,obj.Device] = spcMSetupSequenceStep(obj.Device,ii-1,0,ii-1,1,1); %loop the zero output until trigger
+                    [~,obj.Device] = spcMSetupSequenceStep(obj.Device,ii-1,0,ii-1,1,1); %loop the offset output until trigger
                 end
             end
 
@@ -283,9 +317,11 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             s = obj.check;
             if s
                 for ii = enabledChannel
-                    disp(obj.Name + " channel" + num2str(ii) + " uploaded [" + obj.WaveformList{ii}.Name +"] successfully.")
+                    disp(obj.Name + " channel" + num2str(ii) +...
+                        " uploaded [" + obj.WaveformList{ii}.Name +"] successfully.")
                 end
                 obj.saveObject;
+                toc;
             end
             obj.closeSpec;
         end
@@ -313,9 +349,9 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                 spcMErrorMessageStdOut(obj.Device, 'Error: Card function not supported by this example\n', false);
             elseif bitand(obj.Device.featureMap, obj.RegMap('SPCM_FEAT_SEQUENCE')) == 0
                 spcMErrorMessageStdOut(obj.Device, 'Error: Sequence Mode Option not installed. Example was done especially for this option!\n', false);
-            % elseif string(obj.Device.errorText) ~= "No Error"
-            %     obj.closeSpec
-            %     error(obj.Device.errorText)
+            elseif string(obj.Device.errorText) ~= "No Error"
+                obj.closeSpec
+                error(obj.Device.errorText)
             else
                 status = true;
             end

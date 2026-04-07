@@ -33,7 +33,6 @@ classdef Keysight33600A < KeysightWaveformGenerator
             obj.OutputLimit = [10,10];
             obj.Offset = [0,0];
         end
-    
     end
 end
 

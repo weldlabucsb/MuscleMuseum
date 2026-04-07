@@ -170,11 +170,16 @@ classdef (Abstract) SiglentScope < Scope
                 % while charRead ~= ','
                 %     charRead = read(v, 1, 'char');
                 % end
-                rawData = readbinblock(v,'int8');
-                % writeline(v,":WAVeform:PRE?");
-                % pre = readbinblock(v,'uint8');
-                
-                obj.Sample(ii, :) = (double(rawData) .* (vdiv / 30)) - voffset;
+                try
+                    rawData = readbinblock(v,'int8');
+                    % writeline(v,":WAVeform:PRE?");
+                    % pre = readbinblock(v,'uint8');
+
+                    obj.Sample(ii, :) = (double(rawData) .* (vdiv / 30)) - voffset;
+                catch
+                    obj.Sample(ii, :) = zeros(1,obj.NSample);
+                    warning("no waveform on the scope")
+                end
                 % read(v,1,"char")
                 % writeline(v,"*OPC?")
                 % readline(v)
