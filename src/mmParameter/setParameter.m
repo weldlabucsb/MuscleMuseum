@@ -93,6 +93,19 @@ if exist("PlName",'var')
     updateConfig("PhaseLockConfig",t)
 end
 
+%% Check WaveformLibrary and WaveformListLibrary
+disp(newline + "Checking WaveformLibrary and WaveformListLibrary...")
+settingList = [
+    "WaveformLibrary";
+    "WaveformListLibrary";
+    ];
+
+for ii = 1:numel(settingList)
+    p = eval(settingList(ii));
+    p.checkTable;
+end
+disp("Done.")
+
 %% Set hardware list and hardware setting
 t = array2table(zeros(0,4));
 t.Properties.VariableNames = ["Name","Type","DeviceModel","ResourceName"];
@@ -231,8 +244,6 @@ settingList = [
     "BecExpData";
     "BecExpVariableUnit";
     "RoiSetting";
-    "WaveformLibrary";
-    "WaveformListLibrary";
     "HardwareAssociation";
     ];
 
