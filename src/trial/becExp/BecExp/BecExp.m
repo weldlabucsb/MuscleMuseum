@@ -746,6 +746,7 @@ classdef BecExp < Trial
             end
 
             obj.update;
+            close(obj.Writer); %added to close sql connection at end of experiment
 
         end
 
@@ -786,6 +787,8 @@ classdef BecExp < Trial
             end
 
             obj.update;
+
+            close(obj.Writer); %added to close sql connections at end of trial
 
         end
 
