@@ -49,6 +49,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             %
             % Spectrum AWG MATLAB driver requires closing/opening the card
             % around uploads; use :meth:`connectSpec` within :meth:`upload`.
+            obj.connectSpec
         end
         
         function connectSpec(obj)
@@ -74,6 +75,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
 
         function set(obj)
             % Unused (Spectrum initializes per-upload).
+            obj.setSpec
         end
         
         function setSpec(obj)
@@ -84,7 +86,11 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             % :attr:`IsOutput`.
             %
             % :raises error: On PLL setup failure or subsequent Spectrum errors
-            obj.check;
+            if ~obj.check
+                obj.close
+                obj.connect
+            end
+            errorcode = spcm_dwSetParam_i32 (obj.Device.hDrv, obj.RegMap('SPC_M2CMD'), obj.RegMap('M2CMD_CARD_STOP'));
 
             %% Set sampling rate
             [success,obj.Device] = spcMSetupClockPLL(obj.Device, obj.SamplingRate(1), 0);
@@ -109,7 +115,13 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             %% Set output
             for ii = 1:obj.NChannel
                 if obj.IsOutput(ii)
-                    [~,obj.Device] = spcMSetupAnalogOutputChannel(obj.Device, ii-1, 2000, 0, 0, obj.RegMap('SPCM_STOPLVL_ZERO'), 0, 0);     
+                    if obj.OutputLoad(ii) == "50"
+                        s = 1;
+                    else
+                        s = 2;
+                    end
+                    errorCode = spcm_dwSetParam_i32(obj.Device.hDrv, obj.RegMap(['SPC_CH', num2str(ii-1), '_CUSTOM_STOP']), obj.Offset(ii) * 32767 / 2);
+                    [~,obj.Device] = spcMSetupAnalogOutputChannel(obj.Device, ii-1, 2*1e3/s, 0, 0, obj.RegMap('SPCM_STOPLVL_CUSTOM'), 0, 0);     
                 end
             end
         end
@@ -124,8 +136,8 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             % :raises error: On mismatched segment counts, segment size mismatch,
             %   output limit violations, or Spectrum driver errors
             %% Set and connect
-            obj.connectSpec;
-            obj.setSpec;
+            % obj.connectSpec;
+            obj.setSpec
 
             %% Get the minimum segment size
             enabledChannel = [];
@@ -133,7 +145,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                 if obj.IsOutput(ii) == false || isempty(obj.WaveformList{ii}) || obj.WaveformList{ii}.IsEmpty
                     % turn off output if no waveform
                     reg = ['SPC_ENABLEOUT',num2str(ii - 1)];
-                    errorcode = spcm_dwSetParam_i32(obj.Device, obj.RegMap(reg), 0);
+                    errorcode = spcm_dwSetParam_i32(obj.Device.hDrv, obj.RegMap(reg), 0);
                     continue
                 else
                     enabledChannel = [enabledChannel,ii];
@@ -175,13 +187,14 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
             %% Stitch trigger delay
             delay = round(obj.TriggerDelay(enabledChannel) * obj.SamplingRate(1));
             if nEnabledChannel == 1 || all(delay == delay(1))
-                errorCode = spcm_dwSetParam_i32(obj.Device, obj.RegMap('SPC_TRIG_DELAY'), delay(1));
+                delay = round(delay/16) * 16;
+                errorCode = spcm_dwSetParam_i32(obj.Device.hDrv, obj.RegMap('SPC_TRIG_DELAY'), delay(1));
             else
                 % If we have any differetial trigger delay, we have to patch
                 % those un-delayed channels, which means we have to stitch
                 % all segments into one piece to make all channels have the
                 % same number of samples
-                errorCode = spcm_dwSetParam_i32(obj.Device, obj.RegMap('SPC_TRIG_DELAY'), 0);
+                errorCode = spcm_dwSetParam_i32(obj.Device.hDrv, obj.RegMap('SPC_TRIG_DELAY'), 0);
                 maxDelay = max(delay);
                 sampleLength = numel(obj.WaveformList{enabledChannel(1)}.NSample);
                 for ii = 1:nEnabledChannel
@@ -228,9 +241,9 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                     amp(ii) = oLim(1);
                 end
                 if obj.OutputLoad(ii) == "50"
-                    [~,obj.Device] = spcMSetupAnalogOutputChannel(obj.Device, enabledChannel(ii)-1, amp(ii)*1e3, 0, 0, obj.RegMap('SPCM_STOPLVL_ZERO'), 0, 0);
+                    [~,obj.Device] = spcMSetupAnalogOutputChannel(obj.Device, enabledChannel(ii)-1, amp(ii)*1e3, 0, 0, obj.RegMap('SPCM_STOPLVL_LOW'), 0, 0);
                 else
-                    [~,obj.Device] = spcMSetupAnalogOutputChannel(obj.Device, enabledChannel(ii)-1, amp(ii)/2*1e3, 0, 0, obj.RegMap('SPCM_STOPLVL_ZERO'), 0, 0);
+                    [~,obj.Device] = spcMSetupAnalogOutputChannel(obj.Device, enabledChannel(ii)-1, amp(ii)/2*1e3, 0, 0, obj.RegMap('SPCM_STOPLVL_LOW'), 0, 0);
                 end
             end
 
@@ -315,18 +328,20 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
 
             %% Check if upload is successful
             s = obj.check;
+            t = toc;
             if s
                 for ii = enabledChannel
                     disp(obj.Name + " channel" + num2str(ii) +...
-                        " uploaded [" + obj.WaveformList{ii}.Name +"] successfully.")
+                        " uploaded [" + obj.WaveformList{ii}.Name +"] successfully in " + t/nEnabledChannel +" seconds.")
                 end
                 obj.saveObject;
-                toc;
+
             end
-            obj.closeSpec;
+            % obj.closeSpec;
         end
 
         function close(obj)
+            obj.closeSpec
             % Placeholder (Spectrum cards close in :meth:`closeSpec`).
         end
         
@@ -351,7 +366,7 @@ classdef (Abstract) SpectrumWaveformGenerator < WaveformGenerator
                 spcMErrorMessageStdOut(obj.Device, 'Error: Sequence Mode Option not installed. Example was done especially for this option!\n', false);
             elseif string(obj.Device.errorText) ~= "No Error"
                 obj.closeSpec
-                error(obj.Device.errorText)
+                warning(obj.Device.errorText)
             else
                 status = true;
             end
