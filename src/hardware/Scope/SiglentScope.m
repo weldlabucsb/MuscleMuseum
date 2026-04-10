@@ -49,6 +49,7 @@ classdef (Abstract) SiglentScope < Scope
             % Horizontal settings
             % =========================
             writeline(v, sprintf("TIM:SCAL %g", obj.Duration / 10));
+            writeline(v, sprintf(':TIMebase:DELay %e', -obj.HorizontalOffset));
 
             % =========================
             % Channel settings

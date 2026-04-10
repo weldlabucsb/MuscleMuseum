@@ -29,6 +29,7 @@ classdef (Abstract) Scope < Hardware
         VerticalCoupling string {mustBeMember(VerticalCoupling,{'DC','AC'})} = "DC" % Input coupling per channel
         VerticalOffset double = 0 % Vertical offset per channel (in :attr:`SampleUnit`)
         VerticalRange double = 10 % Vertical range per channel (in :attr:`SampleUnit`)
+        HorizontalOffset double = 0
     end
 
     properties (SetAccess = protected)
