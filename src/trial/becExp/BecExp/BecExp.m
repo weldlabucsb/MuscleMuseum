@@ -57,7 +57,7 @@ classdef BecExp < Trial
         HardwareAssociation % Mapping table linking trial configurations to hardware settings
         BecExpData
         HardwareLogPath string % Destination hardware log folder path within trial directory
-        VariableMapping % Lookup table mapping variable IDs to analysis parameters 
+        VariableMapping % Lookup table mapping variable IDs to analysis parameters
     end
 
     properties (SetAccess = private)
@@ -146,7 +146,7 @@ classdef BecExp < Trial
             obj.HardwareAssociation = HardwareAssociation;
             obj.BecExpData = BecExpData;
         end
-        
+
         function var1 = get.ScannedVariable(obj)
             % Get primary scanned variable name from lookup table.
             %
@@ -190,7 +190,7 @@ classdef BecExp < Trial
                 unit2 = obj.VariableUnitSetting.readValue(id,"ScannedVariableUnit");
             end
         end
-        
+
         function varList = get.ScannedVariableList(obj)
             % Get scanned parameter values for all completed runs.
             %
@@ -201,7 +201,7 @@ classdef BecExp < Trial
             % :return: Parameter values per run - 1D array or 2×N matrix
             % :rtype: double
             if obj.Is2DScan
-                % For 2D scans, return a 2xN matrix with both parameters             
+                % For 2D scans, return a 2xN matrix with both parameters
                 varList1 = obj.getVariableList(obj.ScannedVariable);
                 varList2 = obj.getVariableList(obj.ScannedVariable2);
                 if ~isempty(varList1) && ~isempty(varList2)
@@ -286,7 +286,7 @@ classdef BecExp < Trial
                 yLabel = "";
                 return
             end
-            
+
             sP = obj.ScannedVariable2;
             sP = strrep(sP,'_','\_');
             if obj.ScannedVariableUnit2 == "None"
@@ -306,20 +306,20 @@ classdef BecExp < Trial
             if ~obj.Is2DScan
                 sv = obj.ScannedVariable;
             else
-                sv = obj.ScannedVariable + ", " + obj.ScannedVariable2;           
+                sv = obj.ScannedVariable + ", " + obj.ScannedVariable2;
             end
             sv = strrep(sv,'_','\_');
 
-            if isempty(obj.ScannedVariableList)  
+            if isempty(obj.ScannedVariableList)
                 l = sv;
             else
                 sl = string(obj.ScannedVariableList(:,runNumber));
                 su = [obj.ScannedVariableUnit;obj.ScannedVariableUnit2];
                 su = " $\mathrm{" + replace(su,"None","") + "}$";
                 if ~obj.Is2DScan
-                    l = [sv,sl + su(1)]; 
+                    l = [sv,sl + su(1)];
                 else
-                    l = [sv,join(sl + su,",")]; 
+                    l = [sv,join(sl + su,",")];
                 end
             end
         end
@@ -336,20 +336,20 @@ classdef BecExp < Trial
                 varGrid = [];
                 return
             end
-            
+
             varList = obj.ScannedVariableList;
             if isempty(varList) || size(varList, 1) ~= 2
                 varGrid = [];
                 return
             end
-            
+
             varList1 = varList(1, :);
             varList2 = varList(2, :);
-            
+
             % Get unique values for each parameter
             unique1 = unique(varList1);
             unique2 = unique(varList2);
-            
+
             % Create meshgrid
             [X, Y] = meshgrid(unique1, unique2);
             varGrid = struct('X', X, 'Y', Y, 'unique1', unique1, 'unique2', unique2);
@@ -461,11 +461,11 @@ classdef BecExp < Trial
                     else
                         obj.NRun = 1;
                     end
-                    
+
                     return
-                    
+
                 end
-                
+
                 if isempty(obj.CiceroData)
                     obj.CiceroData = ciceroData;
                 else
@@ -477,7 +477,7 @@ classdef BecExp < Trial
 
                 %% Fetch Hardware log data
                 obj.fetchHardwareLog(currentRunNumber);
-                
+
                 %% Update Hardware
                 obj.updateHardware
 
@@ -1276,7 +1276,7 @@ classdef BecExp < Trial
                     %         sData.(variable_name)=variable_value;
                     %     end
                     % end
-    
+
                     inputstream.Close %Need to be closed otherwise we can not delete the log file if we want
                 end
                 readsuccess=true;
@@ -1448,7 +1448,7 @@ classdef BecExp < Trial
                 end
             end
         end
-        
+
         function updateHardware(obj)
             % Read current hardware values into :attr:`HardwareData` and update UI.
             hwApp = get(findall(0, 'Tag', "HwControlPanel"), 'RunningAppInstance');
@@ -1513,7 +1513,7 @@ classdef BecExp < Trial
                 % :param sName: Scope device name
                 % :type sName: string
                 % :param vName: Measurement value name (e.g., "Rms", "Peak")
-                % :type vName: string  
+                % :type vName: string
                 % :param cNumber: Channel number
                 % :type cNumber: double
                 % :return: Measurement value for specified channel
@@ -1540,7 +1540,7 @@ classdef BecExp < Trial
             try
                 scopeData = loadVar(fullfile(obj.HardwareLogPath,obj.DataPrefix + "_" + num2str(runIdx)) + "_" + sName + ".mat");
             catch
-                error(sName+" has no data fetched in HardwareLogPath.")
+                obj.displayLog(sName+" has no data fetched in HardwareLogPath.","error")
             end
         end
 
@@ -1552,7 +1552,11 @@ classdef BecExp < Trial
             sData = struct(obj);
             sData = rmfield(sData,{'AnalysisMethod'});
             tData = struct2table(sData,AsArray=true);
-            pgWrite(obj.Writer,obj.DatabaseTableName,tData);
+            try 
+                pgWrite(obj.Writer,obj.DatabaseTableName,tData);
+            catch me
+                obj.displayLog("Writing database failed. Error message: " + me.message,"error")
+            end
         end
 
         function updateDatabase(obj)
@@ -1567,12 +1571,16 @@ classdef BecExp < Trial
             tDataHardware = struct2table(obj.HardwareData,AsArray=true);
             rf = rowfilter('SerialNumber');
             rf = rf.SerialNumber == obj.SerialNumber;
-            pgUpdate(obj.Writer,obj.DatabaseTableName,tData,rf);
-            if ~isempty(tDataCicero)
-                pgUpdate(obj.Writer,obj.DatabaseTableName,tDataCicero,rf,isForceArray = true);
-            end
-            if ~isempty(tDataHardware)
-                pgUpdate(obj.Writer,obj.DatabaseTableName,tDataHardware,rf,isForceArray = true);
+            try
+                pgUpdate(obj.Writer,obj.DatabaseTableName,tData,rf);
+                if ~isempty(tDataCicero)
+                    pgUpdate(obj.Writer,obj.DatabaseTableName,tDataCicero,rf,isForceArray = true);
+                end
+                if ~isempty(tDataHardware)
+                    pgUpdate(obj.Writer,obj.DatabaseTableName,tDataHardware,rf,isForceArray = true);
+                end
+            catch me
+                obj.displayLog("Updating database failed. Error message: " + me.message,"warning")
             end
         end
 
@@ -1594,22 +1602,22 @@ classdef BecExp < Trial
             % AdData.mat at the DataAnalysisPath
 
             arguments
-              obj
-              propertyFilter = {
-                  "AdData", ...
-                  "CiceroData", ...
-                  "HardwareData", ...
-                  "ScannedVariableList", ...
-                  "ScannedVariable",...
-                  "ScannedVariable2"...
-                  "ScannedVariableUnit",...
-                  "ScannedVariableUnit2",...
-                  {"Acquisition",{"PixelSizeReal"}},...
-              }
-              opts.IncludeHidden    (1,1) logical = true
-              opts.IncludeTransient (1,1) logical = true
-              opts.IncludeDependent (1,1) logical = true
-              opts.MaxDepth         (1,1) double  {mustBeNonnegative} = 100
+                obj
+                propertyFilter = {
+                    "AdData", ...
+                    "CiceroData", ...
+                    "HardwareData", ...
+                    "ScannedVariableList", ...
+                    "ScannedVariable",...
+                    "ScannedVariable2"...
+                    "ScannedVariableUnit",...
+                    "ScannedVariableUnit2",...
+                    {"Acquisition",{"PixelSizeReal"}},...
+                    }
+                opts.IncludeHidden    (1,1) logical = true
+                opts.IncludeTransient (1,1) logical = true
+                opts.IncludeDependent (1,1) logical = true
+                opts.MaxDepth         (1,1) double  {mustBeNonnegative} = 100
             end
 
             isAdDataRequested = any(cellfun(@(c) isequal(c, "AdData"), propertyFilter));
@@ -1632,7 +1640,7 @@ classdef BecExp < Trial
             else
                 S = obj2struct(obj, opts, 0, {}, propertyFilter);
                 if isAdDataRequested
-                    adDataFile = fullfile(obj.DataAnalysisPath, "AdData.mat");          
+                    adDataFile = fullfile(obj.DataAnalysisPath, "AdData.mat");
                     if isfile(adDataFile)
                         loadedData = load(adDataFile, "adData");
                         S.AdData = loadedData.adData;
