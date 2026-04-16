@@ -8,13 +8,12 @@ if exist(userPath,'dir')==0
     createFolder(userPath);
     createFolder(fullfile(userPath,"script"));
     createFolder(fullfile(userPath,"temp"));
-    createFolder(fullfile(userPath,"atomData"));
-    unzip("configDefault.zip",userPath)
-    open(fullfile(userPath,"config","setConfig.m"))
-    disp("Please edit the setConfig.m file if this is the firt time installing. " + newline + "You may clone " +...
-        "a sameple MMUser folder from ... " + newline + "Once it's done, please run init agian.")
-    msgbox("Please edit the setConfig.m file if this is the firt time installing. You may clone " +...
-        "a sameple MMUser folder from ... Once it's done, please run init agian.")
+    unzip("MMUserDefault.zip",userPath)
+    open(fullfile(userPath,"config","mmConfig.m"))
+    disp("Please edit the mmConfig.m file if this is the firt time installing. " + newline + "You may clone " +...
+        "a sameple MMUser folder from https://github.com/weldlabucsb/MMUser." + newline + "Once it's done, please run init agian.")
+    msgbox("Please edit the mmConfig.m file if this is the firt time installing. You may clone " +...
+        "a sameple MMUser folder from https://github.com/weldlabucsb/MMUser. Once it's done, please run init agian.")
     return
 else
     disp(newline + "Detected MMUser folder already exists. I will not touch it...")
@@ -45,7 +44,9 @@ requiredPackageList = [
     "Image Processing Toolbox",...
     "Parallel Computing Toolbox",...
     "Instrument Control Toolbox",...
-    "Signal Processing Toolbox"
+    "Signal Processing Toolbox",...
+    "Navigation Toolbox",...
+    "Statistics and Machine Learning Toolbox"
     ];
 missedPackageList = requiredPackageList(~ismember(requiredPackageList,packageList));
 if ~isempty(missedPackageList)
