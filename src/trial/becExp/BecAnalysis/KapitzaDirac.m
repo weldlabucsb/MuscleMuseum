@@ -226,7 +226,7 @@ classdef KapitzaDirac < BecAnalysis
             obj.RawOrderFraction = zeros([size(temp,[1,2]),omf+1]);
             obj.RawOrderFraction(:,:,1) = temp(:,:,omf+1);
             obj.RawOrderFraction(:,:,2:end) = (flip(leftWing,3) + rightWing)/2;
-            obj.RawOrderFraction = obj.RawOrderFraction ./ sum(obj.RawOrderFraction,3);
+            obj.RawOrderFraction = obj.RawOrderFraction ./ (sum(obj.RawOrderFraction(:,:,2:end),3) * 2 + obj.RawOrderFraction(:,:,1));
         end
 
         function updateFigure(obj,runIdx)
@@ -288,6 +288,10 @@ classdef KapitzaDirac < BecAnalysis
                         obj.CloudSize);
             end
             becExp.displayLog("Done...")
+
+            % Renormalize
+            orderIdx = obj.OrderMaxTDSE + 1 - obj.OrderMaxFinal : obj.OrderMaxTDSE + 1 + obj.OrderMaxFinal;
+            obj.KdDataPrecompute(:,orderIdx) = obj.KdDataPrecompute(:,orderIdx) ./ sum(obj.KdDataPrecompute(:,orderIdx),2);
 
             % Interpolate
             KdInterp = cell(1,obj.OrderMaxFinal + 1);
