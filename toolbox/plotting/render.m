@@ -166,10 +166,15 @@ bottom = outerpos(2) + ti(2);
 cb = findobj(fig,'Type','colorbar');
 ax_width = outerpos(3) - ti(1) - ti(3);
 ax_height = outerpos(4) - ti(2) - ti(4);
-cbWidth = 0.05;
+cbWidth = 0.1;
 cbHeight = 0.04;
 if ~isempty(cb)
     %     ax_height = min(ax_height,cb.Position(4));
+    if ~isempty(cb.Label)
+        cbWidth = cbWidth + 0.05;
+        cb.Label.Interpreter = "latex";
+        cb.Label.FontSize = fsz;
+    end
     ax_width = ax_width - cbWidth;
     if ~isShowLabel(1)
         ax_height = ax_height - cbHeight*2;
@@ -177,6 +182,7 @@ if ~isempty(cb)
     else
         ax_height = ax_height - 0.01;
     end
+    cb.LineWidth = lw;
 elseif ~isShowLabel(1)
     ax_height = ax_height - 0.02;
     bottom = bottom + 0.02; 
