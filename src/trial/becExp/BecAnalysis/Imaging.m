@@ -51,7 +51,19 @@ classdef Imaging < BecAnalysis
                 loc = [0.3919,0.6014],...
                 size = [0.3069,0.3995]...
                 );
+        end
 
+        function initialize(obj)
+            % Initialize plots and precompute constants for imaging analysis.
+            %
+            % Sets up dual subplot layout for saturation parameter and photon counts,
+            % initializes data storage arrays, and configures plot properties.
+            % Get Imaging time variable name
+            try
+                obj.ImagingTimeVariable = obj.BecExp.VariableMapping("ImagingTime");
+            catch
+                error("ImagingTime Variable was not properly set in MmConfig. Can not do Imaging analyis.")
+            end
             % Calcualte the prefactor
             Isat = becExp.Atom.CyclerSaturationIntensity;
             pixelSize = becExp.Acquisition.PixelSize;
@@ -69,19 +81,6 @@ classdef Imaging < BecAnalysis
 
             % Transmission
             obj.Transmission = becExp.Acquisition.Transmission;
-        end
-
-        function initialize(obj)
-            % Initialize plots and precompute constants for imaging analysis.
-            %
-            % Sets up dual subplot layout for saturation parameter and photon counts,
-            % initializes data storage arrays, and configures plot properties.
-            % Get Imaging time variable name
-            try
-                obj.ImagingTimeVariable = obj.BecExp.VariableMapping("ImagingTime");
-            catch
-                error("ImagingTime Variable was not properly set in MmConfig. Can not do Imaging analyis.")
-            end
             
             fig = obj.Chart(1).initialize;
             obj.SaturationParameterMean = 0;
