@@ -64,6 +64,7 @@ classdef Imaging < BecAnalysis
             catch
                 error("ImagingTime Variable was not properly set in MmConfig. Can not do Imaging analyis.")
             end
+            becExp = obj.BecExp;
             % Calcualte the prefactor
             Isat = becExp.Atom.CyclerSaturationIntensity;
             pixelSize = becExp.Acquisition.PixelSize;
