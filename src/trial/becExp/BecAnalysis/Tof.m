@@ -55,6 +55,10 @@ classdef Tof < BecAnalysis
                 loc = [0.6936,0.032],...
                 size = [0.3069,0.57]...
                 );
+        end
+
+        function initialize(obj)
+            % Prepare figure and parameter table; validate prerequisites.
 
             % Get Tof time variable name
             try 
@@ -62,11 +66,7 @@ classdef Tof < BecAnalysis
             catch
                 error("TofTime Variable was not properly set in MmConfig. Can not do TOF analyis.")
             end
-        end
-
-        function initialize(obj)
-            % Prepare figure and parameter table; validate prerequisites.
-
+            
             %% Check if we can do TOF analysis
             if obj.BecExp.ScannedVariable ~= obj.TofTimeVariable
                 warning("Scanned Variable is not TOF. Can not do TOF analysis")
