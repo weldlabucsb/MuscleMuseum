@@ -52,13 +52,6 @@ classdef Imaging < BecAnalysis
                 size = [0.3069,0.3995]...
                 );
 
-            % Get Imaging time variable name
-            try
-                obj.ImagingTimeVariable = obj.BecExp.VariableMapping("ImagingTime");
-            catch
-                error("ImagingTime Variable was not properly set in MmConfig. Can not do Imaging analyis.")
-            end
-
             % Calcualte the prefactor
             Isat = becExp.Atom.CyclerSaturationIntensity;
             pixelSize = becExp.Acquisition.PixelSize;
@@ -83,6 +76,13 @@ classdef Imaging < BecAnalysis
             %
             % Sets up dual subplot layout for saturation parameter and photon counts,
             % initializes data storage arrays, and configures plot properties.
+            % Get Imaging time variable name
+            try
+                obj.ImagingTimeVariable = obj.BecExp.VariableMapping("ImagingTime");
+            catch
+                error("ImagingTime Variable was not properly set in MmConfig. Can not do Imaging analyis.")
+            end
+            
             fig = obj.Chart(1).initialize;
             obj.SaturationParameterMean = 0;
             obj.LightMean = 0;
