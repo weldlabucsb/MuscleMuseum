@@ -41,9 +41,9 @@ classdef (Abstract) SiglentScope < Scope
             % =========================
             % Waveform transfer setup
             % =========================
-            % writeline(v, "WAV:MODE RAW");       % Full memory
-            % writeline(v, "WAV:FORMAT BYTE");      % 16-bit
-            % writeline(v, "WAV:BYTEORDER LSB");  % Little endian
+            % writeline(v, ":ACQuire:RESolution 8Bits");
+            writeline(v, ":ACQuire:RESolution 10Bits");
+            writeline(v, ":WAVeform:WIDTh WORD");
 
             % =========================
             % Horizontal settings
@@ -172,11 +172,13 @@ classdef (Abstract) SiglentScope < Scope
                 %     charRead = read(v, 1, 'char');
                 % end
                 try
-                    rawData = readbinblock(v,'int8');
+                    % rawData = readbinblock(v,'int8');
+                    rawData = readbinblock(v,'int16');
                     % writeline(v,":WAVeform:PRE?");
                     % pre = readbinblock(v,'uint8');
 
-                    obj.Sample(ii, :) = (double(rawData) .* (vdiv / 30)) - voffset;
+                    % obj.Sample(ii, :) = (double(rawData) .* (vdiv / 30)) - voffset;
+                    obj.Sample(ii, :) = (double(rawData) .* (vdiv / 7680)) - voffset;
                 catch
                     obj.Sample(ii, :) = zeros(1,obj.NSample);
                     warning("no waveform on the scope")
