@@ -203,6 +203,23 @@ classdef LatticeFourierSeSim1DRun < TimeSimRun
             ylabel("Band Population")
         end
 
+        function plotMomentum(obj,nPlotMax)
+            arguments
+                obj
+                nPlotMax = 5
+            end
+            ucj = obj.readRun("WaveFunction");
+            ucj = ucj.';
+            t = obj.TimeListAvg;
+            nOrder = size(ucj,1);
+            idx = ceil(nOrder/2)-nPlotMax : ceil(nOrder/2) + nPlotMax;
+            orderLabel = -nPlotMax:nPlotMax;
+            imagesc(abs(ucj(idx,:)).^2,XData=t*1e3,YData=orderLabel)
+            xlabel("Time [ms]",'Interpreter','latex')
+            ylabel("Momentum [$2\hbar k_{\mathrm{L}}$]",'Interpreter','latex')
+            render
+        end
+
         % function showSpaceTime(obj)
         %     psi = obj.readRun("WaveFunction");
         %     n = abs(psi).^2;

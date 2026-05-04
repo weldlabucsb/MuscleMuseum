@@ -34,6 +34,7 @@ classdef (Abstract) FitData < handle
         TolFun (1,1) double = 1E-16 % Function tolerance for optimization
         MaxFunEvals (1,1) double = 2000 % Maximum function evaluations
         MaxIter (1,1) double = 2000 % Maximum iterations for optimization
+        NPlot (1,1) double = 1000 % Number of points for plotting
     end
 
     properties (Dependent,Hidden,Transient)
