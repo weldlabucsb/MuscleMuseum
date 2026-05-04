@@ -72,7 +72,7 @@ classdef (Abstract) FitData1D < FitData
                 fpData = [];
                 return
             end
-            xFit = linspace(min(obj.RawData(:,1)),max(obj.RawData(:,1)),1000).';
+            xFit = linspace(min(obj.RawData(:,1)),max(obj.RawData(:,1)),obj.NPlot).';
             yFit = obj.evaluateFit(xFit);
             fpData = [xFit,yFit];
         end
@@ -113,7 +113,7 @@ classdef (Abstract) FitData1D < FitData
             end
         end
         
-        function plot(obj,targetAxes,isRender)
+        function plot(obj,targetAxes,isRender,nPlot)
             % Plot raw data and fit curve.
             %
             % :param targetAxes: Target axes for plotting (optional)
@@ -132,8 +132,10 @@ classdef (Abstract) FitData1D < FitData
                 obj FitData1D
                 targetAxes = []
                 isRender logical = true
+                nPlot double = 1000
             end
 
+            obj.NPlot = nPlot;
             if isempty(targetAxes)
                 figure
                 ax = gca;
