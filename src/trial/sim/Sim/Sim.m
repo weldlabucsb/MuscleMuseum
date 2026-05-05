@@ -11,6 +11,7 @@ classdef (Abstract) Sim < Trial
         ScannedVariableUnit string = "None" % Primary scanned parameter unit string (must be implemented by subclasses)
         ScannedVariable2 string = "None" % Secondary scanned parameter name for 2D scans (must be implemented by subclasses)
         ScannedVariableUnit2 string = "None" % Secondary scanned parameter unit string for 2D scans (must be implemented by subclasses)
+        IsUsingGpu logical = false
     end
 
     properties (SetAccess = private, Hidden)
@@ -88,10 +89,19 @@ classdef (Abstract) Sim < Trial
             uRunIdx = obj.UncompletedRunIndex;
             if numel(uRunIdx)>1
                 parfevalOnAll(@warning,0,'off','all');
-                parfor ii = 1:numel(uRunIdx)
-                    try
-                        obj.SimRun(uRunIdx(ii)).start;
-                    catch
+                if ~obj.IsUsingGpu
+                    parfor ii = 1:numel(uRunIdx)
+                        try
+                            obj.SimRun(uRunIdx(ii)).start;
+                        catch
+                        end
+                    end
+                else
+                    for ii = 1:numel(uRunIdx)
+                        try
+                            obj.SimRun(uRunIdx(ii)).start;
+                        catch
+                        end
                     end
                 end
             elseif numel(uRunIdx) == 1
