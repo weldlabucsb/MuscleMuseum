@@ -16,7 +16,7 @@ classdef BaslerAcA1920_25um < Basler
             obj.CameraModel = "AcA1920_25um";
             obj.PixelSize = 2.2e-06;
             obj.ImageSize = [1080,1920];
-            obj.BitsPerSample = 8;
+            obj.BitsPerSample = 8ed;
         end
     end
 end
