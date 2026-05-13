@@ -166,7 +166,7 @@ bottom = outerpos(2) + ti(2);
 cb = findobj(fig,'Type','colorbar');
 ax_width = outerpos(3) - ti(1) - ti(3);
 ax_height = outerpos(4) - ti(2) - ti(4);
-cbWidth = 0.1;
+cbWidth = 0.15;
 cbHeight = 0.04;
 if ~isempty(cb)
     %     ax_height = min(ax_height,cb.Position(4));
