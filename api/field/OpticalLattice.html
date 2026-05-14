@@ -1,0 +1,970 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>OpticalLattice &#8212; MuscleMuseum 0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=2149b5ce"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/field/OpticalLattice';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="OpticalPotential" href="OpticalPotential.html" />
+    <link rel="prev" title="Modulation" href="Modulation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MuscleMuseum 0.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../intro/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/index.html">database</a></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../trial/index.html">trial</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sup/support.html">Support</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/api/field/OpticalLattice.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/issues/new?title=Issue%20on%20page%20%2Fapi/field/OpticalLattice.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>OpticalLattice</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="opticallattice">
+<h1>OpticalLattice<a class="headerlink" href="#opticallattice" title="Link to this heading">#</a></h1>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="OpticalLattice">
+<span class="property"><span class="pre">class</span> </span><span class="sig-name descname"><span class="pre">OpticalLattice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="OpticalPotential.html#OpticalPotential" title="OpticalPotential"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OpticalPotential</span></code></a></p>
+<p><a class="reference internal" href="#OpticalLattice" title="OpticalLattice"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OpticalLattice</span></code></a> models 1D optical lattice band structure and couplings.</p>
+<p>Provides band energies and states via <a class="reference internal" href="#OpticalLattice.BandEnergy" title="OpticalLattice.BandEnergy"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">BandEnergy</span></code></a>, <a class="reference internal" href="#OpticalLattice.BlochState" title="OpticalLattice.BlochState"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">BlochState</span></code></a>,
+<a class="reference internal" href="#OpticalLattice.BlochStateFourier" title="OpticalLattice.BlochStateFourier"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">BlochStateFourier</span></code></a>, <a class="reference internal" href="#OpticalLattice.BlochStatePeriodic" title="OpticalLattice.BlochStatePeriodic"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">BlochStatePeriodic</span></code></a>, Berry connection
+<a class="reference internal" href="#OpticalLattice.BerryConnection" title="OpticalLattice.BerryConnection"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">BerryConnection</span></code></a>, amplitude-modulation couplings <a class="reference internal" href="#OpticalLattice.AmpModCoupling" title="OpticalLattice.AmpModCoupling"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">AmpModCoupling</span></code></a>, and
+frequency scalings (<a class="reference internal" href="#OpticalLattice.AxialFrequency" title="OpticalLattice.AxialFrequency"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">AxialFrequency</span></code></a>, <a class="reference internal" href="#OpticalLattice.RadialFrequency" title="OpticalLattice.RadialFrequency"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">RadialFrequency</span></code></a>) derived from the
+<a class="reference internal" href="Laser.html#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a> and <a class="reference internal" href="../atom/Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a> parameters. Quasi-
+momentum <span class="math notranslate nohighlight">\(q\)</span> is in [1/m], lattice spacing <span class="math notranslate nohighlight">\(a=\lambda/2\)</span> in [m], and
+wavevector <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> in [rad/m].</p>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.OpticalLattice">
+<span class="sig-name descname"><span class="pre">OpticalLattice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">atom</span></em>, <em class="sig-param"><span class="pre">laser</span></em>, <em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.OpticalLattice" title="Link to this definition">#</a></dt>
+<dd><p><a class="reference internal" href="#OpticalLattice" title="OpticalLattice"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">OpticalLattice</span></code></a> constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atom</strong> (<a class="reference internal" href="../atom/Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a>) – Atomic species and structure data</p></li>
+<li><p><strong>laser</strong> (<a class="reference internal" href="Laser.html#Laser" title="Laser"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Laser</span></code></a>) – Lattice-forming laser/beam</p></li>
+<li><p><strong>name</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – Identifier for this lattice</p></li>
+<li><p><strong>manifold</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – Hyperfine manifold used for polarizability calculations</p></li>
+<li><p><strong>stateIndex</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Sublevel index within the chosen manifold</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.AmpMod">
+<span class="sig-name descname"><span class="pre">AmpMod</span></span><a class="headerlink" href="#OpticalLattice.AmpMod" title="Link to this definition">#</a></dt>
+<dd><p>Cached amplitude-modulation response (implementation-dependent)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.AmpModCoupling">
+<span class="sig-name descname"><span class="pre">AmpModCoupling</span></span><a class="headerlink" href="#OpticalLattice.AmpModCoupling" title="Link to this definition">#</a></dt>
+<dd><p>Cached amplitude-modulation coupling <span class="math notranslate nohighlight">\(A_{mn}(q)\)</span>; size ~ (nBands x nBands x n_q)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.AxialFrequency">
+<span class="sig-name descname"><span class="pre">AxialFrequency</span></span><a class="headerlink" href="#OpticalLattice.AxialFrequency" title="Link to this definition">#</a></dt>
+<dd><p>Best-available <span class="math notranslate nohighlight">\(f_z\)</span> in [Hz]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.BandEnergy">
+<span class="sig-name descname"><span class="pre">BandEnergy</span></span><a class="headerlink" href="#OpticalLattice.BandEnergy" title="Link to this definition">#</a></dt>
+<dd><p>Cached band energies <span class="math notranslate nohighlight">\(E_n(q)\)</span> in [Hz]; size ~ (nBands x n_q)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.BandIndexMax">
+<span class="sig-name descname"><span class="pre">BandIndexMax</span></span><a class="headerlink" href="#OpticalLattice.BandIndexMax" title="Link to this definition">#</a></dt>
+<dd><p>Maximum band index included (largest <span class="math notranslate nohighlight">\(n\)</span> requested)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.BandIndexMaxFourier">
+<span class="sig-name descname"><span class="pre">BandIndexMaxFourier</span></span><span class="property"> <span class="pre">=</span> <span class="pre">101</span></span><a class="headerlink" href="#OpticalLattice.BandIndexMaxFourier" title="Link to this definition">#</a></dt>
+<dd><p>Plane-wave cutoff (odd) : number of Fourier components <span class="math notranslate nohighlight">\(n_{\mathrm{max}}\)</span></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.BandIndexMaxFourierDefault">
+<span class="sig-name descname"><span class="pre">BandIndexMaxFourierDefault</span></span><span class="property"> <span class="pre">=</span> <span class="pre">101</span></span><a class="headerlink" href="#OpticalLattice.BandIndexMaxFourierDefault" title="Link to this definition">#</a></dt>
+<dd><p>Default plane-wave cutoff <span class="math notranslate nohighlight">\(n_{\mathrm{max}}\)</span> (odd)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.BerryConnection">
+<span class="sig-name descname"><span class="pre">BerryConnection</span></span><a class="headerlink" href="#OpticalLattice.BerryConnection" title="Link to this definition">#</a></dt>
+<dd><p>Cached Berry connection <span class="math notranslate nohighlight">\(\mathcal{A}_{mn}(q)\)</span>; size ~ (nBands x nBands x n_q)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.BlochState">
+<span class="sig-name descname"><span class="pre">BlochState</span></span><a class="headerlink" href="#OpticalLattice.BlochState" title="Link to this definition">#</a></dt>
+<dd><p>Cached Bloch states <span class="math notranslate nohighlight">\(\phi_{n,q}(x)\)</span> (functions or arrays)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.BlochStateFourier">
+<span class="sig-name descname"><span class="pre">BlochStateFourier</span></span><a class="headerlink" href="#OpticalLattice.BlochStateFourier" title="Link to this definition">#</a></dt>
+<dd><p>Cached plane-wave coefficients <span class="math notranslate nohighlight">\(F_{j n}(q)\)</span>; size ~ (n_max x nBands x n_q)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.BlochStatePeriodic">
+<span class="sig-name descname"><span class="pre">BlochStatePeriodic</span></span><a class="headerlink" href="#OpticalLattice.BlochStatePeriodic" title="Link to this definition">#</a></dt>
+<dd><p>Cached periodic part <span class="math notranslate nohighlight">\(u_{n,q}(x)\)</span> (functions or arrays)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.Depth">
+<span class="sig-name descname"><span class="pre">Depth</span></span><a class="headerlink" href="#OpticalLattice.Depth" title="Link to this definition">#</a></dt>
+<dd><p>Best-available depth <span class="math notranslate nohighlight">\(V_0\)</span> in [Hz]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.DepthKd">
+<span class="sig-name descname"><span class="pre">DepthKd</span></span><a class="headerlink" href="#OpticalLattice.DepthKd" title="Link to this definition">#</a></dt>
+<dd><p>Lattice depth from Kapitza–Dirac calibration <span class="math notranslate nohighlight">\(V_0\)</span> in [Hz]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.DepthLaser">
+<span class="sig-name descname"><span class="pre">DepthLaser</span></span><a class="headerlink" href="#OpticalLattice.DepthLaser" title="Link to this definition">#</a></dt>
+<dd><p>Depth from laser intensity <span class="math notranslate nohighlight">\(V_0\)</span> in [Hz]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.DepthLu">
+<span class="sig-name descname"><span class="pre">DepthLu</span></span><a class="headerlink" href="#OpticalLattice.DepthLu" title="Link to this definition">#</a></dt>
+<dd><p>Dimensionless depth <span class="math notranslate nohighlight">\(V_0/E_r\)</span> (in recoil units)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.DepthSpec">
+<span class="sig-name descname"><span class="pre">DepthSpec</span></span><a class="headerlink" href="#OpticalLattice.DepthSpec" title="Link to this definition">#</a></dt>
+<dd><p>Lattice depth from spectroscopy <span class="math notranslate nohighlight">\(V_0\)</span> in [Hz]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.HarmonicFrequency">
+<span class="sig-name descname"><span class="pre">HarmonicFrequency</span></span><a class="headerlink" href="#OpticalLattice.HarmonicFrequency" title="Link to this definition">#</a></dt>
+<dd><p>Best-available <span class="math notranslate nohighlight">\(f_0\)</span> in [Hz]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.LatticeSpacing">
+<span class="sig-name descname"><span class="pre">LatticeSpacing</span></span><a class="headerlink" href="#OpticalLattice.LatticeSpacing" title="Link to this definition">#</a></dt>
+<dd><p>Lattice spacing <span class="math notranslate nohighlight">\(a=\lambda/2\)</span> in [m]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.QuasiMomentumList">
+<span class="sig-name descname"><span class="pre">QuasiMomentumList</span></span><a class="headerlink" href="#OpticalLattice.QuasiMomentumList" title="Link to this definition">#</a></dt>
+<dd><p>Quasi-momentum sampling <span class="math notranslate nohighlight">\(q\)</span> in [1/m]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.RadialFrequency">
+<span class="sig-name descname"><span class="pre">RadialFrequency</span></span><a class="headerlink" href="#OpticalLattice.RadialFrequency" title="Link to this definition">#</a></dt>
+<dd><p>Best-available <span class="math notranslate nohighlight">\(f_\rho\)</span> in [Hz]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.RadialFrequencySlosh">
+<span class="sig-name descname"><span class="pre">RadialFrequencySlosh</span></span><a class="headerlink" href="#OpticalLattice.RadialFrequencySlosh" title="Link to this definition">#</a></dt>
+<dd><p>Measured radial slosh frequency <span class="math notranslate nohighlight">\(f_\rho\)</span> in [Hz]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="OpticalLattice.SpaceList">
+<span class="sig-name descname"><span class="pre">SpaceList</span></span><a class="headerlink" href="#OpticalLattice.SpaceList" title="Link to this definition">#</a></dt>
+<dd><p>Spatial sampling list <span class="math notranslate nohighlight">\(x\)</span> or grid specification (implementation-dependent)</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.HamiltonianAmpModFourier1D">
+<span class="sig-name descname"><span class="pre">HamiltonianAmpModFourier1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">wf</span></em>, <em class="sig-param"><span class="pre">nMax</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.HamiltonianAmpModFourier1D" title="Link to this definition">#</a></dt>
+<dd><p>Build time-dependent Fourier-space Hamiltonian under amplitude modulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>q</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Quasi-momentum in [1/m]</p></li>
+<li><p><strong>wf</strong> (<a class="reference internal" href="../math/Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a>) – Modulation waveform <span class="math notranslate nohighlight">\(m(t)\)</span></p></li>
+<li><p><strong>nMax</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Plane-wave cutoff (odd)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Function handle <span class="math notranslate nohighlight">\(H(t)\)</span> that yields the Hamiltonian matrix</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function_handle</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeAll1D">
+<span class="sig-name descname"><span class="pre">computeAll1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">nq</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeAll1D" title="Link to this definition">#</a></dt>
+<dd><p>Precompute bands, plane-wave coeffs, and couplings on a uniform q-grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nq</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Number of q samples</p></li>
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Max band index n to include</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeAmpModCoupling1D">
+<span class="sig-name descname"><span class="pre">computeAmpModCoupling1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeAmpModCoupling1D" title="Link to this definition">#</a></dt>
+<dd><p>Compute amplitude-modulation coupling matrix between bands.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>q</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Quasi-momentum grid in [1/m]</p></li>
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Band indices</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Coupling matrix <span class="math notranslate nohighlight">\(A_{mn}(q)\)</span></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double array (nBands x nBands x n_q)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeBand1D">
+<span class="sig-name descname"><span class="pre">computeBand1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeBand1D" title="Link to this definition">#</a></dt>
+<dd><p>Compute 1D Bloch bands and states for quasimomentum <span class="math notranslate nohighlight">\(q\)</span> and band index <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>q</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Quasi-momentum in [1/m] (can be vector)</p></li>
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Band indices (0=s,1=p,…) (vector of nonnegative integers)</p></li>
+<li><p><strong>x</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Spatial grid <span class="math notranslate nohighlight">\(x\)</span> in [m] for real-space wavefunctions (optional)</p></li>
+<li><p><strong>nMax</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Plane-wave cutoff (odd) overriding default</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Band energies <span class="math notranslate nohighlight">\(E_n(q)\)</span> in [Hz]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double array (length(n) x length(q))</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Fourier coefficients <span class="math notranslate nohighlight">\(F_{j n}(q)\)</span></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double array (nMax x length(n) x length(q))</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Bloch states <span class="math notranslate nohighlight">\(\phi_{n,q}(x)\)</span> in real space</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function_handle cell or double array depending on <span class="math notranslate nohighlight">\(x\)</span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Periodic parts <span class="math notranslate nohighlight">\(u_{n,q}(x)\)</span> when requested</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function_handle cell or double array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeBandPopulation1D">
+<span class="sig-name descname"><span class="pre">computeBandPopulation1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">psicj</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeBandPopulation1D" title="Link to this definition">#</a></dt>
+<dd><p>Compute band populations from real-space wavefunction <span class="math notranslate nohighlight">\(\psi(x)\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>psicj</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Conjugate row-vectors of <span class="math notranslate nohighlight">\(\psi\)</span> (nPsi x N_x)</p></li>
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Band index/indices (0=s,1=p,…)</p></li>
+<li><p><strong>x</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Spatial grid <span class="math notranslate nohighlight">\(x\)</span> in [m] (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Populations per state and band (nPsi x nBands)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeBandPopulationFourier1D">
+<span class="sig-name descname"><span class="pre">computeBandPopulationFourier1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">ucj</span></em>, <em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeBandPopulationFourier1D" title="Link to this definition">#</a></dt>
+<dd><p>Compute band populations from Fourier-periodic part <span class="math notranslate nohighlight">\(u(x)\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ucj</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Conjugate row-vectors of <span class="math notranslate nohighlight">\(u\)</span> in Fourier basis (n_u x nFourier)</p></li>
+<li><p><strong>q</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Quasi-momentum samples in [1/m]</p></li>
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Band index/indices (0=s,1=p,…)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Populations per q and band (n_q x nBands)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeBerryConnection1D">
+<span class="sig-name descname"><span class="pre">computeBerryConnection1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeBerryConnection1D" title="Link to this definition">#</a></dt>
+<dd><p>Compute Berry connection <span class="math notranslate nohighlight">\(\mathcal{A}_{mn}(q)\)</span> from plane-wave <span class="math notranslate nohighlight">\(F_{jn}(q)\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>q</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Quasi-momentum grid in [1/m]</p></li>
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Band indices</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Berry connection <span class="math notranslate nohighlight">\(\mathcal{A}_{mn}(q)\)</span></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double array (nBands x nBands x n_q)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeFloquetAmpMod1D">
+<span class="sig-name descname"><span class="pre">computeFloquetAmpMod1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">wf</span></em>, <em class="sig-param"><span class="pre">isShuffle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeFloquetAmpMod1D" title="Link to this definition">#</a></dt>
+<dd><p>Compute Floquet quasi-energies and modes under amplitude modulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>q</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Quasi-momentum samples in [1/m]</p></li>
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Band indices used for projection</p></li>
+<li><p><strong>wf</strong> (<a class="reference internal" href="../math/Waveform.html#Waveform" title="Waveform"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Waveform</span></code></a>) – Modulation waveform <span class="math notranslate nohighlight">\(m(t)\)</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Quasi-energies <span class="math notranslate nohighlight">\(E_F\)</span> in [Hz]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double array (nBands x n_q)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Floquet modes projected onto plane-wave basis</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double array (nMax x nBands x n_q)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeQuasimomentumDistribution1D">
+<span class="sig-name descname"><span class="pre">computeQuasimomentumDistribution1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">psicj</span></em>, <em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeQuasimomentumDistribution1D" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeTransitionFrequency1D">
+<span class="sig-name descname"><span class="pre">computeTransitionFrequency1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">q</span></em>, <em class="sig-param"><span class="pre">n1</span></em>, <em class="sig-param"><span class="pre">n2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeTransitionFrequency1D" title="Link to this definition">#</a></dt>
+<dd><p>Compute transition frequencies <span class="math notranslate nohighlight">\(|E_{n_2}(q)-E_{n_1}(q)|\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>q</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Quasi-momentum in [1/m]</p></li>
+<li><p><strong>n1</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Lower band index <span class="math notranslate nohighlight">\(n_1\)</span></p></li>
+<li><p><strong>n2</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Upper band index <span class="math notranslate nohighlight">\(n_2\)</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Transition frequency in [Hz] (same shape as <span class="math notranslate nohighlight">\(q\)</span>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeTransitionQuasiMomentum1D">
+<span class="sig-name descname"><span class="pre">computeTransitionQuasiMomentum1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">freq</span></em>, <em class="sig-param"><span class="pre">n1</span></em>, <em class="sig-param"><span class="pre">n2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeTransitionQuasiMomentum1D" title="Link to this definition">#</a></dt>
+<dd><p>Compute quasi-momentum <span class="math notranslate nohighlight">\(q\)</span> at which <span class="math notranslate nohighlight">\(|E_{n_2}(q)-E_{n_1}(q)|=f\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>freq</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Target transition frequency in [Hz]</p></li>
+<li><p><strong>n1</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Lower band index <span class="math notranslate nohighlight">\(n_1\)</span></p></li>
+<li><p><strong>n2</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Upper band index <span class="math notranslate nohighlight">\(n_2\)</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Resonant <span class="math notranslate nohighlight">\(q\)</span> values in [1/m]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.computeTransitionQuasiMomentumFast1D">
+<span class="sig-name descname"><span class="pre">computeTransitionQuasiMomentumFast1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">freq</span></em>, <em class="sig-param"><span class="pre">n1</span></em>, <em class="sig-param"><span class="pre">n2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.computeTransitionQuasiMomentumFast1D" title="Link to this definition">#</a></dt>
+<dd><p>Approximate resonant <span class="math notranslate nohighlight">\(q\)</span> using linearized <span class="math notranslate nohighlight">\(\Delta E(q)\)</span> near two roots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>freq</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Target transition frequency in [Hz]</p></li>
+<li><p><strong>n1</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Lower band index <span class="math notranslate nohighlight">\(n_1\)</span></p></li>
+<li><p><strong>n2</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double</span></code></span>) – Upper band index <span class="math notranslate nohighlight">\(n_2\)</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Estimated resonant <span class="math notranslate nohighlight">\(q\)</span> in [1/m]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>double</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.plotAmpModCoupling1D">
+<span class="sig-name descname"><span class="pre">plotAmpModCoupling1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">isPlotDiagonal</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.plotAmpModCoupling1D" title="Link to this definition">#</a></dt>
+<dd><p>Plot amplitude-modulation coupling amplitude and phase versus <span class="math notranslate nohighlight">\(q\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Band indices (vector)</p></li>
+<li><p><strong>isPlotDiagonal</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">logical,</span> <span class="pre">optional</span></code></span>) – Whether to include diagonal terms <span class="math notranslate nohighlight">\(m=n\)</span></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.plotBand1D">
+<span class="sig-name descname"><span class="pre">plotBand1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.plotBand1D" title="Link to this definition">#</a></dt>
+<dd><p>Plot 1D band energies <span class="math notranslate nohighlight">\(E_n(q)\)</span> versus quasi-momentum <span class="math notranslate nohighlight">\(q\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Band indices to plot (0=s,1=p,…)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.plotBandTransition1D">
+<span class="sig-name descname"><span class="pre">plotBandTransition1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">freq</span></em>, <em class="sig-param"><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.plotBandTransition1D" title="Link to this definition">#</a></dt>
+<dd><p>Plot vertical transition lines at resonance for frequency <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>freq</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Modulation frequency <span class="math notranslate nohighlight">\(f\)</span> in [Hz]</p></li>
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Band indices (0=s,1=p,…) used for overlays</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.plotBerryConnection1D">
+<span class="sig-name descname"><span class="pre">plotBerryConnection1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">n</span></em>, <em class="sig-param"><span class="pre">isPlotDiagonal</span></em><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.plotBerryConnection1D" title="Link to this definition">#</a></dt>
+<dd><p>Plot Berry connection amplitude and phase versus <span class="math notranslate nohighlight">\(q\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">double,</span> <span class="pre">optional</span></code></span>) – Band indices (vector)</p></li>
+<li><p><strong>isPlotDiagonal</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">logical,</span> <span class="pre">optional</span></code></span>) – Whether to include diagonal terms <span class="math notranslate nohighlight">\(m=n\)</span></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.removeGauge">
+<span class="sig-name descname"><span class="pre">removeGauge</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.removeGauge" title="Link to this definition">#</a></dt>
+<dd><p>Fix gauge to make <span class="math notranslate nohighlight">\(\mathcal{A}_{nn}(q)\)</span> single-valued and smooth.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.spaceFunc">
+<span class="sig-name descname"><span class="pre">spaceFunc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.spaceFunc" title="Link to this definition">#</a></dt>
+<dd><p>Build lattice potential <span class="math notranslate nohighlight">\(V(\mathbf{r})\)</span> for 1D standing wave or Gaussian.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function handle mapping <span class="math notranslate nohighlight">\(\mathbf{r}\)</span> to <span class="math notranslate nohighlight">\(V(\mathbf{r})\)</span> [Hz]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>function_handle</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="OpticalLattice.updateIntensity">
+<span class="sig-name descname"><span class="pre">updateIntensity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#OpticalLattice.updateIntensity" title="Link to this definition">#</a></dt>
+<dd><p>Set laser intensity to achieve target depth <span class="math notranslate nohighlight">\(V_0\)</span>.</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Modulation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Modulation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="OpticalPotential.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">OpticalPotential</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Weld Lab
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Weld Lab.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

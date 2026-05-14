@@ -1,0 +1,1013 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Atomic Property Calculation &#8212; MuscleMuseum 0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=2149b5ce"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'main/atomic_calculations';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Interactions Between Atom and Field" href="atom_field_interactions.html" />
+    <link rel="prev" title="Lasers and Magnetic Fields" href="lasers_magnetic_fields.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MuscleMuseum 0.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../intro/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/install.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/quick.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sup/support.html">Support</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/main/atomic_calculations.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/issues/new?title=Issue%20on%20page%20%2Fmain/atomic_calculations.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Atomic Property Calculation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#atomic-class-hierarchy">Atomic Class Hierarchy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-atom-classes">Core Atom Classes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#atom-abstract-base">Atom Abstract Base</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alkali-class">Alkali Class</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#divalent-class">Divalent Class</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#atommanifold-system">AtomManifold System</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#atommanifold-base-class">AtomManifold Base Class</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#twojmanifold-class">TwoJManifold Class</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#magnetic-field-interactions">Magnetic Field Interactions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#specialized-manifold-classes">Specialized Manifold Classes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onejmanifold-class">OneJManifold Class</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onefmanifold-class">OneFManifold Class</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#utility-functions">Utility Functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#angular-momentum-utilities">Angular Momentum Utilities</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#atomic-data-management">Atomic Data Management</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-calculations">Advanced Calculations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-atom-systems">Multi-Atom Systems</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature-and-energy-scales">Temperature and Energy Scales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transition-matrix-elements">Transition Matrix Elements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-applications">Practical Applications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="atomic-property-calculation">
+<h1>Atomic Property Calculation<a class="headerlink" href="#atomic-property-calculation" title="Link to this heading">#</a></h1>
+<p>The <strong>atomic calculation framework</strong> in MuscleMuseum provides comprehensive tools for computing atomic structure, transition properties, and quantum mechanical operators for alkali and divalent atoms. Built upon the well-established <a class="reference external" href="https://arc-alkali-rydberg-calculator.readthedocs.io/en/latest/">ARC (Alkali Rydberg Calculator)</a> Python package, it offers precise atomic data with enhanced accuracy for specific isotopes and transitions.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>The atomic framework enables detailed calculations of:</p>
+<ul class="simple">
+<li><p><strong>Atomic structure</strong>: Hyperfine manifolds, energy levels, and quantum numbers</p></li>
+<li><p><strong>Transition properties</strong>: Frequencies, linewidths, and dipole matrix elements</p></li>
+<li><p><strong>Magnetic interactions</strong>: Zeeman shifts and Landé <span class="math notranslate nohighlight">\(g\)</span>-factors</p></li>
+<li><p><strong>Optical properties</strong>: Saturation intensities, cross-sections, and polarizabilities</p></li>
+<li><p><strong>Quantum operators</strong>: Angular momentum matrices and state transformations</p></li>
+<li><p><strong>Recoil dynamics</strong>: Momentum transfer and temperature scales</p></li>
+</ul>
+<p>The system supports both alkali atoms (Li, Na, K, Rb, Cs) and divalent atoms (Ca, Sr, Mg) with accurate experimental data integration.</p>
+</section>
+<section id="atomic-class-hierarchy">
+<h2>Atomic Class Hierarchy<a class="headerlink" href="#atomic-class-hierarchy" title="Link to this heading">#</a></h2>
+<a class="reference internal image-reference" href="../_images/atomic_class_diagram.svg"><img alt="../_images/atomic_class_diagram.svg" class="align-center" src="../_images/atomic_class_diagram.svg" style="width: 100%;" />
+</a>
+</section>
+<section id="core-atom-classes">
+<h2>Core Atom Classes<a class="headerlink" href="#core-atom-classes" title="Link to this heading">#</a></h2>
+<section id="atom-abstract-base">
+<h3>Atom Abstract Base<a class="headerlink" href="#atom-abstract-base" title="Link to this heading">#</a></h3>
+<p>The <a class="reference internal" href="../api/atom/Atom.html#Atom" title="Atom"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Atom</span></code></a> abstract base class provides the foundation for all atomic calculations:</p>
+<p><strong>Key Properties:</strong></p>
+<ul class="simple">
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Name</span></code>: Atomic species identifier (e.g., “Lithium7”, “Rubidium87”)</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Type</span></code>: Classification as “Alkali” or “Divalent”</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DataPath</span></code>: Storage location for pre-calculated atomic data</p></li>
+<li><p><strong>Dynamic Properties</strong>: All ARC atomic constants mirrored as MATLAB properties</p></li>
+</ul>
+<p><strong>ARC Integration:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Automatic ARC integration</span>
+<span class="n">atom</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Lithium7</span><span class="p">();</span><span class="w">  </span><span class="c">% Creates ARC object internally</span>
+
+<span class="c">% Access fundamental atomic properties</span>
+<span class="n">mass</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">mass</span><span class="p">;</span><span class="w">                    </span><span class="c">% Atomic mass [kg]</span>
+<span class="n">nuclearSpin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">I</span><span class="p">;</span><span class="w">               </span><span class="c">% Nuclear spin</span>
+<span class="n">magneticMoment</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">nuclearMagneticMoment</span><span class="p">;</span><span class="w"> </span><span class="c">% Nuclear magnetic moment</span>
+</pre></div>
+</div>
+<p><strong>Data Management:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Atomic data automatically cached for performance</span>
+<span class="n">dataPath</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">DataPath</span><span class="p">;</span><span class="w">  </span><span class="c">% ~/Documents/MMUser/atomData/</span>
+
+<span class="c">% Pre-calculated data includes:</span>
+<span class="c">% - State mapping tables</span>
+<span class="c">% - Transition matrix elements</span>
+<span class="c">% - Quantum operator matrices</span>
+</pre></div>
+</div>
+</section>
+<section id="alkali-class">
+<h3>Alkali Class<a class="headerlink" href="#alkali-class" title="Link to this heading">#</a></h3>
+<p>The <a class="reference internal" href="../api/atom/Alkali.html#Alkali" title="Alkali"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Alkali</span></code></a> class specializes in alkali atom calculations with complete D-line manifold structure:</p>
+<p><strong>Manifold Properties:</strong></p>
+<ul class="simple">
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">D1</span></code>: D1 transition manifold (<span class="math notranslate nohighlight">\(J=1/2 \leftrightarrow J=1/2\)</span>)</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">D2</span></code>: D2 transition manifold (<span class="math notranslate nohighlight">\(J=1/2 \leftrightarrow J=3/2\)</span>)</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DGround</span></code>: Ground state manifold (<span class="math notranslate nohighlight">\(L=0, J=1/2\)</span>)</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">D1Excited</span></code>: D1 excited manifold (<span class="math notranslate nohighlight">\(L=1, J=1/2\)</span>)</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">D2Excited</span></code>: D2 excited manifold (<span class="math notranslate nohighlight">\(L=1, J=3/2\)</span>)</p></li>
+</ul>
+<p><strong>Spinor Manifolds:</strong></p>
+<ul class="simple">
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Spinor1</span></code>: Lower hyperfine ground manifold</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Spinor2</span></code>: Upper hyperfine ground manifold</p></li>
+</ul>
+<p><strong>Transition Properties:</strong></p>
+<ul class="simple">
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">CyclerFrequency</span></code>: Cycling transition frequency [Hz]</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">CyclerSaturationIntensity</span></code>: Cycling saturation intensity [W/m²]</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">RepumperFrequency</span></code>: Repump transition frequency [Hz]</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">RepumperSaturationIntensity</span></code>: Repump saturation intensity [W/m²]</p></li>
+</ul>
+<p><strong>Basic Usage:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Create alkali atom</span>
+<span class="n">rb87</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Rubidium87</span><span class="p">();</span>
+
+<span class="c">% Access D-line properties</span>
+<span class="n">d2_freq</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">rb87</span><span class="p">.</span><span class="n">CyclerFrequency</span><span class="p">;</span><span class="w">              </span><span class="c">% ~384 THz</span>
+<span class="n">d2_wavelength</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">rb87</span><span class="p">.</span><span class="n">D2</span><span class="p">.</span><span class="n">Wavelength</span><span class="p">;</span><span class="w">          </span><span class="c">% ~780 nm</span>
+<span class="n">d2_linewidth</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">rb87</span><span class="p">.</span><span class="n">D2</span><span class="p">.</span><span class="n">NaturalLinewidth</span><span class="p">;</span><span class="w">    </span><span class="c">% ~6 MHz</span>
+
+<span class="c">% Saturation intensities</span>
+<span class="n">isat_cycling</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">rb87</span><span class="p">.</span><span class="n">CyclerSaturationIntensity</span><span class="p">;</span><span class="w">     </span><span class="c">% [W/m²]</span>
+<span class="n">isat_cycling_lu</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">rb87</span><span class="p">.</span><span class="n">CyclerSaturationIntensityLu</span><span class="p">;</span><span class="w"> </span><span class="c">% [mW/cm²]</span>
+</pre></div>
+</div>
+<p><strong>Cross-Section Calculations:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Resonant absorption cross-section</span>
+<span class="n">sigma_cycling</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">rb87</span><span class="p">.</span><span class="n">CyclerCrossSection</span><span class="p">;</span><span class="w">     </span><span class="c">% [m²]</span>
+<span class="n">sigma_repump</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">rb87</span><span class="p">.</span><span class="n">RepumperCrossSection</span><span class="p">;</span><span class="w">    </span><span class="c">% [m²]</span>
+
+<span class="c">% Cross-section formula: σ = ℏωΓ/(2I_sat)</span>
+<span class="c">% where Γ is the natural linewidth</span>
+</pre></div>
+</div>
+</section>
+<section id="divalent-class">
+<h3>Divalent Class<a class="headerlink" href="#divalent-class" title="Link to this heading">#</a></h3>
+<p>The <a class="reference internal" href="../api/atom/Divalent.html#Divalent" title="Divalent"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Divalent</span></code></a> class handles alkaline earth atoms with their unique electronic structure:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Create divalent atom</span>
+<span class="n">sr88</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Strontium88</span><span class="p">();</span>
+
+<span class="c">% Access intercombination line properties</span>
+<span class="c">% (Implementation details depend on specific divalent structure)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="atommanifold-system">
+<h2>AtomManifold System<a class="headerlink" href="#atommanifold-system" title="Link to this heading">#</a></h2>
+<p>The manifold system provides detailed quantum state structure and operators for atomic calculations.</p>
+<section id="atommanifold-base-class">
+<h3>AtomManifold Base Class<a class="headerlink" href="#atommanifold-base-class" title="Link to this heading">#</a></h3>
+<p><strong>Fundamental Properties:</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../api/atom/Atom.html#Atom" title="Atom"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Atom</span></code></a>: Parent atom context</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">NNState</span></code>: Total number of quantum states</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">Frequency</span></code>: Center-of-gravity transition frequency</p></li>
+</ul>
+<p><strong>Recoil Properties:</strong></p>
+<ul class="simple">
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">RecoilMomentum</span></code>: <span class="math notranslate nohighlight">\(p_r = \hbar k\)</span> [kg·m/s]</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">RecoilVelocity</span></code>: <span class="math notranslate nohighlight">\(v_r = p_r/m\)</span> [m/s]</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">RecoilEnergy</span></code>: <span class="math notranslate nohighlight">\(E_r/h\)</span> [Hz]</p></li>
+<li><p><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">RecoilTemperature</span></code>: <span class="math notranslate nohighlight">\(T_r = 2 E_r h / k_B\)</span> [K]</p></li>
+</ul>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Access recoil properties from any manifold</span>
+<span class="n">manifold</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">D2</span><span class="p">;</span>
+
+<span class="n">recoil_momentum</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">manifold</span><span class="p">.</span><span class="n">RecoilMomentum</span><span class="p">;</span><span class="w">      </span><span class="c">% [kg·m/s]</span>
+<span class="n">recoil_velocity</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">manifold</span><span class="p">.</span><span class="n">RecoilVelocity</span><span class="p">;</span><span class="w">      </span><span class="c">% [m/s]</span>
+<span class="n">recoil_energy</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">manifold</span><span class="p">.</span><span class="n">RecoilEnergy</span><span class="p">;</span><span class="w">          </span><span class="c">% [Hz]</span>
+<span class="n">recoil_temp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">manifold</span><span class="p">.</span><span class="n">RecoilTemperature</span><span class="p">;</span><span class="w">       </span><span class="c">% [K]</span>
+</pre></div>
+</div>
+</section>
+<section id="twojmanifold-class">
+<h3>TwoJManifold Class<a class="headerlink" href="#twojmanifold-class" title="Link to this heading">#</a></h3>
+<p>Handles ground-excited state transitions with complete hyperfine structure:</p>
+<p><strong>Quantum Numbers:</strong></p>
+<ul class="simple">
+<li><p><strong>Ground State</strong>: <span class="math notranslate nohighlight">\(n_g, L_g, J_g, F_g, M_{F_g}\)</span></p></li>
+<li><p><strong>Excited State</strong>: <span class="math notranslate nohighlight">\(n_e, L_e, J_e, F_e, M_{F_e}\)</span></p></li>
+</ul>
+<p><strong>State Lists and Operators:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">d2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">D2</span><span class="p">;</span>
+
+<span class="c">% Complete state information</span>
+<span class="n">stateList</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">StateList</span><span class="p">;</span><span class="w">  </span><span class="c">% Table with all quantum numbers</span>
+
+<span class="c">% State properties include:</span>
+<span class="c">% - Index: State identifier</span>
+<span class="c">% - F, MF: Hyperfine quantum numbers</span>
+<span class="c">% - Energy: Hyperfine energy [Hz]</span>
+<span class="c">% - gF: Landé g-factor</span>
+
+<span class="c">% Access specific states</span>
+<span class="n">groundStates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">stateList</span><span class="p">(</span><span class="n">stateList</span><span class="p">.</span><span class="n">IsGround</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="p">:);</span>
+<span class="n">excitedStates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">stateList</span><span class="p">(</span><span class="n">stateList</span><span class="p">.</span><span class="n">IsGround</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="p">:);</span>
+</pre></div>
+</div>
+<p><strong>Quantum Operators:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Angular momentum operators</span>
+<span class="n">Jx</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">JOperator</span><span class="p">{</span><span class="mi">1</span><span class="p">};</span><span class="w">  </span><span class="c">% Electronic angular momentum x-component</span>
+<span class="n">Jy</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">JOperator</span><span class="p">{</span><span class="mi">2</span><span class="p">};</span><span class="w">  </span><span class="c">% y-component</span>
+<span class="n">Jz</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">JOperator</span><span class="p">{</span><span class="mi">3</span><span class="p">};</span><span class="w">  </span><span class="c">% z-component</span>
+
+<span class="n">Ix</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">IOperator</span><span class="p">{</span><span class="mi">1</span><span class="p">};</span><span class="w">  </span><span class="c">% Nuclear angular momentum x-component</span>
+<span class="n">Iy</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">IOperator</span><span class="p">{</span><span class="mi">2</span><span class="p">};</span><span class="w">  </span><span class="c">% y-component</span>
+<span class="n">Iz</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">IOperator</span><span class="p">{</span><span class="mi">3</span><span class="p">};</span><span class="w">  </span><span class="c">% z-component</span>
+
+<span class="n">Fx</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">FOperator</span><span class="p">{</span><span class="mi">1</span><span class="p">};</span><span class="w">  </span><span class="c">% Total angular momentum x-component</span>
+<span class="n">Fy</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">FOperator</span><span class="p">{</span><span class="mi">2</span><span class="p">};</span><span class="w">  </span><span class="c">% y-component</span>
+<span class="n">Fz</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">FOperator</span><span class="p">{</span><span class="mi">3</span><span class="p">};</span><span class="w">  </span><span class="c">% z-component</span>
+</pre></div>
+</div>
+<p><strong>Transition Properties:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Linewidth and lifetime</span>
+<span class="nb">gamma</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">NaturalLinewidth</span><span class="p">;</span><span class="w">        </span><span class="c">% [Hz]</span>
+<span class="n">lifetime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">LifetimeExcited</span><span class="p">;</span><span class="w">      </span><span class="c">% [s]</span>
+
+<span class="c">% Dipole matrix elements</span>
+<span class="n">dme_reduced</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">ReducedDipoleMatrixElement</span><span class="p">;</span><span class="w"> </span><span class="c">% [C·m]</span>
+
+<span class="c">% Saturation intensity</span>
+<span class="n">isat_reduced</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">ReducedSaturationIntensity</span><span class="p">;</span><span class="w"> </span><span class="c">% [W/m²]</span>
+</pre></div>
+</div>
+<p><strong>Specific Transition Analysis:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Saturation intensity for specific transition</span>
+<span class="n">F_ground</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">    </span><span class="c">% Ground hyperfine state</span>
+<span class="n">mF_ground</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">   </span><span class="c">% Ground magnetic sublevel</span>
+<span class="n">F_excited</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">   </span><span class="c">% Excited hyperfine state</span>
+<span class="n">mF_excited</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c">% Excited magnetic sublevel</span>
+
+<span class="n">isat_specific</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">SaturationIntensity</span><span class="p">(</span><span class="n">F_ground</span><span class="p">,</span><span class="w"> </span><span class="n">mF_ground</span><span class="p">,</span><span class="w"> </span><span class="n">F_excited</span><span class="p">,</span><span class="w"> </span><span class="n">mF_excited</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="magnetic-field-interactions">
+<h2>Magnetic Field Interactions<a class="headerlink" href="#magnetic-field-interactions" title="Link to this heading">#</a></h2>
+<p><strong>Zeeman Effect Calculations:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Bias field Hamiltonian</span>
+<span class="n">magneticField</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">MagneticField</span><span class="p">(</span><span class="n">bias</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="mf">1e-4</span><span class="p">]);</span><span class="w"> </span><span class="c">% 1 G along z</span>
+
+<span class="c">% Compute Zeeman Hamiltonian</span>
+<span class="n">H_zeeman</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">HamiltonianAtomBiasField</span><span class="p">(</span><span class="n">magneticField</span><span class="p">);</span>
+
+<span class="c">% Diagonalize for dressed states</span>
+<span class="p">[</span><span class="n">eigenVecs</span><span class="p">,</span><span class="w"> </span><span class="n">eigenVals</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">eig</span><span class="p">(</span><span class="n">H_zeeman</span><span class="p">);</span>
+
+<span class="c">% Get dressed state table</span>
+<span class="p">[</span><span class="n">dressedStateTable</span><span class="p">,</span><span class="w"> </span><span class="n">U</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">BiasDressedStateList</span><span class="p">(</span><span class="n">magneticField</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Landé g-Factor Calculations:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Access g-factors for different states</span>
+<span class="n">gF_ground</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">LandegFGround</span><span class="p">;</span><span class="w">    </span><span class="c">% Hyperfine g-factors (ground)</span>
+<span class="n">gF_excited</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">LandegFExcited</span><span class="p">;</span><span class="w">  </span><span class="c">% Hyperfine g-factors (excited)</span>
+
+<span class="n">gJ_ground</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">LandegJGround</span><span class="p">;</span><span class="w">    </span><span class="c">% Electronic g-factors (ground)</span>
+<span class="n">gJ_excited</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">d2</span><span class="p">.</span><span class="n">LandegJExcited</span><span class="p">;</span><span class="w">  </span><span class="c">% Electronic g-factors (excited)</span>
+</pre></div>
+</div>
+</section>
+<section id="specialized-manifold-classes">
+<h2>Specialized Manifold Classes<a class="headerlink" href="#specialized-manifold-classes" title="Link to this heading">#</a></h2>
+<section id="onejmanifold-class">
+<h3>OneJManifold Class<a class="headerlink" href="#onejmanifold-class" title="Link to this heading">#</a></h3>
+<p>Single J manifold for ground or excited states:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Ground state manifold</span>
+<span class="n">ground</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">DGround</span><span class="p">;</span>
+
+<span class="c">% Hyperfine structure</span>
+<span class="n">F_values</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ground</span><span class="p">.</span><span class="n">F</span><span class="p">;</span><span class="w">           </span><span class="c">% Available F quantum numbers</span>
+<span class="n">energy_hfs</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ground</span><span class="p">.</span><span class="n">Energy</span><span class="p">;</span><span class="w">    </span><span class="c">% Hyperfine energies [Hz]</span>
+
+<span class="c">% Magnetic properties</span>
+<span class="n">gF_values</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ground</span><span class="p">.</span><span class="n">LandegF</span><span class="p">;</span><span class="w">    </span><span class="c">% Landé g-factors per F state</span>
+</pre></div>
+</div>
+</section>
+<section id="onefmanifold-class">
+<h3>OneFManifold Class<a class="headerlink" href="#onefmanifold-class" title="Link to this heading">#</a></h3>
+<p>Single F manifold for spinor physics:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Access spinor manifolds</span>
+<span class="n">spinor1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">Spinor1</span><span class="p">;</span><span class="w">  </span><span class="c">% Lower F manifold</span>
+<span class="n">spinor2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">Spinor2</span><span class="p">;</span><span class="w">  </span><span class="c">% Upper F manifold</span>
+
+<span class="c">% Spinor-specific calculations</span>
+<span class="c">% (Used for spinor BEC and quantum magnetism studies)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="utility-functions">
+<h2>Utility Functions<a class="headerlink" href="#utility-functions" title="Link to this heading">#</a></h2>
+<section id="angular-momentum-utilities">
+<h3>Angular Momentum Utilities<a class="headerlink" href="#angular-momentum-utilities" title="Link to this heading">#</a></h3>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Generate magnetic quantum numbers</span>
+<span class="nb">j</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+<span class="n">mj_list</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">magneticAngularMomentum</span><span class="p">(</span><span class="nb">j</span><span class="p">);</span><span class="w">  </span><span class="c">% [-3/2, -1/2, 1/2, 3/2]</span>
+
+<span class="c">% Total angular momentum coupling</span>
+<span class="n">j1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">j2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="n">F_possible</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">totalAngularMomentum</span><span class="p">(</span><span class="n">j1</span><span class="p">,</span><span class="w"> </span><span class="n">j2</span><span class="p">);</span><span class="w">  </span><span class="c">% [1/2, 3/2]</span>
+</pre></div>
+</div>
+<p><strong>Spin Matrix Generation:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Generate spin matrices for arbitrary j</span>
+<span class="nb">j</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">[</span><span class="n">Sx</span><span class="p">,</span><span class="w"> </span><span class="n">Sy</span><span class="p">,</span><span class="w"> </span><span class="n">Sz</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">spinMatrices</span><span class="p">(</span><span class="nb">j</span><span class="p">);</span>
+
+<span class="c">% Uncoupled spin basis transformations</span>
+<span class="n">basis</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">uncoupledSpinBasis</span><span class="p">(</span><span class="n">I</span><span class="p">,</span><span class="w"> </span><span class="n">J</span><span class="p">);</span>
+<span class="n">transformation</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">uncoupledSpinBasisTransformation</span><span class="p">(</span><span class="n">I</span><span class="p">,</span><span class="w"> </span><span class="n">J</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="atomic-data-management">
+<h2>Atomic Data Management<a class="headerlink" href="#atomic-data-management" title="Link to this heading">#</a></h2>
+<p><strong>Species Loading:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Load atomic species</span>
+<span class="n">atom</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">getAtom</span><span class="p">(</span><span class="s">&quot;Lithium7&quot;</span><span class="p">);</span><span class="w">    </span><span class="c">% Generic loader</span>
+<span class="n">atom</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Lithium7</span><span class="p">();</span><span class="w">             </span><span class="c">% Direct constructor</span>
+
+<span class="c">% Save atomic calculations</span>
+<span class="n">saveAtom</span><span class="p">(</span><span class="n">atom</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;myCalculations&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Literature Data Integration:</strong></p>
+<p>The framework includes enhanced atomic data:</p>
+<ul class="simple">
+<li><p><strong>Lithium-7</strong>: Updated dipole matrix elements from literature</p></li>
+<li><p><strong>Strontium</strong>: Intercombination line data</p></li>
+<li><p><strong>Custom data files</strong>: CSV format for additional isotopes</p></li>
+</ul>
+<p><strong>Data Validation:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Verify atomic data consistency</span>
+<span class="c">% Check sum rules for matrix elements</span>
+<span class="c">% Validate energy level ordering</span>
+<span class="c">% Confirm transition selection rules</span>
+</pre></div>
+</div>
+</section>
+<section id="advanced-calculations">
+<h2>Advanced Calculations<a class="headerlink" href="#advanced-calculations" title="Link to this heading">#</a></h2>
+<section id="multi-atom-systems">
+<h3>Multi-Atom Systems<a class="headerlink" href="#multi-atom-systems" title="Link to this heading">#</a></h3>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Two-atom calculations</span>
+<span class="n">atom1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Lithium7</span><span class="p">();</span>
+<span class="n">atom2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Lithium7</span><span class="p">();</span>
+
+<span class="n">twoAtomSystem</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">TwoAtom</span><span class="p">(</span><span class="n">atom1</span><span class="p">,</span><span class="w"> </span><span class="n">atom2</span><span class="p">);</span>
+
+<span class="c">% Inter-atomic interactions</span>
+<span class="c">% Collision cross-sections</span>
+<span class="c">% Feshbach resonances</span>
+</pre></div>
+</div>
+<p><strong>Hyperfine Structure Analysis:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Detailed hyperfine analysis</span>
+<span class="n">atom</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Rubidium87</span><span class="p">();</span>
+
+<span class="c">% Hyperfine coefficients</span>
+<span class="n">A_ground</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">DGround</span><span class="p">.</span><span class="n">HFSCoefficientA</span><span class="p">;</span><span class="w">     </span><span class="c">% Magnetic dipole [Hz]</span>
+<span class="n">B_ground</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">DGround</span><span class="p">.</span><span class="n">HFSCoefficientB</span><span class="p">;</span><span class="w">     </span><span class="c">% Electric quadrupole [Hz]</span>
+
+<span class="c">% Energy level calculations</span>
+<span class="n">F_values</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">DGround</span><span class="p">.</span><span class="n">F</span><span class="p">;</span>
+<span class="n">energies</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">DGround</span><span class="p">.</span><span class="n">Energy</span><span class="p">;</span>
+
+<span class="c">% Hyperfine splitting</span>
+<span class="n">hfs_splitting</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">min</span><span class="p">(</span><span class="n">energies</span><span class="p">);</span><span class="w">  </span><span class="c">% [Hz]</span>
+</pre></div>
+</div>
+<p><strong>State-Specific Properties:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Access properties for specific quantum states</span>
+<span class="n">stateList</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">D2</span><span class="p">.</span><span class="n">StateList</span><span class="p">;</span>
+
+<span class="c">% Find specific state</span>
+<span class="n">target_state</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">stateList</span><span class="p">(</span><span class="n">stateList</span><span class="p">.</span><span class="n">F</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">stateList</span><span class="p">.</span><span class="n">MF</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="p">:);</span>
+<span class="n">state_energy</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">target_state</span><span class="p">.</span><span class="n">Energy</span><span class="p">;</span>
+<span class="n">state_gF</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">target_state</span><span class="p">.</span><span class="n">gF</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="temperature-and-energy-scales">
+<h2>Temperature and Energy Scales<a class="headerlink" href="#temperature-and-energy-scales" title="Link to this heading">#</a></h2>
+<p><strong>Doppler Cooling Limits:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Doppler temperature</span>
+<span class="n">T_doppler</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">D2</span><span class="p">.</span><span class="n">DopplerTemperature</span><span class="p">;</span><span class="w">  </span><span class="c">% [K]</span>
+
+<span class="c">% Convert to other units</span>
+<span class="n">T_doppler_uK</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">T_doppler</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e6</span><span class="p">;</span><span class="w">          </span><span class="c">% [μK]</span>
+<span class="n">T_doppler_nK</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">T_doppler</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e9</span><span class="p">;</span><span class="w">          </span><span class="c">% [nK]</span>
+</pre></div>
+</div>
+<p><strong>Recoil Energy Scales:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Recoil energy for different transitions</span>
+<span class="n">Er_D1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">D1</span><span class="p">.</span><span class="n">RecoilEnergy</span><span class="p">;</span><span class="w">           </span><span class="c">% [Hz]</span>
+<span class="n">Er_D2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">D2</span><span class="p">.</span><span class="n">RecoilEnergy</span><span class="p">;</span><span class="w">           </span><span class="c">% [Hz]</span>
+
+<span class="c">% Recoil temperature</span>
+<span class="n">Tr_D2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">D2</span><span class="p">.</span><span class="n">RecoilTemperature</span><span class="p">;</span><span class="w">      </span><span class="c">% [K]</span>
+
+<span class="c">% Recoil velocity</span>
+<span class="n">vr_D2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">D2</span><span class="p">.</span><span class="n">RecoilVelocity</span><span class="p">;</span><span class="w">         </span><span class="c">% [m/s]</span>
+</pre></div>
+</div>
+<p><strong>Energy Unit Conversions:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Convert between energy units</span>
+<span class="n">energy_hz</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1e6</span><span class="p">;</span><span class="w">  </span><span class="c">% 1 MHz</span>
+
+<span class="n">energy_joules</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">energy_hz</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Constants</span><span class="p">.</span><span class="n">SI</span><span class="p">(</span><span class="s">&quot;hbar&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">pi</span><span class="p">;</span>
+<span class="n">energy_kelvin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">energy_joules</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Constants</span><span class="p">.</span><span class="n">SI</span><span class="p">(</span><span class="s">&quot;kB&quot;</span><span class="p">);</span>
+<span class="n">energy_wavenumber</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">energy_joules</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Constants</span><span class="p">.</span><span class="n">SI</span><span class="p">(</span><span class="s">&quot;hbar&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Constants</span><span class="p">.</span><span class="n">SI</span><span class="p">(</span><span class="s">&quot;c&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">pi</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="transition-matrix-elements">
+<h2>Transition Matrix Elements<a class="headerlink" href="#transition-matrix-elements" title="Link to this heading">#</a></h2>
+<p><strong>Dipole Matrix Elements:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Reduced dipole matrix elements</span>
+<span class="n">d_D1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">D1</span><span class="p">.</span><span class="n">ReducedDipoleMatrixElement</span><span class="p">;</span><span class="w">  </span><span class="c">% [C·m]</span>
+<span class="n">d_D2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">D2</span><span class="p">.</span><span class="n">ReducedDipoleMatrixElement</span><span class="p">;</span><span class="w">  </span><span class="c">% [C·m]</span>
+
+<span class="c">% State-specific matrix elements</span>
+<span class="c">% &lt;F&#39;,mF&#39;|d·ε|F,mF&gt; for specific polarization ε</span>
+</pre></div>
+</div>
+<p><strong>Wigner-Eckart Theorem:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Matrix elements factorize as:</span>
+<span class="c">% &lt;F&#39;,mF&#39;|T_q^k|F,mF&gt; = (-1)^(F&#39;-mF&#39;) *</span>
+<span class="c">%   * wigner3j(F&#39;, k, F, -mF&#39;, q, mF)</span>
+<span class="c">%   * &lt;F&#39;||T^k||F&gt;</span>
+
+<span class="c">% Reduced matrix elements are state-independent</span>
+<span class="c">% Angular dependence from Wigner 3j symbols</span>
+</pre></div>
+</div>
+</section>
+<section id="practical-applications">
+<h2>Practical Applications<a class="headerlink" href="#practical-applications" title="Link to this heading">#</a></h2>
+<p><strong>Laser Cooling Calculations:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">atom</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Rubidium87</span><span class="p">();</span>
+
+<span class="c">% Doppler cooling limit</span>
+<span class="n">T_doppler</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">D2</span><span class="p">.</span><span class="n">DopplerTemperature</span><span class="p">;</span>
+
+<span class="c">% Scattering rate calculation</span>
+<span class="n">laser_intensity</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1e3</span><span class="p">;</span><span class="w">  </span><span class="c">% [W/m²]</span>
+<span class="n">saturation_intensity</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">CyclerSaturationIntensity</span><span class="p">;</span>
+
+<span class="n">saturation_parameter</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">laser_intensity</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">saturation_intensity</span><span class="p">;</span>
+<span class="nb">gamma</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">D2</span><span class="p">.</span><span class="n">NaturalLinewidth</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">pi</span><span class="p">;</span><span class="w">  </span><span class="c">% [rad/s]</span>
+
+<span class="n">scattering_rate</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">gamma</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">saturation_parameter</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">saturation_parameter</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Optical Molasses Analysis:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Friction coefficient for optical molasses</span>
+<span class="n">k</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">D2</span><span class="p">.</span><span class="n">AngularWavenumber</span><span class="p">;</span>
+<span class="nb">beta</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">gamma</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">k</span>^<span class="mi">2</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">  </span><span class="c">% Friction coefficient</span>
+
+<span class="c">% Capture velocity</span>
+<span class="n">v_capture</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">gamma</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">k</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Magnetic Trapping:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Trappable states (positive μ·B interaction)</span>
+<span class="n">ground_states</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atom</span><span class="p">.</span><span class="n">DGround</span><span class="p">.</span><span class="n">StateList</span><span class="p">;</span>
+<span class="n">trappable</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ground_states</span><span class="p">(</span><span class="n">ground_states</span><span class="p">.</span><span class="n">gF</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ground_states</span><span class="p">.</span><span class="n">MF</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="p">:);</span>
+
+<span class="c">% Zeeman shift calculation</span>
+<span class="n">magnetic_field</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-4</span><span class="p">;</span><span class="w">  </span><span class="c">% 1 G in Tesla</span>
+<span class="n">zeeman_shift</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">trappable</span><span class="p">.</span><span class="n">gF</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Constants</span><span class="p">.</span><span class="n">SI</span><span class="p">(</span><span class="s">&quot;muB&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">magnetic_field</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Constants</span><span class="p">.</span><span class="n">SI</span><span class="p">(</span><span class="s">&quot;hbar&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">pi</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading">#</a></h2>
+<p><strong>Data Accuracy:</strong>
+- Use updated literature values when available
+- Verify calculations against experimental measurements
+- Cross-check with multiple sources for critical parameters</p>
+<p><strong>Performance:</strong>
+- Cache expensive calculations for repeated use
+- Use pre-calculated manifold data when possible
+- Consider memory usage for large state spaces</p>
+<p><strong>Numerical Precision:</strong>
+- Use appropriate numerical precision for quantum calculations
+- Be aware of floating-point limitations in matrix diagonalization
+- Validate orthogonality and normalization of quantum states</p>
+<p><strong>Physical Validation:</strong>
+- Check that calculated properties match known experimental values
+- Verify energy level ordering and selection rules
+- Confirm that matrix elements satisfy sum rules</p>
+<p>The atomic calculation framework provides the fundamental quantum mechanical foundation for all atom-light interactions in the MuscleMuseum system. Its integration with the established ARC database ensures accuracy while providing the flexibility needed for advanced AMO physics calculations.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="lasers_magnetic_fields.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Lasers and Magnetic Fields</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="atom_field_interactions.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Interactions Between Atom and Field</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#atomic-class-hierarchy">Atomic Class Hierarchy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-atom-classes">Core Atom Classes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#atom-abstract-base">Atom Abstract Base</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alkali-class">Alkali Class</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#divalent-class">Divalent Class</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#atommanifold-system">AtomManifold System</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#atommanifold-base-class">AtomManifold Base Class</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#twojmanifold-class">TwoJManifold Class</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#magnetic-field-interactions">Magnetic Field Interactions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#specialized-manifold-classes">Specialized Manifold Classes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onejmanifold-class">OneJManifold Class</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#onefmanifold-class">OneFManifold Class</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#utility-functions">Utility Functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#angular-momentum-utilities">Angular Momentum Utilities</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#atomic-data-management">Atomic Data Management</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-calculations">Advanced Calculations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-atom-systems">Multi-Atom Systems</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature-and-energy-scales">Temperature and Energy Scales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transition-matrix-elements">Transition Matrix Elements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-applications">Practical Applications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices">Best Practices</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Weld Lab
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Weld Lab.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

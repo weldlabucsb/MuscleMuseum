@@ -1,0 +1,672 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Trial &#8212; MuscleMuseum 0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=2149b5ce"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/trial/Trial';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="absorption2Od" href="absorption2Od.html" />
+    <link rel="prev" title="Tof" href="Tof.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MuscleMuseum 0.1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../intro/introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro/install.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro/quick.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform.html">Waveform and WaveformList</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/waveform_generator.html">Waveform Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/fitData.html">Fit Curves or Surfaces Using FitData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/lasers_magnetic_fields.html">Lasers and Magnetic Fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atomic_calculations.html">Atomic Property Calculation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/atom_field_interactions.html">Interactions Between Atom and Field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/trial.html">Manage Experimental and Simulation Trials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main/becexp.html">Manage Cold-atom Experiments Using BecExp</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Documentation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../atom/index.html">atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bec/index.html">bec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/index.html">database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../field/index.html">field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/index.html">math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmParameter/index.html">mmParameter</a></li>
+<li class="toctree-l2 current active"><a class="reference internal" href="index.html">trial</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sup/support.html">Support</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/blob/main/doc/sphinx/source/api/trial/Trial.rst?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/XiaoCasd/MuscleMuseum/issues/new?title=Issue%20on%20page%20%2Fapi/trial/Trial.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Trial</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="trial">
+<h1>Trial<a class="headerlink" href="#trial" title="Link to this heading">#</a></h1>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="Trial">
+<span class="property"><span class="pre">class</span> </span><span class="sig-name descname"><span class="pre">Trial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em>, <em class="sig-param"><span class="pre">isLoad</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Trial" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref mat mat-class docutils literal notranslate"><span class="pre">handle</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">matlab.mixin.SetGetExactNames</span></code>, <code class="xref mat mat-class docutils literal notranslate"><span class="pre">dynamicprops</span></code></p>
+<p><a class="reference internal" href="#Trial" title="Trial"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Trial</span></code></a> is an abstract base class for orchestrating experiments/simulations.</p>
+<p>Provides lifecycle management for a single run series: configuration loading,
+data folder setup, database logging (writer/reader), serial numbering, optional
+GUI integration, and file system watching to trigger analysis.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Constructing a concrete trial</span>
+<span class="n">t</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">MyConcreteTrial</span><span class="p">(</span><span class="s">&quot;Test&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;MyConfigName&quot;</span><span class="p">);</span>
+<span class="n">t</span><span class="p">.</span><span class="n">update</span><span class="p">();</span><span class="w">  </span><span class="c">% persist object and DB</span>
+</pre></div>
+</div>
+<p><strong>Events:</strong></p>
+<blockquote>
+<div><dl class="simple">
+<dt>NewRunFinished<span class="classifier">event</span></dt><dd><p>Emitted when a new data file group has been detected and completed.</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>Notes:</strong></p>
+<blockquote>
+<div><p>Subclasses must implement <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">writeDatabase()</span></code>, <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">updateDatabase()</span></code>,
+<code class="xref mat mat-meth docutils literal notranslate"><span class="pre">setFolder()</span></code>, and <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">setConfigProperty()</span></code>.</p>
+</div></blockquote>
+<div class="members docutils container">
+<dl>
+<dt>Constructor Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Trial.Trial">
+<span class="sig-name descname"><span class="pre">Trial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">trialName</span></em>, <em class="sig-param"><span class="pre">config</span></em>, <em class="sig-param"><span class="pre">isLoad</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Trial.Trial" title="Link to this definition">#</a></dt>
+<dd><p>Construct a <a class="reference internal" href="#Trial" title="Trial"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Trial</span></code></a> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trialName</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Alphanumeric name for the trial type.</p></li>
+<li><p><strong>config</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span> <span class="pre">|</span> <span class="pre">table</span> <span class="pre">|</span> <span class="pre">struct</span></code></span>) – Configuration identifier or data. If string, loads from <code class="docutils literal notranslate"><span class="pre">Config.mat</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Raises:</strong></p>
+<blockquote>
+<div><dl class="simple">
+<dt><code class="xref mat mat-class docutils literal notranslate"><span class="pre">error</span></code></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">trialName</span></code> is not alphanumeric or configuration cannot be found.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</dd>
+<dt>Property Summary</dt><dd><dl class="mat attribute">
+<dt class="sig sig-object mat" id="Trial.DataPath">
+<span class="sig-name descname"><span class="pre">DataPath</span></span><span class="property"> <span class="pre">string</span> <span class="pre">=</span> <span class="pre">&quot;.&quot;</span></span><a class="headerlink" href="#Trial.DataPath" title="Link to this definition">#</a></dt>
+<dd><p>Full path to the trial’s data storage directory</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Trial.DateTime">
+<span class="sig-name descname"><span class="pre">DateTime</span></span><span class="property"> <span class="pre">datetime</span></span><a class="headerlink" href="#Trial.DateTime" title="Link to this definition">#</a></dt>
+<dd><p>Date and time when the experiment or simulation was initiated</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Trial.Description">
+<span class="sig-name descname"><span class="pre">Description</span></span><span class="property"> <span class="pre">string</span> <span class="pre">=</span> <span class="pre">&quot;This</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">test</span> <span class="pre">trial.&quot;</span></span><a class="headerlink" href="#Trial.Description" title="Link to this definition">#</a></dt>
+<dd><p>Human-readable description of the trial purpose and setup</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Trial.Is2DScan">
+<span class="sig-name descname"><span class="pre">Is2DScan</span></span><span class="property"> <span class="pre">logical</span></span><a class="headerlink" href="#Trial.Is2DScan" title="Link to this definition">#</a></dt>
+<dd><p>True for two-dimensional parameter scans (computed from <a class="reference internal" href="#Trial.ScannedVariable2" title="Trial.ScannedVariable2"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">ScannedVariable2</span></code></a>)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Trial.IsCompleted">
+<span class="sig-name descname"><span class="pre">IsCompleted</span></span><span class="property"> <span class="pre">logical</span></span><a class="headerlink" href="#Trial.IsCompleted" title="Link to this definition">#</a></dt>
+<dd><p>True when all planned runs have been completed successfully</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Trial.NCompletedRun">
+<span class="sig-name descname"><span class="pre">NCompletedRun</span></span><span class="property"> <span class="pre">int32</span> <span class="pre">=</span> <span class="pre">0</span></span><a class="headerlink" href="#Trial.NCompletedRun" title="Link to this definition">#</a></dt>
+<dd><p>Number of experimental runs completed successfully</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Trial.NRun">
+<span class="sig-name descname"><span class="pre">NRun</span></span><span class="property"> <span class="pre">int32</span> <span class="pre">=</span> <span class="pre">1</span></span><a class="headerlink" href="#Trial.NRun" title="Link to this definition">#</a></dt>
+<dd><p>Total number of runs planned for this trial</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Trial.Name">
+<span class="sig-name descname"><span class="pre">Name</span></span><span class="property"> <span class="pre">string</span></span><a class="headerlink" href="#Trial.Name" title="Link to this definition">#</a></dt>
+<dd><p>Trial name identifier matching the configuration entry</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Trial.ObjectPath">
+<span class="sig-name descname"><span class="pre">ObjectPath</span></span><span class="property"> <span class="pre">string</span></span><a class="headerlink" href="#Trial.ObjectPath" title="Link to this definition">#</a></dt>
+<dd><p>Full path to the saved trial object .mat file</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Trial.ScannedVariable">
+<span class="sig-name descname"><span class="pre">ScannedVariable</span></span><span class="property"> <span class="pre">string</span></span><a class="headerlink" href="#Trial.ScannedVariable" title="Link to this definition">#</a></dt>
+<dd><p>Primary scanned parameter name (must be implemented by subclasses)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Trial.ScannedVariable2">
+<span class="sig-name descname"><span class="pre">ScannedVariable2</span></span><span class="property"> <span class="pre">string</span></span><a class="headerlink" href="#Trial.ScannedVariable2" title="Link to this definition">#</a></dt>
+<dd><p>Secondary scanned parameter name for 2D scans (must be implemented by subclasses)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Trial.ScannedVariableUnit">
+<span class="sig-name descname"><span class="pre">ScannedVariableUnit</span></span><span class="property"> <span class="pre">string</span></span><a class="headerlink" href="#Trial.ScannedVariableUnit" title="Link to this definition">#</a></dt>
+<dd><p>Primary scanned parameter unit string (must be implemented by subclasses)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Trial.ScannedVariableUnit2">
+<span class="sig-name descname"><span class="pre">ScannedVariableUnit2</span></span><span class="property"> <span class="pre">string</span></span><a class="headerlink" href="#Trial.ScannedVariableUnit2" title="Link to this definition">#</a></dt>
+<dd><p>Secondary scanned parameter unit string for 2D scans (must be implemented by subclasses)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="Trial.SerialNumber">
+<span class="sig-name descname"><span class="pre">SerialNumber</span></span><span class="property"> <span class="pre">int32</span></span><a class="headerlink" href="#Trial.SerialNumber" title="Link to this definition">#</a></dt>
+<dd><p>Unique database-generated identifier for this trial instance</p>
+</dd></dl>
+
+</dd>
+<dt>Method Summary</dt><dd><dl class="mat method">
+<dt class="sig sig-object mat" id="Trial.createWatcher">
+<span class="sig-name descname"><span class="pre">createWatcher</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Trial.createWatcher" title="Link to this definition">#</a></dt>
+<dd><p>Create a file system watcher that emits <a href="#id1"><span class="problematic" id="id2">:event:`NewRunFinished`</span></a> per group.</p>
+<p>Watches <a class="reference internal" href="#Trial.DataPath" title="Trial.DataPath"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DataPath</span></code></a> for created files matching <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DataFormat</span></code> and
+accumulates until <code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DataGroupSize</span></code> files are seen, then notifies.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Trial.displayLog">
+<span class="sig-name descname"><span class="pre">displayLog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">str</span></em>, <em class="sig-param"><span class="pre">logType</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Trial.displayLog" title="Link to this definition">#</a></dt>
+<dd><p>Display a log message, routed to GUI if available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>str</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string</span></code></span>) – Message text.</p></li>
+<li><p><strong>logType</strong> (<span><code class="xref mat mat-obj docutils literal notranslate"><span class="pre">string,</span> <span class="pre">optional</span></code></span>) – One of “normal”, “warning”, or “error”.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat staticmethod">
+<dt class="sig sig-object mat" id="Trial.loadobj">
+<span class="property"><span class="pre">static</span> </span><span class="sig-name descname"><span class="pre">loadobj</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Trial.loadobj" title="Link to this definition">#</a></dt>
+<dd><p>Reconnect DB writer and GUI handle when the object is loaded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Loaded object with transient handles restored when possible.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#Trial" title="Trial"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">Trial</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Trial.struct">
+<span class="sig-name descname"><span class="pre">struct</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Trial.struct" title="Link to this definition">#</a></dt>
+<dd><p>Create a plain struct snapshot of public properties for logging/DB.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Public, serializable properties with heavy objects mapped to names.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>struct</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Trial.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Trial.update" title="Link to this definition">#</a></dt>
+<dd><p>Persist object changes and synchronize the database record.</p>
+<p>Calls <a class="reference internal" href="#Trial.updateObject" title="Trial.updateObject"><code class="xref mat mat-meth docutils literal notranslate"><span class="pre">updateObject()</span></code></a> and <code class="xref mat mat-meth docutils literal notranslate"><span class="pre">updateDatabase()</span></code>, and writes a
+short description file into <a class="reference internal" href="#Trial.DataPath" title="Trial.DataPath"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">DataPath</span></code></a>.</p>
+</dd></dl>
+
+<dl class="mat method">
+<dt class="sig sig-object mat" id="Trial.updateObject">
+<span class="sig-name descname"><span class="pre">updateObject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Trial.updateObject" title="Link to this definition">#</a></dt>
+<dd><p>Save the current object to <a class="reference internal" href="#Trial.ObjectPath" title="Trial.ObjectPath"><code class="xref mat mat-attr docutils literal notranslate"><span class="pre">ObjectPath</span></code></a>.</p>
+</dd></dl>
+
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Tof.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Tof</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="absorption2Od.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">absorption2Od</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Weld Lab
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Weld Lab.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
