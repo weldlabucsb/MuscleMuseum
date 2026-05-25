@@ -10,6 +10,7 @@ classdef (Abstract) SimRun < handle
         RunIndex uint32 = int32(1)
         IsCompleted logical = false
         WallTime double = 11.5*3600
+        IsUsingGpu logical = false
     end
 
     properties (Dependent)
@@ -33,6 +34,7 @@ classdef (Abstract) SimRun < handle
                     obj.DataPrefix = sim.DataPrefix;
                     obj.Output = sim.Output;
                     obj.WallTime = sim.WallTime;
+                    obj.IsUsingGpu = sim.IsUsingGpu;
                 else
                     error("Input must be an object of the Sim class")
                 end

@@ -58,6 +58,10 @@ classdef SeSim1DRun < TimeSimRun & SpaceSimRun
             dx = obj.SpaceStep;
             psi = obj.InitialCondition.WaveFunction;
             psi = psi ./ sqrt(sum(abs(psi).^2*dx));
+            if obj.IsUsingGpu
+                psi = gpuArray(psi);
+                Uk = gpuArray(Uk);
+            end
 
             savePeriod = obj.SavePeriod;
             avePeriod = obj.AveragePeriod;
