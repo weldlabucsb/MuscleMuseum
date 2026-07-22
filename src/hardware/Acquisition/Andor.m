@@ -80,6 +80,42 @@ classdef Andor < Acquisition
             obj.checkError;
         end
 
+        function resetCameraConnection(obj)
+            % Restarts camera connection if Andor Camera disconnects from
+            % RF/ Power/USB issues
+            
+            try
+                    %Try just restarting the camera
+                obj.stopCamera;
+                pause(0.2);
+                obj.connectCamera;
+                pause(0.2);
+                obj.setCameraParameterAbsorption;
+                pause(0.2);
+                obj.setCallback(obj.CallbackFunc);
+                pause(0.2);
+                obj.startCamera;
+            catch
+                try 
+                    %Try restarting parallel pool to erase worker if things
+                    delete(gcp('nocreate'));  % Shut down the current pool (if one exists)
+                    pause(0.2);
+                obj.connectCamera;
+                pause(0.2);
+                obj.setCameraParameterAbsorption;
+                pause(0.2);
+                obj.setCallback(obj.CallbackFunc);
+                pause(0.2);
+                obj.startCamera;
+                catch
+                    disp('Andor Camera Failed to reconnect')
+                end
+            end
+
+
+
+        end
+
         function setCameraParameterAbsorption(obj)
             % Set absorption-imaging parameters on the worker.
             %
@@ -104,6 +140,7 @@ classdef Andor < Acquisition
             %
             % The listener adapts queue payloads to the standard acquisition
             % callback signature by passing an empty event struct.
+            obj.CallbackFunc=callbackFunc;
             obj.ClientListener = afterEach(obj.ClientDataQueue,@(x) callbackFunc(x,[]));
         end
 

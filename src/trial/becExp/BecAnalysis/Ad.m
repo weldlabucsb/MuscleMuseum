@@ -141,7 +141,13 @@ classdef Ad < BecAnalysis
                     %Needs to obtain phase plate for imaging, assume
                     %phi=pi/2 for now, should be between -pi and pi
 
-                    phi=-pi/3; %Assumes additional thickness, use minus for etched
+                    %phi=-pi/3; %Assumes additional thickness, use minus for etched
+                    try
+                        phi = becExp.HardwareData.hw_phasePlatePhi;
+                    catch
+                        phi = -pi/3;
+                        fprintf("hw_phasePlatePhi is not defined. Setting phi=%.4f", phi);
+                    end
                     
                     freqlistPCI_Imaging=becExp.HardwareData.hw_ImagingPci;
                     freqPCI_Imaging=freqlistPCI_Imaging(runIdx);
@@ -190,9 +196,16 @@ classdef Ad < BecAnalysis
 
                     alpha = 2/3/hbar * (abs(dipoleD1)^2 / (omegaD1 - omegaL) +...
                         abs(dipoleD2)^2 / (omegaD2 - omegaL));
-                    
+                    % (from Imaging.m) Calcualte the prefactor
+                    c = Constants.SI("c");
+                    omega = 2*pi*becExp.Atom.CyclerFrequency;
+                    lambda = 2*pi*c/omega;
                     % Final densities from phase shift
-                    obj.AdData(:,:,runIdx)=obj.AdData(:,:,runIdx)/(2*pi/(671e-9))*2*epsilon0/alpha;
+                    
+                    %obj.AdData(:,:,runIdx)=obj.AdData(:,:,runIdx)/(2*pi/(671e-9))*2*epsilon0/alpha;
+                    %(nh) updating the above line to use more digits for more digits on lambda
+                    obj.AdData(:,:,runIdx)=obj.AdData(:,:,runIdx)/(2*pi/(lambda))*2*epsilon0/alpha;
+               
                     
             end
 
