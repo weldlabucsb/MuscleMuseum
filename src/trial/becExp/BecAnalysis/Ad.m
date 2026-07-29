@@ -143,11 +143,12 @@ classdef Ad < BecAnalysis
 
                     %phi=-pi/3; %Assumes additional thickness, use minus for etched
                     try
-                        phi = becExp.HardwareData.hw_phasePlatePhi;
+                        phi = becExp.HardwareData.hw_phasePlatePhi(end); %Needs end to retrieve a single value from the latest run, possibly because the value is saved for each individual run when set as an equation
                     catch
                         phi = -pi/3;
                         fprintf("hw_phasePlatePhi is not defined. Setting phi=%.4f", phi);
                     end
+                    disp(phi);
                     
                     freqlistPCI_Imaging=becExp.HardwareData.hw_ImagingPci;
                     freqPCI_Imaging=freqlistPCI_Imaging(runIdx);
@@ -170,6 +171,11 @@ classdef Ad < BecAnalysis
                     %ratios for the given phase spot plate.
                     Imin=min((3-2*cos(phi)-4*sin(phi/2)), (3-2*cos(phi)+4*sin(phi/2)));
                     Imax=max((3-2*cos(phi)-4*sin(phi/2)), (3-2*cos(phi)+4*sin(phi/2)));
+                    disp(Imin);
+                    disp(Imax);
+                    disp(size(obj.AdData(:,:,runIdx)));
+                    disp(size(min(obj.AdData(:,:,runIdx), Imax)));
+
                     obj.AdData(:,:,runIdx)=min(obj.AdData(:,:,runIdx), Imax);
                     obj.AdData(:,:,runIdx)=max(obj.AdData(:,:,runIdx), Imin);
 

@@ -219,6 +219,7 @@ classdef (Abstract) Scope < Hardware
                 return
             end
             data = obj.Sample;
+            disp(size(data))
             t = obj.TimeList;
             for ii = 1:size(data,1)
                 obj.TrapezoidalFit(ii) = TrapezoidalFit([t.',data(ii,:).']);
@@ -231,10 +232,11 @@ classdef (Abstract) Scope < Hardware
             %
             % :return: Amplitudes
             % :rtype: double column vector
-            obj.doTrapezFit
+            obj.doTrapezFit;
             tF = obj.TrapezoidalFit;
             trapezA = zeros(sum(obj.IsEnabled),1);
             for ii = 1:sum(obj.IsEnabled)
+                tF(ii).Coefficient
                 trapezA(ii) = tF(ii).Coefficient(5);
             end
         end
