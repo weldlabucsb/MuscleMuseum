@@ -138,11 +138,27 @@ classdef (Abstract) SiglentScope < Scope
             numEnabled = numel(enabledChans);
 
             obj.Sample = zeros(numEnabled, obj.NSample);
-
+            
+            status = "";
+                while ~contains(status, "1")
+                    status = writeread(v, '*OPC?'); % Siglent command for State?
+                end
+            status = "";
+                while ~contains(status, "Trig'd")
+                    status = writeread(v, 'TRIG:STAT?'); % Siglent command for State?
+                end
             writeline(v,':TRIGger:STOP')
+            
+            status = "";
+                while ~contains(status, "1")
+                    status = writeread(v, '*OPC?'); % Siglent command for State?
+                end
+                
+            
             for ii = 1:numEnabled
                 idx = enabledChans(ii);
 
+                
                 % Select channel
                 % writeline(v, 'WFSU TYPE,WORD');
                 % writeline(v, 'CFMT DEF9,WORD,BIN');
@@ -161,7 +177,7 @@ classdef (Abstract) SiglentScope < Scope
                 % 3. Extract the LAST number found (ignoring the '1' in 'C1') and convert to double
                 vdiv = str2double(vdiv_matches{end});
                 voffset = str2double(voffset_matches{end});
-                
+
                 % Request waveform
                 writeline(v, sprintf(':WAVeform:SOURce C%g', idx));
                 writeline(v, sprintf(':WAVeform:DATA?'));
@@ -201,6 +217,8 @@ classdef (Abstract) SiglentScope < Scope
 
             % fprintf('(internal timer on read()) -- Transfer Speed %.4f s\n', toc(tInternal));
         end
+
+        
 
         function startFromEdge(obj)
             v = obj.VisaObj;
