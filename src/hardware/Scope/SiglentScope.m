@@ -143,12 +143,12 @@ classdef (Abstract) SiglentScope < Scope
                 while ~contains(status, "1")
                     status = writeread(v, '*OPC?'); % Siglent command for State?
                 end
+            
+            writeline(v,':TRIGger:STOP')
             status = "";
-                while ~contains(status, "Trig'd")
+                while ~contains(status, "Stop")
                     status = writeread(v, 'TRIG:STAT?'); % Siglent command for State?
                 end
-            writeline(v,':TRIGger:STOP')
-            
             status = "";
                 while ~contains(status, "1")
                     status = writeread(v, '*OPC?'); % Siglent command for State?
@@ -207,6 +207,7 @@ classdef (Abstract) SiglentScope < Scope
                 % pause(0.1)
 
             end
+            % flush(v, "input");
             writeline(v,':TRIGger:RUN')
             % obj.set
             obj.SampleUnit = "V";
@@ -249,6 +250,17 @@ classdef (Abstract) SiglentScope < Scope
             end
         end
 
+        function out = isScopeTriggered(obj)
+            v=obj.VisaObj;
+            status = "";
+            % while ~contains(status, "1")
+            %     status = writeread(v, '*OPC?'); % Wait for siglent to be ready to read a command
+            %     pause(0.001)
+            % end
+            status = writeread(v, 'TRIG:STAT?');
+            out=contains(status, "Trig'd");
+            pause(0.01)
+        end
         function close(obj)
             if ~isempty(obj.VisaObj)
                 clear obj.VisaObj;
