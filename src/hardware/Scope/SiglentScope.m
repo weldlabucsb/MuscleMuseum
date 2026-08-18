@@ -139,20 +139,20 @@ classdef (Abstract) SiglentScope < Scope
 
             obj.Sample = zeros(numEnabled, obj.NSample);
             
-            status = "";
-                while ~contains(status, "1")
-                    status = writeread(v, '*OPC?'); % Siglent command for State?
-                end
+            % status = "";
+            %     while ~contains(status, "1")
+            %         status = writeread(v, '*OPC?'); % Siglent command for State?
+            %     end
             
             writeline(v,':TRIGger:STOP')
-            status = "";
-                while ~contains(status, "Stop")
-                    status = writeread(v, 'TRIG:STAT?'); % Siglent command for State?
-                end
-            status = "";
-                while ~contains(status, "1")
-                    status = writeread(v, '*OPC?'); % Siglent command for State?
-                end
+            % status = "";
+            %     while ~contains(status, "Stop")
+            %         status = writeread(v, 'TRIG:STAT?'); % Siglent command for State?
+            %     end
+            % status = "";
+            %     while ~contains(status, "1")
+            %         status = writeread(v, '*OPC?'); % Siglent command for State?
+            %     end
                 
             
             for ii = 1:numEnabled
@@ -250,15 +250,15 @@ classdef (Abstract) SiglentScope < Scope
             end
         end
 
-        function out = isScopeTriggered(obj)
+        function [out, state] = isScopeTriggered(obj)
             v=obj.VisaObj;
-            status = "";
+            state = "";
             % while ~contains(status, "1")
             %     status = writeread(v, '*OPC?'); % Wait for siglent to be ready to read a command
             %     pause(0.001)
             % end
-            status = writeread(v, 'TRIG:STAT?');
-            out=contains(status, "Trig'd");
+            state = writeread(v, 'TRIG:STAT?');
+            out=contains(state, "Trig'd");
             pause(0.01)
         end
         function close(obj)

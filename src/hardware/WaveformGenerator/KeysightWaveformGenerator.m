@@ -201,12 +201,33 @@ classdef (Abstract) KeysightWaveformGenerator < WaveformGenerator
             v = obj.VisaDevice;
 
             %% Software trigger
-            for ii = 1:obj.NChannel
+            % for ii = 1:obj.NChannel
+            %     if obj.TriggerSource(ii) == "Software"
+            %         triggerStr = "TRIGger" + string(ii);
+            %         writeline(v, triggerStr);
+            %     end
+            % end
+
+            writeline(v, '*TRG');
+
+        end
+
+        function triggerchannel(obj, ch)
+            % Issue a software trigger on channels configured for BUS
+            % trigger. Trigger for only one channel
+            %% Check connection to the device
+            
+
+            obj.check;
+            v = obj.VisaDevice;
+
+            %% Software trigger
+             ii = ch;
                 if obj.TriggerSource(ii) == "Software"
                     triggerStr = "TRIGger" + string(ii);
                     writeline(v, triggerStr);
                 end
-            end
+            
 
         end
 
