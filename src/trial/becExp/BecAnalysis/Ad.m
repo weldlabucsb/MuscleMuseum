@@ -10,6 +10,10 @@ classdef Ad < BecAnalysis
     % **Associated Charts:**
     %   - Chart(1): "AdMix" - Horizontal mosaic or 2D density plot of atomic density
     %   - Chart(2): "AdAnimation" - Animated GIF showing AD evolution
+        % Now enabled for 2D scans w/ renderAdGif2D, optional cropping methods available 
+        % via :attr:`GifMode` and :attr:`CropExtentY`. Default mode uses trial ROI. 
+        % "Zoom" mode crops to +/- :attr:`CropExtentY` pixels around the ROI's vertical center.
+        % also new, GifSpeed is an adjustable parameter. Default=1. 
     %
     % **Associated GUIs:**
     %   - Gui(1): "AtomPreviewer" - Real-time preview of atomic density data
@@ -21,6 +25,9 @@ classdef Ad < BecAnalysis
     properties
         AdMethod string = "StrongLight" % Cross-section model: "TwoLevelWeakLight"|"RandomPolarization"|"UniformStrongLight"|"StrongLight"|"PhaseContrastImaging"
         Colormap = jet % Colormap function handle for atomic density visualization
+        GifSpeed double = 1 % Playback speed multiplier for the AD animation GIF(s); %2 = twice as fast, 0.5 = half speed
+        GifMode string {mustBeMember(GifMode,["TrialRoi","Zoom"])} = "TrialRoi" % 2D-scan GIF cropping mode: "TrialRoi" uses the full trial ROI unchanged (default), "Zoom" crops vertically to +/-CropExtentY pixels around the ROI's vertical center, mirroring kpAdGif's default framing
+        CropExtentY double = 200 % Half-height [pixels] kept around the ROI's vertical center when GifMode="Zoom"; %larger values are MORE zoomed out along y
     end
 
     properties (SetAccess = private)
@@ -464,15 +471,61 @@ classdef Ad < BecAnalysis
         end
 
         function plotAdAnimation(obj)
-            % Create animated GIF across runs from AD data.
+            % Create animated GIF(s) across runs from AD data.
             %
-            % Saves an animated GIF to :attr:`Chart(2).Path` using current AD
-            % color scaling and ROI mid-slice profiles.
-            
-            %% Initialize figure
-            if obj.BecExp.Is2DScan
-                obj.Chart(2).IsEnabled = false;
+            % For 2D scans, delegates to :func:`renderAdGif2D` 
+            %
+            % :attr:`GifMode` controls vertical cropping for the 2D-scan
+            % path: "TrialRoi" (default) passes the full trial ROI through
+            % unchanged; "Zoom" crops symmetrically around the ROI's
+            % vertical center to +/-:attr:`CropExtentY` pixels, matching
+            % kpAdGif's default zoomed-in framing.
+
+            becExp = obj.BecExp;
+
+            if becExp.Is2DScan
+                
+
+                adData = obj.AdData / obj.Unit;
+                adData = flip(adData,1);
+
+                if obj.GifMode == "Zoom"
+                    r = size(adData,1);
+                    centerRow = ceil(r/2);
+                    rowLo = max(1,centerRow - obj.CropExtentY);
+                    rowHi = min(r,centerRow + obj.CropExtentY - 1);
+                    adData = adData(rowLo:rowHi,:,:);
+                end
+
+                titleStem = "TrialName: " + becExp.Name + ...
+                    ", Trial \#" + num2str(becExp.SerialNumber);
+                cbarLabel = "AD [$\times 10^{" + ...
+                    string(log(obj.Unit)/log(10)) + "} ~ \mathrm{m}^{-2}$]";
+
+                var1Name = becExp.ScannedVariable;
+                var2Name = becExp.ScannedVariable2;
+                var1Unit = becExp.ScannedVariableUnit;
+                var2Unit = becExp.ScannedVariableUnit2;
+                if ismissing(var1Unit); var1Unit = ""; end
+                if ismissing(var2Unit); var2Unit = ""; end
+
+                renderAdGif2D(adData, ...
+                    becExp.ScannedVariableList(1,:), ...
+                    becExp.ScannedVariableList(2,:), ...
+                    Var1Name=var1Name, Var1Unit=var1Unit, ...
+                    Var2Name=var2Name, Var2Unit=var2Unit, ...
+                    SweepVar="both", ...
+                    OutputFolder=becExp.DataAnalysisPath, ...
+                    BaseName="AdAnimation", ...
+                    Speed=obj.GifSpeed, ...
+                    CLim=obj.CLim, ...
+                    Colormap=obj.Colormap, ...
+                    ColorbarLabel=cbarLabel, ...
+                    TitleStem=titleStem);
+                return
             end
+
+            %% ---- 1D scan: original single-GIF logic (image + x/y profiles) ----
             fig = obj.Chart(2).initialize;
             if ishandle(fig)
                 figure(fig)
@@ -481,13 +534,12 @@ classdef Ad < BecAnalysis
             end
             
             %% Gif parameters
-            startDelay=.5;
-            midDelay=.1;
-            endDelay=.5;
+            startDelay=.5/obj.GifSpeed;
+            midDelay=.1/obj.GifSpeed;
+            endDelay=.5/obj.GifSpeed;
             filename = obj.Chart(2).Path + ".gif";
 
             %% BecExp parameters
-            becExp = obj.BecExp;
             roi = becExp.Roi;
             yxBoundary = roi.YXBoundary;
             roiSize = roi.CenterSize(3:4);
@@ -540,7 +592,6 @@ classdef Ad < BecAnalysis
             imgAxes.Title.Interpreter = "Latex";
             imgAxes.Title.FontSize = 14;
             imgAxes.Toolbar.Visible = "off";
-
 
             % X plot
             xAxes = axes(fig);
