@@ -78,7 +78,7 @@ classdef BecExp < Trial
 
     properties (Constant,Hidden)
         AnalysisOrder = {"Od";"Imaging";"Ad";"ScopeValue";...
-            "DensityFit";["AtomNumber";"Tof";"CenterFit"];"KapitzaDirac"} % Analysis execution order groups defining dependencies
+            "DensityFit";["AtomNumber";"Tof";"CenterFit"];"KapitzaDirac"; "KapitzaPhaseDiagram"; "ModulationMonitor"} % Analysis execution order groups defining dependencies
     end
 
     methods
@@ -541,6 +541,9 @@ classdef BecExp < Trial
                         case "Ad"
                             obj.Ad.AdMethod = obj.ConfigParameter.AdMethod;
                             obj.Ad.CLim = [0,obj.ConfigParameter.AdCLim];
+                            obj.Ad.CustomTitleString = obj.ConfigParameter.AdCustomTitle;
+                            obj.Ad.CustomXLabelString = obj.ConfigParameter.AdCustomXLabel;
+                            obj.Ad.CustomYLabelString = obj.ConfigParameter.AdCustomYLabel;
                         case "ScopeValue"
                             obj.ScopeValue.FullValueName = strsplit(string(obj.ConfigParameter.ScopeValueName),";");
                         case "DensityFit"
@@ -565,6 +568,51 @@ classdef BecExp < Trial
                             end
                             if isfield(obj.ConfigParameter.KdParameter,'CloudSize')
                                 obj.KapitzaDirac.CloudSize = obj.ConfigParameter.KdParameter.CloudSize;
+                            end
+                        case "KapitzaPhaseDiagram"
+                            if isfield(obj.ConfigParameter, 'KapitzaParameter')
+                                if isfield(obj.ConfigParameter.KapitzaParameter, 'MetricName')
+                                    obj.KapitzaPhaseDiagram.MetricName = string(obj.ConfigParameter.KapitzaParameter.MetricName);
+                                end
+                                if isfield(obj.ConfigParameter.KapitzaParameter, 'NoiseFloor')
+                                    obj.KapitzaPhaseDiagram.NoiseFloor = obj.ConfigParameter.KapitzaParameter.NoiseFloor;
+                                end
+                                if isfield(obj.ConfigParameter.KapitzaParameter, 'InvertOmegaAxis')
+                                    obj.KapitzaPhaseDiagram.InvertOmegaAxis = obj.ConfigParameter.KapitzaParameter.InvertOmegaAxis;
+                                end
+                            end
+                        case "ModulationMonitor"
+                            if isfield(obj.ConfigParameter, 'ModulationParameter')
+                                if isfield(obj.ConfigParameter.ModulationParameter, 'ExpectedFrequencyVar')
+                                    obj.ModulationMonitor.ExpectedFrequencyVar = string(obj.ConfigParameter.ModulationParameter.ExpectedFrequencyVar);
+                                end
+                                if isfield(obj.ConfigParameter.ModulationParameter, 'CalculatePhase')
+                                    obj.ModulationMonitor.CalculatePhase = logical(obj.ConfigParameter.ModulationParameter.CalculatePhase);
+                                end
+                                if isfield(obj.ConfigParameter.ModulationParameter, 'PhaseTarget')
+                                    obj.ModulationMonitor.PhaseTarget = double(obj.ConfigParameter.ModulationParameter.PhaseTarget);
+                                end
+                                if isfield(obj.ConfigParameter.ModulationParameter, 'ScopeName')
+                                    obj.ModulationMonitor.ScopeName = string(obj.ConfigParameter.ModulationParameter.ScopeName);
+                                end
+                                if isfield(obj.ConfigParameter.ModulationParameter, 'IsConvertVolts')
+                                    obj.ModulationMonitor.IsConvertVolts = logical(obj.ConfigParameter.ModulationParameter.IsConvertVolts);
+                                end
+                                if isfield(obj.ConfigParameter.ModulationParameter, 'VoltUnit')
+                                    obj.ModulationMonitor.VoltUnit = string(obj.ConfigParameter.ModulationParameter.VoltUnit);
+                                end
+                                if isfield(obj.ConfigParameter.ModulationParameter, 'VoltMultiplier')
+                                    obj.ModulationMonitor.VoltMultiplier = double(obj.ConfigParameter.ModulationParameter.VoltMultiplier);
+                                end
+                                if isfield(obj.ConfigParameter.ModulationParameter, 'VoltOffset')
+                                    obj.ModulationMonitor.VoltOffset = double(obj.ConfigParameter.ModulationParameter.VoltOffset);
+                                end
+                                if isfield(obj.ConfigParameter.ModulationParameter, 'IsChirp')
+                                    obj.ModulationMonitor.IsChirp = logical(obj.ConfigParameter.ModulationParameter.IsChirp);
+                                end
+                                if isfield(obj.ConfigParameter.ModulationParameter, 'ChirpEndFreqVar')
+                                    obj.ModulationMonitor.ChirpEndFreqVar = string(obj.ConfigParameter.ModulationParameter.ChirpEndFreqVar);
+                                end
                             end
                     end
                 end

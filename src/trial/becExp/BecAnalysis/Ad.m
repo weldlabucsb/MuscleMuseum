@@ -28,6 +28,10 @@ classdef Ad < BecAnalysis
         GifSpeed double = 1 % Playback speed multiplier for the AD animation GIF(s); %2 = twice as fast, 0.5 = half speed
         GifMode string {mustBeMember(GifMode,["TrialRoi","Zoom"])} = "TrialRoi" % 2D-scan GIF cropping mode: "TrialRoi" uses the full trial ROI unchanged (default), "Zoom" crops vertically to +/-CropExtentY pixels around the ROI's vertical center, mirroring kpAdGif's default framing
         CropExtentY double = 200 % Half-height [pixels] kept around the ROI's vertical center when GifMode="Zoom"; %larger values are MORE zoomed out along y
+        CustomTitleString string = "" % Optional AdMix title suffix, when set, replaces the default trial-name text
+        CustomXLabelString string = "" % Optional AdMix x-axis label, empty uses BecExp.XLabel
+        CustomYLabelString string = "" % Optional AdMix y-axis label, empty uses the default label
+        MaxAdMixTickLabels double {mustBeInteger,mustBePositive} = 20 % Maximum labeled scan positions per AdMix axis
     end
 
     properties (SetAccess = private)
@@ -369,23 +373,19 @@ classdef Ad < BecAnalysis
             pbaspect(ax,[aspect,1,1])
 
             ax.Units = "normalized";
-            ax.XLabel.String = obj.BecExp.XLabel;
-            ax.XLabel.Interpreter = "latex";
-            ax.XLabel.FontSize = fz;
-            ax.YLabel.String = "$y$ position [pixels]";
-            ax.YLabel.Interpreter = "latex";
-            ax.YLabel.FontSize = fz;
-            ax.Title.String = "TrialName: " + obj.BecExp.Name + ...
-                ", Trial \#" + num2str(obj.BecExp.SerialNumber);
-            ax.Title.Interpreter = "latex";
-            ax.Title.FontSize = fz;
+            obj.applyAdMixText(ax, false, fz)
             ax.FontSize = fz;
 
             renderTicks(img,[1,2],yxBoundary(1):yxBoundary(2))
             ax.TickDir = "out";
             tickSpace = roiSize(2);
-            ax.XTick = (tickSpace/2):tickSpace:(tickSpace*double(nRun)-tickSpace/2);
-            ax.XTickLabel = string(xTick);
+            tickPositions = (tickSpace/2):tickSpace:(tickSpace*double(nRun)-tickSpace/2);
+            keep = obj.adMixTickIndices(nRun, obj.MaxAdMixTickLabels);
+            ax.XTick = tickPositions(keep);
+            ax.XTickLabel = string(round(xTick(keep),3));
+            if numel(keep) < nRun
+                ax.XTickLabelRotation = 30;
+            end
             set(ax,'box','off')
             ax.Units = "pixels";
             outerpos = ax.OuterPosition;
@@ -442,27 +442,25 @@ classdef Ad < BecAnalysis
             pbaspect(ax,[aspect,1,1])
 
             ax.Units = "normalized";
-            ax.XLabel.String = obj.BecExp.XLabel;
-            ax.XLabel.Interpreter = "latex";
-            ax.XLabel.FontSize = fz;
-            ax.YLabel.String = obj.BecExp.YLabel;
-            ax.YLabel.Interpreter = "latex";
-            ax.YLabel.FontSize = fz;
-            ax.Title.String = "TrialName: " + obj.BecExp.Name + ...
-                ", Trial \#" + num2str(obj.BecExp.SerialNumber);
-            ax.Title.Interpreter = "latex";
-            ax.Title.FontSize = fz;
+            obj.applyAdMixText(ax, true, fz)
             ax.FontSize = fz;
             ax.YDir = "normal";
 
             renderTicks(img,[1,2],yxBoundary(1):yxBoundary(2))
             ax.TickDir = "out";
             tickSpace = roiSize(2);
-            ax.XTick = (tickSpace/2):tickSpace:(tickSpace*double(nx)-tickSpace/2);
-            ax.XTickLabel = string(xTick);
+            xTickPositions = (tickSpace/2):tickSpace:(tickSpace*double(nx)-tickSpace/2);
+            keepX = obj.adMixTickIndices(nx, obj.MaxAdMixTickLabels);
+            ax.XTick = xTickPositions(keepX);
+            ax.XTickLabel = string(round(xTick(keepX),3));
+            if numel(keepX) < nx
+                ax.XTickLabelRotation = 30;
+            end
             tickSpace = roiSize(1);
-            ax.YTick = (tickSpace/2):tickSpace:(tickSpace*double(ny)-tickSpace/2);
-            ax.YTickLabel = string(yTick);
+            yTickPositions = (tickSpace/2):tickSpace:(tickSpace*double(ny)-tickSpace/2);
+            keepY = obj.adMixTickIndices(ny, obj.MaxAdMixTickLabels);
+            ax.YTick = yTickPositions(keepY);
+            ax.YTickLabel = string(round(yTick(keepY),3));
             set(ax,'box','off')
             ax.Units = "pixels";
             outerpos = ax.OuterPosition;
@@ -497,8 +495,7 @@ classdef Ad < BecAnalysis
                     adData = adData(rowLo:rowHi,:,:);
                 end
 
-                titleStem = "TrialName: " + becExp.Name + ...
-                    ", Trial \#" + num2str(becExp.SerialNumber);
+                titleStem = obj.adTitleStemLatexSafe();
                 cbarLabel = "AD [$\times 10^{" + ...
                     string(log(obj.Unit)/log(10)) + "} ~ \mathrm{m}^{-2}$]";
 
@@ -589,7 +586,8 @@ classdef Ad < BecAnalysis
             imgAxes.CLim = obj.CLim;
             imgAxes.XTickLabel = '';
             imgAxes.YTickLabel = '';
-            imgAxes.Title.Interpreter = "Latex";
+            [titleStem, titleInterp] = obj.adTitleStem();
+            imgAxes.Title.Interpreter = titleInterp;
             imgAxes.Title.FontSize = 14;
             imgAxes.Toolbar.Visible = "off";
 
@@ -628,19 +626,24 @@ classdef Ad < BecAnalysis
                     yLine.XData = squeeze(adData(:,round(roiSize(2)/2),ii));
 
                     % Update title
-                    if ismissing(varUnit)
-                        varLabel = "$\mathrm{" + varName + "} = ~$" + ...
-                            string(varListSorted(ii));
+                    valStr = string(round(varListSorted(ii),3));
+                    if titleInterp == "latex"
+                        runLabel = ", Run \#" + num2str(ii) + ", ";
+                        if ismissing(varUnit)
+                            varLabel = "$\mathrm{" + varName + "} = ~$" + valStr;
+                        else
+                            varLabel = "$\mathrm{" + varName + "} = ~$" + valStr + "$~\mathrm{" + ...
+                                varUnit + "}$";
+                        end
                     else
-                        varLabel = "$\mathrm{" + varName + "} = ~$" + ...
-                            string(varListSorted(ii)) + "$~\mathrm{" + ...
-                            varUnit + "}$";
+                        runLabel = ", Run #" + num2str(ii) + ", ";
+                        if ismissing(varUnit)
+                            varLabel = varName + " = " + valStr;
+                        else
+                            varLabel = varName + " = " + valStr + " " + varUnit;
+                        end
                     end
-                    imgAxes.Title.String = ...
-                        "TrialName: " + becExp.Name + ...
-                        ", Trial \#" + num2str(becExp.SerialNumber) + ...
-                        ", Run \#" + num2str(ii) + ", " + ...
-                        varLabel;
+                    imgAxes.Title.String = titleStem + runLabel + varLabel;
 
                     % Save as gif
                     frame = getframe(fig);
@@ -658,6 +661,107 @@ classdef Ad < BecAnalysis
                 end
             end
             close(fig)
+        end
+    end
+
+    methods (Static)
+        function keep = adMixTickIndices(nTick, maxTickLabels)
+            % Return regularly spaced tick indices, merging the final tick in
+            % if it would otherwise land right next to the last regular one.
+            arguments
+                nTick (1,1) double {mustBeInteger,mustBePositive}
+                maxTickLabels (1,1) double {mustBeInteger,mustBePositive} = 20
+            end
+
+            if nTick <= maxTickLabels
+                keep = 1:nTick;
+                return
+            end
+            if maxTickLabels == 1
+                keep = 1;
+                return
+            end
+            stride = max(1, ceil((nTick - 1) / (maxTickLabels - 1)));
+            keep = 1:stride:nTick;
+            if keep(end) ~= nTick
+                if numel(keep) > 1 && (nTick - keep(end)) < stride/2
+                    keep(end) = nTick; % too close to the last regular tick, replace instead of crowding
+                else
+                    keep(end+1) = nTick;
+                end
+            end
+        end
+
+        function s = escapeLatexText(s)
+            % Escape LaTeX-special characters so free-form custom text renders literally.
+            s = string(s);
+            if strlength(s) == 0
+                return
+            end
+            s = strrep(s,"\","\textbackslash ");
+            s = strrep(s,"_","\_");
+            s = strrep(s,"%","\%");
+            s = strrep(s,"&","\&");
+            s = strrep(s,"#","\#");
+            s = strrep(s,"$","\$");
+        end
+    end
+
+    methods
+        function applyAdMixText(obj, ax, is2D, fontSize)
+            % Apply title/labels, defaulting to prior behavior when custom strings are empty.
+            defaultXLabel = obj.BecExp.XLabel;
+            if is2D
+                defaultYLabel = obj.BecExp.YLabel;
+            else
+                defaultYLabel = "$y$ position [pixels]";
+            end
+
+            if strlength(strtrim(obj.CustomXLabelString)) > 0
+                ax.XLabel.String = obj.CustomXLabelString;
+                ax.XLabel.Interpreter = "none";
+            else
+                ax.XLabel.String = defaultXLabel;
+                ax.XLabel.Interpreter = "latex";
+            end
+            ax.XLabel.FontSize = fontSize;
+
+            if strlength(strtrim(obj.CustomYLabelString)) > 0
+                ax.YLabel.String = obj.CustomYLabelString;
+                ax.YLabel.Interpreter = "none";
+            else
+                ax.YLabel.String = defaultYLabel;
+                ax.YLabel.Interpreter = "latex";
+            end
+            ax.YLabel.FontSize = fontSize;
+
+            [titleStr, titleInterp] = obj.adTitleStem();
+            ax.Title.String = titleStr;
+            ax.Title.Interpreter = titleInterp;
+            ax.Title.FontSize = fontSize;
+        end
+
+        function [titleStr, interp] = adTitleStem(obj)
+            % Default AdMix/AdAnimation title, or "Trial #N, <custom>" when CustomTitleString is set.
+            if strlength(strtrim(obj.CustomTitleString)) > 0
+                titleStr = "Trial #" + num2str(obj.BecExp.SerialNumber) + ", " + obj.CustomTitleString;
+                interp = "none";
+            else
+                titleStr = "TrialName: " + obj.BecExp.Name + ...
+                    ", Trial \#" + num2str(obj.BecExp.SerialNumber);
+                interp = "latex";
+            end
+        end
+
+        function titleStr = adTitleStemLatexSafe(obj)
+            % Same as adTitleStem but always LaTeX-renderable, for callers (e.g. renderAdGif2D) that force a LaTeX interpreter.
+            if strlength(strtrim(obj.CustomTitleString)) > 0
+                titleStr = "Trial \#" + num2str(obj.BecExp.SerialNumber) + ", " + ...
+                    Ad.escapeLatexText(obj.CustomTitleString);
+            else
+                titleStr = "TrialName: " + obj.BecExp.Name + ...
+                    ", Trial \#" + num2str(obj.BecExp.SerialNumber);
+            end
         end
     end
 
