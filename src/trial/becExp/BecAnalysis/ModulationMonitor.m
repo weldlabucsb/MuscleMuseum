@@ -109,6 +109,7 @@ classdef ModulationMonitor < BecAnalysis
         VoltOffset double = [0 0 0 0] % Volts added before scaling, one per channel
         VoltUnit string = "Er" % Label for the converted unit
 
+        RetryDepth double = 25 % How many runs back to keep retrying a missing scope file
         CacheTraces logical = false % Keep raw traces in RAM (off: reload from disk on demand)
         DefaultTab string = "Transfer" % Tab shown on startup
         FollowLatestOnBasic logical = true % While Basic is visible, show the newest completed run
@@ -148,6 +149,8 @@ classdef ModulationMonitor < BecAnalysis
         Grid struct = struct('Valid',false)
         InspectorRun double = 1
         TraceCache cell = {}
+        LastLoadMsg char = '' % Why the most recent trace load failed, for the Inspector
+        PendingRuns double = [] % Runs whose scope file had not been written yet
         DirtyTabs logical
         TransferXAxis double = 1 % 1 = vs frequency, 2 = vs depth setting
         InspectorBottom double = 1 % Bottom Inspector panel: 1 = spectrum, 2 = combined lattice
@@ -214,6 +217,7 @@ classdef ModulationMonitor < BecAnalysis
             obj.ClipStart = false(1,0); obj.ClipEnd = false(1,0);
             obj.NChannel = 0;
             obj.TraceCache = {};
+            obj.PendingRuns = [];
             obj.Grid = ModulationMonitor.emptyGrid();
             obj.InspectorRun = 1;
             obj.DirtyTabs = true(1, numel(obj.TabNames));
@@ -239,6 +243,49 @@ classdef ModulationMonitor < BecAnalysis
             obj.H.TabGroup.SelectedTab = obj.H.Tab(k);
         end
 
+        function save(obj)
+            % Chart.save's tabbed branch does not work for this figure: it
+            % indexes the label cell with () instead of {} (which throws
+            % "Conversion to double from cell"), and it hands exportgraphics
+            % every axes in the tab at once when only one object is allowed.
+            % Exporting each tab here keeps that shared code untouched.
+            c = obj.Chart(1);
+            if ~c.IsEnabled || isempty(c.Figure) || ~isvalid(c.Figure)
+                return
+            end
+            try
+                saveas(c.Figure, c.Path, 'fig');
+            catch ME
+                warning("ModulationMonitor: could not save .fig (%s)", '%s', ME.message);
+            end
+            if ~isfield(obj.H,'Tab')
+                return
+            end
+            sel = obj.H.TabGroup.SelectedTab;
+            for k = 1:numel(obj.H.Tab)
+                if ~isgraphics(obj.H.Tab(k)), continue; end
+                try
+                    % Draw the tab before exporting: tabs that were never
+                    % opened hold no graphics, so they would export blank.
+                    obj.H.TabGroup.SelectedTab = obj.H.Tab(k);
+                    obj.DirtyTabs(k) = true;
+                    obj.drawSelectedTab();
+                    drawnow;
+                    name = matlab.lang.makeValidName(char(obj.TabNames(k)));
+                    exportgraphics(obj.H.Tab(k), c.Path + "_" + name + ".png", ...
+                        'Resolution', 150);
+                catch ME
+                    warning("ModulationMonitor: could not export tab %s (%s)", ...
+                        obj.TabNames(k), ME.message);
+                end
+            end
+            try
+                obj.H.TabGroup.SelectedTab = sel;
+                obj.drawSelectedTab();
+            catch
+            end
+        end
+
         function refresh(obj)
             obj.initialize;
             n = obj.BecExp.NCompletedRun;
@@ -252,6 +299,22 @@ classdef ModulationMonitor < BecAnalysis
         %  Data
         %  ===============================================================
         function updateData(obj, runIdx)
+            % Live acquisition writes a run's scope file only once the NEXT
+            % run begins, so run N's trace is typically not on disk when run
+            % N's analysis fires. Measure this run if we can, then sweep any
+            % earlier runs whose file has since appeared. Offline (refresh)
+            % every file already exists, so the sweep finds nothing and costs
+            % one isfile check.
+            if runIdx < 1
+                return
+            end
+            obj.measureRun(runIdx);
+            obj.retryPending();
+            obj.DirtyTabs(:) = true;
+        end
+
+        function ok = measureRun(obj, runIdx)
+            ok = false;
             if runIdx < 1
                 return
             end
@@ -265,8 +328,14 @@ classdef ModulationMonitor < BecAnalysis
 
             res = obj.analyzeRun(runIdx);
             if ~res.Ok
+                % Remember it so a later update can pick it up once the file
+                % has been written.
+                if ~ismember(runIdx, obj.PendingRuns)
+                    obj.PendingRuns(end+1) = runIdx;
+                end
                 return
             end
+            obj.PendingRuns(obj.PendingRuns == runIdx) = [];
 
             nCh = numel(res.Ch);
             obj.growChannels(nCh, runIdx);
@@ -297,8 +366,39 @@ classdef ModulationMonitor < BecAnalysis
                 measured = rad2deg(res.Ch(1).Phi - res.Ch(2).Phi);
                 obj.PhaseErr(runIdx) = ModulationMonitor.wrap180(measured - obj.PhaseTarget);
             end
+            ok = true;
+        end
 
-            obj.DirtyTabs(:) = true;
+        function retryPending(obj)
+            % Re-measure runs that previously had no trace, but only those
+            % whose file now exists: isfile is cheap, a failed analyzeRun is
+            % not. Runs are dropped once they succeed, or once they fall
+            % further behind than RetryDepth, so the queue cannot grow without
+            % bound on a trial where traces are never written at all.
+            if isempty(obj.PendingRuns)
+                return
+            end
+            latest = max(obj.PendingRuns);
+            stale = obj.PendingRuns < (obj.lastRun() - obj.RetryDepth) & ...
+                    obj.PendingRuns < latest;
+            obj.PendingRuns(stale) = [];
+
+            for r = sort(obj.PendingRuns)
+                if obj.traceExists(r)
+                    obj.measureRun(r);
+                end
+            end
+        end
+
+        function tf = traceExists(obj, runIdx)
+            % Cheap existence check, no load.
+            tf = false;
+            try
+                fp = fullfile(obj.BecExp.HardwareLogPath, ...
+                    obj.BecExp.DataPrefix + "_" + num2str(runIdx) + "_" + obj.ScopeName + ".mat");
+                tf = isfile(fp);
+            catch
+            end
         end
 
         %% ===============================================================
@@ -1657,7 +1757,11 @@ classdef ModulationMonitor < BecAnalysis
 
             res = obj.analyzeRun(runIdx, true);
             if ~res.Ok || isempty(res.Y)
-                obj.placeholder(axT, sprintf('No scope trace available for run %d', runIdx));
+                % Say WHERE it looked: live acquisition can write the scope
+                % file after the analysis runs, and a ScopeName or path
+                % mismatch is otherwise invisible.
+                obj.placeholder(axT, sprintf('No scope trace available for run %d\n\n%s', ...
+                    runIdx, obj.LastLoadMsg));
                 obj.H.InspInfo.String = '';
                 return
             end
@@ -2731,8 +2835,17 @@ classdef ModulationMonitor < BecAnalysis
         end
 
         function [t, Y, ok] = loadTrace(obj, runIdx)
-            % Y is nSample x nChannel. Live data comes from becExp.ScopeData;
-            % otherwise the run's .mat is reloaded from the hardware log.
+            % Y is nSample x nChannel, read from the run's .mat in the
+            % hardware log.
+            %
+            % There is deliberately NO live-RAM path. Scope.Sample holds only
+            % the most recent acquisition (every read() overwrites it), and
+            % becExp.ScopeData is a scalar struct of derived per-run scalars
+            % (Rms, TrapezoidalDuration, ...) rather than waveforms - see how
+            % ScopeValue and KapitzaDirac index it as ScopeData.(name). So a
+            % given run's raw trace only ever exists on disk. An earlier
+            % version probed ScopeData(runIdx) for Time/Volt1 fields; that
+            % could never match and silently fell through to the disk read.
             t = []; Y = []; ok = false;
             becExp = obj.BecExp;
 
@@ -2742,32 +2855,12 @@ classdef ModulationMonitor < BecAnalysis
                 return
             end
 
-            try
-                if isprop(becExp,'ScopeData') && numel(becExp.ScopeData) >= runIdx
-                    sd = becExp.ScopeData(runIdx);
-                    if isfield(sd,'Time') && ~isempty(sd.Time)
-                        t = double(sd.Time(:));
-                        cols = {};
-                        for k = 1:obj.MaxChannel
-                            fn = sprintf('Volt%d', k);
-                            if isfield(sd, fn) && ~isempty(sd.(fn)) && numel(sd.(fn)) == numel(t)
-                                cols{end+1} = double(sd.(fn)(:)); %#ok<AGROW>
-                            end
-                        end
-                        if ~isempty(cols)
-                            Y = cat(2, cols{:});
-                            ok = numel(t) > 128;
-                        end
-                    end
-                end
-            catch
-                ok = false;
-            end
-
             if ~ok
                 try
                     filePath = fullfile(becExp.HardwareLogPath, ...
                         becExp.DataPrefix + "_" + num2str(runIdx) + "_" + obj.ScopeName + ".mat");
+                    obj.LastLoadMsg = sprintf('Looked for:\n%s\n(file %s)', ...
+                        filePath, string(isfile(filePath)));
                     if isfile(filePath)
                         tmp = load(filePath);
                         fn = fieldnames(tmp);

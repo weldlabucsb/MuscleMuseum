@@ -132,26 +132,36 @@ classdef KapitzaPhaseDiagram < BecAnalysis
             % Convert to dimensionless if selected
             if obj.UseDimensionlessAxes
                 [beta, f0, ok] = obj.computeDimensionlessScales();
-                if ok
-                    xPlot = xRaw * beta;
-                    yPlot = yRaw / f0;
-                    
-                    ax.XLabel.String = "$\alpha$";
-                    ax.XLabel.Interpreter = "latex";
-                    ax.YLabel.String = "$\Omega$";
-                    ax.YLabel.Interpreter = "latex";
-                    ax.XLabel.FontSize = 14;
-                    ax.YLabel.FontSize = 14;
-                end
             else
-                % Use properties directly from the Trial class
+                ok = false;
+            end
+            
+            if obj.UseDimensionlessAxes && ok
+                xPlot = xRaw * beta;
+                yPlot = yRaw / f0;
+                
+                ax.XLabel.String = "$\alpha$";
+                ax.XLabel.Interpreter = "latex";
+                ax.YLabel.String = "$\Omega$";
+                ax.YLabel.Interpreter = "latex";
+                ax.XLabel.FontSize = 14;
+                ax.YLabel.FontSize = 14;
+            else
+                % Either UseDimensionlessAxes is off, OR the conversion failed --
+                % in both cases, plot raw values and label axes to match, rather
+                % than silently reusing stale alpha/Omega labels from an earlier
+                % successful call (which produced mismatched labels vs. values).
+                if obj.UseDimensionlessAxes && ~ok
+                    obj.BecExp.displayLog(...
+                        "KapitzaPhaseDiagram: dimensionless conversion failed -- falling back to raw scan variable units for this figure.", ...
+                        "warning");
+                end
                 try
                     xName = obj.BecExp.ScannedVariable;
                     xUnit = obj.BecExp.ScannedVariableUnit;
                     yName = obj.BecExp.ScannedVariable2;
                     yUnit = obj.BecExp.ScannedVariableUnit2;
                     
-                    % Add parenthesis around units if they exist and are not "None"
                     if xUnit ~= "" && xUnit ~= "None", xName = xName + " (" + xUnit + ")"; end
                     if yUnit ~= "" && yUnit ~= "None", yName = yName + " (" + yUnit + ")"; end
                     
