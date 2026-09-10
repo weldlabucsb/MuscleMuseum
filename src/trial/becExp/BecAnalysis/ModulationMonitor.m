@@ -152,6 +152,7 @@ classdef ModulationMonitor < BecAnalysis
         LastLoadMsg char = '' % Why the most recent trace load failed, for the Inspector
         PendingRuns double = [] % Runs whose scope file had not been written yet
         DirtyTabs logical
+        IsDrawing logical = false % Guards against re-entrant drawing
         TransferXAxis double = 1 % 1 = vs frequency, 2 = vs depth setting
         InspectorBottom double = 1 % Bottom Inspector panel: 1 = spectrum, 2 = combined lattice
         % Custom tab: one entry per panel (1..6)
@@ -256,7 +257,7 @@ classdef ModulationMonitor < BecAnalysis
             try
                 saveas(c.Figure, c.Path, 'fig');
             catch ME
-                warning("ModulationMonitor: could not save .fig (%s)", '%s', ME.message);
+                warning("ModulationMonitor: could not save .fig (%s)", ME.message);
             end
             if ~isfield(obj.H,'Tab')
                 return
@@ -460,6 +461,18 @@ classdef ModulationMonitor < BecAnalysis
             if isempty(idx)
                 return
             end
+            % Re-entrancy guard. This method ends in drawnow, which lets a
+            % queued updateFigure from an incoming run execute INSIDE the
+            % current draw. That inner call deletes and rebuilds the same
+            % graphics the outer call is still holding handles to, so the
+            % outer one then operates on deleted objects (linkaxes was the
+            % first to notice). One draw at a time; the newer data is picked
+            % up by the next update anyway.
+            if obj.IsDrawing
+                return
+            end
+            obj.IsDrawing = true;
+            guard = onCleanup(@() obj.clearDrawingFlag());
             runIdx = obj.lastRun();
             try
                 switch idx
@@ -476,6 +489,14 @@ classdef ModulationMonitor < BecAnalysis
                 obj.showTabError(obj.H.Tab(idx), ME);
             end
             drawnow limitrate
+        end
+
+        function clearDrawingFlag(obj)
+            % Separate method so onCleanup still works if the object is being
+            % torn down mid-draw.
+            if isvalid(obj)
+                obj.IsDrawing = false;
+            end
         end
 
         function showTabError(obj, tab, ME)
@@ -1997,7 +2018,10 @@ classdef ModulationMonitor < BecAnalysis
                     obj.panelTitle(ax,'Spectrum of masked scope trace, dB below fundamental');
                 end
             end
-            if nCh > 1
+            % Only link axes that still exist: a redraw triggered part-way
+            % through this one can delete them underneath us.
+            axList = axList(isgraphics(axList));
+            if numel(axList) > 1
                 linkaxes(axList,'x');
             end
         end
