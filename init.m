@@ -4,24 +4,23 @@ addpath(genpath_exclude(pwd,{'.git','testData','sampleData','.gitignore','.githu
 userPath = fullfile(getHome,"Documents","MMUser");
 
 if exist(userPath,'dir')==0
-    disp(newline + "Detected it is the first time installing. Creating config files...")
-    createFolder(userPath);
-    createFolder(fullfile(userPath,"script"));
-    createFolder(fullfile(userPath,"temp"));
-    unzip("MMUserDefault.zip",userPath)
-    open(fullfile(userPath,"config","mmConfig.m"))
-    disp("Please edit the mmConfig.m file if this is the firt time installing. " + newline + "You may clone " +...
-        "a sameple MMUser folder from https://github.com/weldlabucsb/MMUser." + newline + "Once it's done, please run init agian.")
-    msgbox("Please edit the mmConfig.m file if this is the firt time installing. You may clone " +...
-        "a sameple MMUser folder from https://github.com/weldlabucsb/MMUser. Once it's done, please run init agian.")
-    return
+disp(newline + "Detected it is the first time installing. Creating config files...")
+createFolder(userPath);
+createFolder(fullfile(userPath,"script"));
+createFolder(fullfile(userPath,"temp"));
+unzip("MMUserDefault.zip",userPath)
+open(fullfile(userPath,"config","mmConfig.m"))
+disp("Please edit the mmConfig.m file if this is the firt time installing. " + newline + "You may clone " +...
+"a sameple MMUser folder from https://github.com/weldlabucsb/MMUser." + newline + "Once it's done, please run init agian.")
+msgbox("Please edit the mmConfig.m file if this is the firt time installing. You may clone " +...
+"a sameple MMUser folder from https://github.com/weldlabucsb/MMUser. Once it's done, please run init agian.")
+return
 else
-    disp(newline + "Detected MMUser folder already exists. I will not touch it...")
+disp(newline + "Detected MMUser folder already exists. I will not touch it...")
 end
 
 addpath(genpath_exclude(char(userPath),{'.git','testData','sampleData','.gitignore','.github','doc'}));
 disp("Done.")
-
 %% Check MATLAB version
 disp(newline + "Checking MATLAB version...")
 vers = version('-release');
@@ -78,25 +77,42 @@ close all
 function p = genpath_exclude(d,excludeDirs)
 % if the input is a string, then use it as the searchstr
 if ischar(excludeDirs)
-    excludeStr = excludeDirs;
+excludeStr = excludeDirs;
 else
-    excludeStr = '';
-    if ~iscellstr(excludeDirs)
-        error('excludeDirs input must be a cell-array of strings');
-    end
-
-    for i = 1:length(excludeDirs)
-        excludeStr = [excludeStr '|^' excludeDirs{i} '$'];
-    end
+excludeStr = '';
+if ~iscellstr(excludeDirs)
+error('excludeDirs input must be a cell-array of strings');
 end
 
+
+for i = 1:length(excludeDirs)
+    excludeStr = [excludeStr '|^' excludeDirs{i} '$'];
+end
+
+end
 
 % Generate path based on given root directory
-files = dir(d);
-if isempty(files)
-    return
+% files = dir(d);
+% if isempty(files)
+%     return
+% end
+% Generate path based on given root directory
+if ~isfolder(d)
+warning('Directory does not exist: %s', d);
+p = '';
+return
 end
 
+files = dir(d);
+
+if isempty(files)
+warning('dir() returned an empty listing for: %s', d);
+p = '';
+return
+end
+
+% Add d to the path even if it is empty.
+p = [d pathsep];
 % Add d to the path even if it is empty.
 p = [d pathsep];
 
