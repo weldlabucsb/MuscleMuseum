@@ -24,7 +24,7 @@ classdef Ad < BecAnalysis
 
     properties
         AdMethod string = "StrongLight" % Cross-section model: "TwoLevelWeakLight"|"RandomPolarization"|"UniformStrongLight"|"StrongLight"|"PhaseContrastImaging"
-        Colormap = jet % Colormap function handle for atomic density visualization
+        Colormap = slanCM("inferno") % Colormap function handle for atomic density visualization
         GifSpeed double = 1 % Playback speed multiplier for the AD animation GIF(s); %2 = twice as fast, 0.5 = half speed
         GifMode string {mustBeMember(GifMode,["TrialRoi","Zoom"])} = "TrialRoi" % 2D-scan GIF cropping mode: "TrialRoi" uses the full trial ROI unchanged (default), "Zoom" crops vertically to +/-CropExtentY pixels around the ROI's vertical center, mirroring kpAdGif's default framing
         CropExtentY double = 200 % Half-height [pixels] kept around the ROI's vertical center when GifMode="Zoom"; %larger values are MORE zoomed out along y

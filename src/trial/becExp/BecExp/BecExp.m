@@ -541,6 +541,7 @@ classdef BecExp < Trial
                         case "Ad"
                             obj.Ad.AdMethod = obj.ConfigParameter.AdMethod;
                             obj.Ad.CLim = [0,obj.ConfigParameter.AdCLim];
+                            obj.Ad.Colormap = obj.ConfigParameter.OdColormap;
                             obj.Ad.CustomTitleString = obj.ConfigParameter.AdCustomTitle;
                             obj.Ad.CustomXLabelString = obj.ConfigParameter.AdCustomXLabel;
                             obj.Ad.CustomYLabelString = obj.ConfigParameter.AdCustomYLabel;
