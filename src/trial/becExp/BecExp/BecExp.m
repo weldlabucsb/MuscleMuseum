@@ -542,9 +542,16 @@ classdef BecExp < Trial
                             obj.Ad.AdMethod = obj.ConfigParameter.AdMethod;
                             obj.Ad.CLim = [0,obj.ConfigParameter.AdCLim];
                             obj.Ad.Colormap = obj.ConfigParameter.OdColormap;
-                            obj.Ad.CustomTitleString = obj.ConfigParameter.AdCustomTitle;
-                            obj.Ad.CustomXLabelString = obj.ConfigParameter.AdCustomXLabel;
-                            obj.Ad.CustomYLabelString = obj.ConfigParameter.AdCustomYLabel;
+                            % Saving a trial type stores empty text as "None"
+                            if isfield(obj.ConfigParameter, 'AdCustomTitle') && ~isequal(string(obj.ConfigParameter.AdCustomTitle), "None")
+                                obj.Ad.CustomTitleString = obj.ConfigParameter.AdCustomTitle;
+                            end
+                            if isfield(obj.ConfigParameter, 'AdCustomXLabel') && ~isequal(string(obj.ConfigParameter.AdCustomXLabel), "None")
+                                obj.Ad.CustomXLabelString = obj.ConfigParameter.AdCustomXLabel;
+                            end
+                            if isfield(obj.ConfigParameter, 'AdCustomYLabel') && ~isequal(string(obj.ConfigParameter.AdCustomYLabel), "None")
+                                obj.Ad.CustomYLabelString = obj.ConfigParameter.AdCustomYLabel;
+                            end
                         case "ScopeValue"
                             obj.ScopeValue.FullValueName = strsplit(string(obj.ConfigParameter.ScopeValueName),";");
                         case "DensityFit"

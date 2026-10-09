@@ -6,6 +6,46 @@ Every push to GitHub from the main experiment control computer (`T1000`, folder 
 - See everything that changed between two versions: `git log --oneline vA..vB` and `git diff --stat vA vB`
 - Run an older version for a while: close the MuscleMuseum windows, `git switch --detach vN`, then restart MATLAB or run `clear classes`. Come back with `git switch sr` and reload MATLAB again. Uncommitted files stay in place. If git refuses because a file "would be overwritten", stop and ask; never add `-f` or `--force`.
 
+## v3 - 2026-10-09
+
+Commit label: `pk`. Branch: `sr`. Computer: `T1000`.
+
+### What changed
+
+1. **`src/trial/becExp/BecAnalysis/Ad.m`, line 27.** The default colormap of the atomic-density analysis is `jet` again instead of `slanCM("inferno")`. `jet` is what it was before the 6 Oct update and what `Od.m` uses.
+2. **`src/trial/becExp/BecExp/BecExp.m`, lines 545 to 554.** The three trial settings `AdCustomTitle`, `AdCustomXLabel` and `AdCustomYLabel` are now copied to the Ad analysis only if the setting exists and is not the placeholder text "None".
+
+### Why
+
+- After v2, every START on this computer stopped with "Invalid default value for property 'Colormap' in class 'Ad': Undefined function 'slanCM'". `slanCM` is not in this repo and not on this computer, so the Ad class could not load and no trial could be created. During a trial the default is replaced by the trial type's `OdColormap` setting anyway (`BecExp.m` line 544), so the default only has to be something that exists everywhere.
+- The settings code stores empty text as "None" whenever a trial type is saved (Overwrite Trial Type, Save As New Trial Type). Without the second change, the Ad mix and animation figures of such a trial type would be titled "Trial #N, None" with both axes labelled "None". The check for a missing setting also lets the code start with a settings database that has not been updated yet.
+
+### How it was tested
+
+- pk closed `BecControlPanel`, reloaded MATLAB and ran START and STOP on this computer with the two changes in place, and reported that it works.
+- Not tested: saving a trial type and starting it afterwards (the "None" case), and 2D scans.
+- Before the change, the new code was read through for other missing functions or settings on the path from START to STOP for an ordinary absorption-imaging trial; none were found.
+
+### Status of the checks listed under v1 and v2
+
+- Settings columns: present. `setParameter` was run on this computer on 2026-10-08 (the settings database changed at 17:15), which added the five new columns. It does not need to be run again for this update.
+- `slanCM`: no longer needed (this version).
+- Keysight software trigger: unchanged from v2. The Trigger button in `WgControlPanel` sends one `*TRG` whatever the trigger source is.
+- Ad mix and animation figures now use the trial type's `OdColormap` setting (the inferno map on this computer) instead of `jet`. This comes from the 6 Oct update, not from this version.
+
+### Left out on purpose
+
+- The six uncommitted files listed under v1 are still uncommitted and untouched.
+- Four problems found in the code that came with the 6 Oct update were not changed:
+  - In a 2D scan, `Ad.m` rebuilds two GIFs on every refresh and at FAST STOP, which blocks MATLAB while they render.
+  - `KapitzaPhaseDiagram.m` computes its dimensionless axis for lithium-7 at 1064 nm whatever the trial's atom is. This computer is set to strontium-84. It only matters when that analysis is switched on.
+  - `Ad.m` rounds scan values in tick labels and GIF titles to 3 decimals, so values below 0.0005 show as 0.
+  - In `HardwareControlPanel`, binding a variable to one of the new lists 5 to 10 before that list has been created makes the panel fail each time it opens.
+
+### How to go back
+
+`git switch --detach v2` gives the code without this fix; START fails there on this computer. Return with `git switch sr`. Reload MATLAB after each switch.
+
 ## v2 - 2026-10-08
 
 Commit label: `pk`. Branch: `sr`. Computer: `T1000`.
