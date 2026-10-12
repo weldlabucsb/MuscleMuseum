@@ -1,13 +1,34 @@
 classdef (Abstract) SiglentScope < Scope
-    % SiglentScope: Fast VISA implementation for Siglent SDS2000X+ series
+    % SiglentScope: VISA implementation for Siglent SDS2000X Plus / SDS2000X HD series
     %
     % Key features:
-    % -- Uses visadev for fast communication
-    % -- Pulls raw 16-bit waveform data
-    % -- Uses WAV:PRE? for scaling (Siglent format)
+    % -- visadev communication
+    % -- raw 16-bit (WORD) waveform transfer, split into chunks of :WAVeform:MAXPoint?
+    % -- scaling taken from the binary :WAVeform:PREamble? (V/div, offset,
+    %    codes/div, probe factor), so it is correct for 8-, 10- and 12-bit ADCs
+    %
+    % Model subclasses configure:
+    %   AcqResolution        ":ACQuire:RESolution" argument, or "" to not send it
+    %   SetMemoryManagement  send ":ACQuire:MMANagement FMDepth" before ACQ:MDEP
+    %   isInterleaved()      which channel combinations run interleaved
+    %   validMemoryDepths()  allowed ACQ:MDEP values for the current mode
+    %   currentSamplingRateMax()  max sample rate for the current channel mode
 
-    properties (Access = public,Transient)
+    properties (Access = public, Transient)
         VisaObj % visadev object
+    end
+
+    properties (SetAccess = protected)
+        AcqResolution string = ""           % e.g. "10Bits" (SDS2000X+); "" = don't send
+        SetMemoryManagement logical = true % force fixed-memory-depth mode in set()
+    end
+
+    properties (SetAccess = protected, Transient)
+        LastPreamble = struct.empty % preamble of each channel from the last read()
+    end
+
+    properties (Access = private, Transient)
+        MaxPointsCache double = []  % cached :WAVeform:MAXPoint? answer
     end
 
     methods
@@ -20,16 +41,13 @@ classdef (Abstract) SiglentScope < Scope
             try
                 obj.VisaObj = visadev(obj.ResourceName);
                 configureTerminator(obj.VisaObj, "LF");
-                
-                % Try little-endian first (Siglent default)
-                obj.VisaObj.ByteOrder = "little-endian";
+                obj.VisaObj.ByteOrder = "little-endian"; % Siglent default
                 obj.VisaObj.Timeout = 10;
+                obj.MaxPointsCache = [];
 
                 writeline(obj.VisaObj, "*CLS");
-
-                idn = writeread(obj.VisaObj, "*IDN?");
+                idn = writeread(obj.VisaObj, "*IDN?"); %#ok<NASGU>
                 % fprintf("Connected to: %s\n", idn);
-
             catch ME
                 error("Failed to connect to scope at %s: %s", obj.ResourceName, ME.message);
             end
@@ -39,16 +57,21 @@ classdef (Abstract) SiglentScope < Scope
             v = obj.VisaObj;
 
             % =========================
-            % Waveform transfer setup
+            % Acquisition / transfer format
             % =========================
-            % writeline(v, ":ACQuire:RESolution 8Bits");
-            writeline(v, ":ACQuire:RESolution 10Bits");
-            writeline(v, ":WAVeform:WIDTh WORD");
+            if strlength(obj.AcqResolution) > 0
+                writeline(v, ":ACQuire:RESolution " + obj.AcqResolution);
+            end
+            writeline(v, ":WAVeform:WIDTh WORD"); % required for >8-bit data
 
             % =========================
             % Horizontal settings
             % =========================
+            %writeline(v, sprintf("TIM:SCAL %g", obj.Duration / 10));
+            obj.Duration = obj.snapDuration(obj.Duration);
             writeline(v, sprintf("TIM:SCAL %g", obj.Duration / 10));
+            obj.Duration = 10 * obj.queryNumber("TIM:SCAL?");   % trust what the scope actually set
+            
             writeline(v, sprintf(':TIMebase:DELay %e', -obj.HorizontalOffset));
 
             % =========================
@@ -56,7 +79,6 @@ classdef (Abstract) SiglentScope < Scope
             % =========================
             for ii = 1:obj.NChannel
                 ch = "CHAN" + ii;
-
                 if obj.IsEnabled(ii)
                     writeline(v, sprintf("%s:SWIT ON", ch));
                     writeline(v, sprintf("%s:COUP %s", ch, upper(obj.VerticalCoupling(ii))));
@@ -67,61 +89,33 @@ classdef (Abstract) SiglentScope < Scope
                 end
             end
 
-            if sum(obj.IsEnabled) == 1
-                switch obj.NSample
-                    case 2e4
-                        writeline(v, sprintf("ACQ:MDEP 20k"));
-                    case 2e5
-                        writeline(v, sprintf("ACQ:MDEP 200k"));
-                    case 2e6
-                        writeline(v, sprintf("ACQ:MDEP 2M"));
-                    case 2e7
-                        writeline(v, sprintf("ACQ:MDEP 20M"));
-                    case 2e8
-                        writeline(v, sprintf("ACQ:MDEP 200M"));
-                    otherwise
-                        writeline(v, sprintf("ACQ:MDEP 20M"));
-                end
-            else
-                switch obj.NSample
-                    case 1e4
-                        writeline(v, sprintf("ACQ:MDEP 10k"));
-                    case 1e5
-                        writeline(v, sprintf("ACQ:MDEP 100k"));
-                    case 1e6
-                        writeline(v, sprintf("ACQ:MDEP 1M"));
-                    case 1e7
-                        writeline(v, sprintf("ACQ:MDEP 10M"));
-                    case 1e8
-                        writeline(v, sprintf("ACQ:MDEP 100M"));
-                    otherwise
-                        writeline(v, sprintf("ACQ:MDEP 10M"));
-                end
-            end
-            % writeline(v, sprintf("ACQ:MDEP 10M"))
+            % =========================
+            % Memory depth (after channels, since it depends on interleaving)
+            % =========================
+            obj.applyMemoryDepth();
 
             % =========================
             % Trigger settings
             % =========================
             switch obj.TriggerMode
                 case "Normal"
-                    writeline(v, sprintf("TRIG:MODE NORM"));
-                case "Auto" 
-                    writeline(v, sprintf("TRIG:MODE AUTO"));
+                    writeline(v, "TRIG:MODE NORM");
+                case "Auto"
+                    writeline(v, "TRIG:MODE AUTO");
                 case "Software"
-                    writeline(v, sprintf("TRIG:MODE SING"));
+                    writeline(v, "TRIG:MODE SING");
             end
             switch obj.TriggerSource
                 case "External"
-                    writeline(v, sprintf("TRIG:EDGE:SOUR EX"));
+                    writeline(v, "TRIG:EDGE:SOUR EX");
                 otherwise
                     writeline(v, sprintf("TRIG:EDGE:SOUR C%s", extractAfter(obj.TriggerSource, "CH")));
             end
             switch obj.TriggerSlope
                 case "Rise"
-                    writeline(v, sprintf("TRIG:EDGE:SLOP RIS"));
+                    writeline(v, "TRIG:EDGE:SLOP RIS");
                 case "Fall"
-                    writeline(v, sprintf("TRIG:EDGE:SLOP FALL"));
+                    writeline(v, "TRIG:EDGE:SLOP FALL");
             end
             writeline(v, sprintf("TRIG:EDGE:LEV %g", obj.TriggerLevel));
         end
@@ -132,138 +126,281 @@ classdef (Abstract) SiglentScope < Scope
             end
 
             v = obj.VisaObj;
-            % tInternal = tic;
-
             enabledChans = find(obj.IsEnabled);
             numEnabled = numel(enabledChans);
 
-            obj.Sample = zeros(numEnabled, obj.NSample);
-            
-            % status = "";
-            %     while ~contains(status, "1")
-            %         status = writeread(v, '*OPC?'); % Siglent command for State?
-            %     end
-            
-            writeline(v,':TRIGger:STOP')
-            % status = "";
-            %     while ~contains(status, "Stop")
-            %         status = writeread(v, 'TRIG:STAT?'); % Siglent command for State?
-            %     end
-            % status = "";
-            %     while ~contains(status, "1")
-            %         status = writeread(v, '*OPC?'); % Siglent command for State?
-            %     end
-                
-            
+            writeline(v, ':TRIGger:STOP');
+            restartOnExit = onCleanup(@() writeline(v, ':TRIGger:RUN')); %#ok<NASGU>
+
+            chanData = cell(1, numEnabled);
+            pre = struct.empty;
             for ii = 1:numEnabled
                 idx = enabledChans(ii);
-
-                
-                % Select channel
-                % writeline(v, 'WFSU TYPE,WORD');
-                % writeline(v, 'CFMT DEF9,WORD,BIN');
-
-                % flush(v, "input");
-
-                % Get Vertical Gain (Volts/Div) and Offset
-                % 1. Read the raw string responses from the scope
-                vdiv_str = writeread(v, sprintf('C%d:VDIV?', idx));
-                voffset_str = writeread(v, sprintf('C%d:OFST?', idx));
-
-                % 2. Find ALL numbers in the strings (this will output a cell array of matches)
-                vdiv_matches = regexp(vdiv_str, '[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?', 'match');
-                voffset_matches = regexp(voffset_str, '[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?', 'match');
-
-                % 3. Extract the LAST number found (ignoring the '1' in 'C1') and convert to double
-                vdiv = str2double(vdiv_matches{end});
-                voffset = str2double(voffset_matches{end});
-
-                % Request waveform
-                writeline(v, sprintf(':WAVeform:SOURce C%g', idx));
-                writeline(v, sprintf(':WAVeform:DATA?'));
-                % writeline(v, sprintf('C%g:WF? DAT2', idx));
-
-                % charRead = '';
-                % while charRead ~= ','
-                %     charRead = read(v, 1, 'char');
-                % end
+                writeline(v, sprintf(':WAVeform:SOURce C%d', idx));
                 try
-                    % rawData = readbinblock(v,'int8');
-                    rawData = readbinblock(v,'int16');
-                    % writeline(v,":WAVeform:PRE?");
-                    % pre = readbinblock(v,'uint8');
+                    p = obj.readPreamble();
+                    p.Channel = idx;
+                    obj.crossCheckScale(p);
 
-                    % obj.Sample(ii, :) = (double(rawData) .* (vdiv / 30)) - voffset;
-                    obj.Sample(ii, :) = (double(rawData) .* (vdiv / 7680)) - voffset;
-                catch
-                    obj.Sample(ii, :) = zeros(1,obj.NSample);
-                    warning("no waveform on the scope")
+                    codes = obj.readWaveformCodes(p.NPoints);
+                    chanData{ii} = double(codes) .* (p.VDiv / p.CodePerDiv) - p.Offset;
+                    pre = [pre, p]; %#ok<AGROW>
+                catch ME
+                    warning("SiglentScope:noWaveform", ...
+                        "CH%d: could not read waveform (%s). Row filled with NaN.", idx, ME.message);
                 end
-                % read(v,1,"char")
-                % writeline(v,"*OPC?")
-                % readline(v)
-
-                % flush(v, "input");
-                % pause(0.1)
-
             end
-            % flush(v, "input");
-            writeline(v,':TRIGger:RUN')
-            % obj.set
+            obj.LastPreamble = pre;
+
+            % Size the record from what the scope actually returned
+            lens = cellfun(@numel, chanData);
+            if any(lens > 0)
+                nPts = max(lens);
+                if nPts ~= obj.NSample
+                    warning("SiglentScope:pointMismatch", ...
+                        "Scope returned %d points but NSample was %d. NSample updated to match.", ...
+                        nPts, obj.NSample);
+                    obj.NSample = nPts;
+                end
+                if ~isempty(pre)
+                    actualDuration = pre(1).Interval * nPts;
+                    if abs(actualDuration - obj.Duration) / obj.Duration > 0.01
+                        warning("SiglentScope:durationMismatch", ...
+                            "Scope record length is %.6g s but Duration is %.6g s; TimeList will be off.", ...
+                            actualDuration, obj.Duration);
+                    end
+                end
+            else
+                nPts = obj.NSample;
+            end
+
+            obj.Sample = NaN(numEnabled, nPts);
+            for ii = 1:numEnabled
+                n = numel(chanData{ii});
+                obj.Sample(ii, 1:n) = chanData{ii};
+            end
             obj.SampleUnit = "V";
 
-            % if ismethod(obj, 'saveObject')
-                obj.saveObject;
-            % end
-
-            % fprintf('(internal timer on read()) -- Transfer Speed %.4f s\n', toc(tInternal));
+            obj.saveObject;
         end
-
-        
 
         function startFromEdge(obj)
-            v = obj.VisaObj;
-            tdiv_str = writeread(v, 'TIM:SCAL?');
-            tdiv = str2double(regexp(tdiv_str, '[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?', 'match', 'once'));
-            delayValue = 5 * tdiv; 
-            writeline(v, sprintf(':TIMebase:DELay %e', delayValue));
+            tdiv = obj.queryNumber('TIM:SCAL?');
+            writeline(obj.VisaObj, sprintf(':TIMebase:DELay %e', 5 * tdiv));
         end
-
+       
+        function d = snapDuration(obj, d) %#ok<INUSL>
+            % Round a requested Duration up to the next 1-2-5 time/div step
+            % (10 divisions), so the full requested window is captured.
+            % Range from the datasheet: 1 ns/div to 1000 s/div.
+            steps = [1 2 5]' * 10.^(-9:3);
+            grid  = sort(steps(:)');
+            grid  = grid(grid >= 1e-9 & grid <= 1000);
+            k = find(grid >= (d / 10) * (1 - 1e-9), 1);
+            if isempty(k)
+                k = numel(grid);
+            end
+            d = 10 * grid(k);
+        end
+        
         function trigger(obj)
-            v = obj.VisaObj;
-            writeline(v,":TRIGger:MODE FTRIG")
+            writeline(obj.VisaObj, ":TRIGger:MODE FTRIG")
         end
 
         function status = check(obj)
+            % Drains the whole error queue (SYST:ERR? returns one entry per call).
+            status = false;
             if isempty(obj.VisaObj)
-                status = false;
                 return;
             end
-
-            errStr = writeread(obj.VisaObj, "SYST:ERR?");
-
-            if startsWith(errStr, "0")
+            errs = strings(0);
+            for k = 1:20
+                e = strtrim(string(writeread(obj.VisaObj, "SYST:ERR?")));
+                if strlength(e) == 0 || startsWith(e, "0") || startsWith(e, "+0")
+                    break;
+                end
+                errs(end+1) = e; %#ok<AGROW>
+            end
+            if isempty(errs)
                 status = true;
             else
-                warning("Scope Error: %s", errStr);
-                status = false;
+                warning("Scope Error(s): %s", strjoin(errs, " | "));
             end
         end
 
         function [out, state] = isScopeTriggered(obj)
-            v=obj.VisaObj;
-            state = "";
-            % while ~contains(status, "1")
-            %     status = writeread(v, '*OPC?'); % Wait for siglent to be ready to read a command
-            %     pause(0.001)
-            % end
-            state = writeread(v, 'TRIG:STAT?');
-            out=contains(state, "Trig'd");
+            state = writeread(obj.VisaObj, 'TRIG:STAT?');
+            out = contains(state, "Trig'd");
             pause(0.01)
         end
+
         function close(obj)
             if ~isempty(obj.VisaObj)
-                clear obj.VisaObj;
+                try
+                    delete(obj.VisaObj);
+                catch
+                end
+            end
+            obj.VisaObj = [];
+        end
+    end
+
+    methods (Access = protected)
+        function tf = isInterleaved(obj)
+            % Interleaved = at most one of C1/C2 and at most one of C3/C4 on.
+            en = obj.IsEnabled;
+            tf = ~(en(1) && en(2)) && ~(numel(en) >= 4 && en(3) && en(4));
+        end
+
+        function d = validMemoryDepths(obj)
+            if obj.isInterleaved()
+                d = [2e4, 2e5, 2e6, 2e7, 2e8];
+            else
+                d = [1e4, 1e5, 1e6, 1e7, 1e8];
+            end
+        end
+
+        function sr = currentSamplingRateMax(obj)
+            sr = obj.SamplingRateMax;
+        end
+
+        function applyMemoryDepth(obj)
+            % Snap NSample to a valid depth that does not exceed the max sample
+            % rate for this Duration, then send it to the scope.
+            d = obj.validMemoryDepths();
+            ok = d(d ./ obj.Duration <= obj.currentSamplingRateMax() * (1 + 1e-9));
+            if isempty(ok)
+                ok = d(1);
+            end
+            [~, k] = min(abs(ok - obj.NSample));
+            obj.NSample = ok(k);
+
+            if obj.SetMemoryManagement
+                writeline(obj.VisaObj, ":ACQuire:MMANagement FMDepth");
+            end
+            writeline(obj.VisaObj, "ACQ:MDEP " + SiglentScope.depthString(ok(k)));
+        end
+
+        function p = readPreamble(obj)
+            % Parse the 346-byte binary WAVeform:PREamble? block (Siglent new format).
+            v = obj.VisaObj;
+            writeline(v, ":WAVeform:PREamble?");
+            raw = uint8(readbinblock(v, "uint8"));
+            flush(v, "input");
+            raw = raw(:).';
+            if numel(raw) < 332
+                error("Preamble too short (%d bytes).", numel(raw));
+            end
+
+            f32 = @(off) double(typecast(raw(off+1:off+4), 'single'));
+            i32 = @(off) double(typecast(raw(off+1:off+4), 'int32'));
+            i16 = @(off) double(typecast(raw(off+1:off+2), 'int16'));
+            f64 = @(off) double(typecast(raw(off+1:off+8), 'double'));
+
+            p.NPoints    = i32(hex2dec('74'));
+            probe        = f32(hex2dec('148'));
+            if ~(isfinite(probe) && probe > 0), probe = 1; end
+            p.Probe      = probe;
+            p.VDiv       = f32(hex2dec('9C')) * probe;
+            p.Offset     = f32(hex2dec('A0')) * probe;
+            p.CodePerDiv = f32(hex2dec('A4'));
+            p.AdcBit     = i16(hex2dec('AC'));
+            p.Interval   = f32(hex2dec('B0'));
+            p.Delay      = f64(hex2dec('B4'));
+
+            if ~(p.NPoints > 0)
+                error("Preamble reports %d points (no acquisition?).", p.NPoints);
+            end
+            if ~(isfinite(p.CodePerDiv) && p.CodePerDiv > 0)
+                error("Invalid codes/div in preamble (%g).", p.CodePerDiv);
+            end
+        end
+
+        function crossCheckScale(obj, p)
+            % Sanity check: preamble V/div should equal the channel's V/div.
+            try
+                vdivScope = obj.queryNumber(sprintf(":CHANnel%d:SCALe?", p.Channel));
+                if abs(vdivScope - p.VDiv) / vdivScope > 0.01
+                    warning("SiglentScope:scaleMismatch", ...
+                        "CH%d: preamble V/div = %g but channel V/div = %g (probe factor %g). Check scaling.", ...
+                        p.Channel, p.VDiv, vdivScope, p.Probe);
+                end
+            catch
+            end
+        end
+
+        function codes = readWaveformCodes(obj, nPts)
+            % Read nPts int16 codes in chunks no larger than :WAVeform:MAXPoint?.
+            v = obj.VisaObj;
+            chunk = min(nPts, obj.maxPoints());
+
+            oldTimeout = v.Timeout;
+            v.Timeout = max(oldTimeout, 5 + 2 * chunk / 2e6); % assume >= ~2 MB/s link
+
+            codes = zeros(1, nPts, 'int16');
+            pos = 0;
+            try
+                while pos < nPts
+                    n = min(chunk, nPts - pos);
+                    writeline(v, sprintf(":WAVeform:STARt %d", pos));
+                    writeline(v, sprintf(":WAVeform:POINt %d", n));
+                    writeline(v, ":WAVeform:DATA?");
+                    blk = readbinblock(v, "int16");
+                    flush(v, "input");
+                    if isempty(blk)
+                        error("Empty data block at point %d.", pos);
+                    end
+                    m = min(numel(blk), n);
+                    codes(pos+1:pos+m) = int16(blk(1:m));
+                    pos = pos + m;
+                    if m < n % scope returned fewer points than asked
+                        codes = codes(1:pos);
+                        break;
+                    end
+                end
+                writeline(v, ":WAVeform:STARt 0");
+            catch ME
+                v.Timeout = oldTimeout;
+                rethrow(ME);
+            end
+            v.Timeout = oldTimeout;
+        end
+
+        function n = maxPoints(obj)
+            if isempty(obj.MaxPointsCache)
+                n = inf;
+                try
+                    q = obj.queryNumber(":WAVeform:MAXPoint?");
+                    if isfinite(q) && q > 0
+                        n = q;
+                    end
+                catch
+                end
+                obj.MaxPointsCache = n;
+            end
+            n = obj.MaxPointsCache;
+        end
+
+        function val = queryNumber(obj, cmd)
+            % Query and return the last number in the reply (ignores e.g. the '1' in 'C1').
+            s = writeread(obj.VisaObj, cmd);
+            m = regexp(s, '[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?', 'match');
+            if isempty(m)
+                error("No number in reply to '%s': %s", cmd, s);
+            end
+            val = str2double(m{end});
+        end
+    end
+
+    methods (Static, Access = protected)
+        function s = depthString(n)
+            % 2e7 -> "20M", 2e4 -> "20k"
+            if n >= 1e6 && mod(n, 1e6) == 0
+                s = sprintf("%dM", n / 1e6);
+            elseif n >= 1e3 && mod(n, 1e3) == 0
+                s = sprintf("%dk", n / 1e3);
+            else
+                s = sprintf("%d", n);
             end
         end
     end

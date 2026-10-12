@@ -1,10 +1,8 @@
 classdef SiglentSDS2104XPlus < SiglentScope
     % SiglentSDS2104XPlus: Model configuration for SDS2104X+
     %
-    % Fully compatible with Scope base class constraints.
-
-    properties
-    end
+    % Memory-depth clamping now lives in SiglentScope.set(); this class only
+    % supplies the model-specific settings.
 
     methods
         function obj = SiglentSDS2104XPlus(resourceName, name)
@@ -24,29 +22,20 @@ classdef SiglentSDS2104XPlus < SiglentScope
             obj.VerticalOffset = zeros(1, obj.NChannel);
             obj.VerticalCoupling = repmat("DC", 1, obj.NChannel);
             obj.VerticalRange = repmat(2, 1, obj.NChannel);
-            obj.TriggerMode = "Normal";   % ✅ valid
-            obj.TriggerSource = "CH1";    % keep this format
-            obj.TriggerSlope = "Rise";    % ✅ valid
+            obj.TriggerMode = "Normal";
+            obj.TriggerSource = "CH1";
+            obj.TriggerSlope = "Rise";
             obj.TriggerLevel = 0;
             obj.DisabledProperty = ["NSampleMax"];
-        end
 
-        function set(obj)
-            % =========================
-            % Clamp memory depth to valid Siglent values
-            % % =========================
-            if sum(obj.IsEnabled) == 1 
-                validDepths = [2e4, 2e5, 2e6, 20e6, 200e6];
-            else
-                validDepths = [1e4, 1e5, 1e6, 10e6, 100e6];
-            end
-            [~, idx] = min(abs(validDepths - obj.NSample));
-            obj.NSample = validDepths(idx);
-            
-            % =========================
-            % Call base SCPI implementation
-            % =========================
-            set@SiglentScope(obj);
+            obj.AcqResolution = "10Bits";
+        end
+    end
+
+    methods (Access = protected)
+        function tf = isInterleaved(obj)
+            % Original behaviour kept: only a single enabled channel counts as interleaved.
+            tf = sum(obj.IsEnabled) == 1;
         end
     end
 end

@@ -61,7 +61,7 @@ classdef ModulationMonitor < BecAnalysis
         AlphaVar string = "hw_KPModDepthAlpha" % Hardware variable holding the drive parameter alpha
         CalculatePhase logical = true % Compute the relative phase of the first two channels
         PhaseTarget double = 180 % Expected relative phase in degrees
-        ScopeName string = "LatticeScope" % Name of the scope hardware for offline loading
+        ScopeName string = "LatticeScopeHD" % Name of the scope hardware for offline loading
         MaxChannel double = 4 % Highest scope channel to look for
         ShowDistortion logical = true % Include the harmonic-distortion metric
         ShowDriveMetrics logical = false % Offer alpha*beta and AC balance in the metric menus
