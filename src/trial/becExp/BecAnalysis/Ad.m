@@ -31,7 +31,7 @@ classdef Ad < BecAnalysis
         CustomTitleString string = "" % Optional AdMix title suffix, when set, replaces the default trial-name text
         CustomXLabelString string = "" % Optional AdMix x-axis label, empty uses BecExp.XLabel
         CustomYLabelString string = "" % Optional AdMix y-axis label, empty uses the default label
-        MaxAdMixTickLabels double {mustBeInteger,mustBePositive} = 20 % Maximum labeled scan positions per AdMix axis
+        MaxAdMixTickLabels double {mustBeInteger,mustBePositive} = 35 % Maximum labeled scan positions per AdMix axis
     end
 
     properties (SetAccess = private)
@@ -401,7 +401,7 @@ classdef Ad < BecAnalysis
             tickPositions = (tickSpace/2):tickSpace:(tickSpace*double(nRun)-tickSpace/2);
             keep = obj.adMixTickIndices(nRun, obj.MaxAdMixTickLabels);
             ax.XTick = tickPositions(keep);
-            ax.XTickLabel = string(round(xTick(keep),3));
+            ax.XTickLabel = string(round(xTick(keep),4));
             if numel(keep) < nRun
                 ax.XTickLabelRotation = 30;
             end
@@ -471,7 +471,7 @@ classdef Ad < BecAnalysis
             xTickPositions = (tickSpace/2):tickSpace:(tickSpace*double(nx)-tickSpace/2);
             keepX = obj.adMixTickIndices(nx, obj.MaxAdMixTickLabels);
             ax.XTick = xTickPositions(keepX);
-            ax.XTickLabel = string(round(xTick(keepX),3));
+            ax.XTickLabel = string(round(xTick(keepX),4));
             if numel(keepX) < nx
                 ax.XTickLabelRotation = 30;
             end
@@ -479,7 +479,7 @@ classdef Ad < BecAnalysis
             yTickPositions = (tickSpace/2):tickSpace:(tickSpace*double(ny)-tickSpace/2);
             keepY = obj.adMixTickIndices(ny, obj.MaxAdMixTickLabels);
             ax.YTick = yTickPositions(keepY);
-            ax.YTickLabel = string(round(yTick(keepY),3));
+            ax.YTickLabel = string(round(yTick(keepY),4));
             set(ax,'box','off')
             ax.Units = "pixels";
             outerpos = ax.OuterPosition;
@@ -645,7 +645,7 @@ classdef Ad < BecAnalysis
                     yLine.XData = squeeze(adData(:,round(roiSize(2)/2),ii));
 
                     % Update title
-                    valStr = string(round(varListSorted(ii),3));
+                    valStr = string(round(varListSorted(ii),4));
                     if titleInterp == "latex"
                         runLabel = ", Run \#" + num2str(ii) + ", ";
                         if ismissing(varUnit)
@@ -689,7 +689,7 @@ classdef Ad < BecAnalysis
             % if it would otherwise land right next to the last regular one.
             arguments
                 nTick (1,1) double {mustBeInteger,mustBePositive}
-                maxTickLabels (1,1) double {mustBeInteger,mustBePositive} = 20
+                maxTickLabels (1,1) double {mustBeInteger,mustBePositive} = 35
             end
 
             if nTick <= maxTickLabels
@@ -728,16 +728,42 @@ classdef Ad < BecAnalysis
 
     methods
         function applyAdMixText(obj, ax, is2D, fontSize)
-            % Apply title/labels, defaulting to prior behavior when custom strings are empty.
-            defaultXLabel = obj.BecExp.XLabel;
+            % Select default labels.
+            defaultXLabel = string(obj.BecExp.XLabel);
+
             if is2D
-                defaultYLabel = obj.BecExp.YLabel;
+                defaultYLabel = string(obj.BecExp.YLabel);
             else
                 defaultYLabel = "$y$ position [pixels]";
             end
 
-            if strlength(strtrim(obj.CustomXLabelString)) > 0
-                ax.XLabel.String = obj.CustomXLabelString;
+            % Replace missing or placeholder values with useful fallbacks.
+            if ismissing(defaultXLabel) || ...
+                    strlength(strtrim(defaultXLabel)) == 0 || ...
+                    strcmpi(strtrim(defaultXLabel), "None")
+                defaultXLabel = "$x$ scan variable";
+            end
+
+            if ismissing(defaultYLabel) || ...
+                    strlength(strtrim(defaultYLabel)) == 0 || ...
+                    strcmpi(strtrim(defaultYLabel), "None")
+                defaultYLabel = "$y$ scan variable";
+            end
+
+            % Custom labels take precedence only if valid.
+            customX = string(obj.CustomXLabelString);
+            customY = string(obj.CustomYLabelString);
+
+            useCustomX = ~ismissing(customX) && ...
+                strlength(strtrim(customX)) > 0 && ...
+                ~strcmpi(strtrim(customX), "None");
+
+            useCustomY = ~ismissing(customY) && ...
+                strlength(strtrim(customY)) > 0 && ...
+                ~strcmpi(strtrim(customY), "None");
+
+            if useCustomX
+                ax.XLabel.String = customX;
                 ax.XLabel.Interpreter = "none";
             else
                 ax.XLabel.String = defaultXLabel;
@@ -745,8 +771,8 @@ classdef Ad < BecAnalysis
             end
             ax.XLabel.FontSize = fontSize;
 
-            if strlength(strtrim(obj.CustomYLabelString)) > 0
-                ax.YLabel.String = obj.CustomYLabelString;
+            if useCustomY
+                ax.YLabel.String = customY;
                 ax.YLabel.Interpreter = "none";
             else
                 ax.YLabel.String = defaultYLabel;
@@ -761,9 +787,18 @@ classdef Ad < BecAnalysis
         end
 
         function [titleStr, interp] = adTitleStem(obj)
-            % Default AdMix/AdAnimation title, or "Trial #N, <custom>" when CustomTitleString is set.
-            if strlength(strtrim(obj.CustomTitleString)) > 0
-                titleStr = "Trial #" + num2str(obj.BecExp.SerialNumber) + ", " + obj.CustomTitleString;
+            % Default AdMix/AdAnimation title, or "Trial #N, <custom>".
+            % Treat empty strings, missing strings, and "None" as no custom title.
+
+            customTitle = string(obj.CustomTitleString);
+
+            useCustomTitle = ~ismissing(customTitle) && ...
+                strlength(strtrim(customTitle)) > 0 && ...
+                ~strcmpi(strtrim(customTitle), "None");
+
+            if useCustomTitle
+                titleStr = "Trial #" + num2str(obj.BecExp.SerialNumber) + ...
+                    ", " + customTitle;
                 interp = "none";
             else
                 titleStr = "TrialName: " + obj.BecExp.Name + ...
