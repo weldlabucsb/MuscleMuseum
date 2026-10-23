@@ -104,9 +104,14 @@ classdef ModulationMonitor < BecAnalysis
         %   difference quantity:  x_out = Multiplier *  V
         % The offset must NOT be applied to differences (Vpp, Vrms, dVdc):
         % it cancels in a subtraction.
+        %
+        % Multiplier and offset are no longer typed in by hand. They are
+        % read from a Kapitza-Dirac trial and then divided by the AM
+        % spectroscopy correction, so the numbers on screen are traceable to
+        % the trial that produced them and cannot drift out of step with it.
         IsConvertVolts logical = false % Master switch for the conversion below
-        VoltMultiplier double = [1 1 1 1] % Physical units per volt, one per channel
-        VoltOffset double = [0 0 0 0] % Volts added before scaling, one per channel
+        KdTrial double = [0 0 0 0] % KD trial number per channel; 0/NaN = uncalibrated
+        CorrectionDivisor double = [1 1 1 1] % AM-spectroscopy correction per channel
         VoltUnit string = "Er" % Label for the converted unit
 
         RetryDepth double = 25 % How many runs back to keep retrying a missing scope file
@@ -116,6 +121,14 @@ classdef ModulationMonitor < BecAnalysis
     end
 
     properties (SetAccess = protected)
+        % --- calibration derived from KdTrial / CorrectionDivisor -------
+        % These are outputs now, not inputs. resolveCalibration fills them.
+        VoltMultiplier double = [1 1 1 1] % Er per volt, after correction
+        VoltOffset double = [0 0 0 0]     % Volts added before scaling, after correction
+        KdMultiplierRaw double = [NaN NaN NaN NaN] % DepthOverAmplitude as loaded
+        KdOffsetRaw double = [NaN NaN NaN NaN]     % PulseOffset as loaded
+        CalStatus string = strings(1,4)   % '', 'ok', or the failure reason
+
         % Per-channel metrics, sized nChannel x nRun
         Vpp double      % AC peak-to-peak (V)
         Vrms double     % AC rms (V), mean removed
@@ -163,6 +176,8 @@ classdef ModulationMonitor < BecAnalysis
         FreqPanelChannel double = 1 % Which channel the selectable panel shows
         FreqPanelMetric double = 4 % Selectable top-right panel: a metric id, see metricRegistry
         ShowErrorBars logical = false % Draw repeat scatter as error bars
+        CalDirty logical = true % KdTrial/CorrectionDivisor changed since the last resolve
+        KdCache struct = struct('Trial',{{}},'K',{{}},'Off',{{}}) % loadBecExp is slow; never load the same trial twice
     end
 
     properties (Constant, Hidden)
@@ -294,6 +309,113 @@ classdef ModulationMonitor < BecAnalysis
                 obj.updateData(runIdx);
             end
             obj.updateFigure(n);
+        end
+
+        %% ===============================================================
+        %  Calibration (volts -> Er)
+        %  ===============================================================
+        % The displayed conversion is
+        %     depth(V) = (k/c) * (V + off/c)
+        % where k = DepthOverAmplitude and off = PulseOffset come from a
+        % Kapitza-Dirac trial, and c is the AM-spectroscopy correction.
+        % Typing k and off in by hand meant the on-screen calibration had no
+        % link back to the trial it came from; here the trial number IS the
+        % input, so the provenance is always on screen.
+
+        function set.KdTrial(obj, v)
+            obj.KdTrial = ModulationMonitor.padCal(v, 0);
+            obj.CalDirty = true; %#ok<MCSUP>
+        end
+
+        function set.CorrectionDivisor(obj, v)
+            obj.CorrectionDivisor = ModulationMonitor.padCal(v, 1);
+            obj.CalDirty = true; %#ok<MCSUP>
+        end
+
+        function resolveCalibration(obj, forceReload)
+            % Turn (KdTrial, CorrectionDivisor) into (VoltMultiplier,
+            % VoltOffset). Safe to call at any time: a trial that will not
+            % load leaves that channel at unity and records why, rather than
+            % throwing in the middle of a draw.
+            arguments
+                obj
+                forceReload logical = false
+            end
+            if forceReload
+                obj.KdCache = struct('Trial',{{}},'K',{{}},'Off',{{}});
+            end
+            obj.CalDirty = false;
+
+            nCh = 4;
+            mult = ones(1,nCh);
+            off  = zeros(1,nCh);
+            kRaw = nan(1,nCh);
+            oRaw = nan(1,nCh);
+            stat = strings(1,nCh);
+
+            for ch = 1:nCh
+                trial = obj.KdTrial(ch);
+                c     = obj.CorrectionDivisor(ch);
+
+                if ~isfinite(trial) || trial <= 0
+                    stat(ch) = "";           % channel simply not calibrated
+                    continue
+                end
+                if ~isfinite(c) || c == 0
+                    stat(ch) = "correction divisor must be nonzero";
+                    continue
+                end
+
+                [k, o, why] = obj.loadKdPair(trial);
+                if isnan(k)
+                    stat(ch) = why;
+                    continue
+                end
+
+                kRaw(ch) = k;
+                oRaw(ch) = o;
+                mult(ch) = k / c;
+                off(ch)  = o / c;
+                stat(ch) = "ok";
+            end
+
+            obj.VoltMultiplier   = mult;
+            obj.VoltOffset       = off;
+            obj.KdMultiplierRaw  = kRaw;
+            obj.KdOffsetRaw      = oRaw;
+            obj.CalStatus        = stat;
+        end
+
+        function s = calibrationSummary(obj)
+            % One line per calibrated channel, for the Basic tab and for
+            % whatever the control panel wants to echo back.
+            obj.ensureCalibration();
+            parts = {};
+            for ch = 1:numel(obj.CalStatus)
+                st = obj.CalStatus(ch);
+                if strlength(st) == 0
+                    continue
+                elseif st == "ok"
+                    parts{end+1} = sprintf('Ch%d: KD #%d, /%.4g -> %.4g %s/V, offset %.3g V', ...
+                        ch, obj.KdTrial(ch), obj.CorrectionDivisor(ch), ...
+                        obj.VoltMultiplier(ch), char(obj.VoltUnit), obj.VoltOffset(ch)); %#ok<AGROW>
+                else
+                    parts{end+1} = sprintf('Ch%d: KD #%d FAILED - %s', ...
+                        ch, obj.KdTrial(ch), st); %#ok<AGROW>
+                end
+            end
+            if isempty(parts)
+                s = 'No KD trial set - conversion is unity.';
+            else
+                s = strjoin(parts, '   |   ');
+            end
+        end
+
+        function tf = calibrationOk(obj)
+            % True when every channel that was asked for resolved.
+            obj.ensureCalibration();
+            asked = arrayfun(@(s) strlength(s) > 0, obj.CalStatus);
+            tf = ~any(asked) || all(obj.CalStatus(asked) == "ok");
         end
 
         %% ===============================================================
@@ -1557,6 +1679,23 @@ classdef ModulationMonitor < BecAnalysis
                 uicontrol(body,'Style','text','Units','normalized',...
                     'Position',[0.02 yCur 0.96 hNote],'String',msg,'BackgroundColor','w',...
                     'ForegroundColor',obj.CMask,'HorizontalAlignment','left','FontSize',9.5);
+            end
+
+            % --- calibration line --------------------------------------
+            % Always shown when conversion is on. A KD trial that failed to
+            % load falls back to unity, which looks like a plausible number
+            % on every panel, so it has to be stated rather than inferred.
+            if obj.IsConvertVolts
+                yCur = yCur - hNote;
+                if obj.calibrationOk()
+                    calCol = obj.CMuted;
+                else
+                    calCol = obj.CMask;
+                end
+                uicontrol(body,'Style','text','Units','normalized',...
+                    'Position',[0.02 yCur 0.96 hNote],'String',obj.calibrationSummary(),...
+                    'BackgroundColor','w','ForegroundColor',calCol,...
+                    'HorizontalAlignment','left','FontSize',9.5);
             end
 
             % --- combined-lattice summary, anchored above the phase line
@@ -3222,6 +3361,7 @@ classdef ModulationMonitor < BecAnalysis
         end
 
         function m = multiplierFor(obj, ch)
+            obj.ensureCalibration();
             m = 1;
             if ch >= 1 && ch <= numel(obj.VoltMultiplier)
                 v = obj.VoltMultiplier(ch);
@@ -3230,10 +3370,70 @@ classdef ModulationMonitor < BecAnalysis
         end
 
         function o = offsetFor(obj, ch)
+            obj.ensureCalibration();
             o = 0;
             if ch >= 1 && ch <= numel(obj.VoltOffset)
                 v = obj.VoltOffset(ch);
                 if isfinite(v), o = v; end
+            end
+        end
+
+        function [k, off, why] = loadKdPair(obj, trial)
+            % Fetch (DepthOverAmplitude, PulseOffset) for one trial.
+            % loadBecExp walks the data tree, so the result is cached: the
+            % common case of two channels sharing a trial, or the user
+            % nudging only the correction divisor, costs no disk access.
+            k = NaN; off = NaN; why = "";
+
+            hit = find(cellfun(@(t) isequal(t,trial), obj.KdCache.Trial), 1);
+            if ~isempty(hit)
+                k = obj.KdCache.K{hit};
+                off = obj.KdCache.Off{hit};
+                if isnan(k), why = "no KapitzaDirac result in that trial"; end
+                return
+            end
+
+            try
+                be = loadBecExp(trial);
+            catch ME
+                why = "trial would not load (" + string(ME.message) + ")";
+                return
+            end
+
+            try
+                kd = be.KapitzaDirac;
+                if isempty(kd)
+                    why = "no KapitzaDirac analysis in that trial";
+                else
+                    % PulseOffset is fitted per run, so a KD trial with n
+                    % runs returns a 1xn vector; DepthOverAmplitude is a
+                    % single fit across the trial and comes back scalar.
+                    % Reduce with the MEDIAN, not the mean: a run or two
+                    % whose fit went astray sits far off the cluster, and
+                    % the mean chases it while the median does not.
+                    k   = ModulationMonitor.reduceKd(kd.DepthOverAmplitude);
+                    off = ModulationMonitor.reduceKd(kd.PulseOffset);
+                    if ~isfinite(k) || k == 0
+                        k = NaN; off = NaN;
+                        why = "KapitzaDirac depth-over-amplitude is empty or zero";
+                    elseif ~isfinite(off)
+                        off = 0; % a missing offset is a zero offset, not a failure
+                    end
+                end
+            catch ME
+                why = "could not read KapitzaDirac (" + string(ME.message) + ")";
+            end
+
+            obj.KdCache.Trial{end+1} = trial;
+            obj.KdCache.K{end+1}     = k;
+            obj.KdCache.Off{end+1}   = off;
+        end
+
+        function ensureCalibration(obj)
+            % Called on every convert(); the flag check is what keeps this
+            % from costing anything on the hot path.
+            if obj.CalDirty
+                obj.resolveCalibration();
             end
         end
 
@@ -3386,8 +3586,13 @@ classdef ModulationMonitor < BecAnalysis
         end
 
         function placeholder(obj, ax, msg)
+            % Interpreter OFF: these messages carry file paths, and a path
+            % with underscores is invalid TeX, so the text silently fails to
+            % render and the panel looks like it did nothing at all. The
+            % diagnostic message is the one thing that must always appear.
             text(ax, 0.5, 0.5, msg, 'Units','normalized', ...
-                'HorizontalAlignment','center','Color',obj.CMuted,'FontSize',10);
+                'HorizontalAlignment','center','Color',obj.CMuted, ...
+                'FontSize',10,'Interpreter','none');
             ax.XTick = []; ax.YTick = [];
         end
 
@@ -3421,6 +3626,36 @@ classdef ModulationMonitor < BecAnalysis
     %  Static helpers (no toolbox dependencies)
     %  ===================================================================
     methods (Static, Hidden)
+        function s = reduceKd(x)
+            % A KD fit result to one number. Vectors are per-run fits, so
+            % the median is the representative value and NaN runs drop out.
+            s = NaN;
+            try
+                x = double(x(:));
+                x = x(isfinite(x));
+                if ~isempty(x)
+                    s = median(x);
+                end
+            catch
+            end
+        end
+
+        function v = padCal(v, fillValue)
+            % Accept a scalar or a short vector and return [1x4]. A scalar
+            % multiplier silently breaking VoltMultiplier(2) was the old
+            % failure mode here, so the padding happens on the way in.
+            v = double(v(:)).';
+            if isempty(v)
+                v = repmat(fillValue,1,4);
+            elseif isscalar(v)
+                v = repmat(v,1,4);
+            elseif numel(v) < 4
+                v(end+1:4) = fillValue;
+            else
+                v = v(1:4);
+            end
+        end
+
         function g = emptyGrid()
             g = struct('Valid',false,'Is2D',false,'Nx',0,'Ny',0, ...
                 'XValues',[],'YValues',[],'XLabels',{{}},'YLabels',{{}}, ...
