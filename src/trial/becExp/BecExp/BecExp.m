@@ -602,11 +602,11 @@ classdef BecExp < Trial
                                 if isfield(obj.ConfigParameter.ModulationParameter, 'VoltUnit')
                                     obj.ModulationMonitor.VoltUnit = string(obj.ConfigParameter.ModulationParameter.VoltUnit);
                                 end
-                                if isfield(obj.ConfigParameter.ModulationParameter, 'VoltMultiplier')
-                                    obj.ModulationMonitor.VoltMultiplier = double(obj.ConfigParameter.ModulationParameter.VoltMultiplier);
+                                if isfield(obj.ConfigParameter.ModulationParameter, 'KdTrial')
+                                    obj.ModulationMonitor.KdTrial = double(obj.ConfigParameter.ModulationParameter.KdTrial);
                                 end
-                                if isfield(obj.ConfigParameter.ModulationParameter, 'VoltOffset')
-                                    obj.ModulationMonitor.VoltOffset = double(obj.ConfigParameter.ModulationParameter.VoltOffset);
+                                if isfield(obj.ConfigParameter.ModulationParameter, 'CorrectionDivisor')
+                                    obj.ModulationMonitor.CorrectionDivisor = double(obj.ConfigParameter.ModulationParameter.CorrectionDivisor);
                                 end
                                 if isfield(obj.ConfigParameter.ModulationParameter, 'IsChirp')
                                     obj.ModulationMonitor.IsChirp = logical(obj.ConfigParameter.ModulationParameter.IsChirp);
