@@ -23,6 +23,11 @@ classdef (Abstract) SiglentScope < Scope
         SetMemoryManagement logical = true % force fixed-memory-depth mode in set()
     end
 
+    properties (Access = public)
+        AcqType string = "Normal"           % "Normal" or "ERES"
+        AcqEresBits double = 3.0            % ERES bit depth (0.5 to 3.0; max 3 bits)
+    end
+
     properties (SetAccess = protected, Transient)
         LastPreamble = struct.empty % preamble of each channel from the last read()
     end
@@ -57,25 +62,22 @@ classdef (Abstract) SiglentScope < Scope
             v = obj.VisaObj;
 
             % =========================
-            % Acquisition / transfer format
+            % Acquisition / Type Settings
             % =========================
+            if strcmpi(obj.AcqType, "ERES")
+                writeline(v, sprintf(":ACQuire:TYPE ERES,%g", obj.AcqEresBits));
+                obj.SetMemoryManagement = false;
+            else
+                writeline(v, ":ACQuire:TYPE NORMal");
+            end
+
             if strlength(obj.AcqResolution) > 0
                 writeline(v, ":ACQuire:RESolution " + obj.AcqResolution);
             end
             writeline(v, ":WAVeform:WIDTh WORD"); % required for >8-bit data
 
             % =========================
-            % Horizontal settings
-            % =========================
-            %writeline(v, sprintf("TIM:SCAL %g", obj.Duration / 10));
-            obj.Duration = obj.snapDuration(obj.Duration);
-            writeline(v, sprintf("TIM:SCAL %g", obj.Duration / 10));
-            obj.Duration = 10 * obj.queryNumber("TIM:SCAL?");   % trust what the scope actually set
-            
-            writeline(v, sprintf(':TIMebase:DELay %e', -obj.HorizontalOffset));
-
-            % =========================
-            % Channel settings
+            % Channel settings (configure before timebase/memory depth)
             % =========================
             for ii = 1:obj.NChannel
                 ch = "CHAN" + ii;
@@ -90,7 +92,16 @@ classdef (Abstract) SiglentScope < Scope
             end
 
             % =========================
-            % Memory depth (after channels, since it depends on interleaving)
+            % Horizontal settings
+            % =========================
+            obj.Duration = obj.snapDuration(obj.Duration);
+            writeline(v, sprintf("TIM:SCAL %g", obj.Duration / 10));
+            obj.Duration = 10 * obj.queryNumber("TIM:SCAL?");   % trust what the scope actually set
+            
+            writeline(v, sprintf(':TIMebase:DELay %e', -obj.HorizontalOffset));
+
+            % =========================
+            % Memory depth (after channels and timebase are established)
             % =========================
             obj.applyMemoryDepth();
 
@@ -275,10 +286,19 @@ classdef (Abstract) SiglentScope < Scope
             [~, k] = min(abs(ok - obj.NSample));
             obj.NSample = ok(k);
 
-            if obj.SetMemoryManagement
-                writeline(obj.VisaObj, ":ACQuire:MMANagement FMDepth");
+            if strcmpi(obj.AcqType, "ERES")
+                % In ERES mode, use AUTO management and set ceiling to max depth (200M/100M)
+                writeline(obj.VisaObj, ":ACQuire:MMANagement AUTO");
+                maxDepth = ok(end); % Maximum available depth for current channel config (e.g., 200M or 100M)
+                writeline(obj.VisaObj, "ACQ:MDEP " + SiglentScope.depthString(maxDepth));
+            else
+                if obj.SetMemoryManagement
+                    writeline(obj.VisaObj, ":ACQuire:MMANagement FMDepth");
+                else
+                    writeline(obj.VisaObj, ":ACQuire:MMANagement AUTO");
+                end
+                writeline(obj.VisaObj, "ACQ:MDEP " + SiglentScope.depthString(ok(k)));
             end
-            writeline(obj.VisaObj, "ACQ:MDEP " + SiglentScope.depthString(ok(k)));
         end
 
         function p = readPreamble(obj)
