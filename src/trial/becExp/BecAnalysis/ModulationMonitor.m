@@ -3354,7 +3354,7 @@ classdef ModulationMonitor < BecAnalysis
             end
             m = obj.multiplierFor(ch);
             if strcmp(kind,'level')
-                y = m * (x + obj.offsetFor(ch));
+                y = m * (x - obj.offsetFor(ch));
             else
                 y = m * x;
             end
